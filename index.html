@@ -126,11 +126,76 @@ border:none;
 background:#e53935;
 margin-bottom:10px;
 }
+#popup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
 
+.popup-box{
+  background:white;
+  padding:25px;
+  border-radius:12px;
+  width:340px;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+  position:relative;
+
+  animation: popupShow 0.4s ease;
+}
+
+.close{
+  position:absolute;
+  top:10px;
+  right:15px;
+  font-size:24px;
+  cursor:pointer;
+}
+
+/* animation xuất hiện */
+@keyframes popupShow{
+  from{
+    transform:translateY(-40px) scale(0.9);
+    opacity:0;
+  }
+  to{
+    transform:translateY(0) scale(1);
+    opacity:1;
+  }
+}
+
+/* animation tắt */
+.popup-hide{
+  animation: popupHide 0.3s ease forwards;
+}
+
+@keyframes popupHide{
+  from{
+    transform:translateY(0) scale(1);
+    opacity:1;
+  }
+  to{
+    transform:translateY(-40px) scale(0.9);
+    opacity:0;
+  }
+}
 </style>
 
 </head>
-
+<div id="popup">
+  <div class="popup-box">
+    <span class="close">&times;</span>
+    <h3>📢 Thông báo</h3>
+    <p>Vì một số lý do khách quan nếu phát hiện sai sót hay lỗi vui lòng liên hệ Quân Hào để fix =)))</p>
+  </div>
+</div>
 <body>
 
 <div class="header">
@@ -383,6 +448,17 @@ buttons.forEach(btn => {
     btn.classList.add("active");
   });
 });
+const popup = document.getElementById("popup");
+const box = document.querySelector(".popup-box");
+const closeBtn = document.querySelector(".close");
+
+closeBtn.onclick = function(){
+  box.classList.add("popup-hide");
+
+  setTimeout(()=>{
+    popup.style.display="none";
+  },300);
+}
 </script>
 
 </body>
