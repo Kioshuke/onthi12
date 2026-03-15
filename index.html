@@ -38,15 +38,24 @@ box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
 .menu button{
-padding:15px 25px;
-border:none;
-background:none;
-font-size:16px;
-cursor:pointer;
+  padding:15px 25px;
+  border:none;
+  background:none;
+  font-size:16px;
+  cursor:pointer;
+  transition: all 0.2s ease;
+  border-radius:8px;
 }
 
 .menu button:hover{
-background:#e8f0fe;
+  background:#66CCFF;
+  transform: translateY(-3px);
+}
+
+/* nút đang ở */
+.menu button.active{
+  background:#66CCFF;
+  font-weight:bold;
 }
 
 /* CONTENT */
@@ -129,13 +138,48 @@ margin-bottom:10px;
 </div>
 
 <div class="menu">
-<button onclick="show('ly')">Vật Lý</button>
+<button class="active" onclick="show('ly')">Vật Lý</button>
 <button onclick="show('sinh')">Sinh Học</button>
 <button onclick="show('tin')">Tin Học</button>
 <button onclick="show('su')">Lịch Sử</button>
 <button onclick="show('hoa')">Hoá Học</button>
 </div>
+<div class="ticker-container">
+  <div class="ticker-text">
+    Lưu ý: Các bài test được tạo thông quan nền tảng Youngtest. Các bạn làm bài không bắc buộc chọn đúng họ tên!
+  </div>
+</div>
 
+<style>
+.ticker-container{
+  width:100%;
+  overflow:hidden;
+  background:linear-gradient(#6a11cb, #2575fc);
+  color:white;
+  padding:12px 0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  font-size:18px;
+  font-weight:600;
+  border-radius:10px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.25);
+}
+
+.ticker-text{
+  display:inline-block;
+  white-space:nowrap;
+  padding-left:100%;
+  animation:scrollText 17s linear infinite;
+}
+
+@keyframes scrollText{
+  from{
+    transform:translateX(0);
+  }
+  to{
+    transform:translateX(-100%);
+  }
+}
+</style>
 <div class="content">
 
 <div id="ly">
@@ -331,7 +375,14 @@ document.getElementById("su").style.display="none";
 document.getElementById(id).style.display="block";
 
 }
+const buttons = document.querySelectorAll(".menu button");
 
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    buttons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
 </script>
 
 </body>
