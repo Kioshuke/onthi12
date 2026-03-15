@@ -219,35 +219,6 @@ elem.msRequestFullscreen();
 
 }
 
-document.getElementById("quiz").innerHTML =
-`
-<div class="quiz-box">
-
-<button class="btn close-btn" onclick="closeQuiz()">❌ Đóng bài</button>
-
-<iframe src="${link}"></iframe>
-
-</div>
-`;
-
-window.scrollTo({
-top:document.getElementById("quiz").offsetTop,
-behavior:"smooth"
-});
-
-}
-
-function closeQuiz(){
-
-document.getElementById("quiz").innerHTML="";
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
 </script>
 
 </body>
