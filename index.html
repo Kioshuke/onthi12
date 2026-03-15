@@ -172,6 +172,57 @@ document.getElementById("quiz").innerHTML =
 `
 <div class="quiz-box">
 
+<div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+
+<button class="btn close-btn" onclick="closeQuiz()">❌ Đóng bài</button>
+
+<button class="btn" onclick="openFullscreen()">⛶ Toàn màn hình</button>
+
+</div>
+
+<iframe id="quizFrame" src="${link}"></iframe>
+
+</div>
+`;
+
+window.scrollTo({
+top:document.getElementById("quiz").offsetTop,
+behavior:"smooth"
+});
+
+}
+
+function closeQuiz(){
+
+document.getElementById("quiz").innerHTML="";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+function openFullscreen(){
+
+let elem = document.getElementById("quizFrame");
+
+if (elem.requestFullscreen){
+elem.requestFullscreen();
+}
+else if (elem.webkitRequestFullscreen){
+elem.webkitRequestFullscreen();
+}
+else if (elem.msRequestFullscreen){
+elem.msRequestFullscreen();
+}
+
+}
+
+document.getElementById("quiz").innerHTML =
+`
+<div class="quiz-box">
+
 <button class="btn close-btn" onclick="closeQuiz()">❌ Đóng bài</button>
 
 <iframe src="${link}"></iframe>
