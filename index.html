@@ -1,28 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
+
 <head>
 <meta charset="UTF-8">
-<title>Ôn Tập Khối 12</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ôn tập HK2 - Lớp 12</title>
 
 <style>
+
 body{
 margin:0;
-font-family:Arial;
+font-family:Arial, Helvetica, sans-serif;
+background:#f2f2f2;
 }
+
+/* HEADER */
 
 header{
 background:#1a73e8;
 color:white;
-text-align:center;
 padding:15px;
-font-size:22px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
 }
 
-iframe{
-width:100%;
-height:90vh;
-border:none;
+/* MENU BAR */
+
+.menu{
+display:flex;
+justify-content:center;
+background:white;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
+
+.menu button{
+border:none;
+background:none;
+padding:15px 25px;
+font-size:16px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.menu button:hover{
+background:#e8f0fe;
+}
+
+/* CONTENT */
+
+.content{
+padding:20px;
+text-align:center;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+max-width:600px;
+margin:auto;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card h2{
+margin-top:0;
+}
+
+.quiz-btn{
+display:inline-block;
+margin-top:10px;
+padding:10px 20px;
+background:#1a73e8;
+color:white;
+text-decoration:none;
+border-radius:6px;
+}
+
+.quiz-btn:hover{
+background:#0f5bd4;
+}
+
 </style>
 
 </head>
@@ -30,10 +89,47 @@ border:none;
 <body>
 
 <header>
-ÔN TẬP THI KHỐI 12
+ÔN TẬP HỌC KÌ 2 - LỚP 12
 </header>
 
-<iframe src="https://youngtest.vn/quiz/yv8Lfr"></iframe>
+<div class="menu">
+<button onclick="showSection('gk1')">GK1</button>
+<button onclick="showSection('gk2')">GK2</button>
+<button onclick="showSection('ck')">CK</button>
+</div>
+
+<div class="content">
+
+<div id="gk1" class="card">
+<h2>Giữa kì 1</h2>
+<p>Danh sách bài ôn tập sẽ hiển thị ở đây.</p>
+</div>
+
+<div id="gk2" class="card" style="display:none;">
+<h2>Giữa kì 2</h2>
+<p>Danh sách bài ôn tập sẽ hiển thị ở đây.</p>
+</div>
+
+<div id="ck" class="card" style="display:none;">
+<h2>Cuối kì</h2>
+<p>Danh sách bài ôn tập sẽ hiển thị ở đây.</p>
+</div>
+
+</div>
+
+<script>
+
+function showSection(id){
+
+document.getElementById("gk1").style.display="none";
+document.getElementById("gk2").style.display="none";
+document.getElementById("ck").style.display="none";
+
+document.getElementById(id).style.display="block";
+
+}
+
+</script>
 
 </body>
 </html>
