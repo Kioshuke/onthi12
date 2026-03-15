@@ -5,28 +5,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ôn tập HK2 - Lớp 12</title>
+<title>ÔN TẬP HỌC KÌ 2 - LỚP 12</title>
 
 <style>
 
 body{
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
-background:#f2f2f2;
+font-family:Arial;
+background:#f5f5f5;
 }
 
 /* HEADER */
 
-header{
+.header{
 background:#1a73e8;
 color:white;
-padding:15px;
 text-align:center;
-font-size:24px;
-font-weight:bold;
+padding:30px 10px;
 }
 
-/* MENU BAR */
+.header h1{
+margin:0;
+font-size:32px;
+}
+
+.header p{
+margin:5px 0 0 0;
+opacity:0.9;
+}
+
+/* MENU */
 
 .menu{
 display:flex;
@@ -36,12 +44,11 @@ box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
 .menu button{
+padding:15px 30px;
 border:none;
 background:none;
-padding:15px 25px;
 font-size:16px;
 cursor:pointer;
-transition:0.2s;
 }
 
 .menu button:hover{
@@ -51,35 +58,49 @@ background:#e8f0fe;
 /* CONTENT */
 
 .content{
-padding:20px;
-text-align:center;
+max-width:1000px;
+margin:auto;
+padding:30px 20px;
+}
+
+/* CARD */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
 }
 
 .card{
 background:white;
 padding:20px;
 border-radius:10px;
-max-width:600px;
-margin:auto;
 box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
 
-.card h2{
+.card h3{
 margin-top:0;
 }
 
-.quiz-btn{
+.btn{
 display:inline-block;
 margin-top:10px;
-padding:10px 20px;
+padding:10px 15px;
 background:#1a73e8;
 color:white;
 text-decoration:none;
-border-radius:6px;
+border-radius:5px;
 }
 
-.quiz-btn:hover{
+.btn:hover{
 background:#0f5bd4;
+}
+
+iframe{
+width:100%;
+height:90vh;
+border:none;
+margin-top:20px;
 }
 
 </style>
@@ -88,44 +109,72 @@ background:#0f5bd4;
 
 <body>
 
-<header>
-ÔN TẬP HỌC KÌ 2 - LỚP 12
-</header>
+<div class="header">
+<h1>ÔN TẬP HỌC KÌ 2 - LỚP 12</h1>
+<p>THPT Tân Hồng</p>
+</div>
 
 <div class="menu">
-<button onclick="showSection('gk1')">GK1</button>
-<button onclick="showSection('gk2')">GK2</button>
-<button onclick="showSection('ck')">CK</button>
+<button onclick="show('gk1')">Giữa kì 1</button>
+<button onclick="show('gk2')">Giữa kì 2</button>
+<button onclick="show('ck')">Cuối kì</button>
 </div>
 
 <div class="content">
 
-<div id="gk1" class="card">
-<h2>Giữa kì 1</h2>
-<p>Danh sách bài ôn tập sẽ hiển thị ở đây.</p>
+<div id="gk1">
+
+<div class="grid">
+
+<div class="card">
+<h3>Đề 1</h3>
+<p>Bài ôn tập trắc nghiệm.</p>
+<a class="btn" onclick="loadQuiz('LINK_QUIZ_1')">Làm bài</a>
 </div>
 
-<div id="gk2" class="card" style="display:none;">
-<h2>Giữa kì 2</h2>
-<p>Danh sách bài ôn tập sẽ hiển thị ở đây.</p>
+<div class="card">
+<h3>Đề 2</h3>
+<p>Bài ôn tập trắc nghiệm.</p>
+<a class="btn" onclick="loadQuiz('LINK_QUIZ_2')">Làm bài</a>
 </div>
 
-<div id="ck" class="card" style="display:none;">
-<h2>Cuối kì</h2>
-<p>Danh sách bài ôn tập sẽ hiển thị ở đây.</p>
 </div>
+
+</div>
+
+<div id="gk2" style="display:none">
+<h2>Đang cập nhật</h2>
+</div>
+
+<div id="ck" style="display:none">
+<h2>Đang cập nhật</h2>
+</div>
+
+<div id="quiz"></div>
 
 </div>
 
 <script>
 
-function showSection(id){
+function show(id){
 
 document.getElementById("gk1").style.display="none";
 document.getElementById("gk2").style.display="none";
 document.getElementById("ck").style.display="none";
 
 document.getElementById(id).style.display="block";
+
+}
+
+function loadQuiz(link){
+
+document.getElementById("quiz").innerHTML =
+`<iframe src="${link}"></iframe>`;
+
+window.scrollTo({
+top:document.getElementById("quiz").offsetTop,
+behavior:"smooth"
+});
 
 }
 
