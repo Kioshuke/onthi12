@@ -354,6 +354,25 @@ box-shadow:0 6px 20px rgba(0,0,0,0.18);
 .google-btn:active{
 transform:scale(0.97);
 }
+#userBox{
+max-width:1100px;
+margin:8px auto 0 auto;
+display:flex;
+justify-content:flex-end;
+align-items:center;
+gap:10px;
+font-size:15px;
+color:#444;
+flex-wrap:wrap;
+}
+
+#userAvatar{
+width:32px;
+height:32px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #1a73e8;
+}
 </style>
 
 </head>
@@ -381,23 +400,15 @@ backdrop-filter: blur(6px);     /* làm mờ nền */
 z-index:9999;
 ">
 
-<div style="
-background:white;
-padding:30px;
-border-radius:14px;
-width:320px;
-text-align:center;
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:15px;
-">
+<div class="login-card">
 
 <h3>Đăng nhập</h3>
+
 <button class="google-btn" onclick="googleLogin()">
 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
 <span>Đăng nhập bằng Google</span>
 </button>
+
 </div>
 </div>
 <div class="header">
@@ -421,6 +432,8 @@ gap:15px;
 </div>
 <div id="userBox">
   <span id="welcomeText"></span>
+  <span id="userName"></span>
+  <img id="userAvatar">
   <button id="logoutBtn">Đăng xuất</button>
 </div>
 <style>
@@ -860,13 +873,26 @@ const allowList = [
 "quanhao678@gmail.com"
 ];
 onAuthStateChanged(auth, (user)=>{
+
 if(user){
+
 document.getElementById("loginBox").style.display="none";
-}else{
-document.getElementById("loginBox").style.display="flex";
-}
+
 document.getElementById("welcomeText").innerText =
-"Chúc bạn ôn thi thật tốt, " + user.displayName;
+"Chúc bạn ôn thi thật tốt,";
+
+document.getElementById("userName").innerText =
+user.displayName;
+
+document.getElementById("userAvatar").src =
+user.photoURL;
+
+}else{
+
+document.getElementById("loginBox").style.display="flex";
+
+}
+
 });
 // chỉ giữ login trong tab hiện tại
 
