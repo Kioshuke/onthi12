@@ -768,17 +768,43 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+import { getFirestore, doc, setDoc } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const db = getFirestore();
+
 const provider = new GoogleAuthProvider();
+const allowList = [
+"quanhao678@gmail.com",
+];
 
 window.googleLogin = function(){
+
 signInWithPopup(auth, provider)
-.then(()=>{
+.then(async (result)=>{
+
+const user = result.user;
+
+if(!allowList.includes(user.email)){
+alert("Bạn không thuộc lớp 12A1");
+auth.signOut();
+return;
+}
+
+await setDoc(doc(db,"users",user.uid),{
+name: user.displayName,
+email: user.email,
+photo: user.photoURL,
+lastLogin: new Date().toISOString()
+});
+
 document.getElementById("loginBox").style.display="none";
+
 })
 .catch((error)=>{
-console.log(error);
-alert("Login Google lỗi");
+alert(error.message);
 });
+
 }
 
 window.login = function(){
@@ -790,8 +816,9 @@ signInWithEmailAndPassword(auth,email,pass)
 .then(()=>{
 document.getElementById("loginBox").style.display="none";
 })
-.catch(()=>{
-alert("Sai tài khoản hoặc mật khẩu");
+.catch((error)=>{
+console.log(error);
+alert(error.message);
 });
 
 }
