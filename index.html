@@ -764,12 +764,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
-onAuthStateChanged(auth, (user)=>{
-if(!user){
-document.getElementById("loginBox").style.display="flex";
-}
-});
-// chỉ giữ login trong tab hiện tại
 setPersistence(auth, browserSessionPersistence);
 
 const db = getFirestore();
@@ -779,6 +773,15 @@ const provider = new GoogleAuthProvider();
 const allowList = [
 "quanhao678@gmail.com"
 ];
+onAuthStateChanged(auth, (user)=>{
+if(user){
+document.getElementById("loginBox").style.display="none";
+}else{
+document.getElementById("loginBox").style.display="flex";
+}
+});
+// chỉ giữ login trong tab hiện tại
+
 
 window.googleLogin = function(){
 
@@ -788,9 +791,7 @@ signInWithPopup(auth, provider)
 const user = result.user;
 
 if(!allowList.includes(user.email)){
-alert("Email không thuộc lớp 12A1");
 await signOut(auth);
-location.reload();
 return;
 }
 
@@ -805,11 +806,10 @@ document.getElementById("loginBox").style.display="none";
 
 })
 .catch((error)=>{
-alert("Đăng nhập thất bại");
+console.log(error);
 });
 
 };
-
 </script>
 </body>
 </html>
