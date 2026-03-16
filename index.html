@@ -775,7 +775,7 @@ const db = getFirestore();
 
 const provider = new GoogleAuthProvider();
 const allowList = [
-"quanhao678@gmail.com",
+"quanhao678@gmail.com"
 ];
 
 window.googleLogin = function(){
@@ -784,8 +784,9 @@ signInWithPopup(auth, provider)
 .then(async (result)=>{
 
 const user = result.user;
+const email = user.email.toLowerCase();
 
-if(!allowList.includes(user.email)){
+if(!allowList.includes(email)){
 alert("Bạn không thuộc lớp 12A1");
 auth.signOut();
 return;
