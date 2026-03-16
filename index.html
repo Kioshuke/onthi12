@@ -16,8 +16,6 @@ background-color:#f6f8ff;
 background-image: radial-gradient(#d6dcff 1.2px, transparent 1.2px);
 background-size:28px 28px;
 overflow-x:hidden;
-
-display:none;
 }
 
 /* HEADER */
@@ -290,6 +288,7 @@ box-sizing:border-box;
 </style>
 
 </head>
+<body>
 <div id="popup">
   <div class="popup-box">
     <span class="close">&times;</span>
@@ -297,7 +296,6 @@ box-sizing:border-box;
     <p>Vì một số lý do khách quan nếu phát hiện sai sót hay lỗi vui lòng liên hệ Quân Hào để fix =)))</p>
   </div>
 </div>
-<body>
 <div id="loginBox" style="
 position:fixed;
 top:0;
@@ -809,7 +807,6 @@ alert(error.message);
 onAuthStateChanged(auth,(user)=>{
 
 if(user){
-document.body.style.display="block";
 document.getElementById("loginBox").style.display="none";
 }
 
