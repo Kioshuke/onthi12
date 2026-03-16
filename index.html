@@ -12,11 +12,10 @@
 body{
 margin:0;
 font-family:'Segoe UI',Arial,sans-serif;
-
 background-color:#f6f8ff;
-background-image:
-radial-gradient(#d6dcff 1.2px, transparent 1.2px);
+background-image: radial-gradient(#d6dcff 1.2px, transparent 1.2px);
 background-size:28px 28px;
+overflow-x:hidden;
 }
 
 /* HEADER */
@@ -94,6 +93,7 @@ gap:5px;
 background:white;
 padding:8px;
 box-shadow:0 3px 10px rgba(0,0,0,0.1);
+flex-wrap:wrap;
 }
 
 .menu button{
@@ -281,6 +281,9 @@ to{
 transform:translateY(-40px) scale(0.9);
 opacity:0;
 }
+}
+*{
+box-sizing:border-box;
 }
 </style>
 
