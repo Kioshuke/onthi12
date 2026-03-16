@@ -373,50 +373,10 @@ border-radius:50%;
 object-fit:cover;
 border:2px solid #1a73e8;
 }
-#loadingOverlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(246,248,255,0.95);
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:99999;
-backdrop-filter:blur(6px);
-}
-
-.loader{
-width:50px;
-height:50px;
-border:6px solid #d6dcff;
-border-top:6px solid #4c6fff;
-border-radius:50%;
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg);}
-100%{transform:rotate(360deg);}
-}
-
-#loadingText{
-margin-top:15px;
-font-size:15px;
-color:#444;
-font-weight:500;
-letter-spacing:0.3px;
-}
 </style>
 
 </head>
 <body>
-<div id="loadingOverlay">
-  <div class="loader"></div>
-  <p id="loadingText">Đang khởi động hệ thống...</p>
-</div>
 <div id="popup">
   <div class="popup-box">
     <span class="close">&times;</span>
@@ -979,42 +939,6 @@ signOut(auth).then(()=>{
 location.reload();
 });
 };
-#loadingOverlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(246,248,255,0.95);
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:99999;
-backdrop-filter:blur(6px);
-}
-
-.loader{
-width:50px;
-height:50px;
-border:6px solid #d6dcff;
-border-top:6px solid #4c6fff;
-border-radius:50%;
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg);}
-100%{transform:rotate(360deg);}
-}
-
-#loadingText{
-margin-top:15px;
-font-size:15px;
-color:#444;
-font-weight:500;
-letter-spacing:0.3px;
-}
 </script>
 </body>
 </html>
