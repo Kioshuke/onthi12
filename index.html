@@ -788,7 +788,11 @@ const email = user.email.toLowerCase();
 
 if(!allowList.includes(email)){
 alert("Bạn không thuộc lớp 12A1");
+
 auth.signOut();
+
+location.reload(); // reload lại trang
+
 return;
 }
 
