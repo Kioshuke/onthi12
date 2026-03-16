@@ -16,6 +16,8 @@ background-color:#f6f8ff;
 background-image: radial-gradient(#d6dcff 1.2px, transparent 1.2px);
 background-size:28px 28px;
 overflow-x:hidden;
+
+display:none;
 }
 
 /* HEADER */
@@ -312,11 +314,6 @@ z-index:9999;
 <div style="background:white;padding:25px;border-radius:10px;width:300px;text-align:center;">
 
 <h3>Đăng nhập</h3>
-
-<input id="email" placeholder="Email" style="width:100%;margin:5px 0;padding:8px;">
-<input id="pass" type="password" placeholder="Password" style="width:100%;margin:5px 0;padding:8px;">
-
-<button onclick="login()">Login</button>
 <button onclick="googleLogin()">Login với Google</button>
 
 </div>
@@ -750,7 +747,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/fireba
 
 import { 
 getAuth,
-signInWithEmailAndPassword,
 onAuthStateChanged,
 GoogleAuthProvider,
 signInWithPopup
@@ -791,8 +787,6 @@ alert("Bạn không thuộc lớp 12A1");
 
 auth.signOut();
 
-document.getElementById("loginBox").style.display="block";
-
 return;
 }
 
@@ -812,26 +806,13 @@ alert(error.message);
 
 }
 
-window.login = function(){
-
-const email = document.getElementById("email").value;
-const pass = document.getElementById("pass").value;
-
-signInWithEmailAndPassword(auth,email,pass)
-.then(()=>{
-document.getElementById("loginBox").style.display="none";
-})
-.catch((error)=>{
-console.log(error);
-alert(error.message);
-});
-
-}
-
 onAuthStateChanged(auth,(user)=>{
+
 if(user){
+document.body.style.display="block";
 document.getElementById("loginBox").style.display="none";
 }
+
 });
 
 </script>
