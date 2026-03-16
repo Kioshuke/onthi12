@@ -749,7 +749,7 @@ GoogleAuthProvider,
 signInWithPopup,
 signOut,
 setPersistence,
-browserSessionPersistence
+browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { getFirestore, doc, setDoc }
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
@@ -764,8 +764,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
-setPersistence(auth, browserSessionPersistence);
-
+setPersistence(auth, browserLocalPersistence);
 const db = getFirestore();
 
 const provider = new GoogleAuthProvider();
