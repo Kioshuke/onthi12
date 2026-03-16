@@ -778,13 +778,11 @@ signInWithPopup(auth, provider)
 .then(async (result)=>{
 
 const user = result.user;
-const email = user.email.toLowerCase();
 
-if(!allowList.includes(email)){
-alert("Bạn không thuộc lớp 12A1");
-
-auth.signOut();
-
+if(!allowList.includes(user.email)){
+alert("Email không thuộc lớp 12A1");
+await signOut(auth);
+location.reload();
 return;
 }
 
@@ -799,17 +797,7 @@ document.getElementById("loginBox").style.display="none";
 
 })
 .catch((error)=>{
-alert(error.message);
-});
-
-}
-
-onAuthStateChanged(auth,(user)=>{
-
-if(user){
-document.getElementById("loginBox").style.display="none";
-}
-
+alert("Đăng nhập thất bại");
 });
 
 </script>
