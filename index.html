@@ -747,7 +747,8 @@ import {
 getAuth,
 onAuthStateChanged,
 GoogleAuthProvider,
-signInWithPopup
+signInWithPopup,
+signOut
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -761,6 +762,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+onAuthStateChanged(auth,(user)=>{
+if(user){
+document.getElementById("loginBox").style.display="none";
+}
+});
 
 import { getFirestore, doc, setDoc } 
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
@@ -799,6 +805,8 @@ document.getElementById("loginBox").style.display="none";
 .catch((error)=>{
 alert("Đăng nhập thất bại");
 });
+
+} 
 
 </script>
 </body>
