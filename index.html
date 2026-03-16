@@ -285,6 +285,29 @@ opacity:0;
 *{
 box-sizing:border-box;
 }
+.user-bar{
+width:100%;
+display:flex;
+justify-content:flex-end;
+align-items:center;
+gap:10px;
+padding:8px 20px;
+font-weight:500;
+}
+
+#logoutBtn{
+background:#ff4d4f;
+border:none;
+color:white;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+transition:0.2s;
+}
+
+#logoutBtn:hover{
+background:#d9363e;
+}
 </style>
 
 </head>
@@ -335,7 +358,10 @@ z-index:9999;
     Lưu ý: Các bài test được tạo thông quan nền tảng Youngtest. Các bạn làm bài không bắc buộc chọn đúng họ tên!
   </div>
 </div>
-
+<div id="userBox">
+  <span id="welcomeText"></span>
+  <button id="logoutBtn">Đăng xuất</button>
+</div>
 <style>
 .ticker-container{
   width:100%;
@@ -778,6 +804,8 @@ document.getElementById("loginBox").style.display="none";
 }else{
 document.getElementById("loginBox").style.display="flex";
 }
+document.getElementById("welcomeText").innerText =
+"Chúc bạn ôn thi thật tốt, " + user.displayName;
 });
 // chỉ giữ login trong tab hiện tại
 
@@ -808,6 +836,11 @@ document.getElementById("loginBox").style.display="none";
 console.log(error);
 });
 
+};
+document.getElementById("logoutBtn").onclick = function(){
+signOut(auth).then(()=>{
+location.reload();
+});
 };
 </script>
 </body>
