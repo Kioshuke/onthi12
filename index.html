@@ -301,7 +301,8 @@ opacity:0;
 <div class="header-glow"></div>
 
 <div class="menu">
-<button class="active" onclick="show('ly')">Vật Lý</button>
+<button class="active" onclick="show('lich')">Lịch Thi</button>
+<button onclick="show('ly')">Vật Lý</button>
 <button onclick="show('sinh')">Sinh Học</button>
 <button onclick="show('tin')">Tin Học</button>
 <button onclick="show('su')">Lịch Sử</button>
@@ -342,10 +343,119 @@ opacity:0;
     transform:translateX(-100%);
   }
 }
+.loader{
+text-align:center;
+padding:40px;
+font-size:18px;
+font-weight:600;
+color:#1a73e8;
+}
+
+.spinner{
+width:40px;
+height:40px;
+border:4px solid #ddd;
+border-top:4px solid #1a73e8;
+border-radius:50%;
+margin:auto;
+animation:spin 0.6s linear infinite;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+.exam-schedule{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.exam-day{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+transition:all 0.3s;
+border-left:6px solid #d0d7ff;
+}
+
+.exam-day:hover{
+transform:translateY(-5px);
+}
+
+.exam-day.today{
+border-left:6px solid #ff4d4f;
+background:#fff5f5;
+box-shadow:0 8px 20px rgba(255,0,0,0.2);
+}
+/* ngày đã thi */
+
+.exam-day.past{
+opacity:0.6;
+filter:grayscale(0.7);
+border-left:6px solid #999;
+}
+
+/* ngày mai thi */
+
+.exam-day.tomorrow{
+border-left:6px solid #ffc107;
+background:#fff8e1;
+animation:shake 1s infinite;
+}
+
+/* rung nhẹ */
+
+@keyframes shake{
+0%{transform:translateX(0)}
+25%{transform:translateX(2px)}
+50%{transform:translateX(-2px)}
+75%{transform:translateX(2px)}
+100%{transform:translateX(0)}
+}
 </style>
 <div class="content">
+<div id="lich">
 
-<div id="ly">
+<div class="exam-schedule">
+
+<div class="exam-day" data-date="2026-03-16">
+<h3>16/03 - Ngữ Văn + Vật Lý</h3>
+<p>🕒 7:05 - Ngữ Văn</p>
+<p>🕒 8:45 - Vật Lý</p>
+</div>
+
+<div class="exam-day" data-date="2026-03-17">
+<h3>17/03 - Toán + Vật Lý</h3>
+<p>🕒 7:05 - Toán</p>
+</div>
+
+<div class="exam-day" data-date="2026-03-18">
+<h3>18/03 - Lịch Sử + Hoá</h3>
+<p>🕒 7:05 - Lịch Sử</p>
+<p>🕒 8:00 - Hoá</p>
+</div>
+
+<div class="exam-day" data-date="2026-03-19">
+<h3>19/03 - Sinh + Anh</h3>
+<p>🕒 7:05 - Sinh</p>
+<p>🕒 8:15 - Anh</p>
+</div>
+
+<div class="exam-day" data-date="2026-03-20">
+<h3>20/03</h3>
+<p>Hôm nay bạn không có lịch thi</p>
+</div>
+
+<div class="exam-day" data-date="2026-03-21">
+<h3>21/03 - Tin</h3>
+<p>🕒 7:05 - Tin học</p>
+</div>
+
+</div>
+
+</div>
+<div id="ly" style="display:none">
 
 <div class="grid">
 
@@ -489,10 +599,23 @@ document.getElementById("quiz").innerHTML =
 
 </div>
 
-<iframe id="quizFrame" src="${link}"></iframe>
+<div class="loader" id="loader">
+<div class="spinner"></div>
+<p>Đang tải bài kiểm tra...</p>
+</div>
+
+<iframe id="quizFrame" src="${link}" style="display:none;"></iframe>
 
 </div>
 `;
+
+let iframe = document.getElementById("quizFrame");
+let loader = document.getElementById("loader");
+
+iframe.onload = function(){
+loader.style.display="none";
+iframe.style.display="block";
+}
 
 window.scrollTo({
 top:document.getElementById("quiz").offsetTop,
@@ -529,6 +652,7 @@ elem.msRequestFullscreen();
 }
 function show(id){
 
+document.getElementById("lich").style.display="none";
 document.getElementById("ly").style.display="none";
 document.getElementById("hoa").style.display="none";
 document.getElementById("sinh").style.display="none";
@@ -546,17 +670,52 @@ buttons.forEach(btn => {
     btn.classList.add("active");
   });
 });
+const now = new Date();
+
+document.querySelectorAll(".exam-day").forEach(day=>{
+
+let examDate = new Date(day.dataset.date);
+
+let tomorrow = new Date();
+tomorrow.setDate(now.getDate()+1);
+
+if(examDate.toDateString() === now.toDateString()){
+day.classList.add("today");
+}
+
+else if(examDate.toDateString() === tomorrow.toDateString()){
+day.classList.add("tomorrow");
+}
+
+else if(examDate < now){
+day.classList.add("past");
+}
+
+});
 const popup = document.getElementById("popup");
 const box = document.querySelector(".popup-box");
 const closeBtn = document.querySelector(".close");
 
+// kiểm tra ngày hôm nay
+let todayPopup = new Date().toDateString();
+let lastShown = localStorage.getItem("popupDate");
+
+if(lastShown === todayPopup){
+  popup.style.display="none";
+}
+
 closeBtn.onclick = function(){
+
   box.classList.add("popup-hide");
 
   setTimeout(()=>{
     popup.style.display="none";
   },300);
+
+  localStorage.setItem("popupDate", todayPopup);
+
 }
+
 </script>
 
 </body>
