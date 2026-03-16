@@ -740,7 +740,6 @@ closeBtn.onclick = function(){
 
 </script>
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 
 import { 
@@ -748,9 +747,12 @@ getAuth,
 onAuthStateChanged,
 GoogleAuthProvider,
 signInWithPopup,
-signOut
+signOut,
+setPersistence,
+browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-
+import { getFirestore, doc, setDoc }
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
   authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -759,16 +761,21 @@ const firebaseConfig = {
   messagingSenderId: "922115936320",
   appId: "1:922115936320:web:67b86c06af9149ff584fa5"
 };
-
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
-import { getFirestore, doc, setDoc } 
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+const auth = getAuth(app);
+onAuthStateChanged(auth, (user)=>{
+if(!user){
+document.getElementById("loginBox").style.display="flex";
+}
+});
+// chỉ giữ login trong tab hiện tại
+setPersistence(auth, browserSessionPersistence);
 
 const db = getFirestore();
 
 const provider = new GoogleAuthProvider();
+
 const allowList = [
 "quanhao678@gmail.com"
 ];
@@ -801,7 +808,7 @@ document.getElementById("loginBox").style.display="none";
 alert("Đăng nhập thất bại");
 });
 
-} 
+};
 
 </script>
 </body>
