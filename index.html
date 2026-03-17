@@ -388,14 +388,50 @@ z-index:99999;
 backdrop-filter:blur(6px);
 }
 
-.loginloader{
-width:50px;
-height:50px;
-border:6px solid #d6dcff;
-border-top:6px solid #4c6fff;
-border-radius:50%;
-animation:spin 1s linear infinite;
+.loading-box{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:20px;
 }
+
+.progress-bar{
+width:260px;
+height:12px;
+background:#d6dcff;
+border-radius:20px;
+overflow:visible;
+}
+
+.progress-fill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#1a73e8,#6a5cff);
+border-radius:20px;
+position:relative;
+animation:loadProgress 3s ease forwards;
+}
+
+.runner{
+position:absolute;
+right:-14px;   /* luôn ở đầu thanh */
+top:-12px;
+}
+
+.runner img{
+width:28px;
+transform:scaleX(-1);
+}
+
+@keyframes loadProgress{
+0%{width:0%;}
+100%{width:100%;}
+}
+
+@keyframes runTurtle{
+0%{left:0%;}
+100%{left:calc(100% - 28px);}
+} 
 
 @keyframes spin{
 0%{transform:rotate(0deg);}
@@ -414,8 +450,21 @@ letter-spacing:0.3px;
 </head>
 <body>
 <div id="loadingOverlay">
-  <div class="loginloader"></div>
-  <p id="loadingText">Đang khởi động hệ thống...</p>
+
+<div class="loading-box">
+
+<div class="progress-bar">
+  <div class="progress-fill">
+    <div class="runner">
+      <img src="https://emojigraph.org/media/google/turtle_1f422.png">
+    </div>
+  </div>
+</div>
+
+<p id="loadingText">Đang khởi động hệ thống...</p>
+
+</div>
+
 </div>
 <div id="popup">
   <div class="popup-box">
@@ -575,6 +624,17 @@ animation:shake 1s infinite;
 50%{transform:translateX(-2px)}
 75%{transform:translateX(2px)}
 100%{transform:translateX(0)}
+}
+#loadingOverlay{
+background:linear-gradient(270deg,#dce7ff,#bcd3ff,#dce7ff,#c6dbff);
+background-size:400% 400%;
+animation:bgMove 8s ease infinite;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 </style>
 <div class="content">
