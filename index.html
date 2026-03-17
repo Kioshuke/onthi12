@@ -742,9 +742,15 @@ padding:10px;
 font-weight:600;
 }
 
-#onlineList{
-padding:10px;
-overflow-y:auto;
+#onlineList div{
+  padding:6px 10px;
+  border-radius:8px;
+  margin:4px 0;
+  transition:0.2s;
+}
+
+#onlineList div:hover{
+  background:#eef2ff;
 }
 
 /* user */
@@ -768,6 +774,23 @@ border-radius:50%;
 .last-seen{
 font-size:12px;
 color:#777;
+}
+.popup{
+  transform: translateY(20px);
+  opacity:0;
+  transition:0.3s;
+}
+
+.popup.show{
+  transform: translateY(0);
+  opacity:1;
+}
+.online-dot{
+  width:8px;
+  height:8px;
+  background:#22c55e;
+  border-radius:50%;
+  box-shadow:0 0 6px #22c55e;
 }
 </style>
 <div class="content">
@@ -1116,8 +1139,19 @@ signOut,
 setPersistence,
 browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, collection, onSnapshot }
+import { getFirestore, doc, setDoc, collection, onSnapshot, query }
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+let unsubscribe;
+
+function loadUsers(){
+  if(unsubscribe) unsubscribe(); // 🧹 clear cái cũ
+
+  const q = query(collection(db,"users"));
+
+  unsubscribe = onSnapshot(q, (snapshot)=>{
+    // render
+  });
+}
 const firebaseConfig = {
   apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
   authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -1130,8 +1164,57 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence);
-const db = getFirestore();
+const db = getFirestore(app);
+let unsubscribe;
 
+function loadUsers(){
+  if(unsubscribe) unsubscribe();
+
+  const q = query(collection(db,"users"));
+
+  unsubscribe = onSnapshot(q, (snapshot)=>{
+    const list = document.getElementById("onlineList");
+    if(!list) return;
+
+    list.innerHTML = "";
+
+    list.innerHTML = "";
+let online = 0;
+
+// 🔥 gom users vào mảng
+const users = [];
+
+snapshot.forEach(doc=>{
+  users.push(doc.data());
+});
+
+// 🔥 sort: online lên đầu
+users.sort((a,b)=> b.online - a.online);
+
+// 🔥 render
+users.forEach(u=>{
+  let status = "";
+  let dot = "offline";
+
+  if(u.online){
+    online++;
+    status = "Đang online";
+    dot = "online";
+  }else if(u.lastSeen){
+    const diff = Math.floor((Date.now() - new Date(u.lastSeen))/60000);
+    status = `Rời ${diff} phút trước`;
+  }
+
+  list.innerHTML += `
+    <div class="user-item">
+      <span class="dot ${dot}"></span>
+      <span>${u.name || "User"}</span>
+      <small>${status}</small>
+    </div>
+  `;
+});
+  });
+}
 const provider = new GoogleAuthProvider();
 
 const allowList = [
@@ -1149,7 +1232,7 @@ const allowList = [
 onAuthStateChanged(auth, (user)=>{
 
 if(user){
-
+loadUsers();
 document.getElementById("loginBox").style.display="none";
 
 document.getElementById("welcomeText").innerText =
@@ -1248,12 +1331,29 @@ toggle.onclick = ()=>{
 };
 window.addEventListener("beforeunload", async () => {
   if(auth.currentUser){
-    await setDoc(doc(db,"users",auth.currentUser.uid),{
-      online:false,
-      lastSeen: new Date().toISOString()
-    },{merge:true});
+  window.addEventListener("beforeunload", () => {
+  updateDoc(doc(db,"users", auth.currentUser.uid), {
+    online: false,
+    lastActive: Date.now()
+  });
+});
+    await setDoc(doc(db,"users", auth.currentUser.uid), {
+  name: userName,
+  online: true,
+  lastActive: Date.now()
+}, { merge: true });
   }
 });
+function timeAgo(timestamp){
+  const diff = Date.now() - timestamp;
+  const min = Math.floor(diff/60000);
+
+  if(min < 1) return "Vừa xong";
+  if(min < 60) return min + " phút trước";
+
+  const hour = Math.floor(min/60);
+  return hour + " giờ trước";
+}
 </script>
 <!-- Nút mở -->
 <div id="onlineToggle">👥</div>
