@@ -418,42 +418,78 @@ z-index:99999;
 backdrop-filter:blur(6px);
 }
 
-.loading-box{
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:20px;
+.loading-text-box{
+  margin-top:18px;
+  padding:10px 20px;
+  background: rgba(255,255,255,0.7);
+  border-radius:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  backdrop-filter: blur(6px);
 }
 
+/* chữ */
+#loadingText{
+  margin:0;
+  font-size:15px;
+  color:#333;
+  font-weight:500;
+  letter-spacing:0.3px;
+}
+
+/* 🔥 khung trắng bao ngoài */
+/* 🔥 khung trắng bao ngoài (to hơn) */
+.progress-wrapper{
+  width:380px; /* 🔥 tăng lên để chứa luôn % */
+  background:#f1f3ff;
+  padding:14px 70px 14px 14px; /* 🔥 tăng khoảng phải */
+  border-radius:40px;
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.15),
+    inset 0 2px 6px rgba(255,255,255,0.8);
+}
+
+/* thanh chính */
 .progress-bar{
-width:260px;
-height:12px;
-background:#d6dcff;
-border-radius:20px;
-overflow:visible;
+  width:100%; /* 🔥 full luôn */
+  position:relative;
+  height:12px;
+  background:#cfd8ff;
+  border-radius:30px;
+  overflow:visible;
+  border:2px solid #2f5cff;
 }
 
+/* thanh chạy */
 .progress-fill{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#1a73e8,#6a5cff);
-border-radius:20px;
-position:relative;
-animation:loadProgress 2s ease forwards;
-will-change: transform;
-transform: translateZ(0);
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#1a73e8,#6a5cff);
+  border-radius:30px;
+  position:relative;
 }
 
+/* 🐢 rùa */
 .runner{
-position:absolute;
-right:-14px;   /* luôn ở đầu thanh */
-top:-12px;
+  position:absolute;
+  right:-18px;
+  top:-10px;
+  z-index:2;
 }
 
 .runner img{
-width:28px;
-transform:scaleX(-1);
+  width:28px;
 }
+
+/* 📊 % nằm bên phải thanh */
+.progress-percent{
+  position:absolute;
+  right:-65px; /* 🔥 đẩy ra ngoài thanh */
+  top:50%;
+  transform:translateY(-50%);
+  font-size:18px;
+  font-weight:700;
+  color:#2d313e;
+} 
 
 @keyframes loadProgress{
 0%{width:0%;}
@@ -471,12 +507,16 @@ transform:scaleX(-1);
 }
 
 #loadingText{
-margin-top:15px;
-font-size:15px;
-color:#444;
-font-weight:500;
-letter-spacing:0.3px;
+  animation: textBounce 0.6s ease;
 }
+
+@keyframes textBounce{
+  0%{transform:translateY(0)}
+  30%{transform:translateY(-4px)}
+  60%{transform:translateY(2px)}
+  100%{transform:translateY(0)}
+}
+
 .header-inner{
 display:flex;
 align-items:center;
@@ -551,15 +591,23 @@ overscroll-behavior: none; /* giảm giật scroll */
 
 <div class="loading-box">
 
-<div class="progress-bar">
+<div class="progress-wrapper">
+
+  <div class="progress-bar">
   <div class="progress-fill">
     <div class="runner">
       <img src="https://emojigraph.org/media/google/turtle_1f422.png">
     </div>
   </div>
+
+  <!-- 🔥 % nằm ngoài -->
+  <div class="progress-percent">0%</div>
+</div>
 </div>
 
-<p id="loadingText">Đang khởi động hệ thống...</p>
+<div class="loading-text-box">
+  <p id="loadingText">🔃Đang khởi động hệ thống...</p>
+</div>
 
 </div>
 
@@ -927,11 +975,31 @@ const loadingTexts = [
 ];
 
 let textIndex = 0;
+let fill = document.querySelector(".progress-fill");
+let percentEl = document.querySelector(".progress-percent");
 
+let width = 0;
+
+let progress = setInterval(()=>{
+  width++;
+
+  fill.style.width = width + "%";
+  percentEl.innerText = width + "%";
+
+  if(width >= 100){
+    clearInterval(progress);
+  }
+},30);
 const loadingInterval = setInterval(()=>{
 
-document.getElementById("loadingText").innerText =
-loadingTexts[textIndex];
+let textEl = document.getElementById("loadingText");
+
+textEl.innerText = loadingTexts[textIndex];
+
+// reset animation
+textEl.style.animation = "none";
+textEl.offsetHeight;
+textEl.style.animation = "textBounce 0.6s ease";
 
 textIndex++;
 
