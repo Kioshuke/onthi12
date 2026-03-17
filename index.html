@@ -586,6 +586,7 @@ overscroll-behavior: none; /* giảm giật scroll */
 
 /* MOBILE: ẩn thời gian */
 @media (max-width:768px){
+
   #currentTime{
     display:none;
   }
@@ -593,31 +594,27 @@ overscroll-behavior: none; /* giảm giật scroll */
   #userBox{
     flex-direction:column;
     align-items:flex-start;
-    gap:8px;
+    gap:6px;
+    border-radius:16px;
   }
 
   .user-right{
     width:100%;
+    display:flex;
+    align-items:center;
     justify-content:space-between;
   }
+
   #welcomeText{
     font-size:13px;
-    line-height:1.4;
+    color:#6b7280;
   }
 
   #userName{
-    font-size:14px;
-    font-weight:600;
-  }
-  #userAvatar{
-    width:32px;
-    height:32px;
+    font-size:15px;
+    font-weight:700;
   }
 
-  #logoutBtn{
-    padding:6px 12px;
-    font-size:13px;
-  }
 }
 </style>
 
@@ -1002,21 +999,17 @@ animation:bgMove 8s ease infinite;
 #userBox{
   max-width:1100px;
   margin:10px auto;
-  padding:8px 14px;
+  padding:10px 16px;
 
   display:flex;
-  justify-content:flex-end;
+  justify-content:space-between; /* ✅ FIX */
   align-items:center;
-  gap:8px;
+  gap:10px;
 
   border-radius:999px;
-
   background: rgba(255,255,255,0.8);
   backdrop-filter: blur(10px);
-
   box-shadow:0 4px 15px rgba(0,0,0,0.08);
-
-  font-size:14px;
 }
 #welcomeText{
   color:#6b7280;
