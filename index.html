@@ -965,6 +965,13 @@ elem.msRequestFullscreen();
 }
 function show(id){
 
+// 🔥 XÓA bài đang mở
+document.getElementById("quiz").innerHTML = "";
+
+// 🔥 cuộn lên đầu cho mượt
+window.scrollTo({ top:0, behavior:"smooth" });
+
+// Ẩn tất cả tab
 document.getElementById("lich").style.display="none";
 document.getElementById("ly").style.display="none";
 document.getElementById("hoa").style.display="none";
@@ -972,6 +979,7 @@ document.getElementById("sinh").style.display="none";
 document.getElementById("tin").style.display="none";
 document.getElementById("su").style.display="none";
 
+// Hiện tab được chọn
 document.getElementById(id).style.display="block";
 
 }
