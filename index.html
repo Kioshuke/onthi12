@@ -1556,5 +1556,18 @@ location.reload();
 });
 };
 </script>
+<script>
+function updateTime(){
+  const now = new Date();
+
+  const time = now.toLocaleTimeString("vi-VN");
+
+  document.getElementById("currentTime").innerText =
+    "📍 Tân Hồng - Đồng Tháp • " + time;
+}
+
+setInterval(updateTime,1000);
+updateTime();
+</script>
 </body>
 </html>
