@@ -566,6 +566,8 @@ overscroll-behavior: none; /* giảm giật scroll */
   color:#374151;
   font-weight:700;
   white-space:nowrap;
+
+  flex-shrink:0; /* 🔥 không bị co */
 }
 
 /* đẩy layout */
@@ -581,7 +583,6 @@ overscroll-behavior: none; /* giảm giật scroll */
   display:flex;
   align-items:center;
   gap:10px;
-  margin-left:auto; /* đẩy hẳn qua phải */
 }
 
 /* MOBILE: ẩn thời gian */
@@ -1002,12 +1003,13 @@ animation:bgMove 8s ease infinite;
   padding:10px 16px;
 
   display:flex;
-  justify-content:space-between; /* ✅ FIX */
   align-items:center;
+  justify-content:space-between;
+
   gap:10px;
 
   border-radius:999px;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.85);
   backdrop-filter: blur(10px);
   box-shadow:0 4px 15px rgba(0,0,0,0.08);
 }
@@ -1521,6 +1523,7 @@ const allowList = [
 "baotran150308@gmail.com",
 "leducanh2022jojo@gmail.com",
 "quynhnhu07052020@gmail.com",
+"",
 ];
 onAuthStateChanged(auth, (user)=>{
 
