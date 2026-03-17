@@ -32,7 +32,13 @@ to{opacity:1;}
 
 .header{
 position:relative;
-background:linear-gradient(135deg,#1a73e8,#6a5cff,#7f9cff);
+background: linear-gradient(
+    135deg,
+    rgb(58, 134, 255),
+    rgb(72, 149, 239),
+    rgb(100, 181, 246)
+  );
+box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 background-size:300% 300%;
 color:white;
 padding:20px 40px;
@@ -827,7 +833,13 @@ animation:bgMove 8s ease infinite;
 <div class="grid">
 
 <div class="card">
-<h3>Trắc nghiệm</h3>
+<h3>Trắc nghiệm P1</h3>
+<p>Bài ôn tập trắc nghiệm môn Hoá Học.</p>
+<a class="btn" onclick="loadQuiz('https://www.shutterstock.com/image-vector/no-result-document-file-data-600nw-2293706569.jpg')">Làm bài</a>
+</div>
+
+<div class="card">
+<h3>Trắc nghiệm P2</h3>
 <p>Bài ôn tập trắc nghiệm môn Hoá Học.</p>
 <a class="btn" onclick="loadQuiz('https://www.shutterstock.com/image-vector/no-result-document-file-data-600nw-2293706569.jpg')">Làm bài</a>
 </div>
@@ -835,7 +847,7 @@ animation:bgMove 8s ease infinite;
 <div class="card">
 <h3>Đúng / Sai</h3>
 <p>Bài ôn tập dạng đúng sai môn Hoá.</p>
-<a class="btn" onclick="loadQuiz('https://www.shutterstock.com/image-vector/no-result-document-file-data-600nw-2293706569.jpg')">Làm bài</a>
+<a class="btn" onclick="loadQuiz('')">Làm bài</a>
 </div>
 
 <div class="card">
