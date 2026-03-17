@@ -1232,8 +1232,9 @@ signOut(auth).then(()=>{
 location.reload();
 });
 };
-import { collection, onSnapshot }
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { 
+  getFirestore, doc, setDoc, collection, onSnapshot, addDoc 
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 const userList = document.getElementById("userList");
 const onlineCount = document.getElementById("onlineCount");
 
@@ -1248,7 +1249,7 @@ const u = docSnap.data();
 if(u.online) count++;
 
 userList.innerHTML += `
-<div class="user-item" onclick="openChat('${docSnap.id}','${u.name}')">
+<div class="user-item" onclick="openChat('${docSnap.id}', \`${u.name}\`)">
   <img src="${u.photo}" width="30" style="border-radius:50%">
   <span>${u.name}</span>
   <div class="status-dot ${u.online ? 'online':'offline'}"></div>
