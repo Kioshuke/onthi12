@@ -42,14 +42,22 @@ box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 background-size:300% 300%;
 color:white;
 padding:20px 40px;
-
 display:flex;
 justify-content:center;
-
 box-shadow:0 10px 30px rgba(0,0,0,0.2);
 backdrop-filter: blur(10px);
-
 animation:headerFlow 10s ease infinite;
+}
+@keyframes headerFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .header-inner{
