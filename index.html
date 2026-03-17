@@ -695,6 +695,80 @@ animation:bgMove 8s ease infinite;
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
 }
+/* nút tròn */
+#onlineToggle{
+position:fixed;
+bottom:20px;
+right:20px;
+width:55px;
+height:55px;
+background:#1a73e8;
+color:white;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+cursor:pointer;
+box-shadow:0 8px 20px rgba(0,0,0,0.3);
+z-index:999;
+transition:0.2s;
+}
+
+#onlineToggle:hover{
+transform:scale(1.1);
+}
+
+/* popup */
+#onlinePopup{
+position:fixed;
+bottom:85px;
+right:20px;
+width:260px;
+max-height:350px;
+background:white;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+display:none;
+flex-direction:column;
+overflow:hidden;
+z-index:999;
+}
+
+.online-header{
+background:#1a73e8;
+color:white;
+padding:10px;
+font-weight:600;
+}
+
+#onlineList{
+padding:10px;
+overflow-y:auto;
+}
+
+/* user */
+.user-item{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:8px;
+font-size:14px;
+}
+
+.dot{
+width:10px;
+height:10px;
+border-radius:50%;
+}
+
+.online{background:#4caf50;}
+.offline{background:#aaa;}
+
+.last-seen{
+font-size:12px;
+color:#777;
+}
 </style>
 <div class="content">
 <div id="lich">
@@ -1042,7 +1116,7 @@ signOut,
 setPersistence,
 browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getFirestore, doc, setDoc }
+import { getFirestore, doc, setDoc, collection, onSnapshot }
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
@@ -1110,11 +1184,12 @@ return;
 }
 
 await setDoc(doc(db,"users",user.uid),{
-name: user.displayName,
-email: user.email,
-photo: user.photoURL,
-lastLogin: new Date().toISOString()
-});
+  name: user.displayName,
+  email: user.email,
+  photo: user.photoURL,
+  online:true,
+  lastSeen:null
+},{merge:true});
 
 document.getElementById("loginBox").style.display="none";
 
@@ -1129,6 +1204,66 @@ signOut(auth).then(()=>{
 location.reload();
 });
 };
+onSnapshot(collection(db,"users"), (snapshot)=>{
+
+  const list = document.getElementById("onlineList");
+  const count = document.getElementById("onlineCount");
+
+  list.innerHTML = "";
+  let online = 0;
+
+  snapshot.forEach(doc=>{
+    const u = doc.data();
+
+    let status = "";
+    let dot = "offline";
+
+    if(u.online){
+      online++;
+      status = "Đang online";
+      dot = "online";
+    }else if(u.lastSeen){
+      const diff = Math.floor((Date.now() - new Date(u.lastSeen))/60000);
+      status = `Rời ${diff} phút trước`;
+    }
+
+    list.innerHTML += `
+      <div class="user-item">
+        <div class="dot ${dot}"></div>
+        <div>
+          <div>${u.name || "User"}</div>
+          <div class="last-seen">${status}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  count.innerText = online;
+});
+const toggle = document.getElementById("onlineToggle");
+const popup = document.getElementById("onlinePopup");
+
+toggle.onclick = ()=>{
+  popup.style.display = popup.style.display === "flex" ? "none" : "flex";
+};
+window.addEventListener("beforeunload", async () => {
+  if(auth.currentUser){
+    await setDoc(doc(db,"users",auth.currentUser.uid),{
+      online:false,
+      lastSeen: new Date().toISOString()
+    },{merge:true});
+  }
+});
 </script>
+<!-- Nút mở -->
+<div id="onlineToggle">👥</div>
+
+<!-- Popup -->
+<div id="onlinePopup">
+  <div class="online-header">
+    👥 Đang học (<span id="onlineCount">0</span>)
+  </div>
+  <div id="onlineList"></div>
+</div>
 </body>
 </html>
