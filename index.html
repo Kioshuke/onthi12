@@ -373,63 +373,7 @@ box-shadow:0 6px 20px rgba(0,0,0,0.18);
 .google-btn:active{
 transform:scale(0.97);
 }
-#userBox{
-  display:flex;
-  align-items:center;
-  gap:10px;
 
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(10px);
-
-  padding:10px 16px;
-  border-radius:20px;
-
-  width: fit-content;
-
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-}
-
-/* text phụ */
-.welcome-text{
-  font-size:13px;
-  color:#888;
-}
-
-/* tên nổi bật */
-.user-name{
-  font-size:15px;
-  font-weight:600;
-
-  background: linear-gradient(135deg,#3a86ff,#8338ec);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* avatar */
-.avatar{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-}
-
-/* nút logout */
-.logout-btn{
-  background: linear-gradient(135deg,#ff4d4f,#ff7875);
-  border:none;
-  color:white;
-
-  padding:6px 12px;
-  border-radius:999px;
-
-  font-size:13px;
-  cursor:pointer;
-  transition:0.2s;
-}
-
-.logout-btn:hover{
-  transform: translateY(-2px);
-  box-shadow:0 4px 12px rgba(255,0,0,0.25);
-}
 #userAvatar{
 width:32px;
 height:32px;
@@ -992,6 +936,40 @@ animation:bgMove 8s ease infinite;
 
   border:2px solid #fff;
   box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+#userBox{
+  max-width:1100px;
+  margin:10px auto;
+  padding:8px 14px;
+
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
+
+  border-radius:999px;
+
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(10px);
+
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+
+  font-size:14px;
+}
+#welcomeText{
+  color:#6b7280;
+  font-size:14px;
+  font-weight:400;
+}
+
+#userName{
+  font-weight:700;
+  font-size:15px;
+
+  background: linear-gradient(90deg,#3b82f6,#6366f1);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 
 /* avatar */
