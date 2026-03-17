@@ -911,6 +911,22 @@ animation:bgMove 8s ease infinite;
   }
 
 }
+@media (max-width: 768px){
+
+  .menu{
+    flex-wrap:nowrap;              /* ❌ không cho xuống dòng */
+    overflow-x:auto;               /* 👉 kéo ngang */
+    justify-content:flex-start;
+    padding:10px;
+    gap:10px;
+  }
+
+  .menu button{
+    flex-shrink:0;                 /* ❌ không bị co */
+    white-space:nowrap;            /* không xuống dòng chữ */
+  }
+
+}
 </style>
 <div class="content">
 <div id="lich">
