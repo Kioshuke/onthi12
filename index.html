@@ -695,103 +695,6 @@ animation:bgMove 8s ease infinite;
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
 }
-/* nút tròn */
-#onlineToggle{
-position:fixed;
-bottom:20px;
-right:20px;
-width:55px;
-height:55px;
-background:#1a73e8;
-color:white;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-cursor:pointer;
-box-shadow:0 8px 20px rgba(0,0,0,0.3);
-z-index:999;
-transition:0.2s;
-}
-
-#onlineToggle:hover{
-transform:scale(1.1);
-}
-
-/* popup */
-#onlinePopup{
-position:fixed;
-bottom:85px;
-right:20px;
-width:260px;
-max-height:350px;
-background:white;
-border-radius:12px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-display:none;
-flex-direction:column;
-overflow:hidden;
-z-index:999;
-}
-
-.online-header{
-background:#1a73e8;
-color:white;
-padding:10px;
-font-weight:600;
-}
-
-#onlineList div{
-  padding:6px 10px;
-  border-radius:8px;
-  margin:4px 0;
-  transition:0.2s;
-}
-
-#onlineList div:hover{
-  background:#eef2ff;
-}
-
-/* user */
-.user-item{
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:8px;
-font-size:14px;
-}
-
-.dot{
-width:10px;
-height:10px;
-border-radius:50%;
-}
-
-.online{background:#4caf50;}
-.offline{background:#aaa;}
-
-.last-seen{
-font-size:12px;
-color:#777;
-}
-.popup{
-  transform: translateY(20px);
-  opacity:0;
-  transition:0.3s;
-}
-
-.popup.show{
-  transform: translateY(0);
-  opacity:1;
-}
-.online-dot{
-  width:8px;
-  height:8px;
-  background:#22c55e;
-  border-radius:50%;
-  box-shadow:0 0 6px #22c55e;
-}
 </style>
 <div class="content">
 <div id="lich">
@@ -1139,19 +1042,8 @@ signOut,
 setPersistence,
 browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, collection, onSnapshot, query }
+import { getFirestore, doc, setDoc }
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-let unsubscribe;
-
-function loadUsers(){
-  if(unsubscribe) unsubscribe(); // 🧹 clear cái cũ
-
-  const q = query(collection(db,"users"));
-
-  unsubscribe = onSnapshot(q, (snapshot)=>{
-    // render
-  });
-}
 const firebaseConfig = {
   apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
   authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -1164,57 +1056,8 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence);
-const db = getFirestore(app);
-let unsubscribe;
+const db = getFirestore();
 
-function loadUsers(){
-  if(unsubscribe) unsubscribe();
-
-  const q = query(collection(db,"users"));
-
-  unsubscribe = onSnapshot(q, (snapshot)=>{
-    const list = document.getElementById("onlineList");
-    if(!list) return;
-
-    list.innerHTML = "";
-
-    list.innerHTML = "";
-let online = 0;
-
-// 🔥 gom users vào mảng
-const users = [];
-
-snapshot.forEach(doc=>{
-  users.push(doc.data());
-});
-
-// 🔥 sort: online lên đầu
-users.sort((a,b)=> b.online - a.online);
-
-// 🔥 render
-users.forEach(u=>{
-  let status = "";
-  let dot = "offline";
-
-  if(u.online){
-    online++;
-    status = "Đang online";
-    dot = "online";
-  }else if(u.lastSeen){
-    const diff = Math.floor((Date.now() - new Date(u.lastSeen))/60000);
-    status = `Rời ${diff} phút trước`;
-  }
-
-  list.innerHTML += `
-    <div class="user-item">
-      <span class="dot ${dot}"></span>
-      <span>${u.name || "User"}</span>
-      <small>${status}</small>
-    </div>
-  `;
-});
-  });
-}
 const provider = new GoogleAuthProvider();
 
 const allowList = [
@@ -1232,7 +1075,7 @@ const allowList = [
 onAuthStateChanged(auth, (user)=>{
 
 if(user){
-loadUsers();
+
 document.getElementById("loginBox").style.display="none";
 
 document.getElementById("welcomeText").innerText =
@@ -1267,12 +1110,11 @@ return;
 }
 
 await setDoc(doc(db,"users",user.uid),{
-  name: user.displayName,
-  email: user.email,
-  photo: user.photoURL,
-  online:true,
-  lastSeen:null
-},{merge:true});
+name: user.displayName,
+email: user.email,
+photo: user.photoURL,
+lastLogin: new Date().toISOString()
+});
 
 document.getElementById("loginBox").style.display="none";
 
@@ -1287,83 +1129,6 @@ signOut(auth).then(()=>{
 location.reload();
 });
 };
-onSnapshot(collection(db,"users"), (snapshot)=>{
-
-  const list = document.getElementById("onlineList");
-  const count = document.getElementById("onlineCount");
-
-  list.innerHTML = "";
-  let online = 0;
-
-  snapshot.forEach(doc=>{
-    const u = doc.data();
-
-    let status = "";
-    let dot = "offline";
-
-    if(u.online){
-      online++;
-      status = "Đang online";
-      dot = "online";
-    }else if(u.lastSeen){
-      const diff = Math.floor((Date.now() - new Date(u.lastSeen))/60000);
-      status = `Rời ${diff} phút trước`;
-    }
-
-    list.innerHTML += `
-      <div class="user-item">
-        <div class="dot ${dot}"></div>
-        <div>
-          <div>${u.name || "User"}</div>
-          <div class="last-seen">${status}</div>
-        </div>
-      </div>
-    `;
-  });
-
-  count.innerText = online;
-});
-const toggle = document.getElementById("onlineToggle");
-const popup = document.getElementById("onlinePopup");
-
-toggle.onclick = ()=>{
-  popup.style.display = popup.style.display === "flex" ? "none" : "flex";
-};
-window.addEventListener("beforeunload", async () => {
-  if(auth.currentUser){
-  window.addEventListener("beforeunload", () => {
-  updateDoc(doc(db,"users", auth.currentUser.uid), {
-    online: false,
-    lastActive: Date.now()
-  });
-});
-    await setDoc(doc(db,"users", auth.currentUser.uid), {
-  name: userName,
-  online: true,
-  lastActive: Date.now()
-}, { merge: true });
-  }
-});
-function timeAgo(timestamp){
-  const diff = Date.now() - timestamp;
-  const min = Math.floor(diff/60000);
-
-  if(min < 1) return "Vừa xong";
-  if(min < 60) return min + " phút trước";
-
-  const hour = Math.floor(min/60);
-  return hour + " giờ trước";
-}
 </script>
-<!-- Nút mở -->
-<div id="onlineToggle">👥</div>
-
-<!-- Popup -->
-<div id="onlinePopup">
-  <div class="online-header">
-    👥 Đang học (<span id="onlineCount">0</span>)
-  </div>
-  <div id="onlineList"></div>
-</div>
 </body>
 </html>
