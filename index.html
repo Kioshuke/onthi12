@@ -552,6 +552,34 @@ letter-spacing:1px;
     transform:none;
     box-shadow:0 4px 12px rgba(0,0,0,0.1);
   }
+  #currentTime{
+    display:none;
+  }
+
+  #userBox{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
+    border-radius:16px;
+  }
+
+  .user-right{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  #welcomeText{
+    font-size:11px;
+    color:#6b7280;
+  }
+
+  #userName{
+    font-size:15px;
+    font-weight:700;
+    font-size:11px; /* tên nhỏ gọn hơn */
+  }
 
 }
 *{
@@ -585,40 +613,6 @@ overscroll-behavior: none; /* giảm giật scroll */
   gap:10px;
 }
 
-/* MOBILE: ẩn thời gian */
-@media (max-width:768px){
-
-  #currentTime{
-    display:none;
-  }
-
-  #userBox{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:6px;
-    border-radius:16px;
-  }
-
-  .user-right{
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-  }
-
-  #welcomeText{
-    font-size:13px;
-    color:#6b7280;
-    @media (max-width:768px)
-  }
-
-  #userName{
-    font-size:15px;
-    font-weight:700;
-    font-size:13px; /* tên nhỏ gọn hơn */
-  }
-
-}
 </style>
 
 </head>
@@ -1525,7 +1519,7 @@ const allowList = [
 "baotran150308@gmail.com",
 "leducanh2022jojo@gmail.com",
 "quynhnhu07052020@gmail.com",
-"",
+"nguyenthimynhan202011@gmai.com",
 ];
 onAuthStateChanged(auth, (user)=>{
 
