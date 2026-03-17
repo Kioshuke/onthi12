@@ -561,6 +561,34 @@ letter-spacing:1px;
 body{
 overscroll-behavior: none; /* giảm giật scroll */
 }
+#currentTime{
+  font-size:13px;
+  color:#6b7280;
+  font-weight:500;
+}
+
+/* đẩy layout */
+#userBox{
+  justify-content:space-between;
+}
+
+/* nhóm bên phải */
+.user-right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* MOBILE: ẩn thời gian */
+@media (max-width:768px){
+  #currentTime{
+    display:none;
+  }
+
+  #userBox{
+    justify-content:flex-end;
+  }
+}
 </style>
 
 </head>
@@ -654,10 +682,13 @@ z-index:9999;
   </div>
 </div>
 <div id="userBox">
+  <span id="currentTime"></span>
+  <div class="user-right">
   <span id="welcomeText"></span>
   <span id="userName"></span>
   <img id="userAvatar">
   <button id="logoutBtn">Đăng xuất</button>
+  </div>
 </div>
 <style>
 .ticker-container{
