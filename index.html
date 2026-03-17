@@ -562,21 +562,26 @@ body{
 overscroll-behavior: none; /* giảm giật scroll */
 }
 #currentTime{
-  font-size:13px;
-  color:#6b7280;
-  font-weight:500;
+  font-size:16px;
+  color:#374151;
+  font-weight:700;
+  white-space:nowrap;
 }
 
 /* đẩy layout */
 #userBox{
+  display:flex;
+  align-items:center;
   justify-content:space-between;
+  padding:10px 16px;
 }
 
 /* nhóm bên phải */
 .user-right{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:10px;
+  margin-left:auto; /* đẩy hẳn qua phải */
 }
 
 /* MOBILE: ẩn thời gian */
