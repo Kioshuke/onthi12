@@ -62,6 +62,7 @@ animation:headerFlow 10s ease infinite;
 .header-inner{
 display:flex;
 align-items:center;
+justify-content:center;
 gap:15px;
 }
 
@@ -79,19 +80,6 @@ transform:scale(1.08);
 box-shadow:
 0 0 25px rgba(125,249,255,0.9),
 0 10px 25px rgba(0,0,0,0.3);
-}
-
-.title-box h1{
-margin:0;
-font-size:24px;
-font-weight:700;
-letter-spacing:1px;
-}
-
-.title-box p{
-margin:0;
-font-size:13px;
-opacity:0.85;
 }
 /* MENU */
 
@@ -374,26 +362,25 @@ box-shadow:0 6px 20px rgba(0,0,0,0.18);
 transform:scale(0.97);
 }
 
-#userAvatar{
-width:32px;
-height:32px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid #1a73e8;
-}
 #loadingOverlay{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(246,248,255,0.95);
+
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
+
 z-index:99999;
+
 backdrop-filter:blur(6px);
+
+background:linear-gradient(270deg,#dce7ff,#bcd3ff,#dce7ff,#c6dbff);
+background-size:400% 400%;
+animation:bgMove 8s ease infinite;
 }
 
 .loading-text-box{
@@ -474,11 +461,6 @@ backdrop-filter:blur(6px);
 100%{width:100%;}
 }
 
-@keyframes runTurtle{
-0%{left:0%;}
-100%{left:calc(100% - 28px);}
-} 
-
 @keyframes spin{
 0%{transform:rotate(0deg);}
 100%{transform:rotate(360deg);}
@@ -493,20 +475,6 @@ backdrop-filter:blur(6px);
   30%{transform:translateY(-4px)}
   60%{transform:translateY(2px)}
   100%{transform:translateY(0)}
-}
-
-.header-inner{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:15px;
-}
-
-.logo{
-width:55px;
-height:55px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,0.25);
 }
 
 .title-box{
@@ -687,10 +655,6 @@ z-index:9999;
   </div>
 </div>
 
-<div class="header-glow"></div>
-
-<div class="header-glow"></div>
-
 <div class="menu">
 <button class="active" onclick="show('lich')">Lịch Thi</button>
 <button onclick="show('ly')">Vật Lý</button>
@@ -812,11 +776,6 @@ animation:shake 1s infinite;
 75%{transform:translateX(2px)}
 100%{transform:translateX(0)}
 }
-#loadingOverlay{
-background:linear-gradient(270deg,#dce7ff,#bcd3ff,#dce7ff,#c6dbff);
-background-size:400% 400%;
-animation:bgMove 8s ease infinite;
-}
 
 @keyframes bgMove{
 0%{background-position:0% 50%;}
@@ -933,19 +892,6 @@ animation:bgMove 8s ease infinite;
 @media (max-width: 768px){
 
   .menu{
-    overflow-x:auto;
-    justify-content:flex-start;
-    padding:8px 10px;
-  }
-
-  .menu button{
-    flex-shrink:0;
-  }
-
-}
-@media (max-width: 768px){
-
-  .menu{
     flex-wrap:nowrap;              /* ❌ không cho xuống dòng */
     overflow-x:auto;               /* 👉 kéo ngang */
     justify-content:flex-start;
@@ -958,11 +904,6 @@ animation:bgMove 8s ease infinite;
     white-space:nowrap;            /* không xuống dòng chữ */
   }
 
-}
-
-/* text */
-.user-bar{
-  color:#333;
 }
 
 /* avatar */
