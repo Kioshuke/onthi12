@@ -791,6 +791,73 @@ animation:bgMove 8s ease infinite;
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
 }
+.countdown-fix{
+  grid-column: 3 / 5;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  padding: 20px;
+  background: linear-gradient(263.58deg, #f7b839 12.38%, #d45f00 91.63%);
+  border: 2px solid #e48a24;
+  box-shadow: 0 10px 30px rgba(229,108,0,0.35);
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.countdown-fix::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25), transparent 60%);
+  opacity:0.6;
+}
+
+.countdown-fix *{
+  font-family:'Segoe UI',sans-serif;
+  box-sizing:border-box;
+}
+
+.title{
+  color:white;
+  font-size:20px;
+  font-weight:bold;
+  z-index:1;
+}
+
+.time-container{
+  display:flex;
+  gap:12px;
+  z-index:1;
+}
+
+.time-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.time-box{
+  width:55px;
+  height:55px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  background: linear-gradient(145deg, #ffffff, #f1f1f1);
+  font-size:28px;
+  font-weight:bold;
+  color:#E56C00;
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.1),
+    0 4px 10px rgba(0,0,0,0.2);
+}
+
+.label{
+  color: rgba(255,255,255,0.9);
+  font-size:13px;
+  margin-top:4px;
+}
 </style>
 <div class="content">
 <div id="lich">
@@ -830,6 +897,32 @@ animation:bgMove 8s ease infinite;
 <p>🕒 7:05 - Tin học</p>
 </div>
 
+<!-- COUNTDOWN -->
+<div class="countdown-card countdown-fix">
+  <div class="title">🔥 Đếm ngược THPT</div>
+
+  <div class="time-container">
+    <div class="time-item">
+      <div class="time-box" id="days">00</div>
+      <div class="label">Ngày</div>
+    </div>
+
+    <div class="time-item">
+      <div class="time-box" id="hours">00</div>
+      <div class="label">Giờ</div>
+    </div>
+
+    <div class="time-item">
+      <div class="time-box" id="minutes">00</div>
+      <div class="label">Phút</div>
+    </div>
+
+    <div class="time-item">
+      <div class="time-box" id="seconds">00</div>
+      <div class="label">Giây</div>
+    </div>
+  </div>
+</div>
 </div>
 
 </div>
@@ -1165,7 +1258,25 @@ closeBtn.onclick = function(){
   localStorage.setItem("popupDate", todayPopup);
 
 }
+const examDate = new Date("June 11, 2026 07:30:00").getTime();
 
+function updateCountdown(){
+  const now = new Date().getTime();
+  const distance = examDate - now;
+
+  const days = Math.floor(distance / (1000*60*60*24));
+  const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+  const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+  const seconds = Math.floor((distance % (1000*60)) / 1000);
+
+  document.getElementById("days").innerText = days;
+  document.getElementById("hours").innerText = hours;
+  document.getElementById("minutes").innerText = minutes;
+  document.getElementById("seconds").innerText = seconds;
+}
+
+setInterval(updateCountdown,1000);
+updateCountdown();
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
