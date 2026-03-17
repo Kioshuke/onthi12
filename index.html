@@ -555,12 +555,14 @@ letter-spacing:1px;
   #currentTime{
     display:none;
   }
+}
+@media (max-width:768px){
 
   #userBox{
     flex-direction:column;
     align-items:flex-start;
     gap:6px;
-    border-radius:16px;
+    padding:10px 14px;
   }
 
   .user-right{
@@ -572,13 +574,10 @@ letter-spacing:1px;
 
   #welcomeText{
     font-size:11px;
-    color:#6b7280;
   }
 
   #userName{
-    font-size:15px;
-    font-weight:700;
-    font-size:11px; /* tên nhỏ gọn hơn */
+    font-size:13px;
   }
 
 }
@@ -960,22 +959,6 @@ animation:bgMove 8s ease infinite;
   }
 
 }
-.user-bar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:10px 14px;
-  margin:10px;
-
-  border-radius:14px;
-
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(8px);
-
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  font-size:14px;
-}
 
 /* text */
 .user-bar{
@@ -995,7 +978,7 @@ animation:bgMove 8s ease infinite;
 
 #userBox{
   max-width:1100px;
-  margin:10px auto;
+  margin:12px auto;
   padding:10px 16px;
 
   display:flex;
@@ -1010,14 +993,14 @@ animation:bgMove 8s ease infinite;
   box-shadow:0 4px 15px rgba(0,0,0,0.08);
 }
 #welcomeText{
-  color:#6b7280;
-  font-size:14px;
+  color:#9ca3af;
+  font-size:13px;
   font-weight:400;
 }
 
 #userName{
   font-weight:700;
-  font-size:15px;
+  font-size:16px;
 
   background: linear-gradient(90deg,#3b82f6,#6366f1);
   -webkit-background-clip:text;
@@ -1053,6 +1036,27 @@ animation:bgMove 8s ease infinite;
 #logoutBtn:hover{
   transform:translateY(-1px);
   box-shadow:0 4px 10px rgba(255,77,79,0.4);
+}
+@media (max-width:768px){
+
+  #welcomeText{
+    font-size:10px !important;
+  }
+
+  #userName{
+    font-size:12px !important;
+  }
+
+  #logoutBtn{
+    font-size:11px !important;
+    padding:5px 10px !important;
+  }
+
+  #userAvatar{
+    width:30px !important;
+    height:30px !important;
+  }
+
 }
 </style>
 <div class="content">
