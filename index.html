@@ -959,11 +959,42 @@ animation:bgMove 8s ease infinite;
   box-shadow:0 2px 8px rgba(0,0,0,0.15);
 }
 
+#userBox{
+  max-width:1100px;
+  margin:10px auto;
+  padding:10px 14px;
+
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+
+  border-radius:14px;
+
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(8px);
+
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+  font-size:14px;
+  color:#333;
+}
+
+/* avatar */
+#userAvatar{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  object-fit:cover;
+
+  border:2px solid #fff;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
 /* logout button */
-.user-bar button{
+#logoutBtn{
   border:none;
   padding:6px 12px;
-  margin-left:10px;
 
   border-radius:999px;
   font-size:13px;
@@ -975,7 +1006,7 @@ animation:bgMove 8s ease infinite;
   transition:0.25s;
 }
 
-.user-bar button:hover{
+#logoutBtn:hover{
   transform:translateY(-1px);
   box-shadow:0 4px 10px rgba(255,77,79,0.4);
 }
