@@ -523,21 +523,22 @@
   }
 
 #userPopup {
+  z-index: 2000; /* 🔥 cao hơn menu */
   position: absolute;
   top: 70px;
   right: 20px;
 
-  width: 280px;
-  padding: 20px;
+  width: 250px;
+  padding: 16px;
 
   border-radius: 20px;
 
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
+  background: rgba(30, 41, 59, 0.85); /* xanh đậm xịn */
+  backdrop-filter: blur(14px);
 
   box-shadow: 
-    0 10px 30px rgba(0,0,0,0.25),
-    inset 0 0 10px rgba(255,255,255,0.1);
+    0 20px 50px rgba(0,0,0,0.45),
+    inset 0 0 15px rgba(255,255,255,0.05);
 
   border: 1px solid rgba(255,255,255,0.15);
 
@@ -586,13 +587,13 @@
 #popupEmail {
   text-align: center;
   font-size: 13px;
-  color: #bbb;
+  color: #cbd5e1;
   margin-bottom: 10px;
 }
 #popupQuote {
   font-size: 13px;
   text-align: center;
-  color: #ddd;
+  color: #e2e8f0;
   margin: 10px 0;
   font-style: italic;
 }
@@ -1830,7 +1831,7 @@ function startListening(){
 
   <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
     <img id="popupAvatar">
-    <div id="greetingText" style="font-size: 15px; color: #65676b;"></div>
+    <div id="greetingText" style="font-size: 15px; color: #94a3b8;"></div>
     <h3 id="popupName"></h3>
     <p id="popupEmail"></p>
     <p id="popupQuote"></p>
