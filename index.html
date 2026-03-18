@@ -1611,7 +1611,10 @@ if(quoteEl) quoteEl.innerText = quote;
 
     document.getElementById("userAvatar").src =
       user.photoURL || "https://i.imgur.com/6VBx3io.png";
-
+    const popupAvatar = document.getElementById("popupAvatar");
+if(popupAvatar){
+  popupAvatar.src = user.photoURL || "https://i.imgur.com/6VBx3io.png";
+}
   } else {
     document.getElementById("loginBox").style.display="flex";
   }
