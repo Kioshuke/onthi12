@@ -1782,15 +1782,17 @@ function startListening(){
   });
 }
   document.addEventListener("click", function(e){
-    const popup = document.getElementById("userPopup");
-    const userBox = document.getElementById("userBox");
+  const popup = document.getElementById("userPopup");
+  const avatarBox = document.querySelector(".avatar-box");
 
-    if(popup && userBox && 
-    !popup.contains(e.target) && 
-    !userBox.contains(e.target)){
+  if(
+    popup &&
+    !popup.contains(e.target) &&
+    !avatarBox.contains(e.target)
+  ){
     popup.style.display = "none";
   }
-  });
+});
   </script>
   <script>
   function updateTime(){
@@ -1805,11 +1807,16 @@ function startListening(){
   setInterval(updateTime,1000);
   updateTime();
   function toggleUserPopup(){
-    let pop = document.getElementById("userPopup");
-    pop.style.display = pop.style.display === "block" ? "none" : "block";
+  let pop = document.getElementById("userPopup");
+
+  if(getComputedStyle(pop).display === "none"){
+    pop.style.display = "block";
+  } else {
+    pop.style.display = "none";
   }
+}
   </script>
-  <div id="userPopup">
+  <div id="userPopup" style="display:none;"></div>
     <span onclick="toggleUserPopup()" style="
       position: absolute;
       top: 10px;
