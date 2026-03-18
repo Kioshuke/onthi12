@@ -1538,8 +1538,8 @@
   const app = initializeApp(firebaseConfig);
 
   const auth = getAuth(app);
-  setPersistence(auth, browserLocalPersistence);
-  const db = getFirestore();
+  await setPersistence(auth, browserLocalPersistence);
+  const db = getFirestore(app);
 
   const provider = new GoogleAuthProvider();
 
@@ -1564,7 +1564,10 @@
   onAuthStateChanged(auth, (user)=>{
 
   if(user){
-  document.getElementById("popupAvatar").src = user.photoURL;
+  startListening(); // 🔥 THÊM DÒNG NÀY
+  const popupAvatar = document.getElementById("popupAvatar");
+if(popupAvatar){
+  popupAvatar.src = user.photoURL;
   document.getElementById("popupEmail").innerText = user.email;
   document.getElementById("loginBox").style.display="none";
 
@@ -1575,7 +1578,7 @@
   user.displayName;
 
   document.getElementById("userAvatar").src =
-  user.photoURL;
+  user.photoURL || "https://i.imgur.com/6VBx3io.png";
   const hour = new Date().getHours();
           let greeting = "";
           let quote = "";
@@ -1597,15 +1600,7 @@
           // Đổ dữ liệu vào các ID đã tạo ở bước trước
           if(document.getElementById("greetingText")) document.getElementById("greetingText").innerText = greeting;
           if(document.getElementById("popupName")) document.getElementById("popupName").innerText = user.displayName || "Bạn";
-          if(document.getElementById("popupQuote")) document.getElementById("popupQuote").innerText = quote;
-
-          // 3. Cập nhật Database và ẩn Login
-          set(ref(db, 'users/' + user.uid), {
-              name: user.displayName,
-              email: user.email,
-              avatar: user.photoURL,
-              lastSeen: Date.now()
-          });
+          if(document.getElementById("popupQuote")) document.getElementById("popupQuote").innerText = quote
 
           document.getElementById("loginBox").style.display = "none";
           document.getElementById("loadingOverlay").style.display = "none";
@@ -1644,8 +1639,9 @@
 
   })
   .catch((error)=>{
-  console.log(error);
-  });
+  alert("Lỗi đăng nhập: " + error.message);
+  console.error(error);
+});
 
   };
   // Xử lý khi ẩn tab hoặc đóng trình duyệt
@@ -1657,7 +1653,6 @@
         online: isOnline,
         lastSeen: new Date().toISOString() 
       }, { merge: true });
-      updateSmartGreeting(user); // Thêm dòng này vào đây
     }
   };
 
@@ -1671,51 +1666,57 @@
   });
   import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-  onSnapshot(collection(db, "users"), (snapshot) => {
+  let unsubscribeUsers = null;
+
+function startListening(){
+  if(unsubscribeUsers) unsubscribeUsers(); // tránh trùng
+
+  unsubscribeUsers = onSnapshot(collection(db,"users"), (snap)=>{
     const list = document.getElementById("onlineList");
     if (!list) return;
+
     list.innerHTML = "";
 
-    snapshot.forEach(doc => {
+    snap.forEach(doc => {
       const u = doc.data();
       if (!u.online) return;
 
       const div = document.createElement("div");
-      // Mục 2 & 3: Avatar + Pulse
-      div.innerHTML = `
-        <div style="display:flex; align-items:center; gap:10px; padding:6px 8px; border-radius:8px; transition:0.2s;" 
-             onmouseover="this.style.background='#f2f4ff'" 
-             onmouseout="this.style.background='transparent'">
-          
-          <img src="${u.avatar || 'https://i.imgur.com/6VBx3io.png'}" 
-               style="width:26px; height:26px; border-radius:50%; object-fit:cover; border:1px solid #eee;">
-          
-          <span style="font-size:14px; flex:1; color:#333; font-weight:500;">
-            ${u.name || "User"}
-          </span>
 
-          <div class="online-pulse" style="width:8px; height:8px; border-radius:50%; background:#22c55e;"></div>
+      div.innerHTML = `
+        <div style="display:flex; align-items:center; gap:10px; padding:6px 8px;">
+          <img src="${u.photo || 'https://i.imgur.com/6VBx3io.png'}"
+               style="width:26px;height:26px;border-radius:50%;">
+          <span>${u.name || "User"}</span>
+          <div class="online-pulse" style="width:8px;height:8px;background:#22c55e;border-radius:50%;"></div>
         </div>
       `;
-      list.appendChild(div);
-    });
-  }); // Kết thúc onSnapshot
-      } else {
-        // Nếu offline thì hiện icon trắng bình thường
-        div.innerHTML = `<div style="padding:6px 8px; color:#ccc; font-size:14px;">⚪ ${u.name || "User"}</div>`;
-      }
 
       list.appendChild(div);
-  window.logout = async function(){
-    const user = auth.currentUser;
-    if(user){
-      // Phải ghi đè trạng thái offline TRƯỚC khi đăng xuất
-      await setDoc(doc(db, "users", user.uid), { online: false }, { merge: true });
-    }
-    signOut(auth).then(()=>{
-      location.reload();
     });
+  });
+}
+  window.logout = async function(){
+  const user = auth.currentUser;
+
+  // cập nhật offline
+  if(user){
+    await setDoc(doc(db, "users", user.uid), {
+      online: false
+    }, { merge: true });
   }
+
+  // 🔥 QUAN TRỌNG: tắt realtime listener
+  if(unsubscribeUsers){
+    unsubscribeUsers();   // <-- dòng fix chính
+    unsubscribeUsers = null;
+  }
+
+  // logout
+  signOut(auth).then(()=>{
+    location.reload();
+  });
+}
   document.addEventListener("click", function(e){
     const popup = document.getElementById("userPopup");
     const userBox = document.getElementById("userBox");
