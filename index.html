@@ -494,36 +494,6 @@ font-size:13px;
 opacity:0.9;
 letter-spacing:1px;
 }
-@media (max-width: 768px){
-
-  /* ❌ tắt blur nặng */
-  .header,
-  .menu,
-  .card{
-    backdrop-filter:none !important;
-  }
-
-  /* ❌ giảm shadow */
-  .card{
-    box-shadow:0 3px 10px rgba(0,0,0,0.08);
-  }
-
-  /* ❌ giảm animation card */
-  .card{
-    animation:none;
-    opacity:1;
-    transform:none;
-  }
-
-  /* ❌ giảm hiệu ứng hover (mobile không cần) */
-  .card:hover{
-    transform:none;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
-  }
-  #currentTime{
-    display:none;
-  }
-}
 *{
 -webkit-tap-highlight-color: transparent; /* bỏ highlight khi bấm */
 }
@@ -531,13 +501,12 @@ letter-spacing:1px;
 body{
 overscroll-behavior: none; /* giảm giật scroll */
 }
-#currentTime{
-  font-size:16px;
-  color:#374151;
-  font-weight:700;
-  white-space:nowrap;
-
-  flex-shrink:0; /* 🔥 không bị co */
+#currentTime {
+  margin-right: auto; 
+  font-size: 14px; 
+  font-weight: 600; 
+  color: #4b5563;
+  padding-left: 10px;
 }
 
 /* đẩy layout */
