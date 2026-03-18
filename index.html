@@ -603,7 +603,24 @@
   font-weight: 500;
   font-size: 14px;
 }
+.popup-close{
+  position: absolute;
+  top: 10px;
+  right: 14px;
 
+  font-size: 22px;
+  color: #9ca3af;
+  cursor: pointer;
+  font-weight: bold;
+
+  transition: all 0.25s ease;
+}
+
+/* 🔥 hover */
+.popup-close:hover{
+  color: #111;
+  transform: scale(1.25) rotate(90deg);
+}
   /* Tìm chỗ này trong CSS và thêm vào */
   .avatar-box {
     position: relative; /* Bắt buộc có để chấm xanh bám vào đây */
@@ -614,6 +631,34 @@
     align-items: center;
     justify-content: center;
   }
+  #logoutBtn{
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #ff4d4f, #ff6a6a);
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+/* 🔥 hover */
+#logoutBtn:hover{
+  filter: brightness(1.05);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 77, 77, 0.35);
+}
+
+/* 🔥 click */
+#logoutBtn:active{
+  transform: scale(0.96);
+}
   </style>
 
   </head>
@@ -1825,15 +1870,7 @@ function startListening(){
   </script>
   <div id="userPopup" style="display:none;">
 
-  <span onclick="toggleUserPopup()" style="
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 22px;
-    cursor: pointer;
-    color: #ccc;
-    font-weight: bold;
-  ">&times;</span>
+  <span class="popup-close" onclick="toggleUserPopup()">&times;</span>
 
   <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
     <img id="popupAvatar">
@@ -1851,19 +1888,7 @@ function startListening(){
 
   <div id="onlineList" style="max-height: 150px; overflow-y: auto;"></div>
 
-  <button onclick="logout()" style="
-    width: 100%;
-    margin-top: 15px;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    background: #ff4d4f;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-  ">
-    Đăng xuất
-  </button>
+  <button id="logoutBtn" onclick="logout()">Đăng xuất</button>
 
 </div>
   </body>
