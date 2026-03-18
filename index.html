@@ -1595,7 +1595,39 @@ user.displayName;
 
 document.getElementById("userAvatar").src =
 user.photoURL;
+const hour = new Date().getHours();
+        let greeting = "";
+        let quote = "";
 
+        if (hour >= 5 && hour < 11) {
+            greeting = "☀️ Chào buổi sáng,";
+            quote = "Chúc bạn một ngày học tập năng suất!";
+        } else if (hour >= 11 && hour < 14) {
+            greeting = "🌤️ Nghỉ trưa thôi,";
+            quote = "Nạp năng lượng để chiến đấu tiếp nhé!";
+        } else if (hour >= 14 && hour < 18) {
+            greeting = "☕ Chào buổi chiều,";
+            quote = "Sắp hết ngày rồi, cố gắng lên nào!";
+        } else {
+            greeting = "🌙 Chào buổi tối,";
+            quote = "Đừng thức quá khuya, giữ sức khỏe nhé!";
+        }
+
+        // Đổ dữ liệu vào các ID đã tạo ở bước trước
+        if(document.getElementById("greetingText")) document.getElementById("greetingText").innerText = greeting;
+        if(document.getElementById("popupName")) document.getElementById("popupName").innerText = user.displayName || "Bạn";
+        if(document.getElementById("popupQuote")) document.getElementById("popupQuote").innerText = quote;
+
+        // 3. Cập nhật Database và ẩn Login
+        set(ref(db, 'users/' + user.uid), {
+            name: user.displayName,
+            email: user.email,
+            avatar: user.photoURL,
+            lastSeen: Date.now()
+        });
+
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("loadingOverlay").style.display = "none";
 }else{
 
 document.getElementById("loginBox").style.display="flex";
@@ -1721,33 +1753,6 @@ document.addEventListener("click", function(e){
   popup.style.display = "none";
 }
 });
-function updateSmartGreeting(user) {
-    const hour = new Date().getHours();
-    let greeting = "";
-    let quote = "";
-
-    if (hour >= 5 && hour < 11) {
-        greeting = "☀️ Chào buổi sáng,";
-        quote = "Chúc bạn một ngày học tập năng suất!";
-    } else if (hour >= 11 && hour < 14) {
-        greeting = "🌤️ Nghỉ trưa thôi,";
-        quote = "Nạp năng lượng để tiếp tục chiến đấu nhé!";
-    } else if (hour >= 14 && hour < 18) {
-        greeting = "☕ Chào buổi chiều,";
-        quote = "Sắp hết ngày rồi, cố gắng lên nào!";
-    } else {
-        greeting = "🌙 Chào buổi tối,";
-        quote = "Đừng thức quá khuya, giữ sức khỏe bạn nhé!";
-    }
-
-    const greetingEl = document.getElementById("greetingText");
-    const nameEl = document.getElementById("popupName");
-    const quoteEl = document.getElementById("popupQuote");
-
-    if(greetingEl) greetingEl.innerText = greeting;
-    if(nameEl) nameEl.innerText = user.displayName || "Bạn";
-    if(quoteEl) quoteEl.innerText = quote;
-}
 </script>
 <script>
 function updateTime(){
@@ -1783,6 +1788,7 @@ function toggleUserPopup(){
     <div id="greetingText" style="font-size: 14px; color: #65676b; font-weight: 500; margin-bottom: 2px;"></div>
     <h3 id="popupName"></h3>
     <p id="popupEmail"></p>
+    <p id="popupQuote" style="margin: 5px 0 0 0; color: #3a86ff; font-size: 11px; font-style: italic; font-weight: 500;"></p>
   </div>
 
   <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
