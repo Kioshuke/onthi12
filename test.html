@@ -698,6 +698,21 @@
   50%{opacity:1}
   100%{opacity:0.5}
 }
+#popupStreakBox{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin-top:6px;
+  font-size:15px;
+  font-weight:600;
+}
+
+#popupStreakIcon{
+  width:26px;
+  height:26px;
+  transition: all 0.3s ease;
+}
   </style>
 
   </head>
@@ -1672,8 +1687,19 @@ let currentStreak = 0;
 let lastClaim = "";
 function renderStreak(streak){
   document.getElementById("streakText").innerText = streak + " ngày";
+
+  const popupText = document.getElementById("popupStreakText");
+  if(popupText){
+    popupText.innerText = streak + " ngày";
+  }
 }
 async function loadStreak(user){
+  const popupIcon = document.getElementById("popupStreakIcon");
+
+if(lastClaim !== today){
+  document.getElementById("streakIcon").classList.add("not-claimed");
+  if(popupIcon) popupIcon.classList.add("not-claimed");
+}
   const snap = await get(ref(rtdb, "users/" + user.uid));
   const today = new Date().toDateString();
 
@@ -1690,6 +1716,10 @@ async function loadStreak(user){
   }
 }
 window.claimStreak = async function(){
+  const popupIcon = document.getElementById("popupStreakIcon");
+
+document.getElementById("streakIcon").classList.remove("not-claimed");
+if(popupIcon) popupIcon.classList.remove("not-claimed");
   const user = auth.currentUser;
   if(!user) return;
 
@@ -1969,6 +1999,10 @@ function startListening(){
     <p id="popupEmail"></p>
     <p id="popupQuote"></p>
   </div>
+  <div id="popupStreakBox">
+  <img id="popupStreakIcon" src="https://i.imgur.com/8Km9tLL.png">
+  <span id="popupStreakText">0 ngày</span>
+</div>
 
   <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
   
