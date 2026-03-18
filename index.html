@@ -524,31 +524,6 @@ letter-spacing:1px;
     display:none;
   }
 }
-@media (max-width:768px){
-
-  #userBox{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:6px;
-    padding:10px 14px;
-  }
-
-  .user-right{
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-  }
-
-  #welcomeText{
-    font-size:11px;
-  }
-
-  #userName{
-    font-size:13px;
-  }
-
-}
 *{
 -webkit-tap-highlight-color: transparent; /* bỏ highlight khi bấm */
 }
@@ -569,9 +544,10 @@ overscroll-behavior: none; /* giảm giật scroll */
 #userBox{
   display:flex;
   align-items:center;
-  justify-content:space-between;
+  justify-content:flex-end; /* 🔥 dồn sang phải */
   padding:10px 16px;
   flex-wrap:wrap; /* 🔥 thêm dòng này */
+  gap: 8px;
 }
 
 /* nhóm bên phải */
@@ -729,17 +705,17 @@ z-index:9999;
   </div>
 </div>
 <div id="userBox">
-  <span id="currentTime"></span>
 
-  <div class="user-right">
+  <div class="user-text">
     <span id="welcomeText"></span>
     <span id="userName"></span>
-
-    <div style="position:relative; cursor:pointer;" onclick="toggleUserPopup()">
-      <img id="userAvatar">
-      <span id="onlineDot"></span>
-    </div>
   </div>
+
+  <div class="avatar-box" onclick="toggleUserPopup()">
+    <img id="userAvatar">
+    <span id="onlineDot"></span>
+  </div>
+
 </div>
 <style>
 .ticker-container{
@@ -1046,23 +1022,111 @@ animation:shake 1s infinite;
 }
 @media (max-width:768px){
 
+  /* ===== TỐI ƯU HIỆU NĂNG ===== */
+  .header,
+  .menu,
+  .card{
+    backdrop-filter:none !important;
+  }
+
+  .card{
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    animation:none;
+    opacity:1;
+    transform:none;
+  }
+
+  .card:hover{
+    transform:none;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  body{
+    overscroll-behavior:none;
+  }
+
+  *{
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ===== MENU SCROLL NGANG ===== */
+  .menu{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    justify-content:flex-start;
+    padding:10px;
+    gap:10px;
+    scroll-snap-type:x mandatory;
+  }
+
+  .menu button{
+    flex-shrink:0;
+    white-space:nowrap;
+    scroll-snap-align:start;
+  }
+
+  /* ===== USER BOX (FIX CHÍNH) ===== */
+  #userBox{
+    display:flex;
+    justify-content:flex-end; /* 🔥 dồn phải */
+    align-items:center;
+    gap:6px;
+
+    padding:10px 14px;
+    flex-wrap:nowrap; /* 🔥 không cho xuống dòng */
+  }
+
+  .user-text{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end; /* 🔥 căn phải */
+    line-height:1.2;
+  }
+
   #welcomeText{
-    font-size:13px !important;
+    font-size:12px;
+    opacity:0.8;
   }
 
   #userName{
-    font-size:14px !important;
+    font-size:14px;
     font-weight:600;
   }
 
-  #logoutBtn{
-    font-size:12px !important;
-    padding:6px 12px !important;
+  #userAvatar{
+    width:34px;
+    height:34px;
   }
 
-  #userAvatar{
-    width:34px !important;
-    height:34px !important;
+  #currentTime{
+    display:none;
+  }
+
+  /* ===== GRID + LỊCH ===== */
+  .exam-schedule{
+    grid-template-columns:1fr;
+  }
+
+  .exam-day{
+    padding:16px;
+  }
+
+  /* ===== COUNTDOWN ===== */
+  .countdown-fix{
+    grid-column:auto;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
+  }
+
+  .title{
+    font-size:18px;
+  }
+
+  .time-box{
+    width:50px;
+    height:50px;
+    font-size:22px;
   }
 
 }
