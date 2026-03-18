@@ -810,9 +810,6 @@
 
     <div class="avatar-box" onclick="toggleUserPopup(); claimStreak();">
       <img id="userAvatar">
-      <div id="streakBox">
-  <img id="streakIcon" src="https://i.imgur.com/8Km9tLL.png">
-  <span id="streakText">0 ngày</span>
 </div>
       <span id="onlineDot" class="online-pulse"></span>
     </div>
@@ -1715,8 +1712,37 @@ if(lastClaim !== today){
     document.getElementById("streakIcon").classList.add("not-claimed");
   }
 }
-window.claimStreak = async function(){
-  const popupIcon = document.getElementById("popupStreakIcon");
+window.claimStreak = async function() {
+    console.log("CLICK CLAIM"); // 🔥 thêm dòng này ngay đầu hàm
+
+    if (!currentUser) {
+        alert("Bạn chưa đăng nhập!");
+        return;
+    }
+
+    // phần code xử lý streak
+    const userRef = doc(db, "users", currentUser.uid);
+    const today = new Date().toLocaleDateString();
+
+    const userSnap = await getDoc(userRef);
+    let streak = 0;
+
+    if (userSnap.exists()) {
+        const data = userSnap.data();
+        streak = data.streak || 0;
+
+        if (data.lastClaim !== today) {
+            streak += 1;
+            await updateDoc(userRef, {
+                streak: streak,
+                lastClaim: today
+            });
+        }
+    }
+
+    // cập nhật hiển thị
+    document.getElementById("streakText").innerText = `${streak} ngày`;
+};
 
 document.getElementById("streakIcon").classList.remove("not-claimed");
 if(popupIcon) popupIcon.classList.remove("not-claimed");
