@@ -533,7 +533,7 @@
 
   border-radius: 20px;
 
-  background: rgba(30, 41, 59, 0.85); /* xanh đậm xịn */
+  background: rgba(255, 255, 255, 0.75); /* kính trắng */
   backdrop-filter: blur(14px);
 
   box-shadow: 
@@ -555,13 +555,13 @@
     transform: scale(1) translateY(0);
   }
 }
-#userPopup::before {
+#userPopup::before{
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 20px;
+  border-radius: 18px;
 
-  background: linear-gradient(120deg, #ffffff22, transparent);
+  background: linear-gradient(120deg, #3b82f622, #a78bfa22);
   pointer-events: none;
 }
 #popupAvatar {
@@ -572,30 +572,36 @@
   display: block;
   margin: 0 auto 10px;
 
-  border: 3px solid rgba(255,255,255,0.3);
+  border: 3px solid rgba(255,255,255,0.9);
+
 
   box-shadow: 
-    0 0 15px rgba(255,255,255,0.2),
-    0 5px 15px rgba(0,0,0,0.3);
+    0 5px 15px rgba(0,0,0,0.15),
+    0 0 10px rgba(255,255,255,0.6);
 }
 #popupName {
   text-align: center;
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  color: #111;
 }
 #popupEmail {
   text-align: center;
   font-size: 13px;
-  color: #cbd5e1;
+  color: #6b7280;;
   margin-bottom: 10px;
 }
 #popupQuote {
   font-size: 13px;
   text-align: center;
-  color: #e2e8f0;
+  color: #6366f1; /* tím nhẹ */;
   margin: 10px 0;
   font-style: italic;
+}
+#greetingText{
+  color: #3b82f6; /* xanh nhẹ */
+  font-weight: 500;
+  font-size: 14px;
 }
 
   /* Tìm chỗ này trong CSS và thêm vào */
@@ -1831,7 +1837,7 @@ function startListening(){
 
   <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
     <img id="popupAvatar">
-    <div id="greetingText" style="font-size: 15px; color: #94a3b8;"></div>
+    <div id="greetingText"></div>
     <h3 id="popupName"></h3>
     <p id="popupEmail"></p>
     <p id="popupQuote"></p>
