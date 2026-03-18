@@ -1565,65 +1565,57 @@
 onAuthStateChanged(auth, (user)=>{
   if(user){
 
-    if(!unsubscribeUsers){
-      startListening();
+    startListening(); // 🔥 luôn gọi
+
+// vì bên trong đã có:
+
+    // greeting logic
+    const hour = new Date().getHours();
+    let greeting = "";
+    let quote = "";
+
+    if (hour >= 5 && hour < 11) {
+      greeting = "☀️ Chào buổi sáng,";
+      quote = "Chúc bạn một ngày học tập năng suất!";
+    } else if (hour >= 11 && hour < 14) {
+      greeting = "🌤️ Nghỉ trưa thôi,";
+      quote = "Nạp năng lượng để chiến đấu tiếp nhé!";
+    } else if (hour >= 14 && hour < 18) {
+      greeting = "☕ Chào buổi chiều,";
+      quote = "Sắp hết ngày rồi, cố gắng lên nào!";
+    } else {
+      greeting = "🌙 Chào buổi tối,";
+      quote = "Đừng thức quá khuya, giữ sức khỏe nhé!";
     }
 
-    // avatar
-    const popupAvatar = document.getElementById("popupAvatar");
-    if(popupAvatar){
-      popupAvatar.src = user.photoURL;
-    }
+    // set UI
+    const greetingEl = document.getElementById("greetingText");
+if(greetingEl){
+  greetingEl.innerText = greeting;
+}
+    const nameEl = document.getElementById("popupName");
+if(nameEl) nameEl.innerText = user.displayName || "Bạn";
 
-    // info
-    document.getElementById("popupEmail").innerText = user.email;
+const emailEl = document.getElementById("popupEmail");
+if(emailEl) emailEl.innerText = user.email;
+
+const quoteEl = document.getElementById("popupQuote");
+if(quoteEl) quoteEl.innerText = quote;
     document.getElementById("loginBox").style.display="none";
 
     document.getElementById("welcomeText").innerText =
-    "Chúc bạn ôn thi thật tốt,";
+      "Chúc bạn ôn thi thật tốt,";
 
     document.getElementById("userName").innerText =
-    user.displayName;
+      user.displayName;
 
     document.getElementById("userAvatar").src =
-    user.photoURL || "https://i.imgur.com/6VBx3io.png";
+      user.photoURL || "https://i.imgur.com/6VBx3io.png";
 
   } else {
     document.getElementById("loginBox").style.display="flex";
   }
 });
-  const hour = new Date().getHours();
-          let greeting = "";
-          let quote = "";
-
-          if (hour >= 5 && hour < 11) {
-              greeting = "☀️ Chào buổi sáng,";
-              quote = "Chúc bạn một ngày học tập năng suất!";
-          } else if (hour >= 11 && hour < 14) {
-              greeting = "🌤️ Nghỉ trưa thôi,";
-              quote = "Nạp năng lượng để chiến đấu tiếp nhé!";
-          } else if (hour >= 14 && hour < 18) {
-              greeting = "☕ Chào buổi chiều,";
-              quote = "Sắp hết ngày rồi, cố gắng lên nào!";
-          } else {
-              greeting = "🌙 Chào buổi tối,";
-              quote = "Đừng thức quá khuya, giữ sức khỏe nhé!";
-          }
-
-          // Đổ dữ liệu vào các ID đã tạo ở bước trước
-          if(document.getElementById("greetingText")) document.getElementById("greetingText").innerText = greeting;
-          if(document.getElementById("popupName")) document.getElementById("popupName").innerText = user.displayName || "Bạn";
-          if(document.getElementById("popupQuote")) document.getElementById("popupQuote").innerText = quote
-
-          document.getElementById("loginBox").style.display = "none";
-          document.getElementById("loadingOverlay").style.display = "none";
-  }else{
-
-  document.getElementById("loginBox").style.display="flex";
-
-  }
-
-  });
   // chỉ giữ login trong tab hiện tại
 
 
@@ -1674,9 +1666,6 @@ onAuthStateChanged(auth, (user)=>{
   });
 
   // Trick để ép trình duyệt gửi dữ liệu cuối cùng trước khi đóng
-  window.addEventListener("pagehide", () => {
-    updateStatus(false);
-  });
   import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
   let unsubscribeUsers = null;
