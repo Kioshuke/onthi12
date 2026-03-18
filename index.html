@@ -540,16 +540,6 @@ overscroll-behavior: none; /* giảm giật scroll */
   flex-shrink:0; /* 🔥 không bị co */
 }
 
-/* đẩy layout */
-#userBox{
-  display:flex;
-  align-items:center;
-  justify-content:flex-end; /* 🔥 dồn sang phải */
-  padding:10px 16px;
-  flex-wrap:wrap; /* 🔥 thêm dòng này */
-  gap: 8px;
-}
-
 /* nhóm bên phải */
 .user-right{
   display:flex;
@@ -959,9 +949,10 @@ animation:shake 1s infinite;
 }
 
 #userBox{
-  max-width:1100px;
-  margin:12px auto;
-  padding:10px 16px;
+  width:100%;
+  max-width:100%;
+  margin:12px 0;
+  padding:10px 20px;
 
   display:flex;
   justify-content:flex-end; /* 🔥 dồn phải */
@@ -975,13 +966,13 @@ animation:shake 1s infinite;
 }
 #welcomeText{
   color:#9ca3af;
-  font-size:13px;
+  font-size:15px;
   font-weight:400;
 }
 
 #userName{
   font-weight:700;
-  font-size:16px;
+  font-size:18px;
 
   background: linear-gradient(90deg,#3b82f6,#6366f1);
   -webkit-background-clip:text;
@@ -1083,12 +1074,12 @@ animation:shake 1s infinite;
   }
 
   #welcomeText{
-    font-size:12px;
+    font-size:15px;
     opacity:0.8;
   }
 
   #userName{
-    font-size:14px;
+    font-size:18px;
     font-weight:600;
   }
 
