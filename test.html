@@ -1668,10 +1668,6 @@
   });
   </script>
   <script type="module">
-    import { getDatabase, ref, get, update } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const rtdb = getDatabase(app);
 let currentStreak = 0;
 let lastClaim = "";
 function renderStreak(streak){
@@ -1693,7 +1689,7 @@ async function loadStreak(user){
     document.getElementById("streakIcon").classList.add("not-claimed");
   }
 }
-async function claimStreak(){
+window.claimStreak = async function(){
   const user = auth.currentUser;
   if(!user) return;
 
@@ -1737,7 +1733,10 @@ async function claimStreak(){
     appId: "1:922115936320:web:67b86c06af9149ff584fa5"
   };
   const app = initializeApp(firebaseConfig);
+  import { getDatabase, ref, get, update } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js"
 
+const rtdb = getDatabase(app);
   const auth = getAuth(app);
   await setPersistence(auth, browserLocalPersistence);
   const db = getFirestore(app);
