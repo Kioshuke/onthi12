@@ -1811,14 +1811,15 @@ function startListening(){
 
       const div = document.createElement("div");
 
-      div.innerHTML = `
-        <div style="display:flex; align-items:center; gap:10px; padding:6px 8px;">
-          <img src="${u.photo || 'https://i.imgur.com/6VBx3io.png'}"
-               style="width:26px;height:26px;border-radius:50%;">
-          <span>${u.name || "User"}</span>
-          <div class="online-pulse" style="width:8px;height:8px;background:#22c55e;border-radius:50%;"></div>
-        </div>
-      `;
+      // Tìm đoạn này trong file 12a1.html của bạn
+div.innerHTML = `
+  <div onclick="alert('Email của ${u.name}: ${u.email}')" style="display:flex; align-items:center; gap:10px; padding:6px 8px; cursor:pointer;">
+    <img src="${u.photo || 'https://i.imgur.com/6VBx3io.png'}"
+         style="width:26px;height:26px;border-radius:50%;">
+    <span>${u.name || "User"}</span>
+    <div class="online-pulse" style="width:8px;height:8px;background:#22c55e;border-radius:50%;"></div>
+  </div>
+`;
 
       list.appendChild(div);
     });
