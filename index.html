@@ -1561,24 +1561,37 @@
   "pnpthuy.2811@gmail.com",
   "bangbang4951@gmail.com",
   ];
-  onAuthStateChanged(auth, (user)=>{
 
+onAuthStateChanged(auth, (user)=>{
   if(user){
-  startListening(); // 🔥 THÊM DÒNG NÀY
-  const popupAvatar = document.getElementById("popupAvatar");
-if(popupAvatar){
-  popupAvatar.src = user.photoURL;
-  document.getElementById("popupEmail").innerText = user.email;
-  document.getElementById("loginBox").style.display="none";
 
-  document.getElementById("welcomeText").innerText =
-  "Chúc bạn ôn thi thật tốt,";
+    if(!unsubscribeUsers){
+      startListening();
+    }
 
-  document.getElementById("userName").innerText =
-  user.displayName;
+    // avatar
+    const popupAvatar = document.getElementById("popupAvatar");
+    if(popupAvatar){
+      popupAvatar.src = user.photoURL;
+    }
 
-  document.getElementById("userAvatar").src =
-  user.photoURL || "https://i.imgur.com/6VBx3io.png";
+    // info
+    document.getElementById("popupEmail").innerText = user.email;
+    document.getElementById("loginBox").style.display="none";
+
+    document.getElementById("welcomeText").innerText =
+    "Chúc bạn ôn thi thật tốt,";
+
+    document.getElementById("userName").innerText =
+    user.displayName;
+
+    document.getElementById("userAvatar").src =
+    user.photoURL || "https://i.imgur.com/6VBx3io.png";
+
+  } else {
+    document.getElementById("loginBox").style.display="flex";
+  }
+});
   const hour = new Date().getHours();
           let greeting = "";
           let quote = "";
