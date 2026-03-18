@@ -558,14 +558,13 @@ overscroll-behavior: none; /* giảm giật scroll */
 }
 #onlineDot{
   position:absolute;
-  bottom:2px;
-  right:2px;
+  bottom:0;
+  right:0;
   width:10px;
   height:10px;
-  background:#00ff00;
+  background:#22c55e;
   border-radius:50%;
   border:2px solid white;
-  box-shadow:0 0 8px #22c55e;
 }
 
 #userPopup{
@@ -965,10 +964,9 @@ animation:shake 1s infinite;
   padding:10px 16px;
 
   display:flex;
+  justify-content:flex-end; /* 🔥 dồn phải */
   align-items:center;
-  justify-content:space-between;
-
-  gap:10px;
+  gap:8px;
 
   border-radius:999px;
   background: rgba(255,255,255,0.85);
@@ -1078,9 +1076,10 @@ animation:shake 1s infinite;
 
   .user-text{
     display:flex;
-    flex-direction:column;
+    flex-direction:row;
     align-items:flex-end; /* 🔥 căn phải */
     line-height:1.2;
+    gap: 6px;
   }
 
   #welcomeText{
