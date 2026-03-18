@@ -714,9 +714,6 @@ z-index:9999;
   <img id="userAvatar">
   <span id="onlineDot"></span>
 </div>
-  <button id="logoutBtn">Đăng xuất</button>
-  </div>
-</div>
 <style>
 .ticker-container{
   width:100%;
@@ -1638,31 +1635,6 @@ document.addEventListener("visibilitychange", ()=>{
     },{merge:true});
   }
 });
-</script>
-<script>
-function updateTime(){
-  const now = new Date();
-
-  const time = now.toLocaleTimeString("vi-VN");
-
-  document.getElementById("currentTime").innerText =
-    "📍 Tân Hồng - Đồng Tháp • " + time;
-}
-
-setInterval(updateTime,1000);
-updateTime();
-function toggleUserPopup(){
-  let pop = document.getElementById("userPopup");
-  pop.style.display = pop.style.display === "block" ? "none" : "block";
-}
-
-function logout(){
-  signOut(auth).then(()=>{
-    location.reload();
-  });
-}
-
-// 🔥 realtime user list
 import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
 onSnapshot(collection(db,"users"), (snapshot)=>{
@@ -1683,6 +1655,36 @@ onSnapshot(collection(db,"users"), (snapshot)=>{
     list.appendChild(div);
   });
 });
+window.logout = function(){
+  signOut(auth).then(()=>{
+    location.reload();
+  });
+}
+document.addEventListener("click", function(e){
+  const popup = document.getElementById("userPopup");
+  const avatar = document.getElementById("userAvatar");
+
+  if(!popup.contains(e.target) && e.target !== avatar){
+    popup.style.display = "none";
+  }
+});
+</script>
+<script>
+function updateTime(){
+  const now = new Date();
+
+  const time = now.toLocaleTimeString("vi-VN");
+
+  document.getElementById("currentTime").innerText =
+    "📍 Tân Hồng - Đồng Tháp • " + time;
+}
+
+setInterval(updateTime,1000);
+updateTime();
+function toggleUserPopup(){
+  let pop = document.getElementById("userPopup");
+  pop.style.display = pop.style.display === "block" ? "none" : "block";
+}
 </script>
 <div id="userPopup">
   <img id="popupAvatar">
