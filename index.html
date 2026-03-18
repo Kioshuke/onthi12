@@ -537,17 +537,21 @@ overscroll-behavior: none; /* giảm giật scroll */
   z-index: 10;
 }
 
-#userPopup{
-  position:fixed;
-  top:70px;
-  right:15px;
-  width:260px;
-  background:white;
-  border-radius:12px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.2);
-  padding:15px;
-  display:none;
-  z-index:9999;
+#userPopup {
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  width: 260px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  padding: 25px 15px 15px 15px; /* Tăng padding top để không đè lên nút X */
+  display: none;
+  z-index: 9999;
+  position: relative; /* Đảm bảo nút X định vị theo khung này */
+}
+#userPopup span:hover {
+  color: #ff4d4f !important;
 }
 
 #popupAvatar{
@@ -1777,6 +1781,16 @@ function toggleUserPopup(){
 }
 </script>
 <div id="userPopup">
+  <span onclick="toggleUserPopup()" style="
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #999;
+    font-weight: bold;
+  ">&times;</span>
+
   <img id="popupAvatar">
   <h3 id="popupName"></h3>
   <p id="popupEmail"></p>
