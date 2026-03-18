@@ -1584,7 +1584,6 @@ onAuthStateChanged(auth, (user)=>{
 
 if(user){
 document.getElementById("popupAvatar").src = user.photoURL;
-document.getElementById("popupName").innerText = "Hi, " + (user.displayName || "User");
 document.getElementById("popupEmail").innerText = user.email;
 document.getElementById("loginBox").style.display="none";
 
@@ -1645,6 +1644,7 @@ const updateStatus = (isOnline) => {
       online: isOnline,
       lastSeen: new Date().toISOString() 
     }, { merge: true });
+    updateSmartGreeting(user); // Thêm dòng này vào đây
   }
 };
 
@@ -1721,6 +1721,33 @@ document.addEventListener("click", function(e){
   popup.style.display = "none";
 }
 });
+function updateSmartGreeting(user) {
+    const hour = new Date().getHours();
+    let greeting = "";
+    let quote = "";
+
+    if (hour >= 5 && hour < 11) {
+        greeting = "☀️ Chào buổi sáng,";
+        quote = "Chúc bạn một ngày học tập năng suất!";
+    } else if (hour >= 11 && hour < 14) {
+        greeting = "🌤️ Nghỉ trưa thôi,";
+        quote = "Nạp năng lượng để tiếp tục chiến đấu nhé!";
+    } else if (hour >= 14 && hour < 18) {
+        greeting = "☕ Chào buổi chiều,";
+        quote = "Sắp hết ngày rồi, cố gắng lên nào!";
+    } else {
+        greeting = "🌙 Chào buổi tối,";
+        quote = "Đừng thức quá khuya, giữ sức khỏe bạn nhé!";
+    }
+
+    const greetingEl = document.getElementById("greetingText");
+    const nameEl = document.getElementById("popupName");
+    const quoteEl = document.getElementById("popupQuote");
+
+    if(greetingEl) greetingEl.innerText = greeting;
+    if(nameEl) nameEl.innerText = user.displayName || "Bạn";
+    if(quoteEl) quoteEl.innerText = quote;
+}
 </script>
 <script>
 function updateTime(){
@@ -1753,6 +1780,7 @@ function toggleUserPopup(){
 
   <div style="text-align: center;">
     <img id="popupAvatar">
+    <div id="greetingText" style="font-size: 14px; color: #65676b; font-weight: 500; margin-bottom: 2px;"></div>
     <h3 id="popupName"></h3>
     <p id="popupEmail"></p>
   </div>
