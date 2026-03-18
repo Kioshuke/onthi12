@@ -546,11 +546,6 @@ overscroll-behavior: none; /* giảm giật scroll */
   margin:auto;
 }
 
-#userPopup h3{
-  text-align:center;
-  margin:10px 0 5px;
-}
-
 #userPopup p{
   text-align:center;
   font-size:13px;
@@ -1785,11 +1780,10 @@ function toggleUserPopup(){
 
   <div style="text-align: center;">
     <img id="popupAvatar">
-    <div id="greetingText" style="font-size: 14px; color: #65676b; font-weight: 500; margin-bottom: 2px;"></div>
-    <h3 id="popupName"></h3>
+    <div id="greetingText" style="font-size: 13px; color: #65676b; font-weight: 500; margin-bottom: -2px;"></div>
+    <h3 id="popupName" style="margin: 0; color: #1c1e21; font-size: 19px; font-weight: 700;"></h3>
     <p id="popupEmail"></p>
-    <p id="popupQuote" style="margin: 5px 0 0 0; color: #3a86ff; font-size: 11px; font-style: italic; font-weight: 500;"></p>
-  </div>
+    <p id="popupQuote" style="margin: 8px 0 0 0; color: #007bff; font-size: 13px; font-style: italic; font-weight: 600; line-height: 1.4;"></p>  </div>
 
   <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
   
