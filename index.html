@@ -538,17 +538,16 @@ overscroll-behavior: none; /* giảm giật scroll */
 }
 
 #userPopup {
-  position: fixed;
-  top: 70px;
-  right: 15px;
-  width: 260px;
+  position: fixed; /* Đổi từ relative thành fixed để nó nổi lên trên */
+  top: 80px;      /* Khoảng cách từ đỉnh màn hình xuống */
+  right: 20px;    /* Khoảng cách từ lề phải vào */
+  width: 280px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-  padding: 25px 15px 15px 15px; /* Tăng padding top để không đè lên nút X */
-  display: none;
-  z-index: 9999;
-  position: relative; /* Đảm bảo nút X định vị theo khung này */
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  padding: 30px 20px 20px 20px;
+  display: none;  /* Ẩn mặc định */
+  z-index: 10001; /* Đảm bảo nằm trên mọi thứ khác */
 }
 #userPopup span:hover {
   color: #ff4d4f !important;
@@ -1785,19 +1784,36 @@ function toggleUserPopup(){
     position: absolute;
     top: 10px;
     right: 15px;
-    font-size: 20px;
+    font-size: 22px;
     cursor: pointer;
-    color: #999;
+    color: #ccc;
     font-weight: bold;
-  ">&times;</span>
+    line-height: 1;
+  " onmouseover="this.style.color='#ff4d4f'" onmouseout="this.style.color='#ccc'">&times;</span>
 
-  <img id="popupAvatar">
-  <h3 id="popupName"></h3>
-  <p id="popupEmail"></p>
+  <div style="text-align: center;">
+    <img id="popupAvatar">
+    <h3 id="popupName"></h3>
+    <p id="popupEmail"></p>
+  </div>
 
-  <div id="onlineList"></div>
+  <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+  
+  <div style="font-weight: 600; font-size: 12px; color: #999; margin-bottom: 8px; text-transform: uppercase;">Đang trực tuyến</div>
+  <div id="onlineList" style="max-height: 150px; overflow-y: auto;"></div>
 
-  <button onclick="logout()">Đăng xuất</button>
+  <button onclick="logout()" style="
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #ff4d4f;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+  ">Đăng xuất</button>
 </div>
 </body>
 </html>
