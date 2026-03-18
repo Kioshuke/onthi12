@@ -556,15 +556,16 @@ overscroll-behavior: none; /* giảm giật scroll */
   align-items:center;
   gap:10px;
 }
-#onlineDot{
-  position:absolute;
-  bottom:0;
-  right:0;
-  width:10px;
-  height:10px;
-  background:#22c55e;
-  border-radius:50%;
-  border:2px solid white;
+#onlineDot {
+  position: absolute;
+  bottom: 0;      /* Sửa từ 1px thành 0 */
+  right: 0;       /* Sửa từ 1px thành 0 */
+  width: 12px;    /* Tăng nhẹ kích thước cho đẹp */
+  height: 12px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 2px solid white; /* Viền trắng để tách biệt với ảnh đại diện */
+  z-index: 10;
 }
 
 #userPopup{
@@ -614,6 +615,16 @@ overscroll-behavior: none; /* giảm giật scroll */
   background:#ff4d4f;
   color:white;
   cursor:pointer;
+}
+/* Tìm chỗ này trong CSS và thêm vào */
+.avatar-box {
+  position: relative; /* Bắt buộc có để chấm xanh bám vào đây */
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
 
