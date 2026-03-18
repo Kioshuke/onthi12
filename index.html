@@ -958,22 +958,19 @@ animation:shake 1s infinite;
   box-shadow:0 2px 8px rgba(0,0,0,0.15);
 }
 
-#userBox{
-  width:100%;
-  max-width:100%;
-  margin:12px 0;
-  padding:10px 16px;
-
-  display:flex;
-  justify-content:flex-end; /* 🔥 dồn phải */
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap; /* 🔥 thêm dòng này */
-
-  border-radius:999px;
-  background: rgba(255,255,255,0.85);
+#userBox {
+  max-width: 1100px; /* Độ rộng này sẽ khớp với phần .content chứa lịch thi */
+  margin: 10px auto; /* Căn giữa thanh này so với màn hình */
+  padding: 8px 20px; /* Giảm padding cho thanh gọn lại */
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  gap: 12px;
+  border-radius: 50px; /* Bo tròn mềm mại hơn */
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
-  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
 }
 #welcomeText{
   color:#9ca3af;
@@ -1068,11 +1065,12 @@ animation:shake 1s infinite;
   /* ===== USER BOX (FIX CHÍNH) ===== */
   #userBox{
     display:flex;
+    width: 95%; /* Trên mobile thì chiếm gần hết chiều ngang */
     justify-content:flex-end; /* 🔥 dồn phải */
     align-items:center;
+    margin: 10px auto;
     gap:6px;
-
-    padding:10px 14px;
+    padding:6px 12px;
     flex-wrap:nowrap; /* 🔥 không cho xuống dòng */
   }
 
@@ -1090,7 +1088,7 @@ animation:shake 1s infinite;
   }
 
   #userName{
-    font-size:18px;
+    font-size:16px;
     font-weight:600;
   }
 
