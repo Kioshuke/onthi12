@@ -591,30 +591,13 @@
   font-weight: 600;
   margin: 4px 0 2px;
   color: #111;
-  cursor: pointer; /* 👈 Thêm dòng này */
-  transition: all 0.3s ease; /* 👈 Thêm hiệu ứng */
-  padding: 6px 12px;
-  border-radius: 8px;
-}
-#popupName:hover {
-  background: #f0f0f0; /* 👈 Highlight khi hover */
-  transform: scale(1.02);
 }
 #popupEmail {
   text-align: center;
   margin: 0;
   font-size: 13px;
-  color: #6b7280;
+  color: #6b7280;;
   margin-bottom: 10px;
-  max-height: 0; /* 👈 Ẩn mặc định */
-  overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.3s ease; /* 👈 Hiệu ứng */
-  opacity: 0;
-}
-
-#popupEmail.show {
-  max-height: 30px; /* 👈 Hiện lên */
-  opacity: 1;
 }
 #popupQuote {
   font-size: 15px;
@@ -1872,17 +1855,6 @@ function startListening(){
     !avatarBox.contains(e.target)
   ){
     popup.style.display = "none";
-  }
-});
-      // Thêm event click vào tên người dùng để hiện email
-document.addEventListener('DOMContentLoaded', function() {
-  const popupName = document.getElementById('popupName');
-  const popupEmail = document.getElementById('popupEmail');
-  
-  if(popupName) {
-    popupName.addEventListener('click', function() {
-      popupEmail.classList.toggle('show');
-    });
   }
 });
   </script>
