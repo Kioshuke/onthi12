@@ -617,6 +617,27 @@ overscroll-behavior: none; /* giảm giật scroll */
   overflow:auto;
   font-size:14px;
 }
+#userPopup h3{
+  text-align:center;
+  margin:10px 0 5px;
+}
+
+#userPopup p{
+  text-align:center;
+  font-size:13px;
+  color:#666;
+}
+
+#userPopup button{
+  width:100%;
+  margin-top:10px;
+  padding:8px;
+  border:none;
+  border-radius:8px;
+  background:#ff4d4f;
+  color:white;
+  cursor:pointer;
+}
 </style>
 
 </head>
@@ -1602,11 +1623,6 @@ console.log(error);
 });
 
 };
-document.getElementById("logoutBtn").onclick = function(){
-signOut(auth).then(()=>{
-location.reload();
-});
-};
 // 🔴 khi đóng tab / reload
 window.addEventListener("beforeunload", ()=>{
   const user = auth.currentUser;
@@ -1620,16 +1636,16 @@ window.addEventListener("beforeunload", ()=>{
 // 🔴 khi chuyển tab / chạy nền
 document.addEventListener("visibilitychange", ()=>{
   const user = auth.currentUser;
-  if(document.visibilityState === "hidden" && user){
+
+  if(!user) return;
+
+  if(document.visibilityState === "hidden"){
     setDoc(doc(db,"users",user.uid),{
       online:false
     },{merge:true});
   }
-});
-document.addEventListener("visibilitychange", ()=>{
-  const user = auth.currentUser;
 
-  if(document.visibilityState === "visible" && user){
+  if(document.visibilityState === "visible"){
     setDoc(doc(db,"users",user.uid),{
       online:true
     },{merge:true});
@@ -1647,7 +1663,12 @@ onSnapshot(collection(db,"users"), (snapshot)=>{
     const div = document.createElement("div");
 
     if(u.online){
-      div.innerText = "🟢 " + (u.name || "User");
+      div.innerHTML = `
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span style="color:${u.online ? 'limegreen':'gray'}">●</span>
+    <span>${u.name || "User"}</span>
+  </div>
+`;
     }else{
       div.innerText = "⚪ " + (u.name || "User");
     }
@@ -1662,9 +1683,9 @@ window.logout = function(){
 }
 document.addEventListener("click", function(e){
   const popup = document.getElementById("userPopup");
-  const avatar = document.getElementById("userAvatar");
+  const userBox = document.getElementById("userBox");
 
-  if(!popup.contains(e.target) && e.target !== avatar){
+  if(!popup.contains(e.target) && !userBox.contains(e.target)){
     popup.style.display = "none";
   }
 });
