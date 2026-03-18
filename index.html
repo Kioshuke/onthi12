@@ -579,7 +579,44 @@ overscroll-behavior: none; /* giảm giật scroll */
   align-items:center;
   gap:10px;
 }
+#onlineDot{
+  position:absolute;
+  bottom:2px;
+  right:2px;
+  width:10px;
+  height:10px;
+  background:#00ff00;
+  border-radius:50%;
+  border:2px solid white;
+}
 
+#userPopup{
+  position:fixed;
+  top:70px;
+  right:15px;
+  width:260px;
+  background:white;
+  border-radius:12px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.2);
+  padding:15px;
+  display:none;
+  z-index:9999;
+}
+
+#popupAvatar{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  display:block;
+  margin:auto;
+}
+
+#onlineList{
+  margin-top:10px;
+  max-height:120px;
+  overflow:auto;
+  font-size:14px;
+}
 </style>
 
 </head>
@@ -673,7 +710,10 @@ z-index:9999;
   <div class="user-right">
   <span id="welcomeText"></span>
   <span id="userName"></span>
+  <div style="position:relative; cursor:pointer;" onclick="toggleUserPopup()">
   <img id="userAvatar">
+  <span id="onlineDot"></span>
+</div>
   <button id="logoutBtn">Đăng xuất</button>
   </div>
 </div>
@@ -1513,7 +1553,9 @@ const allowList = [
 onAuthStateChanged(auth, (user)=>{
 
 if(user){
-
+document.getElementById("popupAvatar").src = user.photoURL;
+document.getElementById("popupName").innerText = "Hi, " + (user.displayName || "User");
+document.getElementById("popupEmail").innerText = user.email;
 document.getElementById("loginBox").style.display="none";
 
 document.getElementById("welcomeText").innerText =
@@ -1548,10 +1590,11 @@ return;
 }
 
 await setDoc(doc(db,"users",user.uid),{
-name: user.displayName,
-email: user.email,
-photo: user.photoURL,
-lastLogin: new Date().toISOString()
+  name: user.displayName,
+  email: user.email,
+  photo: user.photoURL,
+  online: true,
+  lastLogin: new Date().toISOString()
 });
 
 document.getElementById("loginBox").style.display="none";
@@ -1567,6 +1610,34 @@ signOut(auth).then(()=>{
 location.reload();
 });
 };
+// 🔴 khi đóng tab / reload
+window.addEventListener("beforeunload", ()=>{
+  const user = auth.currentUser;
+  if(user){
+    setDoc(doc(db,"users",user.uid),{
+      online:false
+    },{merge:true});
+  }
+});
+
+// 🔴 khi chuyển tab / chạy nền
+document.addEventListener("visibilitychange", ()=>{
+  const user = auth.currentUser;
+  if(document.visibilityState === "hidden" && user){
+    setDoc(doc(db,"users",user.uid),{
+      online:false
+    },{merge:true});
+  }
+});
+document.addEventListener("visibilitychange", ()=>{
+  const user = auth.currentUser;
+
+  if(document.visibilityState === "visible" && user){
+    setDoc(doc(db,"users",user.uid),{
+      online:true
+    },{merge:true});
+  }
+});
 </script>
 <script>
 function updateTime(){
@@ -1580,6 +1651,47 @@ function updateTime(){
 
 setInterval(updateTime,1000);
 updateTime();
+function toggleUserPopup(){
+  let pop = document.getElementById("userPopup");
+  pop.style.display = pop.style.display === "block" ? "none" : "block";
+}
+
+function logout(){
+  signOut(auth).then(()=>{
+    location.reload();
+  });
+}
+
+// 🔥 realtime user list
+import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+onSnapshot(collection(db,"users"), (snapshot)=>{
+  const list = document.getElementById("onlineList");
+  list.innerHTML = "";
+
+  snapshot.forEach(doc=>{
+    const u = doc.data();
+
+    const div = document.createElement("div");
+
+    if(u.online){
+      div.innerText = "🟢 " + (u.name || "User");
+    }else{
+      div.innerText = "⚪ " + (u.name || "User");
+    }
+
+    list.appendChild(div);
+  });
+});
 </script>
+<div id="userPopup">
+  <img id="popupAvatar">
+  <h3 id="popupName"></h3>
+  <p id="popupEmail"></p>
+
+  <div id="onlineList"></div>
+
+  <button onclick="logout()">Đăng xuất</button>
+</div>
 </body>
 </html>
