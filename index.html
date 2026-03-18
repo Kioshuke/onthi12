@@ -1693,33 +1693,25 @@ console.log(error);
 });
 
 };
-// 🔴 khi đóng tab / reload
-window.addEventListener("beforeunload", ()=>{
+// Xử lý khi ẩn tab hoặc đóng trình duyệt
+const updateStatus = (isOnline) => {
   const user = auth.currentUser;
-  if(user){
-    setDoc(doc(db,"users",user.uid),{
-      online:false
-    },{merge:true});
+  if (user) {
+    // Sử dụng return để đảm bảo promise được xử lý
+    return setDoc(doc(db, "users", user.uid), { 
+      online: isOnline,
+      lastSeen: new Date().toISOString() 
+    }, { merge: true });
   }
+};
+
+document.addEventListener("visibilitychange", () => {
+  updateStatus(document.visibilityState === "visible");
 });
 
-// 🔴 khi chuyển tab / chạy nền
-document.addEventListener("visibilitychange", ()=>{
-  const user = auth.currentUser;
-
-  if(!user) return;
-
-  if(document.visibilityState === "hidden"){
-    setDoc(doc(db,"users",user.uid),{
-      online:false
-    },{merge:true});
-  }
-
-  if(document.visibilityState === "visible"){
-    setDoc(doc(db,"users",user.uid),{
-      online:true
-    },{merge:true});
-  }
+// Trick để ép trình duyệt gửi dữ liệu cuối cùng trước khi đóng
+window.addEventListener("pagehide", () => {
+  updateStatus(false);
 });
 import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
@@ -1766,7 +1758,12 @@ snapshot.forEach(doc=>{
     list.appendChild(div);
   });
 });
-window.logout = function(){
+window.logout = async function(){
+  const user = auth.currentUser;
+  if(user){
+    // Phải ghi đè trạng thái offline TRƯỚC khi đăng xuất
+    await setDoc(doc(db, "users", user.uid), { online: false }, { merge: true });
+  }
   signOut(auth).then(()=>{
     location.reload();
   });
