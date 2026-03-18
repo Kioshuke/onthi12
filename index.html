@@ -522,21 +522,80 @@
     z-index: 10;
   }
 
-  #userPopup {
-    position: fixed; /* Đổi từ relative thành fixed để nó nổi lên trên */
-    top: 80px;      /* Khoảng cách từ đỉnh màn hình xuống */
-    right: 20px;    /* Khoảng cách từ lề phải vào */
-    width: 280px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    padding: 30px 20px 20px 20px;
-    display: none;  /* Ẩn mặc định */
-    z-index: 10001; /* Đảm bảo nằm trên mọi thứ khác */
+#userPopup {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+
+  width: 280px;
+  padding: 20px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.25),
+    inset 0 0 10px rgba(255,255,255,0.1);
+
+  border: 1px solid rgba(255,255,255,0.15);
+
+  animation: popupFade 0.25s ease;
+  transform-origin: top right;
+}
+@keyframes popupFade {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-10px);
   }
-  #userPopup span:hover {
-    color: #ff4d4f !important;
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
+}
+#userPopup::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+
+  background: linear-gradient(120deg, #ffffff22, transparent);
+  pointer-events: none;
+}
+#popupAvatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+
+  display: block;
+  margin: 0 auto 10px;
+
+  border: 3px solid rgba(255,255,255,0.3);
+
+  box-shadow: 
+    0 0 15px rgba(255,255,255,0.2),
+    0 5px 15px rgba(0,0,0,0.3);
+}
+#popupName {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+#popupEmail {
+  text-align: center;
+  font-size: 13px;
+  color: #bbb;
+  margin-bottom: 10px;
+}
+#popupQuote {
+  font-size: 13px;
+  text-align: center;
+  color: #ddd;
+  margin: 10px 0;
+  font-style: italic;
+}
 
   /* Tìm chỗ này trong CSS và thêm vào */
   .avatar-box {
@@ -1763,11 +1822,11 @@ function startListening(){
     " onmouseover="this.style.color='#ff4d4f'" onmouseout="this.style.color='#ccc'">&times;</span>
 
 <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-    <img id="popupAvatar" style="width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f0f2f5; margin-bottom: 5px;">
+    <img id="popupAvatar">
     <div id="greetingText" style="font-size: 15px; color: #65676b; font-weight: 500; margin: 0; line-height: 1.1;"></div>
-    <h3 id="popupName" style="margin: 0; color: #1c1e21; font-size: 20px; font-weight: 700; line-height: 1.3;"></h3>
-    <p id="popupEmail" style="margin: 0; color: #8a8d91; font-size: 13px; line-height: 1.1;"></p>
-    <p id="popupQuote" style="margin: 6px 0 0 0; color: #007bff; font-size: 15.5px; font-style: italic; font-weight: 600; line-height: 1.3;"></p>
+    <h3 id="popupName"></h3>
+    <p id="popupEmail"></p>
+    <p id="popupQuote"></p>
 </div>
 
     <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
