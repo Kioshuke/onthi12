@@ -1680,106 +1680,17 @@
   });
   </script>
   <script type="module">
-let currentStreak = 0;
-let lastClaim = "";
-function renderStreak(streak){
-  document.getElementById("streakText").innerText = streak + " ngày";
-
-  const popupText = document.getElementById("popupStreakText");
-  if(popupText){
-    popupText.innerText = streak + " ngày";
-  }
-}
-async function loadStreak(user){
-  const popupIcon = document.getElementById("popupStreakIcon");
-
-if(lastClaim !== today){
-  document.getElementById("streakIcon").classList.add("not-claimed");
-  if(popupIcon) popupIcon.classList.add("not-claimed");
-}
-  const snap = await get(ref(rtdb, "users/" + user.uid));
-  const today = new Date().toDateString();
-
-  if(snap.exists()){
-    const data = snap.val();
-    currentStreak = data.streak || 0;
-    lastClaim = data.lastClaim || "";
-  }
-
-  renderStreak(currentStreak);
-
-  if(lastClaim !== today){
-    document.getElementById("streakIcon").classList.add("not-claimed");
-  }
-}
-window.claimStreak = async function() {
-    console.log("CLICK CLAIM"); // 🔥 thêm dòng này ngay đầu hàm
-
-    if (!currentUser) {
-        alert("Bạn chưa đăng nhập!");
-        return;
-    }
-
-    // phần code xử lý streak
-    const userRef = doc(db, "users", currentUser.uid);
-    const today = new Date().toLocaleDateString();
-
-    const userSnap = await getDoc(userRef);
-    let streak = 0;
-
-    if (userSnap.exists()) {
-        const data = userSnap.data();
-        streak = data.streak || 0;
-
-        if (data.lastClaim !== today) {
-            streak += 1;
-            await updateDoc(userRef, {
-                streak: streak,
-                lastClaim: today
-            });
-        }
-    }
-
-    // cập nhật hiển thị
-    document.getElementById("streakText").innerText = `${streak} ngày`;
-};
-
-document.getElementById("streakIcon").classList.remove("not-claimed");
-if(popupIcon) popupIcon.classList.remove("not-claimed");
-  const user = auth.currentUser;
-  if(!user) return;
-
-  const today = new Date().toDateString();
-
-  if(lastClaim === today){
-    return;
-  }
-
-  currentStreak++;
-  lastClaim = today;
-
-  document.getElementById("streakIcon").classList.remove("not-claimed");
-
-  await update(ref(rtdb, "users/" + user.uid), {
-    streak: currentStreak,
-    lastClaim: lastClaim
-  });
-
-  renderStreak(currentStreak);
-}
+  // 1. IMPORT
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-
   import { 
-  getAuth,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  setPersistence,
-  browserLocalPersistence
+    getAuth, onAuthStateChanged, GoogleAuthProvider, 
+    signInWithPopup, signOut, setPersistence, browserLocalPersistence 
   } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc }
-  from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+  import { 
+    getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection 
+  } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+  // 2. CONFIG
   const firebaseConfig = {
     apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
     authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -1788,210 +1699,170 @@ if(popupIcon) popupIcon.classList.remove("not-claimed");
     messagingSenderId: "922115936320",
     appId: "1:922115936320:web:67b86c06af9149ff584fa5"
   };
+
   const app = initializeApp(firebaseConfig);
-  import { getDatabase, ref, get, update } 
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js"
-
-const rtdb = getDatabase(app);
   const auth = getAuth(app);
-  await setPersistence(auth, browserLocalPersistence);
   const db = getFirestore(app);
-
   const provider = new GoogleAuthProvider();
+  let unsubscribeUsers = null;
 
   const allowList = [
-  "quanhao678@gmail.com",
-  "huunhan170908@gmail.com",
-  "thanhcong0976888@gmail.com",
-  "duchieu0383377967@gmail.com",
-  "tanphat131008@gmail.com",
-  "lebaonguyen3003@gmail.com",
-  "lamhuynhanh456@gmail.com",
-  "nguyenquyenthdt2021@gmail.com",
-  "nhiho.v2008@gmail.com",
-  "baotran150308@gmail.com",
-  "leducanh2022jojo@gmail.com",
-  "quynhnhu07052020@gmail.com",
-  "nguyenthimynhan202011@gmail.com",
-  "kienquoc2021dt@gmail.com",
-  "pnpthuy.2811@gmail.com",
-  "bangbang4951@gmail.com",
-  "xmai9839@gmail.com",
+    "quanhao678@gmail.com", "huunhan170908@gmail.com", "thanhcong0976888@gmail.com",
+    "duchieu0383377967@gmail.com", "tanphat131008@gmail.com", "lebaonguyen3003@gmail.com",
+    "lamhuynhanh456@gmail.com", "nguyenquyenthdt2021@gmail.com", "nhiho.v2008@gmail.com",
+    "baotran150308@gmail.com", "leducanh2022jojo@gmail.com", "quynhnhu07052020@gmail.com",
+    "nguyenthimynhan202011@gmail.com", "kienquoc2021dt@gmail.com", "pnpthuy.2811@gmail.com",
+    "bangbang4951@gmail.com", "xmai9839@gmail.com"
   ];
 
-onAuthStateChanged(auth, (user)=>{
-  if(user){
-    loadStreak(user);
-    startListening(); // 🔥 luôn gọi
+  // 3. HÀM XỬ LÝ STREAK (Dùng Firestore)
+  async function loadStreak(user) {
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+    const today = new Date().toDateString();
 
-// vì bên trong đã có:
+    let streak = 0;
+    let lastClaim = "";
 
-    // greeting logic
-    const hour = new Date().getHours();
-    let greeting = "";
-    let quote = "";
-
-    if (hour >= 5 && hour < 11) {
-      greeting = "☀️ Chào buổi sáng,";
-      quote = "Chúc bạn một ngày học tập năng suất!";
-    } else if (hour >= 11 && hour < 14) {
-      greeting = "🌤️ Nghỉ trưa thôi,";
-      quote = "Nạp năng lượng để chiến đấu tiếp nhé!";
-    } else if (hour >= 14 && hour < 18) {
-      greeting = "☕ Chào buổi chiều,";
-      quote = "Sắp hết ngày rồi, cố gắng lên nào!";
-    } else {
-      greeting = "🌙 Chào buổi tối,";
-      quote = "Đừng thức quá khuya, giữ sức khỏe nhé!";
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      streak = data.streak || 0;
+      lastClaim = data.lastClaimDate || "";
     }
 
-    // set UI
-    const greetingEl = document.getElementById("greetingText");
-if(greetingEl){
-  greetingEl.innerText = greeting;
-}
-    const nameEl = document.getElementById("popupName");
-if(nameEl) nameEl.innerText = user.displayName || "Bạn";
-
-const emailEl = document.getElementById("popupEmail");
-if(emailEl) emailEl.innerText = user.email;
-
-const quoteEl = document.getElementById("popupQuote");
-if(quoteEl) quoteEl.innerText = quote;
-    document.getElementById("loginBox").style.display="none";
-
-    document.getElementById("welcomeText").innerText =
-      "Chúc bạn ôn thi thật tốt,";
-
-    document.getElementById("userName").innerText =
-      user.displayName;
-
-    document.getElementById("userAvatar").src =
-      user.photoURL || "https://i.imgur.com/6VBx3io.png";
-    const popupAvatar = document.getElementById("popupAvatar");
-if(popupAvatar){
-  popupAvatar.src = user.photoURL || "https://i.imgur.com/6VBx3io.png";
-}
-  } else {
-    document.getElementById("loginBox").style.display="flex";
-  }
-});
-  // chỉ giữ login trong tab hiện tại
-
-
-  window.googleLogin = function(){
-
-  signInWithPopup(auth, provider)
-  .then(async (result)=>{
-
-  const user = result.user;
-
-  if(!allowList.includes(user.email)){
-    alert("❌ Tài khoản không được cấp quyền!");
-    await signOut(auth);
-    return;
+    // Cập nhật giao diện
+    updateStreakUI(streak, lastClaim === today);
   }
 
-  await setDoc(doc(db,"users",user.uid),{
-    name: user.displayName,
-    email: user.email,
-    photo: user.photoURL,
-    online: true,
-    lastLogin: new Date().toISOString()
+  function updateStreakUI(streak, isClaimedToday) {
+    const sText = document.getElementById("streakText");
+    const pText = document.getElementById("popupStreakText");
+    const sIcon = document.getElementById("streakIcon");
+    const pIcon = document.getElementById("popupStreakIcon");
+
+    if(sText) sText.innerText = streak + " ngày";
+    if(pText) pText.innerText = streak + " ngày";
+
+    if (isClaimedToday) {
+      sIcon?.classList.remove("not-claimed");
+      pIcon?.classList.remove("not-claimed");
+    } else {
+      sIcon?.classList.add("not-claimed");
+      pIcon?.classList.add("not-claimed");
+    }
+  }
+
+  window.claimStreak = async function() {
+    const user = auth.currentUser;
+    if (!user) return alert("Bạn chưa đăng nhập!");
+
+    const today = new Date().toDateString();
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      if (data.lastClaimDate === today) {
+        alert("Hôm nay bạn đã điểm danh rồi!");
+        return;
+      }
+      const newStreak = (data.streak || 0) + 1;
+      await updateDoc(userRef, {
+        streak: newStreak,
+        lastClaimDate: today
+      });
+      updateStreakUI(newStreak, true);
+      alert("Điểm danh thành công! +1 ngày streak 🔥");
+    }
+  };
+
+  // 4. AUTH & USER STATUS
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      if (!allowList.includes(user.email)) {
+        alert("❌ Tài colon không có quyền!");
+        signOut(auth);
+        return;
+      }
+
+      // Hiện UI User
+      document.getElementById("loginBox").style.display = "none";
+      updateUserUI(user);
+      
+      // Load dữ liệu
+      loadStreak(user);
+      startListening();
+      updateStatus(true);
+    } else {
+      document.getElementById("loginBox").style.display = "flex";
+    }
   });
 
-  document.getElementById("loginBox").style.display="none";
+  function updateUserUI(user) {
+    const hour = new Date().getHours();
+    let greeting = hour < 11 ? "☀️ Chào buổi sáng," : hour < 14 ? "🌤️ Nghỉ trưa thôi," : hour < 18 ? "☕ Chào buổi chiều," : "🌙 Chào buổi tối,";
+    let quote = hour < 11 ? "Ngày mới tốt lành!" : hour < 18 ? "Cố gắng lên nào!" : "Đừng thức quá khuya nhé!";
 
-  })
-  .catch((error)=>{
-  alert("Lỗi đăng nhập: " + error.message);
-  console.error(error);
-});
+    document.getElementById("userName").innerText = user.displayName;
+    document.getElementById("userAvatar").src = user.photoURL || "";
+    if(document.getElementById("greetingText")) document.getElementById("greetingText").innerText = greeting;
+    if(document.getElementById("popupName")) document.getElementById("popupName").innerText = user.displayName;
+    if(document.getElementById("popupEmail")) document.getElementById("popupEmail").innerText = user.email;
+    if(document.getElementById("popupQuote")) document.getElementById("popupQuote").innerText = quote;
+    if(document.getElementById("popupAvatar")) document.getElementById("popupAvatar").src = user.photoURL || "";
+  }
 
-  };
-  // Xử lý khi ẩn tab hoặc đóng trình duyệt
-  const updateStatus = (isOnline) => {
-    const user = auth.currentUser;
-    if (user) {
-      // Sử dụng return để đảm bảo promise được xử lý
-      return setDoc(doc(db, "users", user.uid), { 
-        online: isOnline,
+  // 5. ONLINE LIST
+  function startListening() {
+    if (unsubscribeUsers) unsubscribeUsers();
+    unsubscribeUsers = onSnapshot(collection(db, "users"), (snap) => {
+      const list = document.getElementById("onlineList");
+      if (!list) return;
+      list.innerHTML = "";
+      snap.forEach(d => {
+        const u = d.data();
+        if (u.online) {
+          list.innerHTML += `<div style="display:flex;align-items:center;gap:10px;padding:6px;">
+            <img src="${u.photo}" style="width:26px;height:26px;border-radius:50%">
+            <span>${u.name}</span>
+            <div style="width:8px;height:8px;background:#22c55e;border-radius:50%;"></div>
+          </div>`;
+        }
+      });
+    });
+  }
+
+  const updateStatus = (status) => {
+    if (auth.currentUser) {
+      setDoc(doc(db, "users", auth.currentUser.uid), { 
+        online: status, 
         lastSeen: new Date().toISOString() 
       }, { merge: true });
     }
   };
 
-  document.addEventListener("visibilitychange", () => {
-    updateStatus(document.visibilityState === "visible");
+  // Login/Logout
+  window.googleLogin = () => {
+    signInWithPopup(auth, provider).catch(e => alert(e.message));
+  };
+
+  window.logout = async () => {
+    await updateStatus(false);
+    if (unsubscribeUsers) unsubscribeUsers();
+    signOut(auth).then(() => location.reload());
+  };
+
+  // Close popup khi click ngoài
+  document.addEventListener("click", (e) => {
+    const pop = document.getElementById("userPopup");
+    const avt = document.querySelector(".avatar-box");
+    if (pop && !pop.contains(e.target) && !avt.contains(e.target)) {
+      pop.style.display = "none";
+    }
   });
 
-  // Trick để ép trình duyệt gửi dữ liệu cuối cùng trước khi đóng
-  import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-
-  let unsubscribeUsers = null;
-
-function startListening(){
-  if(unsubscribeUsers) unsubscribeUsers(); // tránh trùng
-
-  unsubscribeUsers = onSnapshot(collection(db,"users"), (snap)=>{
-    const list = document.getElementById("onlineList");
-    if (!list) return;
-
-    list.innerHTML = "";
-
-    snap.forEach(doc => {
-      const u = doc.data();
-      if (!u.online) return;
-
-      const div = document.createElement("div");
-
-      div.innerHTML = `
-        <div style="display:flex; align-items:center; gap:10px; padding:6px 8px;">
-          <img src="${u.photo || 'https://i.imgur.com/6VBx3io.png'}"
-               style="width:26px;height:26px;border-radius:50%;">
-          <span>${u.name || "User"}</span>
-          <div class="online-pulse" style="width:8px;height:8px;background:#22c55e;border-radius:50%;"></div>
-        </div>
-      `;
-
-      list.appendChild(div);
-    });
-  });
-}
-  window.logout = async function(){
-  const user = auth.currentUser;
-
-  // cập nhật offline
-  if(user){
-    await setDoc(doc(db, "users", user.uid), {
-      online: false
-    }, { merge: true });
-  }
-
-  // 🔥 QUAN TRỌNG: tắt realtime listener
-  if(unsubscribeUsers){
-    unsubscribeUsers();   // <-- dòng fix chính
-    unsubscribeUsers = null;
-  }
-
-  // logout
-  signOut(auth).then(()=>{
-    location.reload();
-  });
-}
-  document.addEventListener("click", function(e){
-  const popup = document.getElementById("userPopup");
-  const avatarBox = document.querySelector(".avatar-box");
-
-  if(
-    popup &&
-    !popup.contains(e.target) &&
-    !avatarBox.contains(e.target)
-  ){
-    popup.style.display = "none";
-  }
-});
-  </script>
+  document.addEventListener("visibilitychange", () => updateStatus(document.visibilityState === "visible"));
+</script>
   <script>
   function updateTime(){
     const now = new Date();
