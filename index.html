@@ -540,6 +540,16 @@ overscroll-behavior: none; /* giảm giật scroll */
   flex-shrink:0; /* 🔥 không bị co */
 }
 
+/* đẩy layout */
+#userBox{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end; /* 🔥 dồn sang phải */
+  padding:10px 16px;
+  flex-wrap:wrap; /* 🔥 thêm dòng này */
+  gap: 8px;
+}
+
 /* nhóm bên phải */
 .user-right{
   display:flex;
@@ -952,12 +962,13 @@ animation:shake 1s infinite;
   width:100%;
   max-width:100%;
   margin:12px 0;
-  padding:10px 20px;
+  padding:10px 16px;
 
   display:flex;
   justify-content:flex-end; /* 🔥 dồn phải */
   align-items:center;
   gap:8px;
+  flex-wrap:wrap; /* 🔥 thêm dòng này */
 
   border-radius:999px;
   background: rgba(255,255,255,0.85);
