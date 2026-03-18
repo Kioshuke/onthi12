@@ -1671,45 +1671,35 @@
   });
   import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-  onSnapshot(collection(db,"users"), (snapshot)=>{
+  onSnapshot(collection(db, "users"), (snapshot) => {
     const list = document.getElementById("onlineList");
+    if (!list) return;
     list.innerHTML = "";
 
-  snapshot.forEach(doc=>{
-    const u = doc.data();
+    snapshot.forEach(doc => {
+      const u = doc.data();
+      if (!u.online) return;
 
-    if(!u.online) return;
+      const div = document.createElement("div");
+      // Mục 2 & 3: Avatar + Pulse
+      div.innerHTML = `
+        <div style="display:flex; align-items:center; gap:10px; padding:6px 8px; border-radius:8px; transition:0.2s;" 
+             onmouseover="this.style.background='#f2f4ff'" 
+             onmouseout="this.style.background='transparent'">
+          
+          <img src="${u.avatar || 'https://i.imgur.com/6VBx3io.png'}" 
+               style="width:26px; height:26px; border-radius:50%; object-fit:cover; border:1px solid #eee;">
+          
+          <span style="font-size:14px; flex:1; color:#333; font-weight:500;">
+            ${u.name || "User"}
+          </span>
 
-    const div = document.createElement("div");
-
-if (u.online) {
-        div.innerHTML = `
-          <div style="
-            display:flex;
-            align-items:center;
-            gap:10px;
-            padding:6px 8px;
-            border-radius:8px;
-            transition:0.2s;
-          " onmouseover="this.style.background='#f2f4ff'" 
-            onmouseout="this.style.background='transparent'">
-
-            <img src="${u.avatar || 'https://i.imgur.com/6VBx3io.png'}" 
-                 style="width:26px; height:26px; border-radius:50%; object-fit:cover; border:1px solid #eee;">
-
-            <span style="font-size:14px; flex:1; color:#333; font-weight:500;">
-              ${u.name || "User"}
-            </span>
-
-            <div class="online-pulse" style="
-              width:8px;
-              height:8px;
-              border-radius:50%;
-              background:#22c55e;
-            "></div>
-
-          </div>
-        `;
+          <div class="online-pulse" style="width:8px; height:8px; border-radius:50%; background:#22c55e;"></div>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }); // Kết thúc onSnapshot
       } else {
         // Nếu offline thì hiện icon trắng bình thường
         div.innerHTML = `<div style="padding:6px 8px; color:#ccc; font-size:14px;">⚪ ${u.name || "User"}</div>`;
