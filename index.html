@@ -589,6 +589,7 @@ overscroll-behavior: none; /* giảm giật scroll */
   background:#00ff00;
   border-radius:50%;
   border:2px solid white;
+  box-shadow:0 0 8px #22c55e;
 }
 
 #userPopup{
@@ -1608,8 +1609,9 @@ signInWithPopup(auth, provider)
 const user = result.user;
 
 if(!allowList.includes(user.email)){
-await signOut(auth);
-return;
+  alert("❌ Tài khoản không được cấp quyền!");
+  await signOut(auth);
+  return;
 }
 
 await setDoc(doc(db,"users",user.uid),{
@@ -1662,13 +1664,12 @@ onSnapshot(collection(db,"users"), (snapshot)=>{
   const list = document.getElementById("onlineList");
   list.innerHTML = "";
 
-  snapshot.forEach(doc=>{
+snapshot.forEach(doc=>{
   const u = doc.data();
 
-  if(!u.online) return; // 🔥 chỉ lấy người online
-    const u = doc.data();
+  if(!u.online) return;
 
-    const div = document.createElement("div");
+  const div = document.createElement("div");
 
     if(u.online){
       div.innerHTML = `
@@ -1711,9 +1712,11 @@ document.addEventListener("click", function(e){
   const popup = document.getElementById("userPopup");
   const userBox = document.getElementById("userBox");
 
-  if(!popup.contains(e.target) && !userBox.contains(e.target)){
-    popup.style.display = "none";
-  }
+  if(popup && userBox && 
+   !popup.contains(e.target) && 
+   !userBox.contains(e.target)){
+  popup.style.display = "none";
+}
 });
 </script>
 <script>
