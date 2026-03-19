@@ -168,6 +168,18 @@ gap:25px;
   overflow: hidden;
 }
 
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:16px;
+
+  background: linear-gradient(120deg, #3b82f622, #6366f122);
+  opacity:0;
+  transition:0.3s;
+
+  pointer-events: none; /* 🔥 QUAN TRỌNG */
+}
 .card:hover{
   transform: translateY(-10px) scale(1.03);
 
