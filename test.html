@@ -210,30 +210,28 @@ gap:25px;
   pointer-events:none;
 }
 .card:hover{
-  transform: translateY(-14px) scale(1.04);
-
-  outline: 3px solid color-mix(in srgb, var(--card-color) 50%, transparent);
-
+  transform: translateY(-14px) scale(1.03);
+  outline: 2px solid color-mix(in srgb, var(--card-color) 30%, transparent);
   box-shadow:
-    0 22px 50px color-mix(in srgb, var(--card-color) 45%, transparent),
-    0 8px 25px rgba(0,0,0,0.15);
+    0 18px 40px color-mix(in srgb, var(--card-color) 35%, transparent),
+    0 6px 20px rgba(0,0,0,0.12);
 
-  border:2.5px solid var(--card-color); /* 🔥 tăng độ dày */
+  border:1.5px solid var(--card-color); /* 🔥 cùng màu luôn */
 
   z-index: 5;
 }
 .card.active-card{
-  transform: translateY(-14px) scale(1.04);
-  outline: 3px solid color-mix(in srgb, var(--card-color) 60%, transparent);
+  transform: translateY(-14px) scale(1.03);
 
   box-shadow:
-    0 22px 55px color-mix(in srgb, var(--card-color) 50%, transparent),
-    0 10px 30px rgba(0,0,0,0.18);
+    0 18px 40px color-mix(in srgb, var(--card-color) 35%, transparent),
+    0 6px 20px rgba(0,0,0,0.12);
 
-  border:3px solid var(--card-color); /* 🔥 dày hơn hover */
+  border:1.5px solid var(--card-color);
 
-  z-index: 6;
+  z-index: 5;
 }
+
 .card.active-card::before{
   background:
     linear-gradient(var(--card-color), var(--card-color)) left / 6px 100% no-repeat,
