@@ -1163,14 +1163,30 @@ box-shadow:0 2px 8px rgba(0,0,0,0.15);
 .card{
 backdrop-filter:none !important;
 }
-
+.card::after{
+    left:0;
+    opacity:0;
+    animation: flashLight 0.4s ease;
+}
 .card{
 box-shadow:0 3px 10px rgba(0,0,0,0.08);
 animation:none;
 opacity:1;
 transform:none;
 }
+@keyframes flashLight{
+    0%{
+      opacity:0;
+    }
+    50%{
+      opacity:0.25;
+    }
+    100%{
+      opacity:0;
+    }
+  }
 
+}
 .card:hover{
 transform:none;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
