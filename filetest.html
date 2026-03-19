@@ -17,7 +17,7 @@
         }
 
         body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--text); }
-        .container { max-width: 800px; margin: 0 auto; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
         header {
             display: flex; justify-content: space-between; align-items: center;
@@ -46,15 +46,16 @@
             vertical-align: middle; /* Căn chỉnh cho đẹp với dòng chữ đầu */
         }
         /* Layout chính để chia cột */
-        .main-layout { display: flex; gap: 30px; align-items: flex-start; }
+        .main-layout { display: flex; gap: 30px; align-items: flex-start; width: 100%; }
         .quiz-section { flex: 2; }
 
         /* Thanh mục lục bên phải */
         .sidebar {
-            flex: 1; /* Tự động tính toán để chiếm 1/3 còn lại */
-            max-width: 350px; /* Giới hạn độ rộng tối đa để không bị quá to trên màn hình cực lớn */
+            flex: 1; 
+            min-width: 300px; /* Đảm bảo mục lục không bị quá nhỏ */
+            max-width: 400px; /* Đảm bảo mục lục không bị quá to */
             background: var(--card); 
-            padding: 25px; 
+            padding: 20px; 
             border-radius: 20px;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); 
             position: sticky; 
