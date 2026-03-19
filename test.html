@@ -115,11 +115,27 @@ transform:translateY(-2px);
 }
 
 .menu button.active{
-background:#1a73e8;
+background: var(--btn-color, #1a73e8);
 color:white;
 font-weight:600;
+box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
 }
-
+/* màu theo môn */
+.menu button[data-subject="ly"]{
+  --btn-color:#3b82f6;
+}
+.menu button[data-subject="sinh"]{
+  --btn-color:#22c55e;
+}
+.menu button[data-subject="tin"]{
+  --btn-color:#f59e0b;
+}
+.menu button[data-subject="su"]{
+  --btn-color:#ef4444;
+}
+.menu button[data-subject="hoa"]{
+  --btn-color:#8b5cf6;
+}
 /* CONTENT */
 
 .content{
@@ -842,11 +858,11 @@ transform: scale(0.96);
 
 <div class="menu">
 <button class="active" onclick="show('lich')">Lịch Thi</button>
-<button onclick="show('ly')">Vật Lý</button>
-<button onclick="show('sinh')">Sinh Học</button>
-<button onclick="show('tin')">Tin Học</button>
-<button onclick="show('su')">Lịch Sử</button>
-<button onclick="show('hoa')">Hoá Học</button>
+<button data-subject="ly" onclick="show('ly')">Vật Lý</button>
+<button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
+<button data-subject="tin" onclick="show('tin')">Tin Học</button>
+<button data-subject="su" onclick="show('su')">Lịch Sử</button>
+<button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
   <button onclick="window.location.href='test.html'">Test</button>
 </div>
 <div class="ticker-container">
