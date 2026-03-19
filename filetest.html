@@ -45,12 +45,45 @@
             margin-right: 8px; /* Khoảng cách với chữ đầu tiên của câu hỏi */
             vertical-align: middle; /* Căn chỉnh cho đẹp với dòng chữ đầu */
         }
+        /* Layout chính để chia cột */
+        .main-layout { display: flex; gap: 20px; align-items: flex-start; }
+        .quiz-section { flex: 1; }
+
+        /* Thanh mục lục bên phải */
+        .sidebar {
+            width: 280px; background: var(--card); padding: 20px; border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); position: sticky; top: 85px;
+            border: 1px solid #e2e8f0;
+        }
+        .sidebar-header { font-weight: 800; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .nav-item {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; border: 1px solid #e2e8f0; font-size: 0.85rem;
+            font-weight: 600; cursor: pointer; transition: 0.2s; background: white;
+        }
+        .nav-item.done { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+        .nav-item:hover { border-color: var(--primary); }
+
+        /* Nút mở mục lục trên Mobile */
+        .mobile-nav-btn {
+            display: none; position: fixed; bottom: 20px; right: 20px;
+            width: 56px; height: 56px; border-radius: 50%; background: var(--primary);
+            color: white; border: none; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+            z-index: 1000; font-size: 24px; cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { display: none; position: fixed; top: 0; right: 0; height: 100%; z-index: 2100; width: 80%; max-width: 300px; }
+            .mobile-nav-btn { display: flex; align-items: center; justify-content: center; }
+            .main-layout { display: block; }
+        }
 
         .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .ans-label { 
             border: 2px solid #e2e8f0; padding: 14px; border-radius: 12px; 
             cursor: pointer; display: flex; align-items: center; transition: all 0.2s;
-            position: relative; overflow: hidden; min-height: 54px; align-items: center;
+            position: relative; overflow: hidden; align-items: center;
         }
         .ans-label:hover:not(.disabled) { background: #f1f5f9; border-color: #cbd5e1; }
         .ans-label.selected { border-color: var(--primary); background: var(--primary-light); }
@@ -91,12 +124,25 @@
 
 <div class="container">
     <header>
-        <div class="logo-area"><h2>StudyStation</h2></div>
+        <div class="logo-area"><h2>LearnHub Test</h2></div>
         <div id="action-button-container">
             <button class="btn btn-primary" onclick="openModal('confirmModal')"><span>📤</span> Nộp bài</button>
         </div>
     </header>
-    <div id="quiz-container">Đang tải câu hỏi...</div>
+    <div class="main-layout">
+    <div class="quiz-section" id="quiz-container">Đang tải câu hỏi...</div>
+    
+    <aside class="sidebar" id="sidebarNav">
+        <div class="sidebar-header">
+            <span>MỤC LỤC</span>
+            <span id="progressText" style="color:var(--primary); font-size: 0.9rem;">0/0</span>
+        </div>
+        <div class="nav-grid" id="navGrid"></div>
+    </aside>
+</div>
+
+<button class="mobile-nav-btn" onclick="toggleSidebar()">📋</button>
+<div id="sidebarOverlay" class="modal-overlay" onclick="toggleSidebar()" style="z-index: 2050;"></div>
 </div>
 
 <div id="confirmModal" class="modal-overlay">
@@ -164,6 +210,7 @@
             });
 
             renderQuiz();
+            renderNav();
         } catch (e) {
             document.getElementById('quiz-container').innerText = "Không thể tải dữ liệu: " + e.message;
         }
@@ -190,6 +237,8 @@
         if(el.classList.contains('disabled')) return;
         document.querySelectorAll(`input[name="question-${qIdx}"]`).forEach(input => input.parentElement.classList.remove('selected'));
         el.classList.add('selected');
+        document.getElementById(`nav-${qIdx}`).classList.add('done');
+        updateProgress();
     }
 
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
@@ -240,6 +289,34 @@
     }
 
     loadQuestions();
+    function renderNav() {
+        const navGrid = document.getElementById('navGrid');
+        navGrid.innerHTML = questionsData.map((_, i) => `
+            <div class="nav-item" id="nav-${i}" onclick="scrollToQuestion(${i})">${i + 1}</div>
+        `).join('');
+        updateProgress();
+    }
+
+    function scrollToQuestion(i) {
+        const el = document.getElementById(`card-${i}`);
+        const offset = 100; 
+        window.scrollTo({ top: el.offsetTop - offset, behavior: 'smooth' });
+        if(window.innerWidth <= 1024) toggleSidebar(); 
+    }
+
+    function updateProgress() {
+        const doneCount = document.querySelectorAll('.nav-item.done').length;
+        document.getElementById('progressText').innerText = `${doneCount}/${questionsData.length}`;
+    }
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebarNav');
+        const overlay = document.getElementById('sidebarOverlay');
+        const isVisible = (sidebar.style.display === 'block');
+        
+        sidebar.style.display = isVisible ? '' : 'block';
+        overlay.style.display = isVisible ? 'none' : 'flex';
+    }
 </script>
 </body>
 </html>
