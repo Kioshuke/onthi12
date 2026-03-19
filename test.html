@@ -174,11 +174,22 @@ gap:25px;
   inset:0;
   border-radius:14px;
 
-  background: linear-gradient(120deg, #3b82f622, #6366f122);
-  opacity:0;
+  pointer-events:none;
   transition:0.3s;
 
-  pointer-events:none;
+  /* 🔥 3 layer: trái - phải - overlay */
+  background:
+    linear-gradient(var(--card-color), var(--card-color)) left / 5px 100% no-repeat,
+    linear-gradient(var(--card-color), var(--card-color)) right / 5px 100% no-repeat,
+    linear-gradient(120deg, #3b82f622, #6366f122);
+
+  opacity:0.9;
+}
+.card:hover::before{
+  background:
+    linear-gradient(var(--card-color), var(--card-color)) left / 6px 100% no-repeat,
+    linear-gradient(var(--card-color), var(--card-color)) right / 6px 100% no-repeat,
+    linear-gradient(120deg, #3b82f633, #6366f133);
 }
 .card::after{
   content:"";
@@ -226,6 +237,25 @@ gap:25px;
 .card p{
   color:#6b7280;
   font-size:14px;
+}
+#ly .card{
+  --card-color: #3b82f6;
+}
+
+#sinh .card{
+  --card-color: #22c55e;
+}
+
+#tin .card{
+  --card-color: #f59e0b;
+}
+
+#su .card{
+  --card-color: #ef4444;
+}
+
+#hoa .card{
+  --card-color: #8b5cf6;
 }
 @keyframes cardFade{
 from{
