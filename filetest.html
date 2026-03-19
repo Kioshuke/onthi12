@@ -337,7 +337,16 @@
         document.getElementById('action-button-container').innerHTML = `
             <button class="btn btn-reload" onclick="confirmReload()"><span>🔄</span> Làm lại</button>
         `;
-
+    window.addEventListener('beforeunload', function (e) {
+    // Chỉ hiện cảnh báo nếu bài chưa được nộp (chưa vào chế độ review)
+      const isReviewing = document.querySelector('.btn-reload') !== null;
+      
+      if (!isReviewing) {
+          // Thông báo tiêu chuẩn của trình duyệt
+          e.preventDefault();
+          e.returnValue = '';
+      }
+       });
       questionsData.forEach((item, i) => {
           const card = document.getElementById(`card-${i}`);
           const navItem = document.getElementById(`nav-${i}`); // Lấy ô số tương ứng
