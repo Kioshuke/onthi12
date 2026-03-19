@@ -131,8 +131,8 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
 .menu button[data-subject="hoa"]{
   --btn-color:#8b5cf6;
 }
-.menu button[data-subject]:hover{
-background: color-mix(in srgb, var(--btn-color) 20%, white);
+.menu button[data-subject]:not(.active):hover{
+  background: color-mix(in srgb, var(--btn-color) 20%, white);
 }
 .menu button[data-subject="lich"]{
   --btn-color:#d4068f;
