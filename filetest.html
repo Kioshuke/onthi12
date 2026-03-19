@@ -6,20 +6,19 @@
     <title>Hệ thống Luyện thi Pro</title>
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
+            --primary: #2563eb; /* Xanh dương đậm */
+            --primary-light: #eff6ff;
             --bg: #f8fafc;
             --card: #ffffff;
             --text: #1e293b;
             --danger: #ef4444;
             --success: #10b981;
-            --warning: #f59e0b;
+            --info: #3b82f6; /* Xanh dương cho review */
         }
 
         body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--text); }
         .container { max-width: 800px; margin: 0 auto; }
 
-        /* Header chuyên nghiệp */
         header {
             display: flex; justify-content: space-between; align-items: center;
             background: var(--card); padding: 12px 20px; border-radius: 16px;
@@ -29,7 +28,6 @@
 
         .logo-area h2 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--primary); }
         
-        /* Question Cards */
         .question-card {
             background: var(--card); padding: 28px; border-radius: 20px;
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); margin-bottom: 20px;
@@ -37,9 +35,8 @@
         }
 
         .q-header { display: flex; gap: 12px; margin-bottom: 20px; font-weight: 600; font-size: 1.05rem; }
-        .q-badge { background: #e0e7ff; color: var(--primary); padding: 2px 10px; border-radius: 8px; font-size: 0.8rem; }
+        .q-badge { background: var(--primary-light); color: var(--primary); padding: 2px 10px; border-radius: 8px; font-size: 0.8rem; }
 
-        /* Answers Grid */
         .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .ans-label { 
             border: 1.5px solid #e2e8f0; padding: 14px; border-radius: 12px; 
@@ -47,21 +44,19 @@
             position: relative; overflow: hidden;
         }
         .ans-label:hover:not(.disabled) { background: #f1f5f9; border-color: #cbd5e1; }
-        .ans-label.selected { border-color: var(--primary); background: #eef2ff; }
+        .ans-label.selected { border-color: var(--primary); background: var(--primary-light); }
         
-        /* Trạng thái Review bài làm */
+        /* Trạng thái Review - Đổi sang Xanh dương theo yêu cầu */
         .review-correct { border-color: var(--success) !important; background: #ecfdf5 !important; }
         .review-wrong { border-color: var(--danger) !important; background: #fef2f2 !important; }
-        .true-answer-highlight { border-color: var(--warning) !important; background: #fffbeb !important; border-width: 2px; }
-        .true-answer-highlight::after { content: "✓ Đáp án đúng"; position: absolute; right: 8px; top: 2px; font-size: 0.65rem; color: var(--warning); font-weight: bold; }
+        .true-answer-highlight { border-color: var(--info) !important; background: var(--primary-light) !important; border-width: 2px; }
+        .true-answer-highlight::after { content: "✓ Đáp án đúng"; position: absolute; right: 8px; top: 2px; font-size: 0.65rem; color: var(--info); font-weight: bold; }
 
-        /* Buttons */
         .btn { padding: 10px 22px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-hover); }
-        .btn-reload { background: var(--warning); color: white; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-reload { background: var(--info); color: white; } /* Nút làm lại màu xanh dương */
 
-        /* Modals */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.7); display: none; 
@@ -70,14 +65,13 @@
         .modal-content {
             background: white; padding: 35px; border-radius: 28px;
             width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
         }
 
         .score-circle {
-            width: 120px; height: 120px; background: #fff1f2; color: var(--danger);
+            width: 120px; height: 120px; background: #eff6ff; color: var(--primary);
             font-size: 50px; font-weight: 900; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
-            border: 4px solid #ffe4e6;
+            border: 4px solid #dbeafe;
         }
 
         @media (max-width: 600px) { .answers-grid { grid-template-columns: 1fr; } }
@@ -87,24 +81,18 @@
 
 <div class="container">
     <header>
-        <div class="logo-area">
-            <h2>LearnHub Test</h2>
-        </div>
+        <div class="logo-area"><h2>StudyStation</h2></div>
         <div id="action-button-container">
-            <button class="btn btn-primary" onclick="openModal('confirmModal')">
-                <span>📤</span> Nộp bài
-            </button>
+            <button class="btn btn-primary" onclick="openModal('confirmModal')"><span>📤</span> Nộp bài</button>
         </div>
     </header>
-
-    <div id="quiz-container"></div>
+    <div id="quiz-container">Đang tải câu hỏi...</div>
 </div>
 
 <div id="confirmModal" class="modal-overlay">
     <div class="modal-content">
-        <div style="font-size: 40px;">🤔</div>
         <h3>Xác nhận nộp bài?</h3>
-        <p style="color: #64748b;">Bạn đã kiểm tra kỹ các câu trả lời chưa?</p>
+        <p>Bạn có chắc chắn muốn kết thúc bài thi này?</p>
         <div style="display: flex; gap: 10px; margin-top: 25px;">
             <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('confirmModal')">Quay lại</button>
             <button class="btn btn-primary" style="flex:1" onclick="handleFinalSubmit()">Nộp ngay</button>
@@ -115,38 +103,38 @@
 <div id="resultModal" class="modal-overlay">
     <div class="modal-content">
         <div class="score-circle" id="scoreValue">0</div>
-        <h2 style="margin:0">Cố gắng hơn!</h2>
-        <p id="statsText" style="color:#64748b">Bạn đúng 0/0 câu</p>
-        
+        <h3>Kết quả</h3>
+        <p id="statsText">Đúng 0/0 câu</p>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 25px;">
-            <button class="btn btn-primary" style="justify-content: center; background: #6366f1" onclick="reviewMode()">
-                👁️ Xem bài làm
-            </button>
-            <button class="btn" style="justify-content: center; background: #f1f5f9" onclick="location.reload()">
-                🔄 Làm lại lượt mới
-            </button>
+            <button class="btn btn-primary" style="justify-content: center;" onclick="reviewMode()">👁️ Xem bài làm</button>
+            <button class="btn" style="justify-content: center; background: #f1f5f9" onclick="location.reload()">🔄 Làm lại</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Dữ liệu mẫu (Thay bằng fetch JSON của bạn nếu cần)
-    const questions = [
-        { q: "NaOH thuộc loại hợp chất nào sau đây?", a: ["Axit", "Oxit", "Bazơ", "Muối"], c: 2 },
-        { q: "Kim loại nào sau đây dẫn điện tốt nhất?", a: ["Sắt", "Bạc", "Đồng", "Nhôm"], c: 1 },
-        { q: "Chất nào làm quỳ tím hóa đỏ?", a: ["HCl", "NaOH", "NaCl", "H2O"], c: 0 }
-    ];
+    const JSON_URL = "questions.json"; //
+    let questionsData = [];
+
+    // Tải câu hỏi từ file JSON
+    async function loadQuestions() {
+        try {
+            const res = await fetch(JSON_URL);
+            if (!res.ok) throw new Error("Lỗi tải file JSON");
+            questionsData = await res.json();
+            renderQuiz();
+        } catch (e) {
+            document.getElementById('quiz-container').innerText = "Không thể tải dữ liệu: " + e.message;
+        }
+    }
 
     function renderQuiz() {
         const container = document.getElementById('quiz-container');
-        container.innerHTML = questions.map((item, i) => `
+        container.innerHTML = questionsData.map((item, i) => `
             <div class="question-card" id="card-${i}">
-                <div class="q-header">
-                    <span class="q-badge">Câu ${i+1}</span>
-                    <span>${item.q}</span>
-                </div>
+                <div class="q-header"><span class="q-badge">Câu ${i+1}</span><span>${item.question}</span></div>
                 <div class="answers-grid">
-                    ${item.a.map((ans, idx) => `
+                    ${item.answers.map((ans, idx) => `
                         <label class="ans-label" id="label-${i}-${idx}" onclick="selectAnswer(this, ${i})">
                             <input type="radio" name="question-${i}" value="${idx}" style="margin-right:10px">
                             <span>${ans}</span>
@@ -159,9 +147,7 @@
 
     function selectAnswer(el, qIdx) {
         if(el.classList.contains('disabled')) return;
-        document.querySelectorAll(`input[name="question-${qIdx}"]`).forEach(input => {
-            input.parentElement.classList.remove('selected');
-        });
+        document.querySelectorAll(`input[name="question-${qIdx}"]`).forEach(input => input.parentElement.classList.remove('selected'));
         el.classList.add('selected');
     }
 
@@ -171,58 +157,47 @@
     function handleFinalSubmit() {
         closeModal('confirmModal');
         let correctCount = 0;
-        questions.forEach((item, i) => {
+        questionsData.forEach((item, i) => {
             const selected = document.querySelector(`input[name="question-${i}"]:checked`);
-            if(selected && parseInt(selected.value) === item.c) correctCount++;
+            if(selected && parseInt(selected.value) === item.correct) correctCount++;
         });
-
         document.getElementById('scoreValue').innerText = correctCount;
-        document.getElementById('statsText').innerText = `Bạn đã hoàn thành đúng ${correctCount}/${questions.length} câu`;
+        document.getElementById('statsText').innerText = `Đúng ${correctCount}/${questionsData.length} câu`;
         openModal('resultModal');
     }
 
-    // CHẾ ĐỘ XEM LẠI BÀI
     function reviewMode() {
         closeModal('resultModal');
-        
-        // 1. Đổi nút Nộp bài thành nút Làm lại trên Header
         document.getElementById('action-button-container').innerHTML = `
-            <button class="btn btn-reload" onclick="location.reload()">
-                <span>🔄</span> Làm lại
-            </button>
+            <button class="btn btn-reload" onclick="location.reload()"><span>🔄</span> Làm lại</button>
         `;
 
-        // 2. Tô màu đáp án đúng/sai
-        questions.forEach((item, i) => {
+        questionsData.forEach((item, i) => {
             const card = document.getElementById(`card-${i}`);
             const selectedInput = document.querySelector(`input[name="question-${i}"]:checked`);
-            const correctIdx = item.c;
+            const correctIdx = item.correct;
 
-            // Luôn hiện viền vàng cho đáp án đúng
             document.getElementById(`label-${i}-${correctIdx}`).classList.add('true-answer-highlight');
 
             if (selectedInput) {
                 const userVal = parseInt(selectedInput.value);
                 if (userVal === correctIdx) {
-                    card.style.borderColor = "var(--success)"; // Câu đúng viền xanh
-                    document.getElementById(`label-${i}-${userVal}`).classList.add('review-correct');
+                    card.classList.add('review-correct');
                 } else {
-                    card.style.borderColor = "var(--danger)"; // Câu sai viền đỏ
+                    card.classList.add('review-wrong');
                     document.getElementById(`label-${i}-${userVal}`).classList.add('review-wrong');
                 }
             } else {
-                card.style.borderColor = "var(--danger)"; // Không làm cũng viền đỏ
+                card.classList.add('review-wrong');
             }
         });
 
-        // Khóa không cho chọn lại
         document.querySelectorAll('.ans-label').forEach(l => l.classList.add('disabled'));
         document.querySelectorAll('input').forEach(i => i.disabled = true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    renderQuiz();
+    loadQuestions();
 </script>
-
 </body>
 </html>
