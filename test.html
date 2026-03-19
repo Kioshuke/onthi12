@@ -749,22 +749,20 @@ Lưu ý: Các bài test được tạo thông quan nền tảng Youngtest. Các 
 </div>
 </div>
 <div id="userBox">
+    <div id="currentTime"></div>
 
-<div id="currentTime"></div>
+    <div class="user-right">
+      <div class="user-text">
+        <span id="welcomeText"></span>
+        <span id="userName"></span>
+      </div>
 
-<div class="user-right">
-  <div class="user-text">
-    <span id="welcomeText"></span>
-    <span id="userName"></span>
+      <div class="avatar-box" onclick="toggleUserPopup()">
+        <img id="userAvatar">
+        <span id="onlineDot" class="online-pulse"></span>
+      </div>
+    </div>
   </div>
-
-  <div class="avatar-box" onclick="toggleUserPopup()">
-    <img id="userAvatar">
-    <span id="onlineDot" class="online-pulse"></span>
-  </div>
-</div>
-
-</div>
 <style>
 .ticker-container{
 width:100%;
@@ -993,7 +991,13 @@ flex-shrink:0;                 /* ❌ không bị co */
 white-space:nowrap;            /* không xuống dòng chữ */
 scroll-snap-align: start; /* 🔥 thêm dòng này */
 }
-
+.card-action{
+display:flex;
+justify-content:space-between;
+margin-top:10px;
+font-size:14px;
+cursor:pointer;
+}
 }
 
 /* avatar */
@@ -1171,6 +1175,20 @@ font-size:22px;
 .online-pulse {
 animation: pulse-green 2s infinite;
 }
+#commentBox{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:rgba(0,0,0,0.4);
+z-index:9999;
+}
 </style>
 <div class="content">
 <div id="lich">
@@ -1245,19 +1263,19 @@ animation: pulse-green 2s infinite;
 
 <div class="grid">
 
-<div class="card">
+<div class="card" data-id="ly-1">
 <h3>Trắc nghiệm</h3>
 <p>Bài ôn tập trắc nghiệm môn Vật Lý.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/yv8Lfr')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="ly-2">
 <h3>Đúng / Sai</h3>
 <p>Bài ôn tập dạng đúng sai.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/5yBsZW')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="ly-3">
 <h3>Trả lời ngắn</h3>
 <p>Bài ôn tập trả lời ngắn.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/xbBQiH')">Làm bài</a>
@@ -1269,19 +1287,19 @@ animation: pulse-green 2s infinite;
 
 <div class="grid">
 
-<div class="card">
+<div class="card" data-id="sinh-1">
 <h3>Trắc nghiệm</h3>
 <p>Bài ôn tập trắc nghiệm môn Sinh Học.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/GH3QtL')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="sinh-2">
 <h3>Đúng / Sai</h3>
 <p>Bài ôn tập dạng đúng sai môn Sinh.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/tghqMr')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="sinh-3">
 <h3>Trả lời ngắn</h3>
 <p>Bài ôn tập trả lời ngắn môn Sinh.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/hpU2TG')">Làm bài</a>
@@ -1294,19 +1312,19 @@ animation: pulse-green 2s infinite;
 
 <div class="grid">
 
-<div class="card">
+<div class="card" data-id="tin-1">
 <h3>Trắc nghiệm</h3>
 <p>Bài 17-18</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/DhYZ5m')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="tin-2">
 <h3>Trắc nghiệm</h3>
 <p>Bài 19-22</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/nKtpGR')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="tin-3">
 <h3>Đúng / Sai</h3>
 <p>Bài ôn tập môn Tin.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/g9smmw')">Làm bài</a>
@@ -1319,19 +1337,19 @@ animation: pulse-green 2s infinite;
 
 <div class="grid">
 
-<div class="card">
+<div class="card" data-id="su-1">
 <h3>Trắc nghiệm</h3>
 <p>Bài 11</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/9SEB8Z')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="su-2">
 <h3>Trắc nghiệm</h3>
 <p>Bài 12</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/TAe0ju')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="su-3">
 <h3>Trắc nghiệm</h3>
 <p>Bài 13</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/xDBb5U')">Làm bài</a>
@@ -1344,25 +1362,25 @@ animation: pulse-green 2s infinite;
 
 <div class="grid">
 
-<div class="card">
+<div class="card" data-id="hoa-1">
 <h3>Trắc nghiệm P1</h3>
 <p>Bài ôn tập trắc nghiệm môn Hoá Học.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/gbJ8On')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="hoa-2">
 <h3>Trắc nghiệm P2</h3>
 <p>Bài ôn tập trắc nghiệm môn Hoá Học.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/RRYYOg')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="hoa-3">
 <h3>Đúng / Sai</h3>
 <p>Bài ôn tập dạng đúng sai môn Hoá.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/sytrvV')">Làm bài</a>
 </div>
 
-<div class="card">
+<div class="card" data-id="hoa-4">
 <h3>Trả lời ngắn</h3>
 <p>Bài ôn tập trả lời ngắn môn Hoá.</p>
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/kHiYlq')">Làm bài</a>
@@ -1373,6 +1391,17 @@ animation: pulse-green 2s infinite;
 </div>
 <div id="quiz"></div>
 
+</div>
+<div id="commentBox" style="display:none;">
+  <div class="popup-box">
+    <span onclick="closeComment()">×</span>
+    <h3>💬 Bình luận môn</h3>
+
+    <div id="commentList"></div>
+
+    <input id="cmtInput" placeholder="Nhập bình luận...">
+    <button onclick="sendComment()">Gửi</button>
+  </div>
 </div>
 
 <script>
@@ -1498,7 +1527,7 @@ elem.msRequestFullscreen();
 
 }
 function show(id){
-
+currentSubject = id; // 🔥 THÊM DÒNG NÀY
 // 🔥 lưu tab
 localStorage.setItem("activeTab", id);
 
@@ -1632,6 +1661,7 @@ show(savedTab);
 });
 </script>
 <script type="module">
+let currentSubject = "lich";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 
 import { 
@@ -1643,8 +1673,17 @@ signOut,
 setPersistence,
 browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getFirestore, doc, setDoc }
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { 
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  increment,
+  addDoc,
+  collection,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 const firebaseConfig = {
 apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
 authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -1653,6 +1692,58 @@ storageBucket: "onthi12-thpttanhong.firebasestorage.app",
 messagingSenderId: "922115936320",
 appId: "1:922115936320:web:67b86c06af9149ff584fa5"
 };
+window.react = async function(id){
+  const ref = doc(db,"reactions",id);
+
+  try{
+    await updateDoc(ref,{
+      count: increment(1)
+    });
+  }catch{
+    await setDoc(ref,{count:1});
+  }
+
+  loadReact(id);
+}
+async function loadReact(id){
+  const snap = await getDoc(doc(db,"reactions",id));
+  if(snap.exists()){
+    document.getElementById("like-"+id).innerText = snap.data().count;
+  }
+}
+document.querySelectorAll(".card").forEach(card=>{
+  loadReact(card.dataset.id);
+});
+window.sendComment = async function(){
+  const text = document.getElementById("cmtInput").value;
+  const user = auth.currentUser;
+
+  if(!text) return;
+
+  await addDoc(collection(db,"comments"),{
+    subject: currentSubject,
+    text: text,
+    name: user.displayName,
+    time: Date.now()
+  });
+
+  document.getElementById("cmtInput").value="";
+}
+onSnapshot(collection(db,"comments"), snap=>{
+  const list = document.getElementById("commentList");
+  list.innerHTML="";
+
+  snap.forEach(doc=>{
+    const c = doc.data();
+
+    if(c.subject !== currentSubject) return;
+
+    const div = document.createElement("div");
+    div.innerHTML = `<b>${c.name}:</b> ${c.text}`;
+
+    list.appendChild(div);
+  });
+});
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
@@ -1879,6 +1970,13 @@ window.addEventListener("beforeunload", () => {
 });
 </script>
 <script>
+function openComment(){
+  document.getElementById("commentBox").style.display = "flex";
+}
+
+function closeComment(){
+  document.getElementById("commentBox").style.display = "none";
+}
 function updateTime(){
 const now = new Date();
 
@@ -1899,6 +1997,19 @@ pop.style.display = "block";
 pop.style.display = "none";
 }
 }
+document.querySelectorAll(".card").forEach(card=>{
+  const id = card.dataset.id;
+
+  const action = document.createElement("div");
+  action.className = "card-action";
+
+  action.innerHTML = `
+    <span onclick="react('${id}')">❤️ <span id="like-${id}">0</span></span>
+    <span onclick="openComment()">💬</span>
+  `;
+
+  card.appendChild(action);
+});
 </script>
 <div id="userPopup" style="display:none;">
 
@@ -1921,7 +2032,6 @@ pop.style.display = "none";
 <div id="onlineList" style="max-height: 150px; overflow-y: auto;"></div>
 
 <button id="logoutBtn" onclick="logout()">Đăng xuất</button>
-
 </div>
 </body>
 </html>
