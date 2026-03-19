@@ -1419,12 +1419,10 @@ body{
   clearInterval(loadingInterval);
 
   setTimeout(()=>{
+setTimeout(()=>{
   document.getElementById("loadingOverlay").style.display="none";
-  },600);
-
-  }
-
-  },1000);
+  console.log("LOADING OFF");
+},600);
   function loadQuiz(link){
 
   document.getElementById("quiz").innerHTML =
