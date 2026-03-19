@@ -46,17 +46,23 @@
             vertical-align: middle; /* Căn chỉnh cho đẹp với dòng chữ đầu */
         }
         /* Layout chính để chia cột */
-        .main-layout { display: flex; gap: 20px; align-items: flex-start; }
-        .quiz-section { flex: 1; }
+        .main-layout { display: flex; gap: 30px; align-items: flex-start; }
+        .quiz-section { flex: 2; }
 
         /* Thanh mục lục bên phải */
         .sidebar {
-            width: 280px; background: var(--card); padding: 20px; border-radius: 20px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); position: sticky; top: 85px;
+            flex: 1; /* Tự động tính toán để chiếm 1/3 còn lại */
+            max-width: 350px; /* Giới hạn độ rộng tối đa để không bị quá to trên màn hình cực lớn */
+            background: var(--card); 
+            padding: 25px; 
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); 
+            position: sticky; 
+            top: 85px;
             border: 1px solid #e2e8f0;
         }
         .sidebar-header { font-weight: 800; margin-bottom: 15px; display: flex; justify-content: space-between; }
-        .nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .nav-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
         .nav-item {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
             border-radius: 10px; border: 1px solid #e2e8f0; font-size: 0.85rem;
