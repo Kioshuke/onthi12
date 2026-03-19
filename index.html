@@ -172,10 +172,13 @@ gap:25px;
 }
 
 .card:hover{
-transform:translateY(-6px);
-box-shadow:
-0 12px 30px rgba(80,120,255,0.25),
-0 4px 15px rgba(0,0,0,0.1);
+  transform: translateY(-10px) scale(1.03); /* nảy mạnh hơn */
+
+  box-shadow:
+  0 15px 35px rgba(80,120,255,0.35),
+  0 5px 20px rgba(0,0,0,0.15);
+
+  border:2px solid rgba(59,130,246,0.6); /* viền xanh đậm */
 }
 
 .card h3{
@@ -184,6 +187,27 @@ color:#2b3a67; /* xanh đậm */
 }
 .card p{
 color:#6b7280; /* xám dịu */
+}
+.card:hover h3{
+  color:#1a73e8;
+}
+
+.card:hover p{
+  color:#4b5563;
+}
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:14px;
+
+  background: linear-gradient(120deg, #3b82f622, #6366f122);
+  opacity:0;
+  transition:0.3s;
+}
+
+.card:hover::before{
+  opacity:1;
 }
 @keyframes cardFade{
 from{
