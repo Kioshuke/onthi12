@@ -500,17 +500,6 @@ color: #4b5563;
 padding-left: 10px;
 }
 
-/* đẩy layout */
-#userBox{
-display:flex;
-align-items:center;
-justify-content:flex-end; /* 🔥 dồn sang phải */
-padding:10px 16px;
-flex-wrap:wrap; /* 🔥 thêm dòng này */
-gap: 8px;
-}
-
-/* nhóm bên phải */
 .user-right{
 display:flex;
 align-items:center;
@@ -760,15 +749,19 @@ Lưu ý: Các bài test được tạo thông quan nền tảng Youngtest. Các 
 </div>
 </div>
 <div id="userBox">
-<div id="currentTime"></div>
-<div class="user-text">
-<span id="welcomeText"></span>
-<span id="userName"></span>
-</div>
 
-<div class="avatar-box" onclick="toggleUserPopup()">
-<img id="userAvatar">
-<span id="onlineDot" class="online-pulse"></span>
+<div id="currentTime"></div>
+
+<div class="user-right">
+  <div class="user-text">
+    <span id="welcomeText"></span>
+    <span id="userName"></span>
+  </div>
+
+  <div class="avatar-box" onclick="toggleUserPopup()">
+    <img id="userAvatar">
+    <span id="onlineDot" class="online-pulse"></span>
+  </div>
 </div>
 
 </div>
@@ -1015,14 +1008,18 @@ box-shadow:0 2px 8px rgba(0,0,0,0.15);
 }
 
 #userBox {
-max-width: 1100px; /* Độ rộng này sẽ khớp với phần .content chứa lịch thi */
-margin: 10px auto; /* Căn giữa thanh này so với màn hình */
-padding: 8px 20px; /* Giảm padding cho thanh gọn lại */
+max-width: 1100px;
+margin: 10px auto;
+padding: 8px 20px;
+
 display: flex;
-justify-content: flex-end; 
 align-items: center;
+justify-content: space-between; /* 🔥 FIX CHÍNH */
+
 gap: 12px;
-border-radius: 50px; /* Bo tròn mềm mại hơn */
+flex-wrap: nowrap; /* 🔥 KHÔNG cho xuống dòng */
+
+border-radius: 50px;
 background: rgba(255, 255, 255, 0.9);
 backdrop-filter: blur(10px);
 box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -1685,9 +1682,20 @@ const allowList = [
 "bangbang4951@gmail.com",
 "xmai9839@gmail.com",
 ];
-
+let activeInterval = null;
 onAuthStateChanged(auth, (user)=>{
 if(user){
+  if(!activeInterval){
+  activeInterval = setInterval(()=>{
+    const user = auth.currentUser;
+    if(user){
+      setDoc(doc(db,"users",user.uid),{
+        lastActive: Date.now(),
+        online: true
+      },{ merge:true });
+    }
+  }, 8000);
+}
 
 startListening(); // 🔥 luôn gọi
 
@@ -1760,11 +1768,12 @@ return;
 }
 
 await setDoc(doc(db,"users",user.uid),{
-name: user.displayName,
-email: user.email,
-photo: user.photoURL,
-online: true,
-lastLogin: new Date().toISOString()
+  name: user.displayName,
+  email: user.email,
+  photo: user.photoURL,
+  online: true,
+  lastLogin: new Date().toISOString(),
+  lastActive: Date.now()
 });
 
 document.getElementById("loginBox").style.display="none";
@@ -1808,7 +1817,10 @@ list.innerHTML = "";
 
 snap.forEach(doc => {
 const u = doc.data();
-if (!u.online) return;
+const now = Date.now();
+
+// nếu quá 15s không hoạt động => coi như offline
+if (!u.lastActive || now - u.lastActive > 15000) return;
 
 const div = document.createElement("div");
 
