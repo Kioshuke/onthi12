@@ -1526,6 +1526,7 @@ const tabs = ["lich","ly","hoa","sinh","tin","su"];
 
 tabs.forEach(t=>{
 let el = document.getElementById(t);
+if(!el) return;
 el.classList.remove("fade-in");
 el.classList.add("fade-out");
 
@@ -1628,7 +1629,11 @@ setInterval(updateCountdown,1000);
 updateCountdown();
 window.addEventListener("load", function(){
 
-const savedTab = localStorage.getItem("activeTab") || "lich";
+let savedTab = localStorage.getItem("activeTab");
+
+if(!savedTab || !document.getElementById(savedTab)){
+  savedTab = "lich";
+}
 
 // bỏ active cũ
 document.querySelectorAll(".menu button")
