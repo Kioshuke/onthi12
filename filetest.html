@@ -186,6 +186,15 @@
         .nav-item.nav-wrong { background: #fef2f2 !important; border-color: var(--danger) !important; color: var(--danger) !important; }
 
         @media (max-width: 600px) { .answers-grid { grid-template-columns: 1fr; } }
+        .short-input:focus {
+            outline: none;
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        /* Grid riêng cho đúng sai (chia 2 cột) */
+        .tf-grid {
+            grid-template-columns: 1fr 1fr !important;
+        }
     </style>
 </head>
 <body>
@@ -285,22 +294,83 @@
     }
 
     function renderQuiz() {
-        const container = document.getElementById('quiz-container');
-        container.innerHTML = questionsData.map((item, i) => `
-            <div class="question-card" id="card-${i}">
-                <div class="q-header"><span class="q-badge">Câu ${i+1}</span><span>${item.question}</span></div>
-                <div class="answers-grid">
-                    ${item.answers.map((ans, idx) => `
-                        <label class="ans-label" id="label-${i}-${idx}" onclick="selectAnswer(this, ${i})">
-                            <input type="radio" name="question-${i}" value="${idx}" style="margin-right:10px">
-                            <span>${ans}</span>
-                        </label>
-                    `).join('')}
-                </div>
-            </div>
-        `).join('');
-    }
+    const container = document.getElementById('quiz-container');
+    let html = '';
+    let globalIdx = 0; // Biến này để đánh số Câu 1, 2, 3... liên tục qua các phần
 
+    questionsData.forEach((section) => {
+        // 1. Thêm tiêu đề Phần
+        html += `<h2 class="section-header" style="margin: 40px 0 20px; padding: 10px; background: var(--primary-light); color: var(--primary); border-radius: 8px;">${section.sectionTitle}</h2>`;
+
+        section.questions.forEach((item) => {
+            // 2. Xử lý ảnh (giữ nguyên logic cũ của bạn)
+            const imageHtml = item.image ? `
+                <div class="q-image" style="text-align: center; margin: 15px 0;">
+                    <img src="${item.image}" alt="Hình ảnh câu ${globalIdx + 1}" style="max-width: 100%; max-height: 350px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+            ` : '';
+
+            let answersContent = '';
+
+            // 3. Kiểm tra loại câu hỏi để render giao diện đáp án
+            if (item.type === 'short_answer') {
+                // Giao diện trả lời ngắn
+                answersContent = `
+                    <div class="short-answer-box" style="margin-top: 15px;">
+                        <input type="text" 
+                               class="short-input" 
+                               placeholder="Nhập câu trả lời..." 
+                               oninput="markDone(${globalIdx})"
+                               data-qidx="${globalIdx}"
+                               style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px;">
+                    </div>`;
+            } else {
+                // Giao diện Trắc nghiệm & Đúng/Sai (dùng chung grid nhưng TF có thể chia 2 cột)
+                const gridClass = item.type === 'true_false' ? 'tf-grid' : 'answers-grid';
+                answersContent = `
+                    <div class="${gridClass}">
+                        ${item.answers.map((ans, idx) => `
+                            <label class="ans-label" id="label-${globalIdx}-${idx}" onclick="selectAnswer(this, ${globalIdx})">
+                                <input type="radio" name="question-${globalIdx}" value="${idx}" style="margin-right:10px">
+                                <span>${ans}</span>
+                            </label>
+                        `).join('')}
+                    </div>`;
+            }
+
+            // 4. Ghép toàn bộ vào Card câu hỏi
+            html += `
+                <div class="question-card" id="card-${globalIdx}">
+                    <div class="q-header">
+                        <span class="q-badge">Câu ${globalIdx + 1}</span>
+                        ${item.question}
+                    </div>
+                    ${imageHtml}
+                    ${answersContent}
+                </div>
+            `;
+            globalIdx++;
+        });
+    });
+    container.innerHTML = html;
+}
+    function handleFinalSubmit() {
+        // Gom tất cả câu hỏi từ các phần thành 1 mảng phẳng để dễ chấm
+        const allQuestions = questionsData.flatMap(s => s.questions);
+        let correctCount = 0;
+
+        allQuestions.forEach((item, i) => {
+            if (item.type === 'short_answer') {
+                const userInput = document.querySelector(`input[data-qidx="${i}"]`).value.trim().toLowerCase();
+                if (userInput === item.correctAnswer.toLowerCase()) correctCount++;
+            } else {
+                const selected = document.querySelector(`input[name="question-${i}"]:checked`);
+                if (selected && parseInt(selected.value) === item.correct) correctCount++;
+            }
+        });
+
+        // Sau đó gọi các hàm hiện modal kết quả như cũ...
+    }
     function selectAnswer(el, qIdx) {
         if(el.classList.contains('disabled')) return;
         document.querySelectorAll(`input[name="question-${qIdx}"]`).forEach(input => input.parentElement.classList.remove('selected'));
