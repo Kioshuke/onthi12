@@ -1163,30 +1163,14 @@ box-shadow:0 2px 8px rgba(0,0,0,0.15);
 .card{
 backdrop-filter:none !important;
 }
-.card::after{
-    left:0;
-    opacity:0;
-    animation: flashLight 0.4s ease;
-}
+
 .card{
 box-shadow:0 3px 10px rgba(0,0,0,0.08);
 animation:none;
 opacity:1;
 transform:none;
 }
-@keyframes flashLight{
-    0%{
-      opacity:0;
-    }
-    50%{
-      opacity:0.25;
-    }
-    100%{
-      opacity:0;
-    }
-  }
 
-}
 .card:hover{
 transform:none;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
@@ -1510,22 +1494,21 @@ const loadingTexts = [
 ];
 
 let textIndex = 0;
-window.addEventListener("DOMContentLoaded", () => {
-  let fill = document.querySelector(".progress-fill");
-  let percentEl = document.querySelector(".progress-percent");
+let fill = document.querySelector(".progress-fill");
+let percentEl = document.querySelector(".progress-percent");
 
-  let width = 0;
+let width = 0;
 
-  let progress = setInterval(()=>{
-    width++;
-    fill.style.width = width + "%";
-    percentEl.innerText = width + "%";
+let progress = setInterval(()=>{
+width++;
 
-    if(width >= 100){
-      clearInterval(progress);
-    }
-  },30);
-});
+fill.style.width = width + "%";
+percentEl.innerText = width + "%";
+
+if(width >= 100){
+clearInterval(progress);
+}
+},30);
 const loadingInterval = setInterval(()=>{
 
 let textEl = document.getElementById("loadingText");
