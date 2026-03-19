@@ -2,12 +2,7 @@
   {
     "sectionTitle": "PHẦN I: TRẮC NGHIỆM NHIỀU LỰA CHỌN",
     "questions": [
-      {
-        "type": "multiple",
-        "question": "Mạng Internet là mạng gì?",
-        "answers": ["Mạng toàn cầu", "Mạng cục bộ", "Mạng gia đình", "Mạng nội bộ"],
-        "correct": 0
-      }
+      { "type": "multiple", "question": "Câu trắc nghiệm 1 điểm...", "answers": ["A", "B", "C", "D"], "correct": 0 }
     ]
   },
   {
@@ -15,21 +10,16 @@
     "questions": [
       {
         "type": "true_false",
-        "question": "Giao thức IP thuộc tầng mạng trong mô hình OSI?",
-        "answers": ["Đúng", "Sai"],
-        "correct": 0,
-        "image": "images/osi.png"
+        "question": "Nội dung câu hỏi Đúng/Sai...",
+        "subQuestions": ["Ý a nội dung...", "Ý b nội dung...", "Ý c nội dung...", "Ý d nội dung..."],
+        "correctAnswers": [0, 1, 0, 1] 
       }
     ]
   },
   {
     "sectionTitle": "PHẦN III: CÂU HỎI TRẢ LỜI NGẮN",
     "questions": [
-      {
-        "type": "short_answer",
-        "question": "Thiết bị nào dùng để kết nối các mạng khác hệ sinh thái với nhau?",
-        "correctAnswer": "Router"
-      }
+      { "type": "short_answer", "question": "Nhập đáp án...", "correctAnswer": "Router" }
     ]
   }
 ]
