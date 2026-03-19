@@ -149,10 +149,13 @@ gap:25px;
 /* CARD */
 
 .card{
-background:rgba(255,255,255,0.8);
+background: linear-gradient(135deg, #ffffff, #eef3ff); /* 🔥 thêm gradient nhẹ */
 padding:22px;
 border-radius:12px;
-box-shadow:0 4px 15px rgba(0,0,0,0.08);
+border:1px solid rgba(90,120,255,0.15); /* viền xanh nhẹ */
+box-shadow:
+0 6px 20px rgba(80,120,255,0.15),  /* bóng xanh nhẹ */
+inset 0 1px 0 rgba(255,255,255,0.6);
 transition:all 0.25s ease;
 opacity:0;
 transform:translateY(30px);
@@ -163,11 +166,17 @@ border:1px solid rgba(255,255,255,0.3);
 
 .card:hover{
 transform:translateY(-6px);
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
+box-shadow:
+0 12px 30px rgba(80,120,255,0.25),
+0 4px 15px rgba(0,0,0,0.1);
 }
 
 .card h3{
 margin-top:0;
+color:#2b3a67; /* xanh đậm */
+}
+.card p{
+color:#6b7280; /* xám dịu */
 }
 @keyframes cardFade{
 from{
