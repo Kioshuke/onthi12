@@ -82,7 +82,7 @@
 
 <div class="container">
     <header>
-        <div class="logo-area"><h2>LearnHub Test</h2></div>
+        <div class="logo-area"><h2>StudyStation</h2></div>
         <div id="action-button-container">
             <button class="btn btn-primary" onclick="openModal('confirmModal')"><span>📤</span> Nộp bài</button>
         </div>
@@ -114,15 +114,46 @@
 </div>
 
 <script>
-    const JSON_URL = "questions.json"; //
+    const JSON_URL = "questions.json";
     let questionsData = [];
 
-    // Tải câu hỏi từ file JSON
+    // 1. Hàm xáo trộn mảng (Dùng để trộn câu hỏi và đáp án)
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // 2. Tải câu hỏi từ file JSON với cơ chế Anti-cache (luôn load mới)
     async function loadQuestions() {
         try {
-            const res = await fetch(JSON_URL);
+            // Thêm timestamp để trình duyệt không load bản cũ trong bộ nhớ đệm
+            const timestamp = new Date().getTime();
+            const res = await fetch(`${JSON_URL}?v=${timestamp}`);
+            
             if (!res.ok) throw new Error("Lỗi tải file JSON");
-            questionsData = await res.json();
+            const data = await res.json();
+
+            // 3. Logic Xáo trộn: Trộn thứ tự câu hỏi và trộn cả thứ tự đáp án bên trong
+            questionsData = shuffle(data).map(q => {
+                // Tạo mảng đối tượng đáp án để giữ nguyên vết đáp án đúng sau khi trộn
+                const mixedAnswers = q.answers.map((ans, index) => ({
+                    text: ans,
+                    isCorrect: index === q.correct
+                }));
+                
+                shuffle(mixedAnswers); // Xáo trộn đáp án
+
+                return {
+                    question: q.question,
+                    answers: mixedAnswers.map(a => a.text),
+                    // Tìm lại vị trí mới của đáp án đúng sau khi đã trộn
+                    correct: mixedAnswers.findIndex(a => a.isCorrect)
+                };
+            });
+
             renderQuiz();
         } catch (e) {
             document.getElementById('quiz-container').innerText = "Không thể tải dữ liệu: " + e.message;
@@ -178,6 +209,7 @@
             const selectedInput = document.querySelector(`input[name="question-${i}"]:checked`);
             const correctIdx = item.correct;
 
+            // Hiển thị đáp án đúng của hệ thống
             document.getElementById(`label-${i}-${correctIdx}`).classList.add('true-answer-highlight');
 
             if (selectedInput) {
