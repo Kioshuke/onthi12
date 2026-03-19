@@ -1661,6 +1661,7 @@ show(savedTab);
 });
 </script>
 <script type="module">
+  
 var currentSubject = "lich";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 
@@ -1744,7 +1745,6 @@ onSnapshot(collection(db,"comments"), snap=>{
     list.appendChild(div);
   });
 });
-const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence);
@@ -1808,7 +1808,6 @@ quote = "Sắp hết ngày rồi, cố gắng lên nào!";
 greeting = "🌙 Chào buổi tối,";
 quote = "Đừng thức quá khuya, giữ sức khỏe nhé!";
 }
-
 // set UI
 const greetingEl = document.getElementById("greetingText");
 if(greetingEl){
