@@ -1802,21 +1802,41 @@ function startListening(){
     });
   });
 }
-window.logout = async function() {
+// Thay thế đoạn window.logout cũ bằng đoạn này
+window.logout = function() {
   const user = auth.currentUser;
-  if (user) {
-    // Cập nhật Offline ngay lập tức ở cả 2 nơi trước khi thoát
-    const myStatusRef = ref(rdb, '/status/' + user.uid);
-    await set(myStatusRef, { online: false, lastSeen: serverTimestamp() });
-    await setDoc(doc(db, "users", user.uid), { online: false }, { merge: true });
-  }
+  
+  // Định nghĩa logic xử lý logout
+  const performLogout = async () => {
+    if (user) {
+      try {
+        // 1. Cập nhật Realtime Database
+        const myStatusRef = ref(rdb, '/status/' + user.uid);
+        await set(myStatusRef, { online: false, lastSeen: serverTimestamp() });
+        
+        // 2. Cập nhật Firestore
+        await setDoc(doc(db, "users", user.uid), { online: false }, { merge: true });
+      } catch (e) {
+        console.error("Lỗi khi update status:", e);
+      }
+    }
 
-  if (unsubscribeUsers) { unsubscribeUsers(); unsubscribeUsers = null; }
+    if (unsubscribeUsers) { 
+      unsubscribeUsers(); 
+      unsubscribeUsers = null; 
+    }
 
-  signOut(auth).then(() => {
-    location.reload();
-  });
-}
+    // 3. Thực hiện đăng xuất khỏi Firebase
+    signOut(auth).then(() => {
+      window.location.reload();
+    }).catch((error) => {
+      console.error("Logout Error:", error);
+    });
+  };
+
+  // Gọi hàm xử lý
+  performLogout();
+};
   document.addEventListener("click", function(e){
   const popup = document.getElementById("userPopup");
   const avatarBox = document.querySelector(".avatar-box");
