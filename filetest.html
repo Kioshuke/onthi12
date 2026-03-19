@@ -45,6 +45,14 @@
             margin-right: 8px; /* Khoảng cách với chữ đầu tiên của câu hỏi */
             vertical-align: middle; /* Căn chỉnh cho đẹp với dòng chữ đầu */
         }
+        /* Tìm đoạn này và sửa lại display thành none */
+        .mobile-nav-btn {
+            display: none; /* Ẩn trên máy tính */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            /* ... các code cũ giữ nguyên ... */
+        }
         /* Layout chính để chia cột */
         .main-layout { display: flex; gap: 25px; align-items: flex-start; width: 100%; }
         .quiz-section { flex: 2; }
