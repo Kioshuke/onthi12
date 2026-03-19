@@ -176,42 +176,6 @@ gap:25px;
     font-size: 1.25rem;
     font-weight: 700;
 }
-.card p {
-    color: #64748b;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin: 0;
-}
-.card .btn {
-    align-self: flex-start;
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #3a86ff, #1e5ac8);
-    color: white;
-    border-radius: 12px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-}
-.card .btn:hover {
-    filter: brightness(1.1);
-    box-shadow: 0 4px 15px rgba(58, 134, 255, 0.4);
-}
-
-/* Thêm một dải màu nhỏ ở đầu card để phân biệt môn học */
-.card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 100%;
-    background: #3a86ff;
-    border-radius: 20px 0 0 20px;
-}
 @keyframes cardFade{
 from{
 opacity:0;
@@ -1355,6 +1319,12 @@ animation: pulse-green 2s infinite;
 <a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/g9smmw')">Làm bài</a>
 </div>
 
+<div class="card" data-id="tin">
+<h3>File Đáp Án</h3>
+<p>Đáp án đề cương</p>
+<a class="btn" onclick="loadQuiz('Tin GK2 TN-ĐS.pdf')">Xem</a>
+
+</div>
 </div>
 
 </div>
