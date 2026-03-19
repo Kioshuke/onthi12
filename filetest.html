@@ -198,6 +198,17 @@
             gap: 15px;
             margin-top: 15px;
         }
+        .tf-row {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #edf2f7;
+    gap: 15px;
+    transition: background 0.2s;
+}
+.tf-row:hover { background: #f1f5f9; }
+.tf-question-text { flex: 1; font-size: 0.95rem; line-height: 1.5; }
+.tf-options { display: flex; gap: 10px; }
     </style>
 </head>
 <body>
@@ -264,42 +275,51 @@
 
     // 2. Tải câu hỏi và xử lý cấu trúc Section
     async function loadQuestions() {
-        try {
-            const timestamp = new Date().getTime();
-            const res = await fetch(`${JSON_URL}?v=${timestamp}`);
-            if (!res.ok) throw new Error("Lỗi tải file JSON");
-            
-            const data = await res.json();
-            
-            // Xử lý dữ liệu: Giữ nguyên Section nhưng xáo trộn câu hỏi bên trong mỗi Section
-            questionsData = data.map(section => {
-                return {
-                    sectionTitle: section.sectionTitle,
-                    questions: shuffle(section.questions).map(q => {
-                        // Nếu là trắc nghiệm nhiều lựa chọn, xáo trộn đáp án
-                        if (q.type === 'multiple' && q.answers) {
-                            const mixedAnswers = q.answers.map((ans, index) => ({
-                                text: ans,
-                                isCorrect: index === q.correct
-                            }));
-                            shuffle(mixedAnswers);
-                            return {
-                                ...q,
-                                answers: mixedAnswers.map(a => a.text),
-                                correct: mixedAnswers.findIndex(a => a.isCorrect)
-                            };
-                        }
-                        return q; // Trả về nguyên bản cho Đúng/Sai và Trả lời ngắn
-                    })
-                };
-            });
+    try {
+        const timestamp = new Date().getTime();
+        const res = await fetch(`${JSON_URL}?v=${timestamp}`);
+        if (!res.ok) throw new Error("Lỗi tải file JSON");
+        
+        const data = await res.json();
+        
+        questionsData = data.map(section => {
+            return {
+                sectionTitle: section.sectionTitle,
+                questions: shuffle(section.questions).map(q => {
+                    // 1. Trộn đáp án câu Trắc nghiệm
+                    if (q.type === 'multiple' && q.answers) {
+                        const mixed = q.answers.map((ans, i) => ({ text: ans, isCorrect: i === q.correct }));
+                        shuffle(mixed);
+                        return {
+                            ...q,
+                            answers: mixed.map(a => a.text),
+                            correct: mixed.findIndex(a => a.isCorrect)
+                        };
+                    }
+                    // 2. Trộn 4 ý nhỏ (a, b, c, d) của câu Đúng/Sai
+                    if (q.type === 'true_false' && q.subQuestions) {
+                        const mixedSub = q.subQuestions.map((sub, i) => ({
+                            text: sub,
+                            correctVal: q.correctAnswers[i] // 0 là Đúng, 1 là Sai
+                        }));
+                        shuffle(mixedSub);
+                        return {
+                            ...q,
+                            subQuestions: mixedSub.map(s => s.text),
+                            correctAnswers: mixedSub.map(s => s.correctVal)
+                        };
+                    }
+                    return q; // Trả về nguyên bản cho Trả lời ngắn
+                })
+            };
+        });
 
-            renderQuiz();
-        } catch (e) {
-            console.error(e);
-            document.getElementById('quiz-container').innerText = "Không thể tải dữ liệu: " + e.message;
-        }
+        renderQuiz();
+    } catch (e) {
+        console.error(e);
+        document.getElementById('quiz-container').innerText = "Lỗi: " + e.message;
     }
+}
 
     // 3. Hàm Render chính - Chia phần bài làm và mục lục
     function renderQuiz() {
@@ -319,10 +339,13 @@
             navHtml += `<div class="nav-section-label" style="grid-column: 1/-1; font-weight: bold; margin: 15px 0 5px; font-size: 0.7rem; color: #64748b; text-transform: uppercase;">${section.sectionTitle}</div>`;
 
             section.questions.forEach((item) => {
-                const imageHtml = item.image ? `
-                    <div class="q-image" style="text-align: center; margin: 15px 0;">
-                        <img src="${item.image}" style="max-width: 100%; max-height: 300px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                    </div>` : '';
+                // Thay thế đoạn cũ bằng đoạn này
+              const imageHtml = (item.image && item.image.trim() !== "") ? `
+                  <div class="q-image" style="text-align: center; margin: 15px 0;">
+                      <img src="${item.image}" 
+                          onerror="this.parentElement.style.display='none'" 
+                          style="max-width: 100%; max-height: 300px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                  </div>` : '';
 
                 let answersContent = '';
 
@@ -336,22 +359,27 @@
                             </label>`).join('')}
                     </div>`;
                 } 
+                // Đoạn này thay thế phần hiển thị true_false trong hàm renderQuiz cũ của bạn
                 else if (item.type === 'true_false') {
-                    window.totalMaxScore += 1; // 4 ý x 0.25
-                    answersContent = `<div class="tf-wrapper" style="background: #f8fafc; border-radius: 12px; padding: 10px; border: 1px solid #e2e8f0;">
-                        ${item.subQuestions.map((sub, subIdx) => `
-                            <div class="tf-row" style="display: flex; align-items: center; padding: 8px; border-bottom: 1px solid #edf2f7; gap: 10px;">
-                                <div style="flex: 1; font-size: 0.95rem;"><strong>${String.fromCharCode(97 + subIdx)}.</strong> ${sub}</div>
-                                <div style="display: flex; gap: 8px;">
-                                    <label style="cursor:pointer; background:white; padding:4px 8px; border-radius:6px; border:1px solid #cbd5e1;">
-                                        <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> Đ
-                                    </label>
-                                    <label style="cursor:pointer; background:white; padding:4px 8px; border-radius:6px; border:1px solid #cbd5e1;">
-                                        <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> S
-                                    </label>
+                    window.totalMaxScore += 1; 
+                    answersContent = `
+                        <div class="tf-wrapper" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+                            ${item.subQuestions.map((sub, subIdx) => `
+                                <div class="tf-row">
+                                    <div class="tf-question-text">
+                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub}
+                                    </div>
+                                    <div class="tf-options">
+                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
+                                        </label>
+                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>S</b>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>`).join('')}
-                    </div>`;
+                            `).join('')}
+                        </div>`;
                 } 
                 else if (item.type === 'short_answer') {
                     window.totalMaxScore += 1;
@@ -409,51 +437,52 @@
 
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
     function handleFinalSubmit() {
-        let userScore = 0;
-        let globalIdx = 0;
+    let userScore = 0;
+    let globalIdx = 0;
 
-        questionsData.forEach((section) => {
-            section.questions.forEach((item) => {
-                const navItem = document.getElementById(`nav-${globalIdx}`);
-                let isPerfect = true;
+    questionsData.forEach((section) => {
+        section.questions.forEach((item) => {
+            const navItem = document.getElementById(`nav-${globalIdx}`);
+            let isPerfect = true;
 
-                if (item.type === 'multiple') {
-                    const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
-                    if (sel && parseInt(sel.value) === item.correct) userScore += 1;
-                    else isPerfect = false;
-                } 
-                else if (item.type === 'true_false') {
-                    let correctCount = 0;
-                    item.subQuestions.forEach((_, subIdx) => {
-                        const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-                        if (sel && parseInt(sel.value) === item.correctAnswers[subIdx]) {
-                            userScore += 0.25;
-                            correctCount++;
-                        }
-                    });
-                    if (correctCount < 4) isPerfect = false;
-                } 
-                else if (item.type === 'short_answer') {
-                    const val = document.querySelector(`input[data-qidx="${globalIdx}"]`).value.trim().toLowerCase();
-                    if (val === item.correctAnswer.toLowerCase()) userScore += 1;
-                    else isPerfect = false;
-                }
+            if (item.type === 'multiple') {
+                const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
+                if (sel && parseInt(sel.value) === item.correct) userScore += 1;
+                else isPerfect = false;
+            } 
+            else if (item.type === 'true_false') {
+                let correctCount = 0;
+                item.subQuestions.forEach((_, subIdx) => {
+                    const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
+                    if (sel && parseInt(sel.value) === item.correctAnswers[subIdx]) {
+                        userScore += 0.25;
+                        correctCount++;
+                    }
+                });
+                if (correctCount < 4) isPerfect = false;
+            } 
+            else if (item.type === 'short_answer') {
+                const val = document.querySelector(`input[data-qidx="${globalIdx}"]`).value.trim().toLowerCase();
+                if (val === item.correctAnswer.toLowerCase()) userScore += 1;
+                else isPerfect = false;
+            }
 
-                // Cập nhật màu mục lục sau khi nộp bài
-                navItem.classList.remove('done');
-                navItem.style.background = isPerfect ? "var(--success)" : "var(--danger)";
-                navItem.style.color = "white";
-                globalIdx++;
-            });
+            // Tô màu mục lục
+            navItem.classList.remove('done');
+            navItem.style.background = isPerfect ? "var(--success)" : "var(--danger)";
+            navItem.style.color = "white";
+            globalIdx++;
         });
+    });
 
-        window.finalScore = userScore;
-        document.getElementById('scoreValue').innerText = userScore.toFixed(1);
-        document.getElementById('statsText').innerText = `Tổng điểm: ${userScore.toFixed(2)} / ${window.totalMaxScore}`;
-        closeModal('confirmModal');
-        openModal('resultModal');
-        updateProgress(true, userScore);
-    }
+    window.finalScore = userScore;
+    document.getElementById('scoreValue').innerText = userScore.toFixed(1);
+    document.getElementById('statsText').innerText = `Tổng điểm: ${userScore.toFixed(2)} / ${window.totalMaxScore}`;
+    
+    closeModal('confirmModal');
+    openModal('resultModal');
+    updateProgress(true, userScore);
+}
 
     // Các hàm điều hướng và Modal
     function scrollToQuestion(i) {
@@ -473,6 +502,7 @@
 
     // Khởi chạy
     loadQuestions();
+  
 </script>
 </body>
 </html>
