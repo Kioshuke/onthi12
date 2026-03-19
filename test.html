@@ -154,7 +154,7 @@ gap:25px;
   padding:22px;
   border-radius:14px;
 
-  border:1px solid rgba(90,120,255,0.25);
+  border:1px solid color-mix(in srgb, var(--card-color) 40%, transparent);
 
   box-shadow:
     0 6px 18px rgba(80,120,255,0.12),
@@ -209,15 +209,16 @@ gap:25px;
   transition:0.6s;
   pointer-events:none;
 }
-
 .card:hover{
-  transform: translateY(-8px);
-  transform: translateY(-14px) scale(1.03); /* 🔥 cao hơn mấy cái khác */
+  transform: translateY(-14px) scale(1.03);
+  outline: 2px solid color-mix(in srgb, var(--card-color) 30%, transparent);
   box-shadow:
-    0 12px 28px rgba(80,120,255,0.25),
-    0 6px 18px rgba(0,0,0,0.1);
-  border:1.5px solid rgba(0, 77, 201, 0.8); /* 🔥 viền đậm hơn */
-  z-index: 5; /* 🔥 nổi lên trên mấy card khác */
+    0 18px 40px color-mix(in srgb, var(--card-color) 35%, transparent),
+    0 6px 20px rgba(0,0,0,0.12);
+
+  border:1.5px solid var(--card-color); /* 🔥 cùng màu luôn */
+
+  z-index: 5;
 }
 
 .card:hover::before{
