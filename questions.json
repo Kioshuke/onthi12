@@ -1,0 +1,12 @@
+[
+  {
+    "question": "H2SO4 là gì?",
+    "answers": ["Axit mạnh", "Bazơ", "Muối", "Kim loại"],
+    "correct": 0
+  },
+  {
+    "question": "NaOH thuộc loại nào?",
+    "answers": ["Axit", "Bazơ", "Muối", "Phi kim"],
+    "correct": 1
+  }
+]
