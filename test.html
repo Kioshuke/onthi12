@@ -1535,58 +1535,55 @@ document.getElementById("loadingOverlay").style.display="none";
 },1000);
 function loadQuiz(btn, link){
 
-// ❌ xoá active cũ
-document.querySelectorAll(".card").forEach(c=>{
-  c.classList.remove("active-card");
-});
+  // ❌ xoá active cũ
+  document.querySelectorAll(".card").forEach(c=>{
+    c.classList.remove("active-card");
+  });
 
-// ✅ set card đang bấm
-const card = btn.closest(".card");
-if(card){
-  card.classList.add("active-card");
+  // ✅ set card đang bấm
+  const card = btn.closest(".card");
+  if(card){
+    card.classList.add("active-card");
+  }
+
+  document.getElementById("quiz").innerHTML =
+  `
+  <div class="quiz-box">
+
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+      <button class="btn close-btn" onclick="closeQuiz()">❌ Đóng bài</button>
+      <button class="btn" onclick="openFullscreen()">⛶ Toàn màn hình</button>
+    </div>
+
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      <p>Đang tải bài kiểm tra...</p>
+    </div>
+
+    <iframe id="quizFrame" src="${link}" style="display:none;"></iframe>
+
+  </div>
+  `;
+
+  let iframe = document.getElementById("quizFrame");
+  let loader = document.getElementById("loader");
+
+  iframe.onload = function(){
+    loader.style.display="none";
+    iframe.style.display="block";
+  }
+
+  // 👉 để scroll + effect TRONG function
+  document.getElementById("quiz").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+  iframe.style.boxShadow = "0 0 25px rgba(26,115,232,0.6)";
+  setTimeout(()=>{
+    iframe.style.boxShadow = "none";
+  },1000);
 }
-
-document.getElementById("quiz").innerHTML =
-`
- <div class="quiz-box">
-
- <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-
- <button class="btn close-btn" onclick="closeQuiz()">❌ Đóng bài</button>
-
- <button class="btn" onclick="openFullscreen()">⛶ Toàn màn hình</button>
-
- </div>
-
- <div class="loader" id="loader">
- <div class="spinner"></div>
- <p>Đang tải bài kiểm tra...</p>
- </div>
-
- <iframe id="quizFrame" src="${link}" style="display:none;"></iframe>
-
- </div>
-`;
-
-let iframe = document.getElementById("quizFrame");
-let loader = document.getElementById("loader");
-
-iframe.onload = function(){
-  loader.style.display="none";
-  iframe.style.display="block";
-}
-
-}
-
-iframe.scrollIntoView({
-behavior: "smooth",
-block: "center"
-});
-
-iframe.style.boxShadow = "0 0 25px rgba(26,115,232,0.6)";
-setTimeout(()=>{
-iframe.style.boxShadow = "none";
-},1000);
 
 window.scrollTo({
 top:document.getElementById("quiz").offsetTop,
