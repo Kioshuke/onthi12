@@ -47,9 +47,10 @@
         .ans-label.selected { border-color: var(--primary); background: var(--primary-light); }
         
         /* Trạng thái Review - Đổi sang Xanh dương theo yêu cầu */
-        .review-correct { border-color: var(--success) !important; background: #ecfdf5 !important; }
-        .review-wrong { border-color: var(--danger) !important; background: #fef2f2 !important; }
-        .true-answer-highlight { border-color: var(--info) !important; background: var(--primary-light) !important; border-width: 2px; }
+        .review-correct { border: 2px solid var(--success) !important; background: transparent !important; }
+        .review-wrong { border: 2px solid var(--danger) !important; background: transparent !important; }
+        .ans-label.review-wrong { background: #fef2f2 !important; }
+        .true-answer-highlight { border: 2px solid var(--info) !important; background: var(--primary-light) !important; }
         .true-answer-highlight::after { content: "✓ Đáp án đúng"; position: absolute; right: 8px; top: 2px; font-size: 0.65rem; color: var(--info); font-weight: bold; }
 
         .btn { padding: 10px 22px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
