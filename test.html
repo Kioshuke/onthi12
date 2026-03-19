@@ -333,7 +333,7 @@ box-shadow:0 4px 15px rgba(0,0,0,0.1);
 
 iframe{
 width:100%;
-height:85vh; /* giảm chút */
+height:calc(100vh - 120px);
 border:none;
 will-change: transform;
 }
@@ -1571,20 +1571,21 @@ function loadQuiz(btn, link){
   let loader = document.getElementById("loader");
 
   iframe.onload = function(){
-    loader.style.display="none";
-    iframe.style.display="block";
-  }
+  loader.style.display="none";
+  iframe.style.display="block";
 
-  // 👉 để scroll + effect TRONG function
+  // 🔥 SCROLL SAU KHI LOAD XONG
   document.getElementById("quiz").scrollIntoView({
     behavior: "smooth",
     block: "start"
   });
 
+  // hiệu ứng glow
   iframe.style.boxShadow = "0 0 25px rgba(26,115,232,0.6)";
   setTimeout(()=>{
     iframe.style.boxShadow = "none";
   },1000);
+}
 }
 
 function closeQuiz(){
@@ -1969,9 +1970,15 @@ online: false
 }, { merge: true });
 }
 
-// 🔥 QUAN TRỌNG: tắt realtime listener
+// 🔥 TẮT interval (THÊM Ở ĐÂY)
+if(activeInterval){
+  clearInterval(activeInterval);
+  activeInterval = null;
+}
+
+// 🔥 tắt realtime listener
 if(unsubscribeUsers){
-unsubscribeUsers();   // <-- dòng fix chính
+unsubscribeUsers();
 unsubscribeUsers = null;
 }
 
@@ -2010,6 +2017,7 @@ setInterval(updateTime,1000);
 updateTime();
 function toggleUserPopup(){
 let pop = document.getElementById("userPopup");
+if(!pop) return;
 
 if(getComputedStyle(pop).display === "none"){
 pop.style.display = "block";
