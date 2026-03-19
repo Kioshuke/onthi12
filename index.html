@@ -1014,10 +1014,8 @@ padding: 8px 20px;
 
 display: flex;
 align-items: center;
-justify-content: space-between; /* 🔥 FIX CHÍNH */
 
 gap: 12px;
-flex-wrap: nowrap; /* 🔥 KHÔNG cho xuống dòng */
 
 border-radius: 50px;
 background: rgba(255, 255, 255, 0.9);
@@ -1687,14 +1685,14 @@ onAuthStateChanged(auth, (user)=>{
 if(user){
   if(!activeInterval){
   activeInterval = setInterval(()=>{
-    const user = auth.currentUser;
-    if(user){
-      setDoc(doc(db,"users",user.uid),{
-        lastActive: Date.now(),
-        online: true
-      },{ merge:true });
-    }
-  }, 8000);
+  const user = auth.currentUser;
+  if(user){
+    setDoc(doc(db,"users",user.uid),{
+      lastActive: Date.now(),
+      online: true   // 🔥 THÊM DÒNG NÀY
+    },{ merge:true });
+  }
+}, 5000);
 }
 
 startListening(); // 🔥 luôn gọi
@@ -1771,9 +1769,9 @@ await setDoc(doc(db,"users",user.uid),{
   name: user.displayName,
   email: user.email,
   photo: user.photoURL,
-  online: true,
   lastLogin: new Date().toISOString(),
-  lastActive: Date.now()
+  lastActive: Date.now(),
+  online: true // ✅ GIỮ LẠI
 });
 
 document.getElementById("loginBox").style.display="none";
@@ -1819,8 +1817,9 @@ snap.forEach(doc => {
 const u = doc.data();
 const now = Date.now();
 
-// nếu quá 15s không hoạt động => coi như offline
 if (!u.lastActive || now - u.lastActive > 15000) return;
+
+if (!u.online) return;
 
 const div = document.createElement("div");
 
@@ -1869,6 +1868,9 @@ popup &&
 ){
 popup.style.display = "none";
 }
+});
+window.addEventListener("beforeunload", () => {
+  updateStatus(false);
 });
 </script>
 <script>
