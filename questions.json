@@ -1,222 +1,35 @@
 [
   {
-    "question": "Thiết bị hiển thị là gì?",
-    "answers": [
-      "Thiết bị dùng để lưu trữ dữ liệu hệ thống.",
-      "Thiết bị dùng để hiển thị hình ảnh và văn bản.",
-      "Thiết bị dùng để nhập dữ liệu vào máy tính.",
-      "Thiết bị dùng để xử lí dữ liệu trung tâm."
-    ],
-    "correct": 1
+    "sectionTitle": "PHẦN I: TRẮC NGHIỆM NHIỀU LỰA CHỌN",
+    "questions": [
+      {
+        "type": "multiple",
+        "question": "Mạng Internet là mạng gì?",
+        "answers": ["Mạng toàn cầu", "Mạng cục bộ", "Mạng gia đình", "Mạng nội bộ"],
+        "correct": 0
+      }
+    ]
   },
   {
-    "question": "Cổng kết nối nào thường dùng để kết nối thiết bị hiển thị với máy tính?",
-    "answers": [
-      "USB và Ethernet.",
-      "HDMI và VGA.",
-      "Bluetooth và Ethernet.",
-      "Wi-Fi và Bluetooth."
-    ],
-    "correct": 1
+    "sectionTitle": "PHẦN II: CÂU HỎI ĐÚNG SAI",
+    "questions": [
+      {
+        "type": "true_false",
+        "question": "Giao thức IP thuộc tầng mạng trong mô hình OSI?",
+        "answers": ["Đúng", "Sai"],
+        "correct": 0,
+        "image": "images/osi.png"
+      }
+    ]
   },
   {
-    "question": "Công nghệ nào cho phép kết nối không dây tầm gần giữa các thiết bị số?",
-    "answers": [
-      "Ethernet không dây.",
-      "Bluetooth.",
-      "HDMI.",
-      "VGA."
-    ],
-    "correct": 1
-  },
-  {
-    "question": "Chuẩn cáp nào truyền được cả âm thanh và hình ảnh trên cùng một sợi cáp?",
-    "answers": [
-      "Ethernet.",
-      "Bluetooth.",
-      "HDMI.",
-      "VGA."
-    ],
-    "correct": 2
-  },
-  {
-    "question": "Nhà thông minh được hiểu đúng nhất là gì?",
-    "answers": [
-      "Nhà có nhiều thiết bị điện tử hiện đại.",
-      "Nhà sử dụng công nghệ để tăng tiện ích và an toàn.",
-      "Nhà có kết nối Internet tốc độ cao.",
-      "Nhà có thiết bị tháo lắp nhanh chóng."
-    ],
-    "correct": 1
-  },
-  {
-    "question": "Ở chế độ Extend, trạng thái hiển thị là gì?",
-    "answers": [
-      "Hai màn hình hiển thị giống nhau.",
-      "Chỉ màn hình ngoài hoạt động.",
-      "Hai màn hình hoạt động độc lập.",
-      "Chỉ màn hình máy tính hoạt động."
-    ],
-    "correct": 2
-  },
-  {
-    "question": "Khi thiết bị thông minh kết nối Internet, trạng thái thường được lưu ở đâu?",
-    "answers": [
-      "Bộ nhớ trong của thiết bị.",
-      "Router mạng nội bộ.",
-      "Cơ sở dữ liệu đám mây.",
-      "Ứng dụng điện thoại."
-    ],
-    "correct": 2
-  },
-  {
-    "question": "Giáo viên dùng máy chiếu nhưng chỉ màn hình laptop hiển thị, giải pháp nhanh nhất là gì?",
-    "answers": [
-      "Khởi động lại máy tính và gắn lại cáp kết nối.",
-      "Nhấn Windows + P và chọn Duplicate.",
-      "Thay cáp HDMI mới.",
-      "Cài lại hệ điều hành."
-    ],
-    "correct": 1
-  },
-  {
-    "question": "Muốn bật/tắt tự động cho đèn thông minh, cần làm gì?",
-    "answers": [
-      "Reset thiết bị.",
-      "Sử dụng chức năng hẹn giờ trong ứng dụng.",
-      "Đổi mạng Wi-Fi.",
-      "Tắt nguồn thiết bị."
-    ],
-    "correct": 1
-  },
-  {
-    "question": "Để kết nối không dây TV thông minh với laptop, yêu cầu cơ bản nhất là gì?",
-    "answers": [
-      "Khoảng cách thiết bị gần nhau.",
-      "Hai thiết bị cùng một mạng.",
-      "Một thiết bị có Internet.",
-      "Tốc độ mạng thật cao."
-    ],
-    "correct": 1
-  },
-  {
-    "question": "Thiết bị nào sau đây thường được kết nối với máy tính để truyền tải dữ liệu cá nhân hoặc sạc pin?",
-    "answers": [
-      "Điện thoại di động thông minh.",
-      "Máy bơm nước tự động gia đình.",
-      "Bếp điện tử công suất cao.",
-      "Quạt điện xoay chiều thông thường."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Chức năng chính của thiết bị Access Point trong mạng máy tính là gì?",
-    "answers": [
-      "Cung cấp kết nối không dây cho thiết bị.",
-      "Cắt và nối các đoạn dây cáp mạng.",
-      "Đo nhiệt độ và độ ẩm của phòng máy.",
-      "Hiển thị hình ảnh thay cho màn hình PC."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Thiết bị nào có khả năng kết nối Internet để theo dõi sức khỏe người dùng?",
-    "answers": [
-      "Vòng đeo tay thông minh (Smartband).",
-      "Đồng hồ treo tường chạy bằng pin.",
-      "Thước dây đo chiều dài thủ công.",
-      "Cân lò xo cơ học loại phổ thông."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Trong một mạng máy tính, thiết bị nào đóng vai trò quản lí tài nguyên và cung cấp dịch vụ cho các máy trạm?",
-    "answers": [
-      "Máy chủ (Server).",
-      "Chuột không dây.",
-      "Miếng lót chuột.",
-      "Tai nghe có dây."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Tại sao cần phải thực hành kết nối PC với các thiết bị số thông dụng như tivi hay điện thoại?",
-    "answers": [
-      "Để nâng cao khả năng đồng bộ dữ liệu.",
-      "Để làm cho máy tính chạy nhanh hơn.",
-      "Để tăng dung lượng bộ nhớ của bàn phím.",
-      "Để thay đổi màu sắc vỏ ngoài của tivi."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Điểm khác biệt cơ bản về chức năng giữa Switch và Modem là gì?",
-    "answers": [
-      "Switch kết nối nội bộ, Modem kết nối Internet.",
-      "Switch phát Wi-Fi, Modem chỉ dùng dây cáp.",
-      "Switch cấp điện, Modem cấp tín hiệu âm thanh.",
-      "Hai thiết bị này có chức năng hoàn toàn giống nhau."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Việc kết nối thiết bị thực tế ảo (VR) với máy tính nhằm mục đích gì?",
-    "answers": [
-      "Tạo ra môi trường mô phỏng 3D tương tác.",
-      "Để thay thế hoàn toàn bộ vi xử lí của PC.",
-      "Để in các văn bản ra giấy một cách nhanh chóng.",
-      "Để quét virus cho hệ điều hành của máy tính."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Chức năng của cổng HDMI trên máy tính và tivi thông minh là gì?",
-    "answers": [
-      "Truyền tải đồng thời cả hình ảnh và âm thanh.",
-      "Cung cấp kết nối mạng không dây tốc độ cao.",
-      "Chỉ dùng để cung cấp điện năng cho thiết bị.",
-      "Dùng để kết nối chuột và bàn phím máy tính."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Khi kết nối điện thoại với máy tính qua cổng USB nhưng máy tính không nhận diện được bộ nhớ, bạn nên làm gì?",
-    "answers": [
-      "Kiểm tra cáp và chọn chế độ “Truyền tệp” trên điện thoại.",
-      "Ngay lập tức tháo pin điện thoại và lắp lại nhiều lần.",
-      "Cài đặt lại toàn bộ hệ điều hành Windows cho máy tính.",
-      "Mua một chiếc máy tính mới để thay thế máy đang dùng."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Để trình chiếu nội dung từ máy tính lên tivi có khả năng kết nối Internet mà không cần dùng dây, bạn sử dụng tính năng nào?",
-    "answers": [
-      "Tính năng chia sẻ màn hình không dây (Screen Mirroring).",
-      "Sử dụng cáp mạng LAN để nối trực tiếp hai thiết bị.",
-      "Dùng USB Flash để chép dữ liệu rồi cắm vào tivi.",
-      "Sử dụng thiết bị điều khiển từ xa của tivi để quét mã."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Trong một văn phòng nhỏ, nếu bạn muốn tất cả các máy tính đều có thể truy cập Internet chung một đường truyền, bạn cần thiết bị nào?",
-    "answers": [
-      "Một bộ định tuyến (Router) hoặc Modem có cổng LAN/Wi-Fi.",
-      "Một bộ lưu điện (UPS) công suất lớn cho toàn văn phòng.",
-      "Một chiếc máy ảnh kĩ thuật số có khả năng quay phim.",
-      "Một bộ loa máy tính có hỗ trợ kết nối Bluetooth."
-    ],
-    "correct": 0
-  },
-  {
-    "question": "Khi thiết lập một mạng LAN đơn giản cho phòng học, việc phân biệt các loại cáp mạng và đầu nối giúp ích gì?",
-    "answers": [
-      "Đảm bảo kết nối vật lí đúng chuẩn và đạt tốc độ tốt.",
-      "Giúp các máy tính trong phòng có thể tự sạc pin.",
-      "Làm cho bàn ghế trong phòng học trông đẹp mắt hơn.",
-      "Giúp giáo viên quản lí học sinh mà không cần phần mềm."
-    ],
-    "correct": 0
+    "sectionTitle": "PHẦN III: CÂU HỎI TRẢ LỜI NGẮN",
+    "questions": [
+      {
+        "type": "short_answer",
+        "question": "Thiết bị nào dùng để kết nối các mạng khác hệ sinh thái với nhau?",
+        "correctAnswer": "Router"
+      }
+    ]
   }
 ]
