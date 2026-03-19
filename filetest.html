@@ -324,12 +324,18 @@
         document.getElementById('statsText').innerText = `Đúng ${correctCount}/${questionsData.length} câu`;
         openModal('resultModal');
     }
-
+    // Hàm xác nhận trước khi làm lại
+    function confirmReload() {
+        const isConfirm = confirm("Bạn có chắc chắn muốn làm lại từ đầu không? Toàn bộ kết quả hiện tại sẽ bị xóa.");
+        if (isConfirm) {
+            location.reload();
+        }
+    }
     function reviewMode() {
         closeModal('resultModal');
         updateProgress(true, window.finalCorrectCount);
         document.getElementById('action-button-container').innerHTML = `
-            <button class="btn btn-reload" onclick="location.reload()"><span>🔄</span> Làm lại</button>
+            <button class="btn btn-reload" onclick="confirmReload()"><span>🔄</span> Làm lại</button>
         `;
 
       questionsData.forEach((item, i) => {
