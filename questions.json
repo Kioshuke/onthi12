@@ -2,24 +2,25 @@
   {
     "sectionTitle": "PHẦN I: TRẮC NGHIỆM NHIỀU LỰA CHỌN",
     "questions": [
-      { "type": "multiple", "question": "Câu trắc nghiệm 1 điểm...", "answers": ["A", "B", "C", "D"], "correct": 0 }
+      { "type": "multiple", "question": "Câu hỏi trắc nghiệm có ảnh...", "image": "img1.jpg", "answers": ["A", "B", "C", "D"], "correct": 0 }
     ]
   },
   {
     "sectionTitle": "PHẦN II: CÂU HỎI ĐÚNG SAI",
     "questions": [
       {
-        "type": "true_false",
-        "question": "Nội dung câu hỏi Đúng/Sai...",
-        "subQuestions": ["Ý a nội dung...", "Ý b nội dung...", "Ý c nội dung...", "Ý d nội dung..."],
-        "correctAnswers": [0, 1, 0, 1] 
+        "type": "true_false", 
+        "question": "Câu hỏi đúng sai có ảnh...", 
+        "image": "img2.jpg",
+        "subQuestions": ["Ý a...", "Ý b...", "Ý c...", "Ý d..."],
+        "correctAnswers": [0, 1, 0, 1]
       }
     ]
   },
   {
     "sectionTitle": "PHẦN III: CÂU HỎI TRẢ LỜI NGẮN",
     "questions": [
-      { "type": "short_answer", "question": "Nhập đáp án...", "correctAnswer": "Router" }
+      { "type": "short_answer", "question": "Câu trả lời ngắn có ảnh...", "image": "img3.jpg", "correctAnswer": "Router" }
     ]
   }
 ]
