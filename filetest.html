@@ -483,7 +483,52 @@
     openModal('resultModal');
     updateProgress(true, userScore);
 }
+    function reviewMode() {
+    // 1. Đóng bảng kết quả ngay lập tức
+    closeModal('resultModal');
 
+    // 2. Khóa toàn bộ các ô nhập liệu để không cho sửa bài
+    document.querySelectorAll('input').forEach(input => {
+        input.disabled = true;
+    });
+
+    // 3. Hiển thị đáp án đúng/sai chi tiết
+    let globalIdx = 0;
+    questionsData.forEach((section) => {
+        section.questions.forEach((item) => {
+            // Hiển thị đáp án cho câu Trắc nghiệm
+            if (item.type === 'multiple') {
+                const labels = document.querySelectorAll(`[id^="label-${globalIdx}-"]`);
+                labels.forEach((label, idx) => {
+                    if (idx === item.correct) {
+                        label.classList.add('true-answer-highlight'); // Hiện xanh dương cho câu đúng
+                    }
+                    const radio = label.querySelector('input');
+                    if (radio.checked && idx !== item.correct) {
+                        label.classList.add('review-wrong'); // Hiện đỏ cho câu bạn chọn sai
+                    }
+                });
+            }
+            // Hiển thị đáp án đúng cho câu Trả lời ngắn
+            if (item.type === 'short_answer') {
+                const input = document.querySelector(`input[data-qidx="${globalIdx}"]`);
+                const resultDiv = document.createElement('div');
+                resultDiv.style.color = "var(--success)";
+                resultDiv.style.fontSize = "0.85rem";
+                resultDiv.style.marginTop = "8px";
+                resultDiv.style.fontWeight = "bold";
+                resultDiv.innerHTML = `✓ Đáp án đúng: ${item.correctAnswer}`;
+                input.parentNode.appendChild(resultDiv);
+            }
+            globalIdx++;
+        });
+    });
+
+    // 4. Thay nút Nộp bài trên Header thành nút Làm lại
+    document.getElementById('action-button-container').innerHTML = `
+        <button class="btn btn-reload" onclick="location.reload()" style="width:100%">🔄 Làm bài mới</button>
+    `;
+}
     // Các hàm điều hướng và Modal
     function scrollToQuestion(i) {
         const el = document.getElementById(`card-${i}`);
