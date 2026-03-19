@@ -1661,7 +1661,7 @@ show(savedTab);
 });
 </script>
 <script type="module">
-let currentSubject = "lich";
+var currentSubject = "lich";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 
 import { 
@@ -1850,7 +1850,7 @@ window.googleLogin = async function(){
     const user = result.user;
     console.log("Login success:", user); // 🔥 debug
 
-    if(!allowList.includes(user.email)){
+    if(!allowList.includes(user.email.toLowerCase())){
       alert("❌ Tài khoản không được cấp quyền!");
       await signOut(auth);
       return;
