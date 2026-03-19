@@ -136,6 +136,12 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
 .menu button[data-subject="hoa"]{
   --btn-color:#8b5cf6;
 }
+.menu button[data-subject]:hover{
+background: color-mix(in srgb, var(--btn-color) 20%, white);
+}
+.menu button[data-subject="lich"]{
+  --btn-color:#d4068f;
+}
 /* CONTENT */
 
 .content{
@@ -857,7 +863,7 @@ transform: scale(0.96);
 </div>
 
 <div class="menu">
-<button class="active" onclick="show('lich')">Lịch Thi</button>
+<button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
 <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
 <button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
 <button data-subject="tin" onclick="show('tin')">Tin Học</button>
