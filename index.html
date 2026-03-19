@@ -1650,6 +1650,8 @@
   } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
   import { getFirestore, doc, setDoc }
   from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+  import { getDatabase, ref, onValue, onDisconnect, set, serverTimestamp } 
+  from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
   const firebaseConfig = {
     apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
     authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -1662,83 +1664,58 @@
 
   const auth = getAuth(app);
   await setPersistence(auth, browserLocalPersistence);
-  const db = getFirestore(app);
+const db = getFirestore(app);
+const rdb = getDatabase(app); // Khởi tạo thêm Realtime DB
+const provider = new GoogleAuthProvider();
 
-  const provider = new GoogleAuthProvider();
+// Danh sách email cho phép (giữ nguyên của bạn)
+const allowList = [
+  "quanhao678@gmail.com", "huunhan170908@gmail.com", "thanhcong0976888@gmail.com",
+  "duchieu0383377967@gmail.com", "tanphat131008@gmail.com", "lebaonguyen3003@gmail.com",
+  "lamhuynhanh456@gmail.com", "nguyenquyenthdt2021@gmail.com", "nhiho.v2008@gmail.com",
+  "baotran150308@gmail.com", "leducanh2022jojo@gmail.com", "quynhnhu07052020@gmail.com",
+  "nguyenthimynhan202011@gmail.com", "kienquoc2021dt@gmail.com", "pnpthuy.2811@gmail.com",
+  "bangbang4951@gmail.com", "xmai9839@gmail.com",
+];
 
-  const allowList = [
-  "quanhao678@gmail.com",
-  "huunhan170908@gmail.com",
-  "thanhcong0976888@gmail.com",
-  "duchieu0383377967@gmail.com",
-  "tanphat131008@gmail.com",
-  "lebaonguyen3003@gmail.com",
-  "lamhuynhanh456@gmail.com",
-  "nguyenquyenthdt2021@gmail.com",
-  "nhiho.v2008@gmail.com",
-  "baotran150308@gmail.com",
-  "leducanh2022jojo@gmail.com",
-  "quynhnhu07052020@gmail.com",
-  "nguyenthimynhan202011@gmail.com",
-  "kienquoc2021dt@gmail.com",
-  "pnpthuy.2811@gmail.com",
-  "bangbang4951@gmail.com",
-  "xmai9839@gmail.com",
-  ];
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // --- LOGIC REALTIME PRESENCE ---
+    const infoConnectedRef = ref(rdb, '.info/connected');
+    const myStatusRef = ref(rdb, '/status/' + user.uid);
+    const userDocRef = doc(db, "users", user.uid);
 
-onAuthStateChanged(auth, (user)=>{
-  if(user){
+    onValue(infoConnectedRef, (snapshot) => {
+      if (snapshot.val() === false) return;
 
-    startListening(); // 🔥 luôn gọi
+      // Khi mất kết nối (tắt app/mất mạng), Server tự động set offline
+      onDisconnect(myStatusRef).set({ online: false, lastSeen: serverTimestamp() }).then(() => {
+        // Khi đang online
+        set(myStatusRef, { online: true, lastSeen: serverTimestamp() });
+        setDoc(userDocRef, { online: true, lastSeen: new Date().toISOString() }, { merge: true });
+      });
+    });
 
-// vì bên trong đã có:
+    startListening(); 
 
-    // greeting logic
+    // Logic hiển thị lời chào (Giữ nguyên code cũ của bạn)
     const hour = new Date().getHours();
-    let greeting = "";
-    let quote = "";
+    let greeting = ""; let quote = "";
+    if (hour >= 5 && hour < 11) { greeting = "☀️ Chào buổi sáng,"; quote = "Chúc bạn một ngày học tập năng suất!"; }
+    else if (hour >= 11 && hour < 14) { greeting = "🌤️ Nghỉ trưa thôi,"; quote = "Nạp năng lượng để chiến đấu tiếp nhé!"; }
+    else if (hour >= 14 && hour < 18) { greeting = "☕ Chào buổi chiều,"; quote = "Sắp hết ngày rồi, cố gắng lên nào!"; }
+    else { greeting = "🌙 Chào buổi tối,"; quote = "Đừng thức quá khuya, giữ sức khỏe nhé!"; }
 
-    if (hour >= 5 && hour < 11) {
-      greeting = "☀️ Chào buổi sáng,";
-      quote = "Chúc bạn một ngày học tập năng suất!";
-    } else if (hour >= 11 && hour < 14) {
-      greeting = "🌤️ Nghỉ trưa thôi,";
-      quote = "Nạp năng lượng để chiến đấu tiếp nhé!";
-    } else if (hour >= 14 && hour < 18) {
-      greeting = "☕ Chào buổi chiều,";
-      quote = "Sắp hết ngày rồi, cố gắng lên nào!";
-    } else {
-      greeting = "🌙 Chào buổi tối,";
-      quote = "Đừng thức quá khuya, giữ sức khỏe nhé!";
-    }
-
-    // set UI
-    const greetingEl = document.getElementById("greetingText");
-if(greetingEl){
-  greetingEl.innerText = greeting;
-}
-    const nameEl = document.getElementById("popupName");
-if(nameEl) nameEl.innerText = user.displayName || "Bạn";
-
-const emailEl = document.getElementById("popupEmail");
-if(emailEl) emailEl.innerText = user.email;
-
-const quoteEl = document.getElementById("popupQuote");
-if(quoteEl) quoteEl.innerText = quote;
+    if(document.getElementById("greetingText")) document.getElementById("greetingText").innerText = greeting;
+    if(document.getElementById("popupName")) document.getElementById("popupName").innerText = user.displayName || "Bạn";
+    if(document.getElementById("popupEmail")) document.getElementById("popupEmail").innerText = user.email;
+    if(document.getElementById("popupQuote")) document.getElementById("popupQuote").innerText = quote;
+    
     document.getElementById("loginBox").style.display="none";
-
-    document.getElementById("welcomeText").innerText =
-      "Chúc bạn ôn thi thật tốt,";
-
-    document.getElementById("userName").innerText =
-      user.displayName;
-
-    document.getElementById("userAvatar").src =
-      user.photoURL || "https://i.imgur.com/6VBx3io.png";
-    const popupAvatar = document.getElementById("popupAvatar");
-if(popupAvatar){
-  popupAvatar.src = user.photoURL || "https://i.imgur.com/6VBx3io.png";
-}
+    document.getElementById("welcomeText").innerText = "Chúc bạn ôn thi thật tốt,";
+    document.getElementById("userName").innerText = user.displayName;
+    document.getElementById("userAvatar").src = user.photoURL || "https://i.imgur.com/6VBx3io.png";
+    if(document.getElementById("popupAvatar")) document.getElementById("popupAvatar").src = user.photoURL || "https://i.imgur.com/6VBx3io.png";
   } else {
     document.getElementById("loginBox").style.display="flex";
   }
@@ -1825,24 +1802,18 @@ function startListening(){
     });
   });
 }
-  window.logout = async function(){
+window.logout = async function() {
   const user = auth.currentUser;
-
-  // cập nhật offline
-  if(user){
-    await setDoc(doc(db, "users", user.uid), {
-      online: false
-    }, { merge: true });
+  if (user) {
+    // Cập nhật Offline ngay lập tức ở cả 2 nơi trước khi thoát
+    const myStatusRef = ref(rdb, '/status/' + user.uid);
+    await set(myStatusRef, { online: false, lastSeen: serverTimestamp() });
+    await setDoc(doc(db, "users", user.uid), { online: false }, { merge: true });
   }
 
-  // 🔥 QUAN TRỌNG: tắt realtime listener
-  if(unsubscribeUsers){
-    unsubscribeUsers();   // <-- dòng fix chính
-    unsubscribeUsers = null;
-  }
+  if (unsubscribeUsers) { unsubscribeUsers(); unsubscribeUsers = null; }
 
-  // logout
-  signOut(auth).then(()=>{
+  signOut(auth).then(() => {
     location.reload();
   });
 }
