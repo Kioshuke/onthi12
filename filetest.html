@@ -116,6 +116,9 @@
             display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
             border: 4px solid #dbeafe;
         }
+        /* Màu cho ô mục lục khi xem kết quả */
+        .nav-item.nav-correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: var(--success) !important; }
+        .nav-item.nav-wrong { background: #fef2f2 !important; border-color: var(--danger) !important; color: var(--danger) !important; }
 
         @media (max-width: 600px) { .answers-grid { grid-template-columns: 1fr; } }
     </style>
@@ -262,26 +265,31 @@
             <button class="btn btn-reload" onclick="location.reload()"><span>🔄</span> Làm lại</button>
         `;
 
-        questionsData.forEach((item, i) => {
-            const card = document.getElementById(`card-${i}`);
-            const selectedInput = document.querySelector(`input[name="question-${i}"]:checked`);
-            const correctIdx = item.correct;
+        updateProgress(true, window.finalCorrectCount || 0);
 
-            // Hiển thị đáp án đúng của hệ thống
-            document.getElementById(`label-${i}-${correctIdx}`).classList.add('true-answer-highlight');
+      questionsData.forEach((item, i) => {
+          const card = document.getElementById(`card-${i}`);
+          const navItem = document.getElementById(`nav-${i}`); // Lấy ô số tương ứng
+          const selectedInput = document.querySelector(`input[name="question-${i}"]:checked`);
+          const correctIdx = item.correct;
 
-            if (selectedInput) {
-                const userVal = parseInt(selectedInput.value);
-                if (userVal === correctIdx) {
-                    card.classList.add('review-correct');
-                } else {
-                    card.classList.add('review-wrong');
-                    document.getElementById(`label-${i}-${userVal}`).classList.add('review-wrong');
-                }
-            } else {
-                card.classList.add('review-wrong');
-            }
-        });
+          document.getElementById(`label-${i}-${correctIdx}`).classList.add('true-answer-highlight');
+
+          if (selectedInput) {
+              const userVal = parseInt(selectedInput.value);
+              if (userVal === correctIdx) {
+                  card.classList.add('review-correct');
+                  navItem.classList.add('nav-correct'); // <-- THÊM: Ô số mục lục biến thành Xanh lá
+              } else {
+                  card.classList.add('review-wrong');
+                  document.getElementById(`label-${i}-${userVal}`).classList.add('review-wrong');
+                  navItem.classList.add('nav-wrong');   // <-- THÊM: Ô số mục lục biến thành Đỏ
+              }
+          } else {
+              card.classList.add('review-wrong');
+              navItem.classList.add('nav-wrong');       // <-- THÊM: Không làm cũng thành Đỏ
+          }
+      });
 
         document.querySelectorAll('.ans-label').forEach(l => l.classList.add('disabled'));
         document.querySelectorAll('input').forEach(i => i.disabled = true);
@@ -304,9 +312,18 @@
         if(window.innerWidth <= 1024) toggleSidebar(); 
     }
 
-    function updateProgress() {
-        const doneCount = document.querySelectorAll('.nav-item.done').length;
-        document.getElementById('progressText').innerText = `${doneCount}/${questionsData.length}`;
+    function updateProgress(isFinished, correctCount = 0) {
+        const textEl = document.getElementById('progressText');
+        if (isFinished) {
+            // Khi đã nộp bài: Hiện số câu đúng và đổi chữ sang màu Xanh lá
+            textEl.innerText = `${correctCount}/${questionsData.length}`;
+            textEl.style.color = "var(--success)"; 
+        } else {
+            // Khi đang làm: Hiện số câu đã chọn và chữ màu Xanh dương
+            const doneCount = document.querySelectorAll('.nav-item.done').length;
+            textEl.innerText = `${doneCount}/${questionsData.length}`;
+            textEl.style.color = "var(--primary)";
+        }
     }
 
     function toggleSidebar() {
