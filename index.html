@@ -1442,7 +1442,15 @@ if(textIndex >= loadingTexts.length){
 clearInterval(loadingInterval);
 
 setTimeout(()=>{
-document.getElementById("loadingOverlay").style.display="none";
+const overlay = document.getElementById("loadingOverlay");
+
+overlay.style.opacity = "0";          // fade out
+overlay.style.pointerEvents = "none"; // 🔥 QUAN TRỌNG: cho click xuyên qua
+
+setTimeout(()=>{
+  overlay.style.display = "none";     // ẩn hẳn
+},300);
+
 },600);
 
 }
