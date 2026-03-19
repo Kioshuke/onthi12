@@ -1798,42 +1798,6 @@ function startListening(){
     });
   });
 }
-// --- ĐOẠN MÃ MỚI THAY THẾ CHO WINDOW.LOGOUT CŨ ---
-const logoutButton = document.getElementById("logoutBtn");
-if (logoutButton) {
-  logoutButton.addEventListener("click", async () => {
-    const user = auth.currentUser;
-    if (user) {
-      try {
-        // 1. Cập nhật Offline ở Realtime Database
-        const myStatusRef = ref(rdb, '/status/' + user.uid);
-        await set(myStatusRef, { online: false, lastSeen: serverTimestamp() });
-        
-        // 2. Cập nhật Offline ở Firestore
-        const userDocRef = doc(db, "users", user.uid);
-        await setDoc(userDocRef, { online: false, lastSeen: new Date().toISOString() }, { merge: true });
-        
-        console.log("Đã cập nhật trạng thái Offline");
-      } catch (e) {
-        console.error("Lỗi cập nhật status:", e);
-      }
-    }
-
-    // 3. Hủy lắng nghe dữ liệu
-    if (unsubscribeUsers) { 
-      unsubscribeUsers(); 
-      unsubscribeUsers = null; 
-    }
-
-    // 4. Đăng xuất và load lại trang
-    signOut(auth).then(() => {
-      window.location.reload();
-    }).catch((error) => {
-      alert("Lỗi khi đăng xuất: " + error.message);
-    });
-  });
-}
-
 // Giữ phần đóng popup khi click ra ngoài
 document.addEventListener("click", function(e){
   const popup = document.getElementById("userPopup");
