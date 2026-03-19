@@ -254,6 +254,7 @@
             const selected = document.querySelector(`input[name="question-${i}"]:checked`);
             if(selected && parseInt(selected.value) === item.correct) correctCount++;
         });
+        window.finalCorrectCount = correctCount;
         document.getElementById('scoreValue').innerText = correctCount;
         document.getElementById('statsText').innerText = `Đúng ${correctCount}/${questionsData.length} câu`;
         openModal('resultModal');
@@ -261,11 +262,10 @@
 
     function reviewMode() {
         closeModal('resultModal');
+        updateProgress(true, window.finalCorrectCount);
         document.getElementById('action-button-container').innerHTML = `
             <button class="btn btn-reload" onclick="location.reload()"><span>🔄</span> Làm lại</button>
         `;
-
-        updateProgress(true, window.finalCorrectCount || 0);
 
       questionsData.forEach((item, i) => {
           const card = document.getElementById(`card-${i}`);
