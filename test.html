@@ -1843,36 +1843,34 @@ document.getElementById("loginBox").style.display="flex";
 // chỉ giữ login trong tab hiện tại
 
 
-window.googleLogin = function(){
+window.googleLogin = async function(){
+  try{
+    const result = await signInWithPopup(auth, provider);
 
-signInWithPopup(auth, provider)
-.then(async (result)=>{
+    const user = result.user;
+    console.log("Login success:", user); // 🔥 debug
 
-const user = result.user;
+    if(!allowList.includes(user.email)){
+      alert("❌ Tài khoản không được cấp quyền!");
+      await signOut(auth);
+      return;
+    }
 
-if(!allowList.includes(user.email)){
-alert("❌ Tài khoản không được cấp quyền!");
-await signOut(auth);
-return;
-}
+    await setDoc(doc(db,"users",user.uid),{
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL,
+      lastLogin: new Date().toISOString(),
+      lastActive: Date.now(),
+      online: true
+    });
 
-await setDoc(doc(db,"users",user.uid),{
-  name: user.displayName,
-  email: user.email,
-  photo: user.photoURL,
-  lastLogin: new Date().toISOString(),
-  lastActive: Date.now(),
-  online: true // ✅ GIỮ LẠI
-});
+    document.getElementById("loginBox").style.display="none";
 
-document.getElementById("loginBox").style.display="none";
-
-})
-.catch((error)=>{
-alert("Lỗi đăng nhập: " + error.message);
-console.error(error);
-});
-
+  }catch(err){
+    console.error("LOGIN ERROR:", err); // 🔥 QUAN TRỌNG
+    alert("Lỗi: " + err.message);
+  }
 };
 // Xử lý khi ẩn tab hoặc đóng trình duyệt
 const updateStatus = (isOnline) => {
