@@ -1796,7 +1796,11 @@ lastSeen: new Date().toISOString()
 };
 
 document.addEventListener("visibilitychange", () => {
-updateStatus(document.visibilityState === "visible");
+  if (document.visibilityState === "hidden") {
+    updateStatus(false);
+  } else {
+    updateStatus(true);
+  }
 });
 
 // Trick để ép trình duyệt gửi dữ liệu cuối cùng trước khi đóng
@@ -1817,8 +1821,9 @@ snap.forEach(doc => {
 const u = doc.data();
 const now = Date.now();
 
-if (!u.lastActive || now - u.lastActive > 15000) return;
+const ACTIVE_THRESHOLD = 45000; // 45s
 
+if (!u.lastActive || now - u.lastActive > ACTIVE_THRESHOLD) return;
 if (!u.online) return;
 
 const div = document.createElement("div");
