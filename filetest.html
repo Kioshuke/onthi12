@@ -2,102 +2,72 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Quiz Firebase</title>
+<title>Luyện đề Hóa</title>
 <style>
-body{font-family:sans-serif;max-width:700px;margin:auto}
-.question{margin:20px 0}
+body{font-family:sans-serif;max-width:700px;margin:auto;padding:20px;}
+.question{margin:20px 0;}
+button{margin-top:20px;padding:10px 16px;font-size:16px;}
+label{cursor:pointer;}
 </style>
 </head>
-
 <body>
 
-<h2>Luyện đề</h2>
-
-<!-- Upload -->
-<input type="file" id="fileInput">
-<button onclick="uploadJSON()">Upload đề</button>
-
-<hr>
-
+<h2>Luyện đề Hóa</h2>
 <div id="quiz"></div>
 <button onclick="submitQuiz()">Nộp bài</button>
 <h3 id="result"></h3>
 
-<script type="module">
-
-// 🔥 IMPORT FIREBASE
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
-// 🔥 CONFIG (dán của bạn vào)
-const firebaseConfig = {
-  apiKey: "AIzaSyDRPReW--6BnZE3aZyHryJBufMJ_kQX96c",
-  authDomain: "quiz-web-tanhong.firebaseapp.com",
-  projectId: "quiz-web-tanhong",
-  storageBucket: "quiz-web-tanhong.firebasestorage.app",
-  messagingSenderId: "494629653115",
-  appId: "1:494629653115:web:99acce69b4ed32543f30de"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+<script>
+// 🔗 Đường dẫn file JSON
+const JSON_URL = "questions.json"; // Thay bằng URL thực tế
 
 let questions = [];
 
-
-// 🔀 XÁO TRỘN
+// 🔀 Xáo trộn mảng
 function shuffle(array){
-  for(let i = array.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+  for(let i = array.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [array[i],array[j]]=[array[j],array[i]];
   }
   return array;
 }
 
-
-// 📤 UPLOAD JSON
-window.uploadJSON = async function(){
-  const file = document.getElementById("fileInput").files[0];
-  const text = await file.text();
-  const data = JSON.parse(text);
-
-  for(const q of data){
-    await addDoc(collection(db, "questions"), q);
-  }
-
-  alert("Upload xong!");
-};
-
-
-// 📥 LOAD DATA
+// 📥 Load JSON từ URL
 async function loadQuestions(){
-  const snap = await getDocs(collection(db, "questions"));
-  let arr = [];
+  try{
+    const res = await fetch(JSON_URL);
+    if(!res.ok) throw new Error("Không tải được file JSON");
+    const data = await res.json();
 
-  snap.forEach(doc => {
-    arr.push(doc.data());
-  });
+    // 🔀 Xáo trộn câu hỏi
+    questions = shuffle(data).map(q=>{
+      const answers = q.answers.map((a,i)=>({
+        text: a,
+        isCorrect: i===q.correct
+      }));
+      return { question: q.question, answers: shuffle(answers) };
+    });
 
-  return arr;
+    renderQuiz();
+  }catch(e){
+    document.getElementById("quiz").innerText = "Lỗi load JSON: "+e.message;
+  }
 }
 
-
-// 🧠 RENDER
+// 🧠 Render quiz
 function renderQuiz(){
   const quizDiv = document.getElementById("quiz");
   quizDiv.innerHTML = "";
 
-  questions.forEach((q, index) => {
+  questions.forEach((q,index)=>{
     const div = document.createElement("div");
     div.classList.add("question");
 
     let html = `<p>${index+1}. ${q.question}</p>`;
-
-    q.answers.forEach((ans, i) => {
-      html += `
+    q.answers.forEach((ans,i)=>{
+      html+=`
         <label>
-          <input type="radio" name="q${index}" value="${i}">
-          ${ans.text}
+          <input type="radio" name="q${index}" value="${i}"> ${ans.text}
         </label><br>
       `;
     });
@@ -107,44 +77,19 @@ function renderQuiz(){
   });
 }
 
-
-// ▶️ LOAD + XÁO TRỘN
-async function start(){
-  const data = await loadQuestions();
-
-  questions = shuffle(data).map(q => {
-    const answers = q.answers.map((a,i)=>({
-      text: a,
-      isCorrect: i === q.correct
-    }));
-
-    return {
-      question: q.question,
-      answers: shuffle(answers)
-    };
+// 📝 Nộp bài
+function submitQuiz(){
+  let score = 0;
+  questions.forEach((q,index)=>{
+    const selected = document.querySelector(`input[name="q${index}"]:checked`);
+    if(selected && q.answers[selected.value].isCorrect) score++;
   });
 
-  renderQuiz();
+  document.getElementById("result").innerText = `Bạn đúng ${score}/${questions.length} câu`;
 }
 
-start();
-
-
-// 📝 NỘP BÀI
-window.submitQuiz = function(){
-  let score = 0;
-
-  questions.forEach((q, index) => {
-    const selected = document.querySelector(`input[name="q${index}"]:checked`);
-
-    if(selected && q.answers[selected.value].isCorrect){
-      score++;
-    }
-  });
-
-  document.getElementById("result").innerText =
-    `Bạn đúng ${score}/${questions.length}`;
-};
+// ▶️ Start
+loadQuestions();
 
 </script>
 
