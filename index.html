@@ -179,13 +179,12 @@ gap:25px;
   transition:0.3s;
 }
 .card:hover{
-  transform: translateY(-10px) scale(1.03);
+transform:translateY(-6px);
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
 
-  box-shadow:
-    0 15px 35px rgba(80,120,255,0.35),
-    0 5px 20px rgba(0,0,0,0.15);
-
-  border: 1px solid rgba(59,130,246,0.6);
+.card:hover::before{
+  opacity:1;
 }
 .card h3{
   margin-top:0;
