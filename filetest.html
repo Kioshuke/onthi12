@@ -17,7 +17,7 @@
         }
 
         body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--text); }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 0 20px; }
 
         header {
             display: flex; justify-content: space-between; align-items: center;
@@ -46,12 +46,12 @@
             vertical-align: middle; /* Căn chỉnh cho đẹp với dòng chữ đầu */
         }
         /* Layout chính để chia cột */
-        .main-layout { display: flex; gap: 30px; align-items: flex-start; width: 100%; }
+        .main-layout { display: flex; gap: 25px; align-items: flex-start; width: 100%; }
         .quiz-section { flex: 2; }
 
         /* Thanh mục lục bên phải */
         .sidebar {
-            flex: 1; 
+            width: 280px; 
             min-width: 300px; /* Đảm bảo mục lục không bị quá nhỏ */
             max-width: 400px; /* Đảm bảo mục lục không bị quá to */
             background: var(--card); 
@@ -81,10 +81,50 @@
         }
 
         @media (max-width: 1024px) {
-            .sidebar { display: none; position: fixed; top: 0; right: 0; height: 100%; z-index: 2100; width: 80%; max-width: 300px; }
-            .mobile-nav-btn { display: flex; align-items: center; justify-content: center; }
-            .main-layout { display: block; }
+        /* Giảm khoảng cách bao quanh toàn bộ trang */
+        body { 
+            padding: 10px 5px; /* Giảm padding trái/phải xuống còn 5px */
         }
+
+        .container { 
+            padding: 0; /* Bỏ padding của container */
+        }
+
+        /* Làm cho các thẻ câu hỏi tràn sát lề hơn */
+        .question-card {
+            padding: 15px; /* Giảm padding bên trong card câu hỏi */
+            margin-bottom: 12px; /* Giảm khoảng cách giữa các câu */
+            border-radius: 12px; /* Bo góc nhẹ lại cho hợp với màn hình nhỏ */
+        }
+
+        /* Chỉnh lại lưới đáp án trên điện thoại */
+        .answers-grid {
+            grid-template-columns: 1fr; /* Luôn để 1 cột trên điện thoại để chữ không bị nén */
+            gap: 8px;
+        }
+
+        /* Header của trang */
+        header {
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+        }
+
+        /* Mục lục khi mở trên điện thoại */
+        .sidebar { 
+            display: none; 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: 2100; 
+            width: 90%; /* Rộng hơn một chút để dễ bấm */
+            max-height: 80vh; 
+            overflow-y: auto; 
+        }
+
+        .main-layout { display: block; }
+    }
 
         .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .ans-label { 
