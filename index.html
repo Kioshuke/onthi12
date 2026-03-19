@@ -168,6 +168,16 @@ gap:25px;
   overflow: hidden;
 }
 
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:16px;
+
+  background: linear-gradient(120deg, #3b82f622, #6366f122);
+  opacity:0;
+  transition:0.3s;
+}
 .card:hover{
 transform:translateY(-6px);
 box-shadow:0 10px 25px rgba(0,0,0,0.15);
