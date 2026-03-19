@@ -1566,7 +1566,15 @@ function loadQuiz(btn, link){
 
   </div>
   `;
-
+setTimeout(() => {
+  const quizEl = document.getElementById("quiz");
+  if(quizEl){
+    quizEl.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}, 50);
   let iframe = document.getElementById("quizFrame");
   let loader = document.getElementById("loader");
 
