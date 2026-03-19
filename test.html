@@ -220,7 +220,24 @@ gap:25px;
 
   z-index: 5;
 }
+.card.active-card{
+  transform: translateY(-14px) scale(1.03);
 
+  box-shadow:
+    0 18px 40px color-mix(in srgb, var(--card-color) 35%, transparent),
+    0 6px 20px rgba(0,0,0,0.12);
+
+  border:1.5px solid var(--card-color);
+
+  z-index: 5;
+}
+
+.card.active-card::before{
+  background:
+    linear-gradient(var(--card-color), var(--card-color)) left / 6px 100% no-repeat,
+    linear-gradient(var(--card-color), var(--card-color)) right / 6px 100% no-repeat,
+    linear-gradient(120deg, #3b82f633, #6366f133);
+}
 .card:hover::before{
   opacity:1;
 }
@@ -1337,19 +1354,19 @@ animation: pulse-green 2s infinite;
 <div class="card">
 <h3>Trắc nghiệm</h3>
 <p>Bài ôn tập trắc nghiệm môn Vật Lý.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/yv8Lfr')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/yv8Lfr')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Đúng / Sai</h3>
 <p>Bài ôn tập dạng đúng sai.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/5yBsZW')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/5yBsZW')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Trả lời ngắn</h3>
 <p>Bài ôn tập trả lời ngắn.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/xbBQiH')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/xbBQiH')">Làm bài</a>
 </div>
 </div>
 
@@ -1361,19 +1378,19 @@ animation: pulse-green 2s infinite;
 <div class="card">
 <h3>Trắc nghiệm</h3>
 <p>Bài ôn tập trắc nghiệm môn Sinh Học.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/GH3QtL')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/GH3QtL')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Đúng / Sai</h3>
 <p>Bài ôn tập dạng đúng sai môn Sinh.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/tghqMr')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/tghqMr')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Trả lời ngắn</h3>
 <p>Bài ôn tập trả lời ngắn môn Sinh.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/hpU2TG')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/hpU2TG')">Làm bài</a>
 </div>
 
 </div>
@@ -1386,25 +1403,25 @@ animation: pulse-green 2s infinite;
 <div class="card">
 <h3>Trắc nghiệm</h3>
 <p>Bài 17-18</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/DhYZ5m')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/DhYZ5m')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Trắc nghiệm</h3>
 <p>Bài 19-22</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/nKtpGR')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/nKtpGR')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Đúng / Sai</h3>
 <p>Bài ôn tập môn Tin.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/g9smmw')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/g9smmw')">Làm bài</a>
 </div>
 
  <div class="card">
 <h3>File Đáp Án</h3>
 <p>Trắc Nghiệm + Đúng Sai</p>
-<a class="btn" onclick="loadQuiz('Tin GK2 TN-ĐS.pdf')">Xem</a>
+<a class="btn" onclick="loadQuiz(this,'Tin GK2 TN-ĐS.pdf')">Xem</a>
 </div>
 </div>
 
@@ -1416,19 +1433,19 @@ animation: pulse-green 2s infinite;
 <div class="card">
 <h3>Trắc nghiệm</h3>
 <p>Bài 11</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/9SEB8Z')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/9SEB8Z')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Trắc nghiệm</h3>
 <p>Bài 12</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/TAe0ju')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/TAe0ju')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Trắc nghiệm</h3>
 <p>Bài 13</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/xDBb5U')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/xDBb5U')">Làm bài</a>
 </div>
 
 </div>
@@ -1441,25 +1458,25 @@ animation: pulse-green 2s infinite;
 <div class="card">
 <h3>Trắc nghiệm P1</h3>
 <p>Bài ôn tập trắc nghiệm môn Hoá Học.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/gbJ8On')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/gbJ8On')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Trắc nghiệm P2</h3>
 <p>Bài ôn tập trắc nghiệm môn Hoá Học.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/RRYYOg')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/RRYYOg')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Đúng / Sai</h3>
 <p>Bài ôn tập dạng đúng sai môn Hoá.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/sytrvV')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/sytrvV')">Làm bài</a>
 </div>
 
 <div class="card">
 <h3>Trả lời ngắn</h3>
 <p>Bài ôn tập trả lời ngắn môn Hoá.</p>
-<a class="btn" onclick="loadQuiz('https://youngtest.vn/quiz/kHiYlq')">Làm bài</a>
+<a class="btn" onclick="loadQuiz(this,'https://youngtest.vn/quiz/kHiYlq')">Làm bài</a>
 </div>
 
 </div>
@@ -1516,7 +1533,18 @@ document.getElementById("loadingOverlay").style.display="none";
 }
 
 },1000);
-function loadQuiz(link){
+function loadQuiz(btn, link){
+
+// ❌ xoá active cũ
+document.querySelectorAll(".card").forEach(c=>{
+  c.classList.remove("active-card");
+});
+
+// ✅ set card đang bấm
+const card = btn.closest(".card");
+if(card){
+  card.classList.add("active-card");
+}
 
 document.getElementById("quiz").innerHTML =
 `
@@ -1538,14 +1566,17 @@ document.getElementById("quiz").innerHTML =
  <iframe id="quizFrame" src="${link}" style="display:none;"></iframe>
 
  </div>
- `;
+`;
 
 let iframe = document.getElementById("quizFrame");
 let loader = document.getElementById("loader");
 
 iframe.onload = function(){
-loader.style.display="none";
-iframe.style.display="block";
+  loader.style.display="none";
+  iframe.style.display="block";
+}
+
+}
 
 iframe.scrollIntoView({
 behavior: "smooth",
@@ -1568,7 +1599,9 @@ behavior:"smooth"
 function closeQuiz(){
 
 document.getElementById("quiz").innerHTML="";
-
+document.querySelectorAll(".card").forEach(c=>{
+  c.classList.remove("active-card");
+});
 window.scrollTo({
 top:0,
 behavior:"auto"
