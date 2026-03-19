@@ -1805,21 +1805,20 @@ document.addEventListener("click", function(e){
   }
 });
 // Đợi DOM load xong rồi mới gán sự kiện
-window.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("logoutBtn");
-  if (btn) {
-    btn.onclick = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const myStatusRef = ref(rdb, '/status/' + user.uid);
-        await set(myStatusRef, { online: false, lastSeen: serverTimestamp() });
-        await setDoc(doc(db, "users", user.uid), { online: false }, { merge: true });
-      }
-      await signOut(auth);
-      window.location.reload();
-    };
+window.logout = async function () {
+  const user = auth.currentUser;
+
+  if (user) {
+    const myStatusRef = ref(rdb, '/status/' + user.uid);
+    await set(myStatusRef, { online: false, lastSeen: serverTimestamp() });
+
+    await setDoc(doc(db, "users", user.uid), { online: false }, { merge: true });
   }
-});
+
+  await signOut(auth);
+
+  location.reload();
+};
   </script>
   <script>
   function updateTime(){
@@ -1863,7 +1862,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   <div id="onlineList" style="max-height: 150px; overflow-y: auto;"></div>
 
-<button id="logoutBtn">Đăng xuất</button>
+<button onclick="logout()">Đăng xuất</button>
 </div>
   </body>
   </html>
