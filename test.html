@@ -1163,6 +1163,9 @@ box-shadow:0 2px 8px rgba(0,0,0,0.15);
 .card{
 backdrop-filter:none !important;
 }
+.card.active-card{
+    transform: none !important; /* 🔥 mobile không cần zoom */
+  }
 .card::after{
     left:0;
     opacity:0;
@@ -1762,6 +1765,26 @@ btn.classList.add("active");
 // gọi show
 show(savedTab);
 
+});
+// 🔥 FIX lỗi card bị giữ active sai
+document.querySelectorAll(".card").forEach(card => {
+  card.addEventListener("click", function(e){
+
+    if(e.target.closest(".btn")) return;
+
+    // ❌ remove + reset transform luôn
+    document.querySelectorAll(".card").forEach(c=>{
+      c.classList.remove("active-card");
+      c.style.transform = "none"; // 🔥 fix mobile giữ scale
+    });
+
+    // ✅ ép reflow (rất quan trọng)
+    card.offsetHeight;
+
+    // ✅ add lại
+    card.classList.add("active-card");
+
+  });
 });
 </script>
 <script type="module">
