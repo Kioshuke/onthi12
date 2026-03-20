@@ -16,7 +16,7 @@
       },
       {
         "type": "true_false",
-        "question": "Minh đang thiết kế một menu cho trang web cá nhân. Minh muốn khi người dùng đưa chuột vào các mục lục, màu nền của mục đó sẽ chuyển từ trắng sang vàng. Minh sử dụng mã CSS: li:hover { background-color: yellow; }. Tuy nhiên, Minh cũng đã đặt một mã định danh #active cho mục lục hiện tại với màu nền đỏ: #active { background-color: red; } Khi Minh di chuột vào mục lục có id là "active", Minh thấy màu nền vẫn giữ màu đỏ mà không chuyển sang vàng như mong đợi. ",
+        "question": "Minh đang thiết kế một menu cho trang web cá nhân. Minh muốn khi người dùng đưa chuột vào các mục lục, màu nền của mục đó sẽ chuyển từ trắng sang vàng. Minh sử dụng mã CSS: li:hover { background-color: yellow; }. Tuy nhiên, Minh cũng đã đặt một mã định danh #active cho mục lục hiện tại với màu nền đỏ: #active { background-color: red; } Khi Minh di chuột vào mục lục có id là 'active', Minh thấy màu nền vẫn giữ màu đỏ mà không chuyển sang vàng như mong đợi. ",
         "subQuestions": [
           "Minh đang sử dụng bộ chọn lớp giả :hover để tạo hiệu ứng tương tác.",
           "Bộ chọn tên thẻ li kết hợp lớp giả có mức ưu tiên cao hơn bộ chọn mã định danh #id.",
