@@ -371,10 +371,10 @@ async function loadQuestions() {
                                     </div>
                                     <div class="tf-options">
                                         <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
-                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
+                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
                                         </label>
                                         <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
-                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>S</b>
+                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>S</b>
                                         </label>
                                     </div>
                                 </div>
@@ -530,7 +530,7 @@ async function loadQuestions() {
                     // Hiện đáp án đúng bên cạnh
                     const tip = document.createElement('span');
                     tip.className = userVal === correctVal ? 'true-text' : 'false-text';
-                    tip.innerHTML = ` (Đáp án: ${correctVal === 0 ? 'Đúng' : 'Sai'})`;
+                    tip.innerHTML = ` (Đáp án: ${correctVal === 1 ? 'Đúng' : 'Sai'})`;
                     row.querySelector('.tf-question-text').appendChild(tip);
                 });
 
