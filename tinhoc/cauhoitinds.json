@@ -172,6 +172,17 @@
           { "text": "Access Point đóng vai trò là cầu nối để các vòng đeo tay thông minh kết nối không dây vào hệ thống mạng.", "correct": 1 },
           { "text": "Việc kết hợp kết nối có dây (cho máy tính) và không dây (cho vòng đeo tay) giúp tối ưu hóa hiệu suất và tính linh hoạt của mạng.", "correct": 1 }
         ]
+      },
+      {
+        "type": "true_false",
+        "question": "Một học sinh thiết kế trang giới thiệu lớp học. Em muốn dòng tiêu đề có màu đỏ, nhưng đồng thời thử nghiệm nhiều cách định dạng khác nhau: CSS ngoài, inline CSS và thêm '!important'. Sau khi chạy chương trình, màu chữ hiển thị không như mong đợi. Hãy phân tích đoạn mã sau và xác định các nhận định đúng hay sai theo thứ tự ưu tiên CSS.",
+        "image": "dungsaicau8.png",
+        "subQuestions": [
+          { "text": "Thuộc tính color: purple !important; có mức ưu tiên cao nhất trong đoạn mã trên.", "correct": 1 },
+          { "text": "Inline CSS ( style=\"color:red;\" ) luôn có mức ưu tiên cao hơn !important.", "correct": 0 },
+          { "text": "Khi có !important, trình duyệt sẽ ưu tiên quy tắc đó dù có inline CSS khác.", "correct": 1 },
+          { "text": "Kết quả hiển thị cuối cùng của tiêu đề sẽ có màu tím.", "correct": 1 }
+        ]
       }
     ]
   }
