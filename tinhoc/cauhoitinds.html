@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ thống Luyện thi</title>
+    <title>Hệ thống Luyện thi Pro</title>
     <style>
         :root {
             --primary: #2563eb; /* Xanh dương đậm */
@@ -303,15 +303,18 @@
                     }
                     // 2. Trộn 4 ý nhỏ (a, b, c, d) của câu Đúng/Sai
                     if (q.type === 'true_false' && q.subQuestions) {
-                        const mixedSub = q.subQuestions.map((sub, i) => ({
+                        // Tạo mảng cặp {text, value} để giữ mệnh đề và đáp án đi cùng nhau
+                        const pairs = q.subQuestions.map((sub, i) => ({
                             text: sub,
-                            correctVal: q.correctAnswers[i] // 0 là Đúng, 1 là Sai
+                            val: q.correctAnswers[i]
                         }));
-                        shuffle(mixedSub);
+                        
+                        shuffle(pairs); // Trộn mảng cặp này
+                        
                         return {
                             ...q,
-                            subQuestions: mixedSub.map(s => s.text),
-                            correctAnswers: mixedSub.map(s => s.correctVal)
+                            subQuestions: pairs.map(p => p.text),
+                            correctAnswers: pairs.map(p => p.val)
                         };
                     }
                     return q; // Trả về nguyên bản cho Trả lời ngắn
