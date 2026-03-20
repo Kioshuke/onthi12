@@ -290,38 +290,32 @@ async function loadQuestions() {
         questionsData = data.map(section => {
             return {
                 sectionTitle: section.sectionTitle,
-                questions: shuffle([...section.questions]).map(q => {
-                    // Copy object để tránh lỗi tham chiếu
-                    let newQ = JSON.parse(JSON.stringify(q));
-
-                    // TRƯỜNG HỢP: CÂU HỎI ĐÚNG SAI (Fix lỗi trộn lệch đáp án)
-                    if (newQ.type === 'true_false' && newQ.subQuestions) {
-                        // Bước 1: Ghép mệnh đề và đáp án thành cặp
-                        let pairs = newQ.subQuestions.map((text, i) => ({
-                            text: text,
-                            correct: newQ.correctAnswers[i]
+                questions: shuffle(section.questions).map(q => {
+                    // 1. Trộn đáp án câu Trắc nghiệm
+                    if (q.type === 'multiple' && q.answers) {
+                        const mixed = q.answers.map((ans, i) => ({ text: ans, isCorrect: i === q.correct }));
+                        shuffle(mixed);
+                        return {
+                            ...q,
+                            answers: mixed.map(a => a.text),
+                            correct: mixed.findIndex(a => a.isCorrect)
+                        };
+                    }
+                    // 2. Trộn 4 ý nhỏ (a, b, c, d) của câu Đúng/Sai
+                    if (q.type === 'true_false' && q.subQuestions) {
+                        const mixedSub = q.subQuestions.map((sub, i) => ({
+                            text: sub,
+                            correct: q.correctAnswers[i]
                         }));
 
-                        // Bước 2: Trộn cả cặp này (đáp án luôn dính chặt vào câu hỏi)
-                        shuffle(pairs);
+                        shuffle(mixedSub);
 
-                        // Bước 3: Đưa ngược lại vào object câu hỏi
-                        newQ.subQuestions = pairs.map(p => p.text);
-                        newQ.correctAnswers = pairs.map(p => p.correct);
+                        return {
+                            ...q,
+                            subQuestions: mixedSub // giữ nguyên object
+                        };
                     }
-
-                    // TRƯỜNG HỢP: CÂU HỎI TRẮC NGHIỆM
-                    if (newQ.type === 'multiple' && newQ.answers) {
-                        let ansMixed = newQ.answers.map((ans, i) => ({ 
-                            text: ans, 
-                            isCorrect: i === newQ.correct 
-                        }));
-                        shuffle(ansMixed);
-                        newQ.answers = ansMixed.map(a => a.text);
-                        newQ.correct = ansMixed.findIndex(a => a.isCorrect);
-                    }
-
-                    return newQ;
+                    return q; // Trả về nguyên bản cho Trả lời ngắn
                 })
             };
         });
@@ -329,7 +323,7 @@ async function loadQuestions() {
         renderQuiz();
     } catch (e) {
         console.error(e);
-        document.getElementById('quiz-container').innerHTML = `<div class="card">Lỗi hệ thống: ${e.message}</div>`;
+        document.getElementById('quiz-container').innerText = "Lỗi: " + e.message;
     }
 }
 
@@ -379,7 +373,7 @@ async function loadQuestions() {
                             ${item.subQuestions.map((sub, subIdx) => `
                                 <div class="tf-row">
                                     <div class="tf-question-text">
-                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub}
+                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub.text}
                                     </div>
                                     <div class="tf-options">
                                         <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
@@ -466,7 +460,7 @@ async function loadQuestions() {
                 let correctCount = 0;
                 item.subQuestions.forEach((_, subIdx) => {
                     const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-                    if (sel && parseInt(sel.value) === item.correctAnswers[subIdx]) {
+                    if (sel && parseInt(sel.value) === item.subQuestions[subIdx].correct) {
                         userScore += 0.25;
                         correctCount++;
                     }
@@ -528,7 +522,7 @@ async function loadQuestions() {
                 item.subQuestions.forEach((_, subIdx) => {
                     const selected = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
                     const userVal = selected ? parseInt(selected.value) : null;
-                    const correctVal = item.correctAnswers[subIdx];
+                    const correctVal = item.subQuestions[subIdx].correct;
                     const row = rows[subIdx];
 
                     if (userVal === correctVal) {
