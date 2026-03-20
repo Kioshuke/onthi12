@@ -303,16 +303,10 @@ async function loadQuestions() {
                     }
                     // 2. Trộn 4 ý nhỏ (a, b, c, d) của câu Đúng/Sai
                     if (q.type === 'true_false' && q.subQuestions) {
-                        const mixedSub = q.subQuestions.map((sub, i) => ({
-                            text: sub,
-                            correct: q.correctAnswers[i]
-                        }));
-
-                        shuffle(mixedSub);
-
+                        const mixed = shuffle([...q.subQuestions]);
                         return {
                             ...q,
-                            subQuestions: mixedSub // giữ nguyên object
+                            subQuestions: mixed
                         };
                     }
                     return q; // Trả về nguyên bản cho Trả lời ngắn
@@ -421,7 +415,8 @@ async function loadQuestions() {
 
     function checkTFDone(globalIdx) {
         const checked = document.querySelectorAll(`input[name^="tf-${globalIdx}-"]:checked`);
-        if (checked.length === 4) markDone(globalIdx);
+        const total = document.querySelectorAll(`input[name^="tf-${globalIdx}-"]`).length / 2;
+            if (checked.length === total) markDone(globalIdx);
     }
 
     function markDone(qIdx) {
@@ -460,7 +455,7 @@ async function loadQuestions() {
                 let correctCount = 0;
                 item.subQuestions.forEach((_, subIdx) => {
                     const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-                    if (sel && parseInt(sel.value) === item.subQuestions[subIdx].correct) {
+                    if (sel && item.subQuestions[subIdx] && parseInt(sel.value) === item.subQuestions[subIdx].correct) {
                         userScore += 0.25;
                         correctCount++;
                     }
@@ -522,7 +517,7 @@ async function loadQuestions() {
                 item.subQuestions.forEach((_, subIdx) => {
                     const selected = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
                     const userVal = selected ? parseInt(selected.value) : null;
-                    const correctVal = item.subQuestions[subIdx].correct;
+                    const correctVal = item.subQuestions[subIdx]?.correct;
                     const row = rows[subIdx];
 
                     if (userVal === correctVal) {
