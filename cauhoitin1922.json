@@ -1,6 +1,6 @@
 [
   {
-    "sectionTitle": "NGÂN HÀNG CÂU HỎI TRẮC NGHIỆM TỔNG HỢP",
+    "sectionTitle": "PHẦN I: TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN",
     "questions": [
       { "type": "multiple", "question": "Thành phần nào KHÔNG thuộc phần cứng máy tính?", "answers": ["Bộ xử lí trung tâm CPU", "Ổ lưu trữ dữ liệu SSD", "Phần mềm quản lí bán hàng", "Thanh bộ nhớ trong RAM"], "correct": 2 },
       { "type": "multiple", "question": "Nghề sửa chữa, bảo trì máy tính gồm bao nhiêu nhóm công việc chính?", "answers": ["Hai nhóm công việc chính", "Ba nhóm công việc chính", "Cốn nhóm công việc chính", "Năm nhóm công việc chính"], "correct": 0 },
