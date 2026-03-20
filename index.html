@@ -1316,37 +1316,49 @@ animation: pulse-green 2s infinite;
 } 
 
 .quiz-btn{
-  flex: none; /* ❌ bỏ flex 1 */
-  padding: 10px 20px;
-  min-width: 140px; /* 🔥 đảm bảo 2 nút đều nhau */
+  padding: 10px 18px;
+  min-width: 140px;
 
   font-size: 14px;
+  font-weight: 600;
 
-  border-radius: 10px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+
+  background: #ffffff;
+  color: #1f2937;
+
   cursor: pointer;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  transition: all 0.25s ease;
 }
 
 /* nút đóng */
 .close-btn{
-  background: linear-gradient(135deg,#ff4d4f,#ff7875);
-  color: white;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+  background: #fff5f5;
 }
 
 /* nút fullscreen */
 .fullscreen-btn{
-  background: linear-gradient(135deg,#1a73e8,#4f8cff);
-  color: white;
+  color: #4f46e5;
+  border: 1px solid #c7d2fe;
+  background: #eef2ff;
+}
+/* hover chung */
+.quiz-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
 }
 
-/* hover */
-.quiz-btn:hover{
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+/* hover riêng */
+.close-btn:hover{
+  background: #fee2e2;
+}
+
+.fullscreen-btn:hover{
+  background: #e0e7ff;
 }
 
 /* click */
