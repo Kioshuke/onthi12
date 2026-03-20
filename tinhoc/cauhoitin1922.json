@@ -3,7 +3,7 @@
     "sectionTitle": "PHẦN I: TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN",
     "questions": [
       { "type": "multiple", "question": "Thành phần nào KHÔNG thuộc phần cứng máy tính?", "answers": ["Bộ xử lí trung tâm CPU", "Ổ lưu trữ dữ liệu SSD", "Phần mềm quản lí bán hàng", "Thanh bộ nhớ trong RAM"], "correct": 2 },
-      { "type": "multiple", "question": "Nghề sửa chữa, bảo trì máy tính gồm bao nhiêu nhóm công việc chính?", "answers": ["Hai nhóm công việc chính", "Ba nhóm công việc chính", "Cốn nhóm công việc chính", "Năm nhóm công việc chính"], "correct": 0 },
+      { "type": "multiple", "question": "Nghề sửa chữa, bảo trì máy tính gồm bao nhiêu nhóm công việc chính?", "answers": ["Hai nhóm công việc chính", "Ba nhóm công việc chính", "Cốn nhóm công việc chính", "Năm nhóm công việc chính"], "correct": 1 },
       { "type": "multiple", "question": "Cơ sở đào tạo nào có đào tạo nghề sửa chữa, bảo trì máy tính?", "answers": ["Trường trung học cơ sở", "Trường tiểu học địa phương", "Trung tâm ngoại ngữ nhỏ", "Trường cao đẳng nghề"], "correct": 3 },
       { "type": "multiple", "question": "Công việc nào thuộc nhóm phần mềm?", "answers": ["Thay thế linh kiện hỏng", "Lắp đặt bộ nguồn mới", "Cài đặt và cập nhật phần mềm", "Vệ sinh quạt tản nhiệt"], "correct": 2 },
       { "type": "multiple", "question": "Vì sao người sửa chữa cần kỹ năng giao tiếp tốt?", "answers": ["Để quảng cáo sản phẩm mới", "Để tăng giá dịch vụ sửa chữa", "Để hiểu yêu cầu và tư vấn giải pháp", "Để giảm thời gian bảo hành"], "correct": 2 },
