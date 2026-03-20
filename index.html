@@ -1680,21 +1680,17 @@ setTimeout(() => {
 
 function closeQuiz(){
 
-  const quiz = document.getElementById("quiz");
+  document.getElementById("quiz").innerHTML = "";
 
-  // fade out nhẹ
-  quiz.style.opacity = "0";
-  quiz.style.transform = "translateY(10px)";
-  quiz.style.transition = "all 0.2s ease";
+  document.querySelectorAll(".card").forEach(c=>{
+    c.classList.remove("active-card");
+  });
 
-  setTimeout(()=>{
-    quiz.innerHTML = "";
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }, 200);
+  // 🔥 scroll mượt lên top
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 
 }
 
