@@ -290,7 +290,8 @@
         questionsData = data.map(section => {
             return {
                 sectionTitle: section.sectionTitle,
-                questions: shuffle(section.questions).map(q => {
+                // Trộn thứ tự các câu hỏi lớn trong một phần
+                questions: shuffle([...section.questions]).map(q => {
                     // 1. Trộn đáp án câu Trắc nghiệm
                     if (q.type === 'multiple' && q.answers) {
                         const mixed = q.answers.map((ans, i) => ({ text: ans, isCorrect: i === q.correct }));
@@ -301,15 +302,14 @@
                             correct: mixed.findIndex(a => a.isCorrect)
                         };
                     }
-                    // 2. Trộn 4 ý nhỏ (a, b, c, d) của câu Đúng/Sai
+                    // 2. Trộn mệnh đề Đúng/Sai và giữ đúng đáp án đi kèm
                     if (q.type === 'true_false' && q.subQuestions) {
-                        // Tạo mảng cặp {text, value} để giữ mệnh đề và đáp án đi cùng nhau
                         const pairs = q.subQuestions.map((sub, i) => ({
                             text: sub,
                             val: q.correctAnswers[i]
                         }));
                         
-                        shuffle(pairs); // Trộn mảng cặp này
+                        shuffle(pairs); // Trộn các cặp mệnh đề-đáp án
                         
                         return {
                             ...q,
@@ -317,15 +317,14 @@
                             correctAnswers: pairs.map(p => p.val)
                         };
                     }
-                    return q; // Trả về nguyên bản cho Trả lời ngắn
+                    return q;
                 })
             };
         });
-
         renderQuiz();
     } catch (e) {
-        console.error(e);
-        document.getElementById('quiz-container').innerText = "Lỗi: " + e.message;
+        console.error("Lỗi tải câu hỏi:", e);
+        document.getElementById('quiz-container').innerText = "Không thể tải câu hỏi. Vui lòng kiểm tra file JSON.";
     }
 }
 
