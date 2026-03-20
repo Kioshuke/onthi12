@@ -279,7 +279,7 @@
     }
 
     // 2. Tải câu hỏi và xử lý cấu trúc Section
-    async function loadQuestions() {
+async function loadQuestions() {
     try {
         const timestamp = new Date().getTime();
         const res = await fetch(`${JSON_URL}?v=${timestamp}`);
@@ -290,41 +290,46 @@
         questionsData = data.map(section => {
             return {
                 sectionTitle: section.sectionTitle,
-                // Trộn thứ tự các câu hỏi lớn trong một phần
                 questions: shuffle([...section.questions]).map(q => {
-                    // 1. Trộn đáp án câu Trắc nghiệm
-                    if (q.type === 'multiple' && q.answers) {
-                        const mixed = q.answers.map((ans, i) => ({ text: ans, isCorrect: i === q.correct }));
-                        shuffle(mixed);
-                        return {
-                            ...q,
-                            answers: mixed.map(a => a.text),
-                            correct: mixed.findIndex(a => a.isCorrect)
-                        };
-                    }
-                    // 2. Trộn mệnh đề Đúng/Sai và giữ đúng đáp án đi kèm
-                    if (q.type === 'true_false' && q.subQuestions) {
-                        const pairs = q.subQuestions.map((sub, i) => ({
-                            text: sub,
-                            val: q.correctAnswers[i]
+                    // Copy object để tránh lỗi tham chiếu
+                    let newQ = JSON.parse(JSON.stringify(q));
+
+                    // TRƯỜNG HỢP: CÂU HỎI ĐÚNG SAI (Fix lỗi trộn lệch đáp án)
+                    if (newQ.type === 'true_false' && newQ.subQuestions) {
+                        // Bước 1: Ghép mệnh đề và đáp án thành cặp
+                        let pairs = newQ.subQuestions.map((text, i) => ({
+                            text: text,
+                            correct: newQ.correctAnswers[i]
                         }));
-                        
-                        shuffle(pairs); // Trộn các cặp mệnh đề-đáp án
-                        
-                        return {
-                            ...q,
-                            subQuestions: pairs.map(p => p.text),
-                            correctAnswers: pairs.map(p => p.val)
-                        };
+
+                        // Bước 2: Trộn cả cặp này (đáp án luôn dính chặt vào câu hỏi)
+                        shuffle(pairs);
+
+                        // Bước 3: Đưa ngược lại vào object câu hỏi
+                        newQ.subQuestions = pairs.map(p => p.text);
+                        newQ.correctAnswers = pairs.map(p => p.correct);
                     }
-                    return q;
+
+                    // TRƯỜNG HỢP: CÂU HỎI TRẮC NGHIỆM
+                    if (newQ.type === 'multiple' && newQ.answers) {
+                        let ansMixed = newQ.answers.map((ans, i) => ({ 
+                            text: ans, 
+                            isCorrect: i === newQ.correct 
+                        }));
+                        shuffle(ansMixed);
+                        newQ.answers = ansMixed.map(a => a.text);
+                        newQ.correct = ansMixed.findIndex(a => a.isCorrect);
+                    }
+
+                    return newQ;
                 })
             };
         });
+
         renderQuiz();
     } catch (e) {
-        console.error("Lỗi tải câu hỏi:", e);
-        document.getElementById('quiz-container').innerText = "Không thể tải câu hỏi. Vui lòng kiểm tra file JSON.";
+        console.error(e);
+        document.getElementById('quiz-container').innerHTML = `<div class="card">Lỗi hệ thống: ${e.message}</div>`;
     }
 }
 
