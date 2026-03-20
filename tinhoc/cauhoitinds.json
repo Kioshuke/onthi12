@@ -67,7 +67,7 @@
         "type": "true_false",
         "question": "Một trung tâm bảo trì máy tính nhận phản ánh rằng nhiều máy thường xuyên mất kết nối mạng và xuất hiện cảnh báo virus. Kỹ thuật viên cần xác định đúng nhóm công việc liên quan đến mạng và an toàn phần mềm. Bên cạnh đó, việc quản lí thời gian hợp lí giúp hoàn thành nhiều yêu cầu sửa chữa trong ngày mà vẫn đảm bảo chất lượng dịch vụ.",
         "subQuestions": [
-          { "text": "Đảm bảo kết nối mạng thuộc nhóm mạng.", "correct": 1 },
+          { "text": "Dảm bảo máy tính kết nối vào mạng thuộc nhóm công việc mạng", "correct": 1 },
           { "text": "Quét mã độc và cấu hình phần mềm phòng chống virus giúp đảm bảo an toàn hệ thống phần mềm.", "correct": 1 },
           { "text": "Kỹ năng quản lí thời gian giúp hoàn thành công việc đúng hạn và đáp ứng yêu cầu khách hàng.", "correct": 1 },
           { "text": "Khi máy nhiễm virus, ưu tiên thay RAM để khắc phục triệt để sự cố.", "correct": 0 }
