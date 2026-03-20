@@ -207,9 +207,12 @@
             transition: background 0.2s;
         }
         .quiz-locked {
-          user-select: none;
+          user-select: text;
         }
-        
+        .quiz-locked .ans-label,
+        .quiz-locked .tf-options label {
+        pointer-events: none; /* không cho click */
+        }
         /* Hover vẫn sáng lên cho UX */
         .quiz-locked .ans-label:hover {
           background: #f1f5f9;
