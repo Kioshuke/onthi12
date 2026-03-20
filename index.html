@@ -1303,6 +1303,65 @@ font-size:22px;
 .online-pulse {
 animation: pulse-green 2s infinite;
 }
+.quiz-header{
+  position: sticky;
+  top: 0;
+  z-index: 2000; /* 🔥 đè menu */
+
+  display: flex;
+  gap: 12px;
+
+  padding: 10px;
+  margin-bottom: 10px;
+
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.quiz-btn{
+  flex: 1; /* 🔥 chia đều */
+  padding: 14px 0;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* nút đóng */
+.close-btn{
+  background: linear-gradient(135deg,#ff4d4f,#ff7875);
+  color: white;
+}
+
+/* nút fullscreen */
+.fullscreen-btn{
+  background: linear-gradient(135deg,#1a73e8,#4f8cff);
+  color: white;
+}
+
+/* hover */
+.quiz-btn:hover{
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* click */
+.quiz-btn:active{
+  transform: scale(0.96);
+}
 </style>
 <div class="content">
 <div id="lich">
@@ -1576,9 +1635,9 @@ function loadQuiz(btn, link){
   `
   <div class="quiz-box">
 
-    <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-      <button class="btn close-btn" onclick="closeQuiz()">❌ Đóng bài</button>
-      <button class="btn" onclick="openFullscreen()">⛶ Toàn màn hình</button>
+    <div class="quiz-header">
+      <button class="quiz-btn close-btn" onclick="closeQuiz()">❌ Đóng bài</button>
+      <button class="quiz-btn fullscreen-btn" onclick="openFullscreen()">⛶ Toàn màn hình</button>
     </div>
 
     <div class="loader" id="loader">
