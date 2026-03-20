@@ -1309,15 +1309,17 @@ animation: pulse-green 2s infinite;
   z-index: 2000;
 
   display: flex;
-  justify-content: flex-end; /* 👉 dồn sang phải */
-  gap: 10px;
+  justify-content: space-between; /* 🔥 trái - phải */
+  align-items: center;
 
   padding: 10px;
-}
+} 
 
 .quiz-btn{
-  flex: 1;              /* ❌ bỏ giãn */
-  padding: 10px 18px;      /* gọn lại */
+  flex: none; /* ❌ bỏ flex 1 */
+  padding: 10px 20px;
+  min-width: 140px; /* 🔥 đảm bảo 2 nút đều nhau */
+
   font-size: 14px;
 
   border-radius: 10px;
