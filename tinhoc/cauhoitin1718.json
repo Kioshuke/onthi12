@@ -1,6 +1,6 @@
 [
   {
-    "sectionTitle": "PHẦN I: TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN:",
+    "sectionTitle": "PHẦN I: TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN",
     "questions": [
       { "type": "multiple", "question": "Chọn mô tả đúng về lớp giả chỉ các liên kết khi chưa được kích hoạt:", "answers": [":link", ":visited", ":hover", ":selection"], "correct": 0 },
       { "type": "multiple", "question": "Pseudo-class trong CSS phải viết sau dấu nào?", "answers": [": (hai chấm)", ":: (bốn chấm)", "@ (a còng)", "* (ngôi sao)"], "correct": 0 },
