@@ -1686,12 +1686,12 @@ function closeQuiz(){
     c.classList.remove("active-card");
   });
 
-  // 🔥 scroll mượt lên top
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
+  setTimeout(()=>{
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }, 100); // delay nhẹ cho mượt
 }
 
 function openFullscreen(){
