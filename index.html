@@ -1309,24 +1309,19 @@ animation: pulse-green 2s infinite;
   z-index: 2000;
 
   display: flex;
-  gap: 12px;
+  justify-content: flex-end; /* 👉 dồn sang phải */
+  gap: 10px;
 
-  padding: 10px 0;
-  margin-bottom: 10px;
+  padding: 10px;
 }
 
 .quiz-btn{
-  flex: 1; /* 🔥 mỗi nút chiếm đều 1 nửa */
-  padding: 12px 0;
-
+  flex: none;              /* ❌ bỏ giãn */
+  padding: 10px 18px;      /* gọn lại */
   font-size: 14px;
-  font-weight: 600;
 
-  border: none;
   border-radius: 10px;
-
   cursor: pointer;
-  transition: all 0.25s ease;
 
   display: flex;
   align-items: center;
@@ -1630,8 +1625,8 @@ function loadQuiz(btn, link){
   <div class="quiz-box">
 
     <div class="quiz-header">
-      <button class="quiz-btn close-btn" onclick="closeQuiz()">X Đóng bài</button>
-      <button class="quiz-btn fullscreen-btn" onclick="openFullscreen()">⛶ Toàn màn hình</button>
+      <button class="quiz-btn close-btn" onclick="closeQuiz()">Đóng bài</button>
+      <button class="quiz-btn fullscreen-btn" onclick="openFullscreen()">Toàn màn hình</button>
     </div>
 
     <div class="loader" id="loader">
