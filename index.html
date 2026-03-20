@@ -780,6 +780,13 @@ box-shadow: 0 10px 25px rgba(255, 77, 77, 0.35);
 #logoutBtn:active{
 transform: scale(0.96);
 }
+.quiz-box:fullscreen .quiz-header {
+  display: none;
+}
+
+.quiz-box:-webkit-full-screen .quiz-header {
+  display: none;
+}
 </style>
 
 </head>
@@ -1749,7 +1756,11 @@ function openFullscreen(){
     elem.requestFullscreen();
   }
 
-  // 🔥 delay để chắc chắn fullscreen xong
+  // 🔥 ẩn header luôn
+  const header = document.querySelector(".quiz-header");
+  if(header) header.style.display = "none";
+
+  // hiện nút thoát
   setTimeout(()=>{
     document.getElementById("exitFullscreenBtn").style.display = "block";
   },300);
@@ -1766,10 +1777,19 @@ else if (document.msExitFullscreen){
 }
 }
 document.addEventListener("fullscreenchange", () => {
-if(!document.fullscreenElement){
-  const btn = document.getElementById("exitFullscreenBtn");
-  if(btn) btn.style.display = "none";
-}
+
+  const header = document.querySelector(".quiz-header");
+
+  if(!document.fullscreenElement){
+
+    // 🔥 hiện lại header
+    if(header) header.style.display = "flex";
+
+    // 🔥 ẩn nút thoát
+    const btn = document.getElementById("exitFullscreenBtn");
+    if(btn) btn.style.display = "none";
+  }
+
 });
 function show(id){
 
