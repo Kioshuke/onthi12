@@ -199,13 +199,28 @@
             margin-top: 15px;
         }
         .tf-row {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    border-bottom: 1px solid #edf2f7;
-    gap: 15px;
-    transition: background 0.2s;
-}
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #edf2f7;
+            gap: 15px;
+            transition: background 0.2s;
+        }
+        .quiz-locked {
+          user-select: none;
+        }
+        
+        /* Hover vẫn sáng lên cho UX */
+        .quiz-locked .ans-label:hover {
+          background: #f1f5f9;
+          border-color: #cbd5e1;
+          cursor: not-allowed;
+        }
+        
+        .quiz-locked .tf-row:hover {
+          background: #f1f5f9;
+          cursor: not-allowed;
+        }
 .tf-row:hover { background: #f1f5f9; }
 .tf-question-text { flex: 1; font-size: 0.95rem; line-height: 1.5; }
 .tf-options { display: flex; gap: 10px; }
@@ -412,6 +427,9 @@
 
     // 4. Các hàm bổ trợ xử lý trạng thái làm bài
     function selectAnswer(el, qIdx) {
+        // 🔥 Nếu đang khóa thì không làm gì
+        if (document.getElementById("quiz-container").classList.contains("quiz-locked")) return;
+
         if(el.classList.contains('disabled')) return;
         document.querySelectorAll(`input[name="question-${qIdx}"]`).forEach(input => input.parentElement.classList.remove('selected'));
         el.classList.add('selected');
@@ -419,8 +437,10 @@
     }
 
     function checkTFDone(globalIdx) {
-        const checked = document.querySelectorAll(`input[name^="tf-${globalIdx}-"]:checked`);
-        if (checked.length === 4) markDone(globalIdx);
+    if (document.getElementById("quiz-container").classList.contains("quiz-locked")) return;
+
+    const checked = document.querySelectorAll(`input[name^="tf-${globalIdx}-"]:checked`);
+    if (checked.length === 4) markDone(globalIdx);
     }
 
     function markDone(qIdx) {
@@ -489,8 +509,13 @@
     updateProgress(true, userScore);
 }
     function reviewMode() {
-    closeModal('resultModal');
-    document.querySelectorAll('input').forEach(input => input.disabled = true);
+
+        closeModal('resultModal');
+
+        // 🔥 bật khóa
+        document.getElementById("quiz-container").classList.add("quiz-locked");
+
+        document.querySelectorAll('input').forEach(input => input.disabled = true);
 
     let globalIdx = 0;
     questionsData.forEach((section) => {
