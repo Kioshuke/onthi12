@@ -365,17 +365,17 @@ margin-bottom:10px;
 /* POPUP */
 
 #popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.45);
-backdrop-filter:blur(5px);
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:999;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(5px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:3000; /* 🔥 cao hơn menu */
 }
 
 .popup-box{
@@ -816,13 +816,13 @@ transform: scale(0.96);
 <span class="close">&times;</span>
 <h2>🆕 Thông tin cập nhật (20/03/2026) </h2>
 <h3>📢 Có gì mới tại LearnHub 2.0?</h3>
-<p style="text-align:left; padding-left:10px; line-height:1.6;">
-  - Cập nhật giao diện, tối ưu hiệu  <br>
-  - Cập nhật trải nghiệm ( hiệu ứng card, card đang làm,... ) <br>
-  - Tối ưu scroll khi làm bài <br>
-  - Loại bỏ Youngtest sử dụng hệ thống LearnHub Test (v.0.0.1) được chạy trực tiếp trên website giúp tăng trải nghiệm người dùng <br>
-  - Cập nhật, tối ưu hệ thống Đang trực tuyến tại Popup người dùng. <br>
-</p>
+<ul style="text-align:left; padding-left:20px; line-height:1.7;">
+  <li>Cập nhật giao diện, tối ưu hiệu</li>
+  <li>Cập nhật trải nghiệm (hiệu ứng card, card đang làm,...)</li>
+  <li>Tối ưu scroll khi làm bài</li>
+  <li>Loại bỏ Youngtest, dùng LearnHub Test (v0.0.1)</li>
+  <li>Tối ưu hệ thống online trong popup</li>
+</ul>
 </div>
 </div>
 <div id="loginBox" style="
