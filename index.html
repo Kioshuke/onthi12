@@ -1740,23 +1740,22 @@ function closeQuiz(){
 
 function openFullscreen(){
 
-let elem = document.getElementById("quizFrame");
+  let elem = document.querySelector(".quiz-box");
 
-if (elem.requestFullscreen){
-  elem.requestFullscreen();
-}
-else if (elem.webkitRequestFullscreen){
-  elem.webkitRequestFullscreen();
-}
-else if (elem.msRequestFullscreen){
-  elem.msRequestFullscreen();
-}
+  if (elem.requestFullscreen){
+    elem.requestFullscreen();
+  }
+  else if (elem.webkitRequestFullscreen){
+    elem.webkitRequestFullscreen();
+  }
+  else if (elem.msRequestFullscreen){
+    elem.msRequestFullscreen();
+  }
 
-// 🔥 HIỆN NÚT THOÁT
-setTimeout(()=>{
-  document.getElementById("exitFullscreenBtn").style.display = "block";
-},300);
-
+  // hiện nút thoát
+  setTimeout(()=>{
+    document.getElementById("exitFullscreenBtn").style.display = "block";
+  },300);
 }
 function exitFullscreen(){
 if (document.exitFullscreen){
