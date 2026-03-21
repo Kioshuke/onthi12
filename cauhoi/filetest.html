@@ -277,7 +277,17 @@
         <p id="statsText">Đúng 0/0 câu</p>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 25px;">
             <button class="btn btn-primary" style="justify-content: center;" onclick="reviewMode()">👁️ Xem bài làm</button>
-            <button class="btn" style="justify-content: center; background: #f1f5f9" onclick="location.reload()">🔄 Làm lại</button>
+            <button class="btn" style="justify-content: center; background: #f1f5f9" onclick="openModal('restartModal')">🔄 Làm lại</button>
+        </div>
+    </div>
+</div>
+<div id="restartModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Xác nhận làm lại?</h3>
+        <p>Bạn sẽ mất toàn bộ bài làm hiện tại.</p>
+        <div style="display: flex; gap: 10px; margin-top: 25px;">
+            <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('restartModal')">Quay lại</button>
+            <button class="btn btn-primary" style="flex:1" onclick="confirmRestart()">Đồng ý</button>
         </div>
     </div>
 </div>
@@ -614,7 +624,9 @@
 
     // Khởi chạy
     loadQuestions();
-  
+    function confirmRestart() {
+    location.reload();
+}
 </script>
 </body>
 </html>
