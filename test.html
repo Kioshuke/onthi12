@@ -2204,35 +2204,67 @@ window.addEventListener("message", (event) => {
   }
 });
 
-// 🔥 HIỂN THỊ LỊCH SỬ
-function renderHistory(){
-  const box = document.getElementById("historyBox");
-  let history = JSON.parse(localStorage.getItem("quiz_history") || "[]");
+// 1. Hàm lấy danh sách lịch sử từ Firebase
+function renderHistory() {
+  const historyContainer = document.getElementById("historyList");
+  if (!historyContainer || !currentUser) return;
 
-  if(history.length === 0){
-    box.innerHTML = "Chưa có bài làm";
-    return;
-  }
-
-  box.innerHTML = history.map((h, i)=>`
-    <div style="
-      background:white;
-      padding:15px;
-      margin:10px 0;
-      border-radius:10px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.1);
-    ">
-      <b>${h.name}</b><br>
-      📚 ${h.testId}<br>
-      🏆 ${h.score}/${h.total}<br>
-      🕒 ${new Date(h.timestamp).toLocaleString()}<br><br>
-
-      <button onclick="reviewAttempt(${i})">
-        👁️ Xem lại
-      </button>
-    </div>
-  `).join("");
+  db.collection("quiz_history")
+    .where("uid", "==", currentUser.uid)
+    .orderBy("timestamp", "desc")
+    .limit(10)
+    .get()
+    .then((querySnapshot) => {
+      let html = "";
+      querySnapshot.forEach((doc) => {
+        const h = doc.data();
+        const time = h.timestamp ? h.timestamp.toDate().toLocaleString('vi-VN') : "...";
+        html += `
+          <div style="background:white; padding:15px; margin:10px 0; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <b>${h.name}</b><br>
+            📚 ${h.testId}<br>
+            🏆 Điểm: ${h.score}/${h.total}<br>
+            🕒 ${time}<br><br>
+            <button onclick="reviewAttemptFromFirebase('${doc.id}')" style="background: #3b82f6; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">
+              👁️ Xem lại
+            </button>
+          </div>
+        `;
+      });
+      historyContainer.innerHTML = html || "<p>Chưa có lịch sử làm bài.</p>";
+    });
 }
+
+// 2. Hàm xử lý khi bấm nút "Xem lại" (Đoạn bạn hỏi chèn ở đây)
+async function reviewAttemptFromFirebase(docId) {
+  try {
+    const doc = await db.collection("quiz_history").doc(docId).get();
+    if (!doc.exists) return;
+    
+    const data = doc.data();
+    const iframe = document.getElementById("quizFrame");
+    const modal = document.getElementById("quizModal");
+
+    if (modal) modal.style.display = "block";
+
+    // Mở đúng file bài tập tinb1718.html
+    iframe.src = "tinb1718.html"; 
+
+    iframe.onload = () => {
+      setTimeout(() => {
+        iframe.contentWindow.postMessage({
+          type: "LOAD_REVIEW",
+          data: data
+        }, "*");
+      }, 800); 
+    };
+  } catch (error) {
+    alert("Không thể tải bài làm cũ: " + error.message);
+  }
+}
+
+// Gọi hàm render khi load trang
+renderHistory();
 
 // 🔥 BẤM XEM LẠI
 function reviewAttempt(index){
@@ -2241,13 +2273,17 @@ function reviewAttempt(index){
 
   const iframe = document.getElementById("quizFrame");
 
-  iframe.src = "quiz.html"; // file con của bạn
+  // Sửa đúng tên file bạn đang dùng để làm bài
+  iframe.src = "tinhoc/tntin1718.html"; 
 
   iframe.onload = () => {
-    iframe.contentWindow.postMessage({
-      type: "LOAD_REVIEW",
-      data: data
-    }, "*");
+    // Đợi 1 chút để iframe load xong rồi mới gửi dữ liệu qua
+    setTimeout(() => {
+        iframe.contentWindow.postMessage({
+          type: "LOAD_REVIEW",
+          data: data
+        }, "*");
+    }, 500);
   };
 }
 
