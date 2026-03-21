@@ -477,61 +477,63 @@ async function loadQuestions() {
 
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
     function handleFinalSubmit() {
-        let correctCount = 0;
-        let globalIdx = 0;
-        const basePerQuestion = 10 / totalQuestions;
-        let userScore = 0;
+    let correctCount = 0; // Biến đếm tổng số câu/ý đúng
+    let globalIdx = 0;
+    const basePerQuestion = 10 / totalQuestions;
+    let userScore = 0;
+
     questionsData.forEach((section) => {
         section.questions.forEach((item) => {
             const navItem = document.getElementById(`nav-${globalIdx}`);
             let isPerfect = true;
 
+            // --- TRẮC NGHIỆM ---
             if (item.type === 'multiple') {
                 const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
                 if (sel && parseInt(sel.value) === item.correct) {
                     userScore += basePerQuestion;
-                    correctCount++;
+                    correctCount++; // +1 câu đúng
+                } else {
+                    isPerfect = false;
                 }
-                else isPerfect = false;
             } 
-                else if (item.type === 'true_false') {
-                    let subCorrect = 0;
-
+            // --- ĐÚNG SAI ---
+            else if (item.type === 'true_false') {
+                let subCorrect = 0;
                 item.subQuestions.forEach((sub, subIdx) => {
                     const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-
                     if (sel && parseInt(sel.value) === sub.correct) {
                         userScore += basePerQuestion / 4;
                         subCorrect++;
-                        correctCount++; // vẫn dùng biến global
+                        // Nếu bạn muốn đếm theo từng ý nhỏ trong popup thì để correctCount++ ở đây
                     }
                 });
-
                 if (subCorrect < item.subQuestions.length) isPerfect = false;
+                if (subCorrect === item.subQuestions.length) correctCount++; // Chỉ tính là +1 câu đúng nếu đúng hết 4 ý
             }
+            // --- TRẢ LỜI NGẮN ---
             else if (item.type === 'short_answer') {
                 const inputEl = document.querySelector(`input[data-qidx="${globalIdx}"]`);
-const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
+                const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
                 if (val === item.correctAnswer.toLowerCase()) {
-    userScore += basePerQuestion;
-    correctCount++;
-} else {
-    isPerfect = false;
-}
+                    userScore += basePerQuestion;
+                    correctCount++; // +1 câu đúng
+                } else {
+                    isPerfect = false;
+                }
             }
 
-            // Tô màu mục lục
             navItem.classList.remove('done');
             navItem.style.background = isPerfect ? "var(--success)" : "var(--danger)";
             navItem.style.color = "white";
             globalIdx++;
         });
     });
-const finalScore = userScore;
 
-document.getElementById('scoreValue').innerText = finalScore.toFixed(1);
-// cập nhật sidebar
-document.getElementById('progressText').innerText = `${correctCount}/${totalQuestions}`;
+    // CẬP NHẬT HIỂN THỊ LÊN POPUP TẠI ĐÂY
+    document.getElementById('scoreValue').innerText = userScore.toFixed(1);
+    // Dòng này sẽ sửa lỗi "Đúng 0/0 câu"
+    document.getElementById('statsText').innerText = `Đúng ${correctCount}/${totalQuestions} câu`; 
     
     closeModal('confirmModal');
     openModal('resultModal');
