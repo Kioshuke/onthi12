@@ -534,8 +534,8 @@ document.getElementById('scoreValue').innerText = finalScore.toFixed(1);
 document.getElementById('progressText').innerText = `${correctCount}/${totalQuestions}`;
     
     closeModal('confirmModal');
-    document.getElementById('resultText').innerText =
-    `Bạn đúng ${correctCount}/${totalQuestions} câu`;
+document.getElementById('statsText').innerText =
+    `Đúng ${correctCount}/${totalQuestions} câu`;
     openModal('resultModal');
     document.getElementById('progressText').innerText =
     `${correctCount}/${totalQuestions}`;
