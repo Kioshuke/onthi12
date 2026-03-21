@@ -1047,6 +1047,26 @@ opacity:0.6;
 font-family:'Segoe UI',sans-serif;
 box-sizing:border-box;
 }
+.main{
+  display: flex;
+  gap: 20px;
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.left{
+  flex: 2;
+}
+
+.right{
+  flex: 1;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  height: fit-content;
+}
 
 .title{
 color:white;
@@ -1915,8 +1935,10 @@ show(savedTab);
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { collection, query, where, orderBy, limit, onSnapshot } 
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { 
+  collection, query, where, orderBy, limit, onSnapshot,
+  doc, setDoc, getFirestore
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 import { 
 getAuth,
 onAuthStateChanged,
@@ -1926,8 +1948,6 @@ signOut,
 setPersistence,
 browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getFirestore, doc, setDoc }
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 const firebaseConfig = {
 apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
 authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -1942,6 +1962,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 function listenQuizHistory(user){
   const historyBox = document.getElementById("historyBox");
+
+  if(!historyBox) return; // ✅ tránh lỗi
 
   const q = query(
     collection(db, "quiz_history"),
@@ -2130,9 +2152,6 @@ document.addEventListener("visibilitychange", () => {
     updateStatus(true);
   }
 });
-
-// Trick để ép trình duyệt gửi dữ liệu cuối cùng trước khi đóng
-import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
 let unsubscribeUsers = null;
 
