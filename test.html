@@ -752,12 +752,6 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
-.avatar-box img{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  object-fit:cover;
-}
 #logoutBtn{
 width: 100%;
 margin-top: 15px;
@@ -809,6 +803,7 @@ transform: scale(0.96);
 <img src="https://emojigraph.org/media/google/turtle_1f422.png">
 </div>
 </div>
+
 <!-- 🔥 % nằm ngoài -->
 <div class="progress-percent">0%</div>
 </div>
@@ -873,18 +868,7 @@ transform: scale(0.96);
 </div>
 </div>
 </div>
-<div class="main">
-    
-    <div class="left">
-      <iframe id="quizFrame"></iframe>
-    </div>
 
-    <div class="right">
-      <h3>Lịch sử làm bài</h3>
-      <div id="historyBox"></div>
-    </div>
-
-  </div>
 <div class="menu">
 <button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
 <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
@@ -892,7 +876,7 @@ transform: scale(0.96);
 <button data-subject="tin" onclick="show('tin')">Tin Học</button>
 <button data-subject="su" onclick="show('su')">Lịch Sử</button>
 <button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
-  <button onclick="loadQuiz(this, 'tinhoc/tntin1718.html')">Test</button>
+  <button onclick="window.location.href='test.html'">Test</button>
 </div>
 <div class="ticker-container">
 <div class="ticker-text">
@@ -1046,26 +1030,6 @@ opacity:0.6;
 .countdown-fix *{
 font-family:'Segoe UI',sans-serif;
 box-sizing:border-box;
-}
-.main{
-  display: flex;
-  gap: 20px;
-  max-width: 1100px;
-  margin: 20px auto;
-  padding: 0 20px;
-}
-
-.left{
-  flex: 2;
-}
-
-.right{
-  flex: 1;
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  height: fit-content;
 }
 
 .title{
@@ -1236,10 +1200,6 @@ box-shadow:0 3px 10px rgba(0,0,0,0.08);
 animation:none;
 opacity:1;
 transform:none;
-}
-#userPopup{
-    right:10px;
-    width:220px;
 }
 
 .card:hover{
@@ -1743,54 +1703,22 @@ setTimeout(() => {
   let iframe = document.getElementById("quizFrame");
   let loader = document.getElementById("loader");
 
-iframe.onload = function(){
-
+  iframe.onload = function(){
   loader.style.display="none";
   iframe.style.display="block";
 
-  // scroll xuống
+  // 🔥 SCROLL SAU KHI LOAD XONG
   document.getElementById("quiz").scrollIntoView({
     behavior: "smooth",
     block: "start"
   });
-
-  // 🔥 gửi user 1 lần
-  const user = window.getCurrentUser?.();
-
-  if(user){
-  iframe.contentWindow.postMessage({
-    type: "USER_INFO",
-    user: {
-      uid: user.uid,
-      name: user.displayName,
-      email: user.email,
-      photo: user.photoURL
-    }
-  }, "*");
-} else {
-  // retry sau 500ms
-  setTimeout(()=>{
-    const retryUser = window.getCurrentUser?.();
-    if(retryUser){
-      iframe.contentWindow.postMessage({
-        type: "USER_INFO",
-        user: {
-          uid: retryUser.uid,
-          name: retryUser.displayName,
-          email: retryUser.email,
-          photo: retryUser.photoURL
-        }
-      }, "*");
-    }
-  },500);
-}
 
   // hiệu ứng glow
   iframe.style.boxShadow = "0 0 25px rgba(26,115,232,0.6)";
   setTimeout(()=>{
     iframe.style.boxShadow = "none";
   },1000);
-};
+}
 }
 
 function closeQuiz(){
@@ -1935,10 +1863,7 @@ show(savedTab);
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { 
-  collection, query, where, orderBy, limit, onSnapshot,
-  doc, setDoc, getFirestore
-} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
 import { 
 getAuth,
 onAuthStateChanged,
@@ -1948,6 +1873,8 @@ signOut,
 setPersistence,
 browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getFirestore, doc, setDoc }
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 const firebaseConfig = {
 apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
 authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -1959,54 +1886,8 @@ appId: "1:922115936320:web:67b86c06af9149ff584fa5"
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
-const db = getFirestore(app);
-function listenQuizHistory(user){
-  const historyBox = document.getElementById("historyBox");
-
-  if(!historyBox) return; // ✅ tránh lỗi
-
-  const q = query(
-    collection(db, "quiz_history"),
-    where("uid", "==", user.uid),
-    orderBy("timestamp", "desc"),
-    limit(1)
-  );
-
-  onSnapshot(q, (snap)=>{
-    historyBox.innerHTML = "";
-
-    if(snap.empty){
-      historyBox.innerHTML = "<p>Chưa có lịch sử làm bài</p>";
-      return;
-    }
-
-    snap.forEach(doc=>{
-      const data = doc.data();
-
-      const div = document.createElement("div");
-
-      div.innerHTML = `
-        <div style="
-          margin-top:15px;
-          padding:15px;
-          border-radius:12px;
-          background:#f9fafb;
-          box-shadow:0 4px 10px rgba(0,0,0,0.08);
-        ">
-          <h3>${data.testId}</h3>
-          <p>👤 ${data.name}</p>
-          <p>📊 Điểm: ${data.score} / ${data.total}</p>
-          <p>⏰ ${data.timestamp?.toDate ? data.timestamp.toDate().toLocaleString() : ""}</p>
-        </div>
-      `;
-
-      historyBox.appendChild(div);
-    });
-  });
-}
-// 🔥 đảm bảo global luôn có user
-window.getCurrentUser = () => auth.currentUser;
 await setPersistence(auth, browserLocalPersistence);
+const db = getFirestore(app);
 
 const provider = new GoogleAuthProvider();
 
@@ -2032,7 +1913,6 @@ const allowList = [
 let activeInterval = null;
 onAuthStateChanged(auth, (user)=>{
 if(user){
-  listenQuizHistory(user);
   if(!activeInterval){
   activeInterval = setInterval(()=>{
   const user = auth.currentUser;
@@ -2042,7 +1922,7 @@ if(user){
       online: true   // 🔥 THÊM DÒNG NÀY
     },{ merge:true });
   }
-}, 15000);
+}, 5000);
 }
 
 startListening(); // 🔥 luôn gọi
@@ -2153,19 +2033,17 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
+// Trick để ép trình duyệt gửi dữ liệu cuối cùng trước khi đóng
+import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
 let unsubscribeUsers = null;
 
 function startListening(){
 if(unsubscribeUsers) unsubscribeUsers(); // tránh trùng
 
 unsubscribeUsers = onSnapshot(collection(db,"users"), (snap)=>{
-let list = document.getElementById("onlineList");
-
-// 🔥 nếu chưa có thì retry
-if (!list){
-  setTimeout(startListening, 500);
-  return;
-}
+const list = document.getElementById("onlineList");
+if (!list) return;
 
 list.innerHTML = "";
 
@@ -2173,7 +2051,7 @@ snap.forEach(doc => {
 const u = doc.data();
 const now = Date.now();
 
-const ACTIVE_THRESHOLD = 60000; // 60s cho ổn
+const ACTIVE_THRESHOLD = 45000; // 45s
 
 if (!u.lastActive || now - u.lastActive > ACTIVE_THRESHOLD) return;
 if (!u.online) return;
@@ -2258,108 +2136,6 @@ pop.style.display = "block";
 pop.style.display = "none";
 }
 }
-// 🔥 NHẬN KẾT QUẢ TỪ FILE CON
-window.addEventListener("message", (event) => {
-  if(event.data.type === "QUIZ_RESULT"){
-    const result = event.data.data;
-
-    console.log("📥 Nhận:", result);
-
-    let history = JSON.parse(localStorage.getItem("quiz_history") || "[]");
-
-    history.push(result);
-
-    localStorage.setItem("quiz_history", JSON.stringify(history));
-
-    renderHistory();
-  }
-});
-
-// 1. Hàm lấy danh sách lịch sử từ Firebase
-function renderHistory() {
-  const historyContainer = document.getElementById("historyList");
-  if (!historyContainer || !currentUser) return;
-
-  db.collection("quiz_history")
-    .where("uid", "==", currentUser.uid)
-    .orderBy("timestamp", "desc")
-    .limit(10)
-    .get()
-    .then((querySnapshot) => {
-      let html = "";
-      querySnapshot.forEach((doc) => {
-        const h = doc.data();
-        const time = h.timestamp ? h.timestamp.toDate().toLocaleString('vi-VN') : "...";
-        html += `
-          <div style="background:white; padding:15px; margin:10px 0; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-            <b>${h.name}</b><br>
-            📚 ${h.testId}<br>
-            🏆 Điểm: ${h.score}/${h.total}<br>
-            🕒 ${time}<br><br>
-            <button onclick="reviewAttemptFromFirebase('${doc.id}')" style="background: #3b82f6; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">
-              👁️ Xem lại
-            </button>
-          </div>
-        `;
-      });
-      historyContainer.innerHTML = html || "<p>Chưa có lịch sử làm bài.</p>";
-    });
-}
-
-// 2. Hàm xử lý khi bấm nút "Xem lại" (Đoạn bạn hỏi chèn ở đây)
-async function reviewAttemptFromFirebase(docId) {
-  try {
-    const doc = await db.collection("quiz_history").doc(docId).get();
-    if (!doc.exists) return;
-    
-    const data = doc.data();
-    const iframe = document.getElementById("quizFrame");
-    const modal = document.getElementById("quizModal");
-
-    if (modal) modal.style.display = "block";
-
-    // Mở đúng file bài tập tinb1718.html
-    iframe.src = "tinb1718.html"; 
-
-    iframe.onload = () => {
-      setTimeout(() => {
-        iframe.contentWindow.postMessage({
-          type: "LOAD_REVIEW",
-          data: data
-        }, "*");
-      }, 800); 
-    };
-  } catch (error) {
-    alert("Không thể tải bài làm cũ: " + error.message);
-  }
-}
-
-// Gọi hàm render khi load trang
-renderHistory();
-
-// 🔥 BẤM XEM LẠI
-function reviewAttempt(index){
-  let history = JSON.parse(localStorage.getItem("quiz_history") || "[]");
-  const data = history[index];
-
-  const iframe = document.getElementById("quizFrame");
-
-  // Sửa đúng tên file bạn đang dùng để làm bài
-  iframe.src = "tinhoc/tntin1718.html"; 
-
-  iframe.onload = () => {
-    // Đợi 1 chút để iframe load xong rồi mới gửi dữ liệu qua
-    setTimeout(() => {
-        iframe.contentWindow.postMessage({
-          type: "LOAD_REVIEW",
-          data: data
-        }, "*");
-    }, 500);
-  };
-}
-
-// load lần đầu
-renderHistory();
 </script>
 <div id="userPopup" style="display:none;">
 
