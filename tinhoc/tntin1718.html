@@ -321,15 +321,11 @@
                     }
                     // 2. Trộn 4 ý nhỏ (a, b, c, d) của câu Đúng/Sai
                     if (q.type === 'true_false' && q.subQuestions) {
-                        const mixedSub = q.subQuestions.map((sub, i) => ({
-                            text: sub,
-                            correctVal: q.correctAnswers[i] // 0 là Đúng, 1 là Sai
-                        }));
-                        shuffle(mixedSub);
+                        const mixedSub = shuffle([...q.subQuestions]);
+
                         return {
                             ...q,
-                            subQuestions: mixedSub.map(s => s.text),
-                            correctAnswers: mixedSub.map(s => s.correctVal)
+                            subQuestions: mixedSub
                         };
                     }
                     return q; // Trả về nguyên bản cho Trả lời ngắn
@@ -390,14 +386,14 @@
                             ${item.subQuestions.map((sub, subIdx) => `
                                 <div class="tf-row">
                                     <div class="tf-question-text">
-                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub}
+                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub.text}
                                     </div>
                                     <div class="tf-options">
                                         <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
-                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
+                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
                                         </label>
                                         <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
-                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>S</b>
+                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>S</b>
                                         </label>
                                     </div>
                                 </div>
@@ -480,15 +476,18 @@
             } 
             else if (item.type === 'true_false') {
                 let correctCount = 0;
-                item.subQuestions.forEach((_, subIdx) => {
+
+                item.subQuestions.forEach((sub, subIdx) => {
                     const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-                    if (sel && parseInt(sel.value) === item.correctAnswers[subIdx]) {
+
+                    if (sel && parseInt(sel.value) === sub.correct) {
                         userScore += 0.25;
                         correctCount++;
                     }
                 });
-                if (correctCount < 4) isPerfect = false;
-            } 
+
+                if (correctCount < item.subQuestions.length) isPerfect = false;
+            }
             else if (item.type === 'short_answer') {
                 const val = document.querySelector(`input[data-qidx="${globalIdx}"]`).value.trim().toLowerCase();
                 if (val === item.correctAnswer.toLowerCase()) userScore += 1;
@@ -545,31 +544,34 @@
             else if (item.type === 'true_false') {
                 let allSubCorrect = true;
                 const rows = card.querySelectorAll('.tf-row');
-                
+
                 item.subQuestions.forEach((_, subIdx) => {
                     const selected = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
                     const userVal = selected ? parseInt(selected.value) : null;
-                    const correctVal = item.correctAnswers[subIdx];
+                    const correctVal = item.subQuestions[subIdx].correct;
                     const row = rows[subIdx];
 
+                    // tô màu từng dòng
                     if (userVal === correctVal) {
-                        row.style.background = "#f0fdf4"; // Xanh nhẹ cho dòng đúng
+                        row.style.background = "#f0fdf4";
                     } else {
-                        row.style.background = "#fef2f2"; // Đỏ nhẹ cho dòng sai
+                        row.style.background = "#fef2f2";
                         allSubCorrect = false;
                     }
-                    
-                    // Hiện đáp án đúng bên cạnh
-                    const tip = document.createElement('span');
-                    tip.className = userVal === correctVal ? 'true-text' : 'false-text';
-                    tip.innerHTML = ` (Đáp án: ${correctVal === 0 ? 'Đúng' : 'Sai'})`;
-                    row.querySelector('.tf-question-text').appendChild(tip);
+
+                    const textEl = row.querySelector('.tf-question-text');
+
+                    // tránh append nhiều lần
+                    if (!textEl.querySelector('.tf-answer-tip')) {
+                        const tip = document.createElement('span');
+                        tip.className = `tf-answer-tip ${userVal === correctVal ? 'true-text' : 'false-text'}`;
+                        tip.innerHTML = ` (Đáp án: ${correctVal === 1 ? 'Đúng' : 'Sai'})`;
+                        textEl.appendChild(tip);
+                    }
                 });
 
-                // Tô màu khung lớn dựa trên việc đúng hết hay không
                 card.classList.add(allSubCorrect ? 'review-true' : 'review-false');
             }
-
             // --- 3. XỬ LÝ CÂU TRẢ LỜI NGẮN ---
             else if (item.type === 'short_answer') {
                 const input = card.querySelector('.short-input');
