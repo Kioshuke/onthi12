@@ -752,6 +752,12 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
+.avatar-box img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
 #logoutBtn{
 width: 100%;
 margin-top: 15px;
@@ -1199,6 +1205,10 @@ box-shadow:0 3px 10px rgba(0,0,0,0.08);
 animation:none;
 opacity:1;
 transform:none;
+}
+#userPopup{
+    right:10px;
+    width:220px;
 }
 
 .card:hover{
@@ -1687,6 +1697,8 @@ function loadQuiz(btn, link){
     </div>
 
     <iframe id="quizFrame" src="${link}" style="display:none;"></iframe>
+    <h2>📊 Lịch sử làm bài</h2>
+    <div id="historyBox"></div>
 
   </div>
   `;
@@ -1714,19 +1726,35 @@ iframe.onload = function(){
   });
 
   // 🔥 gửi user 1 lần
-  const user = window.auth?.currentUser;
+  const user = window.getCurrentUser?.();
 
   if(user){
-    iframe.contentWindow.postMessage({
-      type: "USER_INFO",
-      user: {
-        uid: user.uid,
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL
-      }
-    }, "*");
-  }
+  iframe.contentWindow.postMessage({
+    type: "USER_INFO",
+    user: {
+      uid: user.uid,
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL
+    }
+  }, "*");
+} else {
+  // retry sau 500ms
+  setTimeout(()=>{
+    const retryUser = window.getCurrentUser?.();
+    if(retryUser){
+      iframe.contentWindow.postMessage({
+        type: "USER_INFO",
+        user: {
+          uid: retryUser.uid,
+          name: retryUser.displayName,
+          email: retryUser.email,
+          photo: retryUser.photoURL
+        }
+      }, "*");
+    }
+  },500);
+}
 
   // hiệu ứng glow
   iframe.style.boxShadow = "0 0 25px rgba(26,115,232,0.6)";
@@ -1901,7 +1929,9 @@ appId: "1:922115936320:web:67b86c06af9149ff584fa5"
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
-window.auth = auth; // 🔥 FIX
+
+// 🔥 đảm bảo global luôn có user
+window.getCurrentUser = () => auth.currentUser;
 await setPersistence(auth, browserLocalPersistence);
 const db = getFirestore(app);
 
@@ -2058,8 +2088,13 @@ function startListening(){
 if(unsubscribeUsers) unsubscribeUsers(); // tránh trùng
 
 unsubscribeUsers = onSnapshot(collection(db,"users"), (snap)=>{
-const list = document.getElementById("onlineList");
-if (!list) return;
+let list = document.getElementById("onlineList");
+
+// 🔥 nếu chưa có thì retry
+if (!list){
+  setTimeout(startListening, 500);
+  return;
+}
 
 list.innerHTML = "";
 
@@ -2067,7 +2102,7 @@ snap.forEach(doc => {
 const u = doc.data();
 const now = Date.now();
 
-const ACTIVE_THRESHOLD = 20000;
+const ACTIVE_THRESHOLD = 60000; // 60s cho ổn
 
 if (!u.lastActive || now - u.lastActive > ACTIVE_THRESHOLD) return;
 if (!u.online) return;
@@ -2152,6 +2187,72 @@ pop.style.display = "block";
 pop.style.display = "none";
 }
 }
+// 🔥 NHẬN KẾT QUẢ TỪ FILE CON
+window.addEventListener("message", (event) => {
+  if(event.data.type === "QUIZ_RESULT"){
+    const result = event.data.data;
+
+    console.log("📥 Nhận:", result);
+
+    let history = JSON.parse(localStorage.getItem("quiz_history") || "[]");
+
+    history.push(result);
+
+    localStorage.setItem("quiz_history", JSON.stringify(history));
+
+    renderHistory();
+  }
+});
+
+// 🔥 HIỂN THỊ LỊCH SỬ
+function renderHistory(){
+  const box = document.getElementById("historyBox");
+  let history = JSON.parse(localStorage.getItem("quiz_history") || "[]");
+
+  if(history.length === 0){
+    box.innerHTML = "Chưa có bài làm";
+    return;
+  }
+
+  box.innerHTML = history.map((h, i)=>`
+    <div style="
+      background:white;
+      padding:15px;
+      margin:10px 0;
+      border-radius:10px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    ">
+      <b>${h.name}</b><br>
+      📚 ${h.testId}<br>
+      🏆 ${h.score}/${h.total}<br>
+      🕒 ${new Date(h.timestamp).toLocaleString()}<br><br>
+
+      <button onclick="reviewAttempt(${i})">
+        👁️ Xem lại
+      </button>
+    </div>
+  `).join("");
+}
+
+// 🔥 BẤM XEM LẠI
+function reviewAttempt(index){
+  let history = JSON.parse(localStorage.getItem("quiz_history") || "[]");
+  const data = history[index];
+
+  const iframe = document.getElementById("quizFrame");
+
+  iframe.src = "quiz.html"; // file con của bạn
+
+  iframe.onload = () => {
+    iframe.contentWindow.postMessage({
+      type: "LOAD_REVIEW",
+      data: data
+    }, "*");
+  };
+}
+
+// load lần đầu
+renderHistory();
 </script>
 <div id="userPopup" style="display:none;">
 
