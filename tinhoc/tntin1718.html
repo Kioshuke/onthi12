@@ -284,6 +284,7 @@
 </div>
 
 <script>
+    const TEST_ID = "cauhoitin1718"; // 🔥 đổi tuỳ bài
     const JSON_URL = "cauhoitin1718.json";
     let questionsData = [];
     window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
@@ -530,6 +531,61 @@
     closeModal('confirmModal');
     openModal('resultModal');
     updateProgress(true, userScore);
+    // 🚀 GỬI KẾT QUẢ VỀ FILE CHA
+    if(currentUser){
+        window.parent.postMessage({
+            type: "QUIZ_RESULT",
+            data: {
+                testId: TEST_ID,
+                userId: currentUser.uid,
+                name: currentUser.name,
+                score: userScore,
+                total: window.totalMaxScore,
+                timestamp: Date.now(),
+                answers: collectAnswers()
+            }
+        }, "*");
+    }
+}
+    function collectAnswers(){
+    let answers = [];
+    let globalIdx = 0;
+
+    questionsData.forEach(section => {
+        section.questions.forEach(item => {
+
+            let userAnswer = null;
+
+            if(item.type === 'multiple'){
+                const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
+                userAnswer = sel ? parseInt(sel.value) : null;
+            }
+
+            else if(item.type === 'true_false'){
+                userAnswer = [];
+                item.subQuestions.forEach((_, subIdx)=>{
+                    const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
+                    userAnswer.push(sel ? parseInt(sel.value) : null);
+                });
+            }
+
+            else if(item.type === 'short_answer'){
+                const input = document.querySelector(`input[data-qidx="${globalIdx}"]`);
+                userAnswer = input ? input.value : "";
+            }
+
+            answers.push({
+                qIndex: globalIdx,
+                type: item.type,
+                userAnswer: userAnswer,
+                correct: item.correct ?? item.correctAnswers ?? item.correctAnswer
+            });
+
+            globalIdx++;
+        });
+    });
+
+    return answers;
 }
     function reviewMode() {
 
@@ -648,6 +704,58 @@ window.addEventListener("message", (event) => {
     }
   }
 });
+window.addEventListener("message", (event) => {
+
+  // nhận user (đã có)
+  if(event.data.type === "USER_INFO"){
+    currentUser = event.data.user;
+  }
+
+  // 🔥 nhận dữ liệu review
+  if(event.data.type === "LOAD_REVIEW"){
+    const data = event.data.data;
+
+    // đợi render xong
+    setTimeout(()=>{
+        applyReviewData(data.answers);
+    }, 500);
+  }
+
+});
+function applyReviewData(savedAnswers){
+    savedAnswers.forEach(ans => {
+        const qIdx = ans.qIndex;
+
+        if(ans.type === 'multiple'){
+            if(ans.userAnswer !== null){
+                const input = document.querySelector(`input[name="question-${qIdx}"][value="${ans.userAnswer}"]`);
+                if(input){
+                    input.checked = true;
+                    input.parentElement.classList.add("selected");
+                }
+            }
+        }
+
+        else if(ans.type === 'true_false'){
+            ans.userAnswer.forEach((val, subIdx)=>{
+                if(val !== null){
+                    const input = document.querySelector(`input[name="tf-${qIdx}-${subIdx}"][value="${val}"]`);
+                    if(input) input.checked = true;
+                }
+            });
+        }
+
+        else if(ans.type === 'short_answer'){
+            const input = document.querySelector(`input[data-qidx="${qIdx}"]`);
+            if(input) input.value = ans.userAnswer;
+        }
+
+        markDone(qIdx);
+    });
+
+    // 🔥 tự bật review mode luôn
+    reviewMode();
+}
 </script>
 </body>
 </html>
