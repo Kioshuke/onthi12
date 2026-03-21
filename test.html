@@ -873,7 +873,18 @@ transform: scale(0.96);
 </div>
 </div>
 </div>
+<div class="main">
+    
+    <div class="left">
+      <iframe id="quizFrame"></iframe>
+    </div>
 
+    <div class="right">
+      <h3>Lịch sử làm bài</h3>
+      <div id="historyBox"></div>
+    </div>
+
+  </div>
 <div class="menu">
 <button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
 <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
@@ -1697,8 +1708,6 @@ function loadQuiz(btn, link){
     </div>
 
     <iframe id="quizFrame" src="${link}" style="display:none;"></iframe>
-    <h2>📊 Lịch sử làm bài</h2>
-    <div id="historyBox"></div>
 
   </div>
   `;
@@ -1906,7 +1915,8 @@ show(savedTab);
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-
+import { collection, query, where, orderBy, limit, onSnapshot } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 import { 
 getAuth,
 onAuthStateChanged,
@@ -1929,11 +1939,52 @@ appId: "1:922115936320:web:67b86c06af9149ff584fa5"
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+const db = getFirestore(app);
+function listenQuizHistory(user){
+  const historyBox = document.getElementById("historyBox");
 
+  const q = query(
+    collection(db, "quiz_history"),
+    where("uid", "==", user.uid),
+    orderBy("timestamp", "desc"),
+    limit(1)
+  );
+
+  onSnapshot(q, (snap)=>{
+    historyBox.innerHTML = "";
+
+    if(snap.empty){
+      historyBox.innerHTML = "<p>Chưa có lịch sử làm bài</p>";
+      return;
+    }
+
+    snap.forEach(doc=>{
+      const data = doc.data();
+
+      const div = document.createElement("div");
+
+      div.innerHTML = `
+        <div style="
+          margin-top:15px;
+          padding:15px;
+          border-radius:12px;
+          background:#f9fafb;
+          box-shadow:0 4px 10px rgba(0,0,0,0.08);
+        ">
+          <h3>${data.testId}</h3>
+          <p>👤 ${data.name}</p>
+          <p>📊 Điểm: ${data.score} / ${data.total}</p>
+          <p>⏰ ${data.timestamp?.toDate ? data.timestamp.toDate().toLocaleString() : ""}</p>
+        </div>
+      `;
+
+      historyBox.appendChild(div);
+    });
+  });
+}
 // 🔥 đảm bảo global luôn có user
 window.getCurrentUser = () => auth.currentUser;
 await setPersistence(auth, browserLocalPersistence);
-const db = getFirestore(app);
 
 const provider = new GoogleAuthProvider();
 
@@ -1959,6 +2010,7 @@ const allowList = [
 let activeInterval = null;
 onAuthStateChanged(auth, (user)=>{
 if(user){
+  listenQuizHistory(user);
   if(!activeInterval){
   activeInterval = setInterval(()=>{
   const user = auth.currentUser;
