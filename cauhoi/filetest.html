@@ -534,8 +534,11 @@ document.getElementById('scoreValue').innerText = finalScore.toFixed(1);
 document.getElementById('progressText').innerText = `${correctCount}/${totalQuestions}`;
     
     closeModal('confirmModal');
+    document.getElementById('resultText').innerText =
+    `Bạn đúng ${correctCount}/${totalQuestions} câu`;
     openModal('resultModal');
-    updateProgress(true, userScore);
+    document.getElementById('progressText').innerText =
+    `${correctCount}/${totalQuestions}`;
 }
     function reviewMode() {
 
