@@ -594,27 +594,30 @@ document.getElementById('statsText').innerText =
     });
 
     item.subQuestions.forEach((_, subIdx) => {
-        const selected = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-        const userVal = selected ? parseInt(selected.value) : null;
-        const correctVal = item.subQuestions[subIdx].correct;
-        const row = rows[subIdx];
+    const subQ = item.subQuestions[subIdx];
+    if (!subQ) return;
 
-        // tô màu từng dòng
-        if (userVal === correctVal) {
-            row.style.background = "#f0fdf4";
-        } else {
-            row.style.background = "#fef2f2";
-            allSubCorrect = false;
-        }
+    const selected = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
+    const userVal = selected ? parseInt(selected.value) : null;
+    const correctVal = subQ.correct;
+    const row = rows[subIdx];
 
-        const textEl = row.querySelector('.tf-question-text');
+    if (userVal === correctVal) {
+        row.style.background = "#f0fdf4";
+    } else {
+        row.style.background = "#fef2f2";
+        allSubCorrect = false;
+    }
 
-        // append đáp án
+    const textEl = row.querySelector('.tf-question-text');
+
+    if (!textEl.querySelector('.tf-answer-tip')) {
         const tip = document.createElement('span');
         tip.className = `tf-answer-tip ${userVal === correctVal ? 'true-text' : 'false-text'}`;
         tip.innerHTML = ` (Đáp án: ${correctVal === 1 ? 'Đúng' : 'Sai'})`;
         textEl.appendChild(tip);
-    });
+    }
+});
 }
 
                 card.classList.add(allSubCorrect ? 'review-true' : 'review-false');
