@@ -27,6 +27,18 @@
       },
       {
         "type": "multiple",
+        "question": "Thủ đô của Việt Nam là gì?",
+        "answers": ["Hà Nội", "TP.HCM", "Đà Nẵng", "Huế"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "1 + 1 = ?",
+        "answers": ["1", "2", "3", "4"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
         "question": "Màu của bầu trời ban ngày thường là gì?",
         "answers": ["Đỏ", "Xanh dương", "Vàng", "Đen"],
         "correct": 1
