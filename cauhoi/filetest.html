@@ -536,8 +536,13 @@ const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
 
             // Tô màu mục lục
             navItem.classList.remove('done');
-            navItem.style.background = isPerfect ? "var(--success)" : "var(--danger)";
-            navItem.style.color = "white";
+
+            // XÓA style inline cũ
+            navItem.style.background = "";
+            navItem.style.color = "";
+
+            // Áp dụng trạng thái mới
+            navItem.classList.add(isPerfect ? 'nav-correct' : 'nav-wrong');
             globalIdx++;
         });
     });
