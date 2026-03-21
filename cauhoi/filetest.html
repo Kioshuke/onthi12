@@ -477,6 +477,7 @@ async function loadQuestions() {
 
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
     function handleFinalSubmit() {
+        let correctCount = 0;
         let globalIdx = 0;
         const basePerQuestion = 10 / totalQuestions;
         let userScore = 0;
@@ -489,28 +490,34 @@ async function loadQuestions() {
                 const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
                 if (sel && parseInt(sel.value) === item.correct) {
                     userScore += basePerQuestion;
+                    correctCount++;
                 }
                 else isPerfect = false;
             } 
-            else if (item.type === 'true_false') {
-                let correctCount = 0;
+                else if (item.type === 'true_false') {
+                    let subCorrect = 0;
 
                 item.subQuestions.forEach((sub, subIdx) => {
                     const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
 
                     if (sel && parseInt(sel.value) === sub.correct) {
                         userScore += basePerQuestion / 4;
-                        correctCount++;
+                        subCorrect++;
+                        correctCount++; // vẫn dùng biến global
                     }
                 });
 
-                if (correctCount < item.subQuestions.length) isPerfect = false;
+                if (subCorrect < item.subQuestions.length) isPerfect = false;
             }
             else if (item.type === 'short_answer') {
                 const inputEl = document.querySelector(`input[data-qidx="${globalIdx}"]`);
 const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
-                if (val === item.correctAnswer.toLowerCase()) userScore += basePerQuestion;
-                else isPerfect = false;
+                if (val === item.correctAnswer.toLowerCase()) {
+    userScore += basePerQuestion;
+    correctCount++;
+} else {
+    isPerfect = false;
+}
             }
 
             // Tô màu mục lục
@@ -523,7 +530,8 @@ const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
 const finalScore = userScore;
 
 document.getElementById('scoreValue').innerText = finalScore.toFixed(1);
-document.getElementById('statsText').innerText = `Tổng điểm: ${finalScore.toFixed(2)} / 10`;
+// cập nhật sidebar
+document.getElementById('progressText').innerText = `${correctCount}/${totalQuestions}`;
     
     closeModal('confirmModal');
     openModal('resultModal');
@@ -572,6 +580,8 @@ document.getElementById('statsText').innerText = `Tổng điểm: ${finalScore.t
 
                     // tô màu từng dòng
                     if (userVal === correctVal) {
+                        if (userVal === correctVal) {
+                        }
                         row.style.background = "#f0fdf4";
                     } else {
                         row.style.background = "#fef2f2";
