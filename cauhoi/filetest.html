@@ -463,20 +463,24 @@ async function loadQuestions() {
         updateProgress();
     }
 
-    function updateProgress(isFinished, score = 0) {
-        const textEl = document.getElementById('progressText');
-        const totalQs = document.querySelectorAll('.nav-item').length;
-        if (isFinished) {
-            textEl.innerText = `${score.toFixed(2)} / 10`;
-            textEl.style.color = "var(--success)";
-        } else {
-            const doneCount = document.querySelectorAll('.nav-item.done').length;
-            textEl.innerText = `${doneCount}/${totalQs} câu`;
-        }
+    function updateProgress() {
+    const textEl = document.getElementById('progressText');
+    const totalQs = document.querySelectorAll('.nav-item').length;
+
+    if (isSubmitted) {
+        // SAU KHI NỘP → hiển thị số câu đúng
+        textEl.innerText = `${correctCount}/${totalQs}`;
+    } else {
+        // TRONG KHI LÀM → hiển thị số câu đã làm
+        const doneCount = document.querySelectorAll('.nav-item.done').length;
+        textEl.innerText = `${doneCount}/${totalQs} câu`;
     }
+}
 
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
     function handleFinalSubmit() {
+        isSubmitted = true;
+        updateProgress();
         let correctCount = 0;
         let globalIdx = 0;
         const basePerQuestion = 10 / totalQuestions;
@@ -538,15 +542,11 @@ const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
 const finalScore = userScore;
 
 document.getElementById('scoreValue').innerText = finalScore.toFixed(1);
-// cập nhật sidebar
-document.getElementById('progressText').innerText = `${correctCount}/${totalQuestions}`;
     
     closeModal('confirmModal');
 document.getElementById('statsText').innerText =
     `Đúng ${correctCount}/${totalQuestions} câu`;
     openModal('resultModal');
-    document.getElementById('progressText').innerText =
-    `${correctCount}/${totalQuestions}`;
 }
     function reviewMode() {
 
