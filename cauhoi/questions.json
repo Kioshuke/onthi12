@@ -1,26 +1,92 @@
 [
   {
-    "sectionTitle": "PHẦN I: TRẮC NGHIỆM NHIỀU LỰA CHỌN",
-    "questions": [
-      { "type": "multiple", "question": "Câu hỏi trắc nghiệm có ảnh...", "image": "img1.jpg", "answers": ["A", "B", "C", "D"], "correct": 0 }
-    ]
-  },
-  {
-    "sectionTitle": "PHẦN II: CÂU HỎI ĐÚNG SAI",
+    "sectionTitle": "Phần Trắc nghiệm",
     "questions": [
       {
-        "type": "true_false", 
-        "question": "Câu hỏi đúng sai có ảnh...", 
-        "image": "img2.jpg",
-        "subQuestions": ["Ý a...", "Ý b...", "Ý c...", "Ý d..."],
-        "correctAnswers": [0, 1, 0, 1]
+        "type": "multiple",
+        "question": "Thủ đô của Việt Nam là gì?",
+        "answers": ["Hà Nội", "TP.HCM", "Đà Nẵng", "Huế"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "1 + 1 = ?",
+        "answers": ["1", "2", "3", "4"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "HTML là viết tắt của gì?",
+        "answers": [
+          "HyperText Markup Language",
+          "HighText Machine Language",
+          "HyperTool Multi Language",
+          "None"
+        ],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Màu của bầu trời ban ngày thường là gì?",
+        "answers": ["Đỏ", "Xanh dương", "Vàng", "Đen"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Con nào là động vật có vú?",
+        "answers": ["Cá", "Gà", "Chó", "Cá sấu"],
+        "correct": 2
       }
     ]
   },
   {
-    "sectionTitle": "PHẦN III: CÂU HỎI TRẢ LỜI NGẮN",
+    "sectionTitle": "Phần Đúng / Sai",
     "questions": [
-      { "type": "short_answer", "question": "Câu trả lời ngắn có ảnh...", "image": "img3.jpg", "correctAnswer": "Router" }
+      {
+        "type": "true_false",
+        "question": "Đánh giá các phát biểu:",
+        "subQuestions": [
+          { "text": "Trái Đất quay quanh Mặt Trời", "correct": 1 },
+          { "text": "Nước sôi ở 50°C", "correct": 0 },
+          { "text": "Cá có thể sống trên cạn", "correct": 0 },
+          { "text": "2 + 2 = 4", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Xét các phát biểu:",
+        "subQuestions": [
+          { "text": "Việt Nam nằm ở châu Á", "correct": 1 },
+          { "text": "Mặt Trăng là hành tinh", "correct": 0 },
+          { "text": "Python là ngôn ngữ lập trình", "correct": 1 },
+          { "text": "Kim loại dẫn điện tốt", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Đánh giá đúng sai:",
+        "subQuestions": [
+          { "text": "Số 10 là số chẵn", "correct": 1 },
+          { "text": "Số 7 chia hết cho 2", "correct": 0 },
+          { "text": "Nước có công thức H2O", "correct": 1 },
+          { "text": "Mặt Trời quay quanh Trái Đất", "correct": 0 }
+        ]
+      }
+    ]
+  },
+  {
+    "sectionTitle": "Phần Trả lời ngắn",
+    "questions": [
+      {
+        "type": "short_answer",
+        "question": "Thủ đô của Nhật Bản là gì?",
+        "correctAnswer": "Tokyo"
+      },
+      {
+        "type": "short_answer",
+        "question": "2 + 5 = ?",
+        "correctAnswer": "7"
+      }
     ]
   }
 ]
