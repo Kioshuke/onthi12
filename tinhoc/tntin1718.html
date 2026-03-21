@@ -472,36 +472,60 @@
     }
 
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
-    function handleFinalSubmit() {
+    async function handleFinalSubmit() {
     let userScore = 0;
     let globalIdx = 0;
+    let userAnswersStore = []; // Mảng lưu trữ đáp án để xem lại
 
     questionsData.forEach((section) => {
         section.questions.forEach((item) => {
             const navItem = document.getElementById(`nav-${globalIdx}`);
             let isPerfect = true;
+            let currentAnswer = null;
 
+            // 1. Xử lý câu hỏi Trắc nghiệm 1 đáp án
             if (item.type === 'multiple') {
                 const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
-                if (sel && parseInt(sel.value) === item.correct) userScore += 1;
-                else isPerfect = false;
+                currentAnswer = sel ? parseInt(sel.value) : null;
+                if (sel && currentAnswer === item.correct) {
+                    userScore += 1;
+                } else {
+                    isPerfect = false;
+                }
             } 
+            // 2. Xử lý câu hỏi Đúng/Sai (0.25 điểm mỗi ý đúng)
             else if (item.type === 'true_false') {
                 let correctCount = 0;
+                let tfAnswers = [];
                 item.subQuestions.forEach((_, subIdx) => {
                     const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-                    if (sel && parseInt(sel.value) === item.correctAnswers[subIdx]) {
+                    const val = sel ? parseInt(sel.value) : null;
+                    tfAnswers.push(val);
+                    if (sel && val === item.correctAnswers[subIdx]) {
                         userScore += 0.25;
                         correctCount++;
                     }
                 });
+                currentAnswer = tfAnswers;
                 if (correctCount < 4) isPerfect = false;
             } 
+            // 3. Xử lý câu hỏi Ngắn
             else if (item.type === 'short_answer') {
-                const val = document.querySelector(`input[data-qidx="${globalIdx}"]`).value.trim().toLowerCase();
-                if (val === item.correctAnswer.toLowerCase()) userScore += 1;
-                else isPerfect = false;
+                const input = document.querySelector(`input[data-qidx="${globalIdx}"]`);
+                currentAnswer = input.value.trim();
+                if (currentAnswer.toLowerCase() === item.correctAnswer.toLowerCase()) {
+                    userScore += 1;
+                } else {
+                    isPerfect = false;
+                }
             }
+
+            // Lưu dữ liệu vào mảng tạm
+            userAnswersStore.push({
+                qIndex: globalIdx,
+                type: item.type,
+                userAnswer: currentAnswer
+            });
 
             // Tô màu mục lục
             navItem.classList.add(isPerfect ? 'nav-correct' : 'nav-wrong');
@@ -511,6 +535,58 @@
         });
     });
 
+    // --- PHẦN QUAN TRỌNG: LƯU LÊN FIREBASE ---
+    const historyData = {
+        uid: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : "guest",
+        name: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.displayName : "Học sinh 12A1",
+        testId: "Tin học 11 (2017-2018)", // Tên bài thi
+        score: userScore,
+        total: globalIdx,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        answers: userAnswersStore // Lưu lại để sau này nút "Xem lại" có dữ liệu để load
+    };
+
+    try {
+        // Lưu vào collection 'quiz_history'
+        await db.collection("quiz_history").add(historyData);
+        console.log("Đã lưu kết quả lên Firebase thành công!");
+    } catch (error) {
+        console.error("Lỗi lưu Firebase: ", error);
+        // Lưu tạm vào máy nếu mất mạng
+        localStorage.setItem("quiz_pending", JSON.stringify(historyData));
+    }
+
+    // Hiển thị kết quả lên Modal
+    document.getElementById("finalScore").innerText = userScore;
+    document.getElementById("totalQuestions").innerText = globalIdx;
+    document.getElementById("resultModal").style.display = "flex";
+}
+
+    // --- KHÚC ĐẨY LÊN FIREBASE ---
+    const historyData = {
+        uid: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : "guest",
+        name: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.displayName : "Học sinh 12A1",
+        testId: "Tin học 11 (2017-2018)", // Bạn có thể đổi tên tùy bài
+        score: userScore,
+        total: globalIdx,
+        timestamp: new Date(), 
+        answers: userAnswersStore
+    };
+
+    try {
+        // Giả sử bạn đã khởi tạo db = firebase.firestore() ở đầu file
+        await db.collection("quiz_history").add(historyData);
+        console.log("Đã lưu kết quả lên Firebase!");
+    } catch (e) {
+        console.error("Lỗi Firebase:", e);
+        // Lưu tạm vào máy nếu lỗi mạng
+        localStorage.setItem("quiz_last_result", JSON.stringify(historyData));
+    }
+
+    // Hiển thị kết quả lên giao diện
+    document.getElementById("finalScore").innerText = userScore;
+    document.getElementById("totalQuestions").innerText = globalIdx;
+    document.getElementById("resultModal").style.display = "flex";
     window.finalScore = userScore;
     // 🔥 LƯU ĐIỂM
     if(currentUser){
@@ -546,7 +622,6 @@
             }
         }, "*");
     }
-}
     function collectAnswers(){
     let answers = [];
     let globalIdx = 0;
