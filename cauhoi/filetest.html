@@ -298,8 +298,6 @@
     window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
     let totalQuestions = 0;
     let totalRawMax = 0;
-    let isSubmitted = false;
-    correctCount = 0;
 
     // 1. Hàm xáo trộn mảng
     function shuffle(array) {
@@ -465,25 +463,20 @@ async function loadQuestions() {
         updateProgress();
     }
 
-    function updateProgress() {
-    const textEl = document.getElementById('progressText');
-    const totalQs = document.querySelectorAll('.nav-item').length;
-
-    if (isSubmitted) {
-        // SAU KHI NỘP → hiển thị số câu đúng
-        textEl.innerText = `${correctCount}/${totalQs}`;
-    } else {
-        // TRONG KHI LÀM → hiển thị số câu đã làm
-        const doneCount = document.querySelectorAll('.nav-item.done').length;
-        textEl.innerText = `${doneCount}/${totalQs} câu`;
+    function updateProgress(isFinished, score = 0) {
+        const textEl = document.getElementById('progressText');
+        const totalQs = document.querySelectorAll('.nav-item').length;
+        if (isFinished) {
+            textEl.innerText = `${score.toFixed(2)} / 10`;
+            textEl.style.color = "var(--success)";
+        } else {
+            const doneCount = document.querySelectorAll('.nav-item.done').length;
+            textEl.innerText = `${doneCount}/${totalQs} câu`;
+        }
     }
-}
 
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
     function handleFinalSubmit() {
-        isSubmitted = true;
-        correctCount = 0;
-        updateProgress();
         let globalIdx = 0;
         const basePerQuestion = 10 / totalQuestions;
         let userScore = 0;
@@ -496,42 +489,28 @@ async function loadQuestions() {
                 const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
                 if (sel && parseInt(sel.value) === item.correct) {
                     userScore += basePerQuestion;
-                    correctCount++;
                 }
                 else isPerfect = false;
             } 
-                else if (item.type === 'true_false') {
-                    let allSubCorrect = true;
+            else if (item.type === 'true_false') {
+                let correctCount = 0;
 
-                    item.subQuestions.forEach((sub, subIdx) => {
-                        const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-                        const userVal = sel ? parseInt(sel.value) : null;
+                item.subQuestions.forEach((sub, subIdx) => {
+                    const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
 
-                        // 1. TÍNH ĐIỂM (vẫn chia theo mệnh đề)
-                        if (userVal === sub.correct) {
-                            userScore += basePerQuestion / 4;
-                        }
-
-                        // 2. CHECK ĐÚNG / SAI THEO CẢ CÂU
-                        if (userVal !== sub.correct) {
-                            allSubCorrect = false;
-                        }
-                    });
-
-                    // 3. ĐẾM CÂU ĐÚNG (chỉ khi tất cả đúng)
-                    if (allSubCorrect) {
+                    if (sel && parseInt(sel.value) === sub.correct) {
+                        userScore += basePerQuestion / 4;
                         correctCount++;
                     }
-                }
+                });
+
+                if (correctCount < item.subQuestions.length) isPerfect = false;
+            }
             else if (item.type === 'short_answer') {
                 const inputEl = document.querySelector(`input[data-qidx="${globalIdx}"]`);
 const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
-                if (val === item.correctAnswer.toLowerCase()) {
-    userScore += basePerQuestion;
-    correctCount++;
-} else {
-    isPerfect = false;
-}
+                if (val === item.correctAnswer.toLowerCase()) userScore += basePerQuestion;
+                else isPerfect = false;
             }
 
             // Tô màu mục lục
@@ -544,11 +523,11 @@ const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
 const finalScore = userScore;
 
 document.getElementById('scoreValue').innerText = finalScore.toFixed(1);
+document.getElementById('statsText').innerText = `Tổng điểm: ${finalScore.toFixed(2)} / 10`;
     
     closeModal('confirmModal');
-document.getElementById('statsText').innerText =
-    `Đúng ${correctCount}/${totalQuestions} câu`;
     openModal('resultModal');
+    updateProgress(true, userScore);
 }
     function reviewMode() {
 
@@ -582,46 +561,36 @@ document.getElementById('statsText').innerText =
 
             // --- 2. XỬ LÝ CÂU ĐÚNG SAI (Từng dòng nhỏ) ---
             else if (item.type === 'true_false') {
-    let allSubCorrect = true;
-    const rows = card.querySelectorAll('.tf-row');
+                let allSubCorrect = true;
+                const rows = card.querySelectorAll('.tf-row');
 
-    // reset UI
-    rows.forEach(row => {
-        row.style.background = "";
-        const textEl = row.querySelector('.tf-question-text');
-        const tip = textEl.querySelector('.tf-answer-tip');
-        if (tip) tip.remove();
-    });
+                item.subQuestions.forEach((_, subIdx) => {
+                    const selected = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
+                    const userVal = selected ? parseInt(selected.value) : null;
+                    const correctVal = item.subQuestions[subIdx].correct;
+                    const row = rows[subIdx];
 
-    item.subQuestions.forEach((_, subIdx) => {
-        const subQ = item.subQuestions[subIdx];
-        if (!subQ) return;
+                    // tô màu từng dòng
+                    if (userVal === correctVal) {
+                        row.style.background = "#f0fdf4";
+                    } else {
+                        row.style.background = "#fef2f2";
+                        allSubCorrect = false;
+                    }
 
-        const selected = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-        const userVal = selected ? parseInt(selected.value) : null;
-        const correctVal = subQ.correct;
-        const row = rows[subIdx];
+                    const textEl = row.querySelector('.tf-question-text');
 
-        if (userVal === correctVal) {
-            row.style.background = "#f0fdf4";
-        } else {
-            row.style.background = "#fef2f2";
-            allSubCorrect = false;
-        }
+                    // tránh append nhiều lần
+                    if (!textEl.querySelector('.tf-answer-tip')) {
+                        const tip = document.createElement('span');
+                        tip.className = `tf-answer-tip ${userVal === correctVal ? 'true-text' : 'false-text'}`;
+                        tip.innerHTML = ` (Đáp án: ${correctVal === 1 ? 'Đúng' : 'Sai'})`;
+                        textEl.appendChild(tip);
+                    }
+                });
 
-        const textEl = row.querySelector('.tf-question-text');
-
-        if (!textEl.querySelector('.tf-answer-tip')) {
-            const tip = document.createElement('span');
-            tip.className = `tf-answer-tip ${userVal === correctVal ? 'true-text' : 'false-text'}`;
-            tip.innerHTML = ` (Đáp án: ${correctVal === 1 ? 'Đúng' : 'Sai'})`;
-            textEl.appendChild(tip);
-        }
-    });
-
-    // ✅ phải nằm TRONG block này
-    card.classList.add(allSubCorrect ? 'review-true' : 'review-false');
-}
+                card.classList.add(allSubCorrect ? 'review-true' : 'review-false');
+            }
             // --- 3. XỬ LÝ CÂU TRẢ LỜI NGẮN ---
             else if (item.type === 'short_answer') {
                 const input = card.querySelector('.short-input');
