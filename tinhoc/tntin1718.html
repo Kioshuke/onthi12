@@ -239,6 +239,7 @@
 <div class="container">
     <header>
         <div class="logo-area"><h2>LearnHub Test</h2></div>
+        <div id="userInfo" style="font-size:13px; color:#64748b;"></div>
         <div id="action-button-container">
             <button class="btn btn-primary" onclick="openModal('confirmModal')"><span>📤</span> Nộp bài</button>
         </div>
@@ -423,18 +424,23 @@
             });
         });
 
-        quizContainer.innerHTML = quizHtml;
+        const fragment = document.createRange().createContextualFragment(quizHtml);
+        quizContainer.innerHTML = '';
+        quizContainer.appendChild(fragment);
         navContainer.innerHTML = navHtml;
         updateProgress();
     }
 
     // 4. Các hàm bổ trợ xử lý trạng thái làm bài
     function selectAnswer(el, qIdx) {
-        // 🔥 Nếu đang khóa thì không làm gì
         if (document.getElementById("quiz-container").classList.contains("quiz-locked")) return;
 
-        if(el.classList.contains('disabled')) return;
-        document.querySelectorAll(`input[name="question-${qIdx}"]`).forEach(input => input.parentElement.classList.remove('selected'));
+        const input = el.querySelector('input');
+        input.checked = true;
+
+        document.querySelectorAll(`input[name="question-${qIdx}"]`)
+            .forEach(input => input.parentElement.classList.remove('selected'));
+
         el.classList.add('selected');
         markDone(qIdx);
     }
@@ -443,7 +449,8 @@
     if (document.getElementById("quiz-container").classList.contains("quiz-locked")) return;
 
     const checked = document.querySelectorAll(`input[name^="tf-${globalIdx}-"]:checked`);
-    if (checked.length === 4) markDone(globalIdx);
+    const total = document.querySelectorAll(`input[name^="tf-${globalIdx}-"]`).length / 2;
+    if (checked.length === total) markDone(globalIdx);
     }
 
     function markDone(qIdx) {
@@ -496,7 +503,7 @@
             }
 
             // Tô màu mục lục
-            navItem.classList.remove('done');
+            navItem.classList.add(isPerfect ? 'nav-correct' : 'nav-wrong');
             navItem.style.background = isPerfect ? "var(--success)" : "var(--danger)";
             navItem.style.color = "white";
             globalIdx++;
@@ -504,6 +511,19 @@
     });
 
     window.finalScore = userScore;
+    // 🔥 LƯU ĐIỂM
+    if(currentUser){
+    console.log("📊 User:", currentUser.uid);
+    console.log("🏆 Score:", userScore);
+
+    // 👇 HIỂN THỊ lên header
+    const userInfo = document.getElementById("userInfo");
+    if(userInfo){
+        userInfo.innerText = "👤 " + currentUser.name + " | 🏆 " + userScore.toFixed(2);
+    }
+    }else{
+    console.log("⚠️ Chưa có user (iframe chưa gửi)");
+    }
     document.getElementById('scoreValue').innerText = userScore.toFixed(1);
     document.getElementById('statsText').innerText = `Tổng điểm: ${userScore.toFixed(2)} / ${window.totalMaxScore}`;
     
@@ -612,7 +632,22 @@
 
     // Khởi chạy
     loadQuestions();
-  
+    let currentUser = null;
+
+// 🔥 NHẬN USER TỪ FILE CHA
+window.addEventListener("message", (event) => {
+  if(event.data.type === "USER_INFO"){
+    currentUser = event.data.user;
+
+    console.log("✅ Đã nhận user:", currentUser);
+
+    // 👉 test hiển thị (có thể xoá sau)
+    const header = document.querySelector(".logo-area h2");
+    if(header){
+      header.innerText = "LearnHub Test - " + currentUser.name;
+    }
+  }
+});
 </script>
 </body>
 </html>
