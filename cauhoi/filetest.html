@@ -283,7 +283,7 @@
 </div>
 
 <script>
-    const JSON_URL = "questions.json";
+    const JSON_URL = "cauhoitin1718.json";
     let questionsData = [];
     window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
 
@@ -386,7 +386,7 @@
                             ${item.subQuestions.map((sub, subIdx) => `
                                 <div class="tf-row">
                                     <div class="tf-question-text">
-                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub}
+                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub.text}
                                     </div>
                                     <div class="tf-options">
                                         <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
