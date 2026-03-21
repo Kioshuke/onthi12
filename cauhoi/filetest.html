@@ -495,20 +495,28 @@ async function loadQuestions() {
                 else isPerfect = false;
             } 
                 else if (item.type === 'true_false') {
-                    let subCorrect = 0;
+                    let allSubCorrect = true;
 
-                item.subQuestions.forEach((sub, subIdx) => {
-                    const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
+                    item.subQuestions.forEach((sub, subIdx) => {
+                        const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
+                        const userVal = sel ? parseInt(sel.value) : null;
 
-                    if (sel && parseInt(sel.value) === sub.correct) {
-                        userScore += basePerQuestion / 4;
-                        subCorrect++;
-                        correctCount++; // vẫn dùng biến global
+                        // 1. TÍNH ĐIỂM (vẫn chia theo mệnh đề)
+                        if (userVal === sub.correct) {
+                            userScore += basePerQuestion / 4;
+                        }
+
+                        // 2. CHECK ĐÚNG / SAI THEO CẢ CÂU
+                        if (userVal !== sub.correct) {
+                            allSubCorrect = false;
+                        }
+                    });
+
+                    // 3. ĐẾM CÂU ĐÚNG (chỉ khi tất cả đúng)
+                    if (allSubCorrect) {
+                        correctCount++;
                     }
-                });
-
-                if (subCorrect < item.subQuestions.length) isPerfect = false;
-            }
+                }
             else if (item.type === 'short_answer') {
                 const inputEl = document.querySelector(`input[data-qidx="${globalIdx}"]`);
 const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
