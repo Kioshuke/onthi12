@@ -284,6 +284,7 @@
 </div>
 
 <script>
+    let isReviewMode = false;
     const TEST_ID = "cauhoitin1718"; // 🔥 đổi tuỳ bài
     const JSON_URL = "cauhoitin1718.json";
     let questionsData = [];
@@ -472,156 +473,98 @@
     }
 
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
-    async function handleFinalSubmit() {
+async function handleFinalSubmit() {
     let userScore = 0;
     let globalIdx = 0;
-    let userAnswersStore = []; // Mảng lưu trữ đáp án để xem lại
+    let userAnswersStore = [];
 
-    questionsData.forEach((section) => {
-        section.questions.forEach((item) => {
-            const navItem = document.getElementById(`nav-${globalIdx}`);
-            let isPerfect = true;
-            let currentAnswer = null;
+    try {
+        questionsData.forEach((section) => {
+            section.questions.forEach((item) => {
+                const navItem = document.getElementById(`nav-${globalIdx}`);
+                let isPerfect = true;
+                let currentAnswer = null;
 
-            // 1. Xử lý câu hỏi Trắc nghiệm 1 đáp án
-            if (item.type === 'multiple') {
-                const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
-                currentAnswer = sel ? parseInt(sel.value) : null;
-                if (sel && currentAnswer === item.correct) {
-                    userScore += 1;
-                } else {
-                    isPerfect = false;
-                }
-            } 
-            // 2. Xử lý câu hỏi Đúng/Sai (0.25 điểm mỗi ý đúng)
-            else if (item.type === 'true_false') {
-                let correctCount = 0;
-                let tfAnswers = [];
-                item.subQuestions.forEach((_, subIdx) => {
-                    const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-                    const val = sel ? parseInt(sel.value) : null;
-                    tfAnswers.push(val);
-                    if (sel && val === item.correctAnswers[subIdx]) {
-                        userScore += 0.25;
-                        correctCount++;
+                if (item.type === 'multiple') {
+                    const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
+                    currentAnswer = sel ? parseInt(sel.value) : null;
+
+                    if (sel && currentAnswer === item.correct) {
+                        userScore += 1;
+                    } else {
+                        isPerfect = false;
                     }
-                });
-                currentAnswer = tfAnswers;
-                if (correctCount < 4) isPerfect = false;
-            } 
-            // 3. Xử lý câu hỏi Ngắn
-            else if (item.type === 'short_answer') {
-                const input = document.querySelector(`input[data-qidx="${globalIdx}"]`);
-                currentAnswer = input.value.trim();
-                if (currentAnswer.toLowerCase() === item.correctAnswer.toLowerCase()) {
-                    userScore += 1;
-                } else {
-                    isPerfect = false;
+                } 
+                else if (item.type === 'true_false') {
+                    let correctCount = 0;
+                    let tfAnswers = [];
+
+                    item.subQuestions.forEach((_, subIdx) => {
+                        const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
+                        const val = sel ? parseInt(sel.value) : null;
+
+                        tfAnswers.push(val);
+
+                        if (sel && val === item.correctAnswers[subIdx]) {
+                            userScore += 0.25;
+                            correctCount++;
+                        }
+                    });
+
+                    currentAnswer = tfAnswers;
+                    if (correctCount < 4) isPerfect = false;
+                } 
+                else if (item.type === 'short_answer') {
+                    const input = document.querySelector(`input[data-qidx="${globalIdx}"]`);
+                    currentAnswer = input.value.trim();
+
+                    if (currentAnswer.toLowerCase() === item.correctAnswer.toLowerCase()) {
+                        userScore += 1;
+                    } else {
+                        isPerfect = false;
+                    }
                 }
-            }
 
-            // Lưu dữ liệu vào mảng tạm
-            userAnswersStore.push({
-                qIndex: globalIdx,
-                type: item.type,
-                userAnswer: currentAnswer
+                userAnswersStore.push({
+                    qIndex: globalIdx,
+                    type: item.type,
+                    userAnswer: currentAnswer
+                });
+
+                navItem.classList.add(isPerfect ? 'nav-correct' : 'nav-wrong');
+
+                globalIdx++;
             });
-
-            // Tô màu mục lục
-            navItem.classList.add(isPerfect ? 'nav-correct' : 'nav-wrong');
-            navItem.style.background = isPerfect ? "var(--success)" : "var(--danger)";
-            navItem.style.color = "white";
-            globalIdx++;
         });
-    });
 
-    // --- PHẦN QUAN TRỌNG: LƯU LÊN FIREBASE ---
-    const historyData = {
-        uid: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : "guest",
-        name: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.displayName : "Học sinh 12A1",
-        testId: "Tin học 11 (2017-2018)", // Tên bài thi
-        score: userScore,
-        total: globalIdx,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        answers: userAnswersStore // Lưu lại để sau này nút "Xem lại" có dữ liệu để load
-    };
+        // ✅ HIỂN THỊ KẾT QUẢ
+        document.getElementById('scoreValue').innerText = userScore.toFixed(1);
+        document.getElementById('statsText').innerText = `Tổng điểm: ${userScore.toFixed(2)} / ${window.totalMaxScore}`;
 
-    try {
-        // Lưu vào collection 'quiz_history'
-        await db.collection("quiz_history").add(historyData);
-        console.log("Đã lưu kết quả lên Firebase thành công!");
+        closeModal('confirmModal');
+        openModal('resultModal');
+        updateProgress(true, userScore);
+
+        // ✅ gửi sang parent
+        if(currentUser){
+            window.parent.postMessage({
+                type: "QUIZ_RESULT",
+                data: {
+                    testId: TEST_ID,
+                    userId: currentUser.uid,
+                    name: currentUser.name,
+                    score: userScore,
+                    total: window.totalMaxScore,
+                    timestamp: Date.now(),
+                    answers: userAnswersStore
+                }
+            }, "*");
+        }
+
     } catch (error) {
-        console.error("Lỗi lưu Firebase: ", error);
-        // Lưu tạm vào máy nếu mất mạng
-        localStorage.setItem("quiz_pending", JSON.stringify(historyData));
+        console.error("Lỗi:", error);
     }
-
-    // Hiển thị kết quả lên Modal
-    document.getElementById("finalScore").innerText = userScore;
-    document.getElementById("totalQuestions").innerText = globalIdx;
-    document.getElementById("resultModal").style.display = "flex";
 }
-
-    // --- KHÚC ĐẨY LÊN FIREBASE ---
-    const historyData = {
-        uid: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : "guest",
-        name: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.displayName : "Học sinh 12A1",
-        testId: "Tin học 11 (2017-2018)", // Bạn có thể đổi tên tùy bài
-        score: userScore,
-        total: globalIdx,
-        timestamp: new Date(), 
-        answers: userAnswersStore
-    };
-
-    try {
-        // Giả sử bạn đã khởi tạo db = firebase.firestore() ở đầu file
-        await db.collection("quiz_history").add(historyData);
-        console.log("Đã lưu kết quả lên Firebase!");
-    } catch (e) {
-        console.error("Lỗi Firebase:", e);
-        // Lưu tạm vào máy nếu lỗi mạng
-        localStorage.setItem("quiz_last_result", JSON.stringify(historyData));
-    }
-
-    // Hiển thị kết quả lên giao diện
-    document.getElementById("finalScore").innerText = userScore;
-    document.getElementById("totalQuestions").innerText = globalIdx;
-    document.getElementById("resultModal").style.display = "flex";
-    window.finalScore = userScore;
-    // 🔥 LƯU ĐIỂM
-    if(currentUser){
-    console.log("📊 User:", currentUser.uid);
-    console.log("🏆 Score:", userScore);
-
-    // 👇 HIỂN THỊ lên header
-    const userInfo = document.getElementById("userInfo");
-    if(userInfo){
-        userInfo.innerText = "👤 " + currentUser.name + " | 🏆 " + userScore.toFixed(2);
-    }
-    }else{
-    console.log("⚠️ Chưa có user (iframe chưa gửi)");
-    }
-    document.getElementById('scoreValue').innerText = userScore.toFixed(1);
-    document.getElementById('statsText').innerText = `Tổng điểm: ${userScore.toFixed(2)} / ${window.totalMaxScore}`;
-    
-    closeModal('confirmModal');
-    openModal('resultModal');
-    updateProgress(true, userScore);
-    // 🚀 GỬI KẾT QUẢ VỀ FILE CHA
-    if(currentUser){
-        window.parent.postMessage({
-            type: "QUIZ_RESULT",
-            data: {
-                testId: TEST_ID,
-                userId: currentUser.uid,
-                name: currentUser.name,
-                score: userScore,
-                total: window.totalMaxScore,
-                timestamp: Date.now(),
-                answers: collectAnswers()
-            }
-        }, "*");
-    }
     function collectAnswers(){
     let answers = [];
     let globalIdx = 0;
@@ -669,7 +612,7 @@
         // 🔥 bật khóa
         document.getElementById("quiz-container").classList.add("quiz-locked");
 
-        document.querySelectorAll('input').forEach(input => input.disabled = true);
+        document.querySelectorAll('#quiz-container input').forEach(input => input.disabled = true);
 
     let globalIdx = 0;
     questionsData.forEach((section) => {
@@ -767,37 +710,32 @@
 
 // 🔥 NHẬN USER TỪ FILE CHA
 window.addEventListener("message", (event) => {
-  if(event.data.type === "USER_INFO"){
+
+  if (event.data.type === "USER_INFO") {
     currentUser = event.data.user;
 
     console.log("✅ Đã nhận user:", currentUser);
 
-    // 👉 test hiển thị (có thể xoá sau)
     const header = document.querySelector(".logo-area h2");
-    if(header){
+    if (header) {
       header.innerText = "LearnHub Test - " + currentUser.name;
     }
   }
-});
-window.addEventListener("message", (event) => {
 
-  // nhận user (đã có)
-  if(event.data.type === "USER_INFO"){
-    currentUser = event.data.user;
-  }
-
-  // 🔥 nhận dữ liệu review
-  if(event.data.type === "LOAD_REVIEW"){
+if (event.data.type === "LOAD_REVIEW") {
     const data = event.data.data;
 
-    // đợi render xong
-    setTimeout(()=>{
+    setTimeout(() => {
         applyReviewData(data.answers);
-    }, 500);
-  }
+    }, 800); // tăng nhẹ từ 500 → 800ms cho chắc
+}
 
 });
 function applyReviewData(savedAnswers){
+
+    if (isReviewMode) return; // ❗ chặn chạy lại
+    isReviewMode = true;
+
     savedAnswers.forEach(ans => {
         const qIdx = ans.qIndex;
 
@@ -825,10 +763,13 @@ function applyReviewData(savedAnswers){
             if(input) input.value = ans.userAnswer;
         }
 
-        markDone(qIdx);
+        // ✅ chỉ đánh dấu UI, không gọi markDone
+        const navEl = document.getElementById(`nav-${qIdx}`);
+        if(navEl){
+            navEl.classList.add("done");
+        }
     });
 
-    // 🔥 tự bật review mode luôn
     reviewMode();
 }
 </script>
