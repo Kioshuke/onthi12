@@ -1703,15 +1703,31 @@ setTimeout(() => {
   let iframe = document.getElementById("quizFrame");
   let loader = document.getElementById("loader");
 
-  iframe.onload = function(){
+iframe.onload = function(){
+
   loader.style.display="none";
   iframe.style.display="block";
 
-  // 🔥 SCROLL SAU KHI LOAD XONG
+  // 🔥 SCROLL
   document.getElementById("quiz").scrollIntoView({
     behavior: "smooth",
     block: "start"
   });
+
+  // 🔥 GỬI USER QUA IFRAME
+  const user = auth.currentUser;
+
+  if(user){
+    iframe.contentWindow.postMessage({
+      type: "USER_INFO",
+      user: {
+        uid: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL
+      }
+    }, "*");
+  }
 
   // hiệu ứng glow
   iframe.style.boxShadow = "0 0 25px rgba(26,115,232,0.6)";
