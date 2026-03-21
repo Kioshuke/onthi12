@@ -298,6 +298,8 @@
     window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
     let totalQuestions = 0;
     let totalRawMax = 0;
+    let isSubmitted = false;
+    correctCount = 0;
 
     // 1. Hàm xáo trộn mảng
     function shuffle(array) {
@@ -480,8 +482,8 @@ async function loadQuestions() {
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
     function handleFinalSubmit() {
         isSubmitted = true;
+        correctCount = 0;
         updateProgress();
-        let correctCount = 0;
         let globalIdx = 0;
         const basePerQuestion = 10 / totalQuestions;
         let userScore = 0;
