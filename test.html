@@ -803,7 +803,6 @@ transform: scale(0.96);
 <img src="https://emojigraph.org/media/google/turtle_1f422.png">
 </div>
 </div>
-
 <!-- 🔥 % nằm ngoài -->
 <div class="progress-percent">0%</div>
 </div>
@@ -1708,14 +1707,14 @@ iframe.onload = function(){
   loader.style.display="none";
   iframe.style.display="block";
 
-  // 🔥 SCROLL
+  // scroll xuống
   document.getElementById("quiz").scrollIntoView({
     behavior: "smooth",
     block: "start"
   });
 
-  // 🔥 GỬI USER QUA IFRAME
-  const user = auth.currentUser;
+  // 🔥 gửi user 1 lần
+  const user = window.auth?.currentUser;
 
   if(user){
     iframe.contentWindow.postMessage({
@@ -1734,7 +1733,7 @@ iframe.onload = function(){
   setTimeout(()=>{
     iframe.style.boxShadow = "none";
   },1000);
-}
+};
 }
 
 function closeQuiz(){
@@ -1902,6 +1901,7 @@ appId: "1:922115936320:web:67b86c06af9149ff584fa5"
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+window.auth = auth; // 🔥 FIX
 await setPersistence(auth, browserLocalPersistence);
 const db = getFirestore(app);
 
@@ -1938,7 +1938,7 @@ if(user){
       online: true   // 🔥 THÊM DÒNG NÀY
     },{ merge:true });
   }
-}, 5000);
+}, 15000);
 }
 
 startListening(); // 🔥 luôn gọi
@@ -2067,7 +2067,7 @@ snap.forEach(doc => {
 const u = doc.data();
 const now = Date.now();
 
-const ACTIVE_THRESHOLD = 45000; // 45s
+const ACTIVE_THRESHOLD = 20000;
 
 if (!u.lastActive || now - u.lastActive > ACTIVE_THRESHOLD) return;
 if (!u.online) return;
