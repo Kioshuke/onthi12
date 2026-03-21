@@ -316,32 +316,34 @@ async function loadQuestions() {
         if (!res.ok) throw new Error("Lỗi tải file JSON");
 
         const data = await res.json();
+        
+        // Khởi tạo lại các biến đếm
+        totalQuestions = 0; 
 
         questionsData = data.map(section => {
+            const sectionQuestions = shuffle(section.questions).map(q => {
+                totalQuestions++; // Cứ mỗi câu hỏi xuất hiện thì tăng biến tổng lên 1
+                
+                if (q.type === 'multiple' && q.answers) {
+                    const mixed = q.answers.map((ans, i) => ({ text: ans, isCorrect: i === q.correct }));
+                    shuffle(mixed);
+                    return {
+                        ...q,
+                        answers: mixed.map(a => a.text),
+                        correct: mixed.findIndex(a => a.isCorrect)
+                    };
+                }
+                if (q.type === 'true_false' && q.subQuestions) {
+                    const mixedSub = shuffle([...q.subQuestions]);
+                    return { ...q, subQuestions: mixedSub };
+                }
+                return q;
+            });
+
             return {
                 sectionTitle: section.sectionTitle,
-                questions: shuffle(section.questions).map(q => {
-                    if (q.type === 'multiple' && q.answers) {
-                        const mixed = q.answers.map((ans, i) => ({ text: ans, isCorrect: i === q.correct }));
-                        shuffle(mixed);
-                        return {
-                            ...q,
-                            answers: mixed.map(a => a.text),
-                            correct: mixed.findIndex(a => a.isCorrect)
-                        };
-                    }
-                    if (q.type === 'true_false' && q.subQuestions) {
-                        const mixedSub = shuffle([...q.subQuestions]);
-                        return { ...q, subQuestions: mixedSub };
-                    }
-                    return q;
-                })
+                questions: sectionQuestions
             };
-        });
-
-        totalQuestions = 0;
-        questionsData.forEach(section => {
-            section.questions.forEach(() => totalQuestions++);
         });
 
         renderQuiz();
@@ -476,11 +478,14 @@ async function loadQuestions() {
     }
 
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
-    function handleFinalSubmit() {
-        let correctCount = 0;
-        let globalIdx = 0;
-        const basePerQuestion = 10 / totalQuestions;
-        let userScore = 0;
+function handleFinalSubmit() {
+    let correctCount = 0;
+    let globalIdx = 0;
+    let userScore = 0;
+    
+    // Tính điểm cơ bản dựa trên tổng số câu thực tế (totalQuestions)
+    const basePerQuestion = totalQuestions > 0 ? (10 / totalQuestions) : 0;
+
     questionsData.forEach((section) => {
         section.questions.forEach((item) => {
             const navItem = document.getElementById(`nav-${globalIdx}`);
@@ -491,47 +496,46 @@ async function loadQuestions() {
                 if (sel && parseInt(sel.value) === item.correct) {
                     userScore += basePerQuestion;
                     correctCount++;
-                }
-                else isPerfect = false;
+                } else isPerfect = false;
             } 
-                else if (item.type === 'true_false') {
-                    let subCorrect = 0;
-
+            else if (item.type === 'true_false') {
+                let subCorrect = 0;
                 item.subQuestions.forEach((sub, subIdx) => {
                     const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
-
                     if (sel && parseInt(sel.value) === sub.correct) {
-                        userScore += basePerQuestion / 4;
+                        userScore += (basePerQuestion / 4);
                         subCorrect++;
-                        correctCount++; // vẫn dùng biến global
                     }
                 });
-
-                if (subCorrect < item.subQuestions.length) isPerfect = false;
+                // Chỉ tính là đúng 1 câu nếu đúng hết cả 4 ý nhỏ
+                if (subCorrect === item.subQuestions.length) {
+                    correctCount++;
+                } else {
+                    isPerfect = false;
+                }
             }
             else if (item.type === 'short_answer') {
                 const inputEl = document.querySelector(`input[data-qidx="${globalIdx}"]`);
-const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
+                const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
                 if (val === item.correctAnswer.toLowerCase()) {
-    userScore += basePerQuestion;
-    correctCount++;
-} else {
-    isPerfect = false;
-}
+                    userScore += basePerQuestion;
+                    correctCount++;
+                } else isPerfect = false;
             }
 
-            // Tô màu mục lục
-            navItem.classList.remove('done');
-            navItem.style.background = isPerfect ? "var(--success)" : "var(--danger)";
-            navItem.style.color = "white";
+            // Cập nhật màu mục lục
+            if (navItem) {
+                navItem.classList.remove('done');
+                navItem.style.background = isPerfect ? "var(--success)" : "var(--danger)";
+                navItem.style.color = "white";
+            }
             globalIdx++;
         });
     });
-const finalScore = userScore;
 
-document.getElementById('scoreValue').innerText = finalScore.toFixed(1);
-// cập nhật sidebar
-document.getElementById('progressText').innerText = `${correctCount}/${totalQuestions}`;
+    // Hiển thị lên Popup
+    document.getElementById('scoreValue').innerText = userScore.toFixed(1);
+    document.getElementById('statsText').innerText = `Đúng ${correctCount}/${totalQuestions} câu`;
     
     closeModal('confirmModal');
     openModal('resultModal');
