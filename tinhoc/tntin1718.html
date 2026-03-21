@@ -160,7 +160,7 @@
         .true-answer-highlight { border: 2px solid var(--info) !important; background: var(--primary-light) !important; }
         .true-answer-highlight::after { content: "✓ Đáp án đúng"; position: absolute; right: 8px; top: 2px; font-size: 0.65rem; color: var(--info); font-weight: bold; }
 
-        .btn { padding: 10px 22px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .btn { padding: 10px 22px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: #1d4ed8; }
         .btn-reload { background: var(--info); color: white; } /* Nút làm lại màu xanh dương */
@@ -263,7 +263,7 @@
     <div class="modal-content">
         <h3>Xác nhận nộp bài?</h3>
         <p>Bạn có chắc chắn muốn kết thúc bài thi này?</p>
-        <div style="display: flex; gap: 10px; margin-top: 25px;">
+        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 25px;">
             <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('confirmModal')">Quay lại</button>
             <button class="btn btn-primary" style="flex:1" onclick="handleFinalSubmit()">Nộp ngay</button>
         </div>
@@ -277,7 +277,17 @@
         <p id="statsText">Đúng 0/0 câu</p>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 25px;">
             <button class="btn btn-primary" style="justify-content: center;" onclick="reviewMode()">👁️ Xem bài làm</button>
-            <button class="btn" style="justify-content: center; background: #f1f5f9" onclick="location.reload()">🔄 Làm lại</button>
+            <button class="btn" style="justify-content: center; background: #f1f5f9" onclick="openModal('restartModal')">🔄 Làm lại</button>
+        </div>
+    </div>
+</div>
+<div id="restartModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Xác nhận làm lại?</h3>
+        <p>Bạn sẽ mất toàn bộ bài làm hiện tại.</p>
+        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 25px;">
+            <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('restartModal')">Quay lại</button>
+            <button class="btn btn-primary" style="flex:1" onclick="confirmRestart()">Đồng ý</button>
         </div>
     </div>
 </div>
@@ -286,6 +296,8 @@
     const JSON_URL = "cauhoitin1718.json";
     let questionsData = [];
     window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
+    let totalQuestions = 0;
+    let totalRawMax = 0;
 
     // 1. Hàm xáo trộn mảng
     function shuffle(array) {
@@ -297,19 +309,18 @@
     }
 
     // 2. Tải câu hỏi và xử lý cấu trúc Section
-    async function loadQuestions() {
+async function loadQuestions() {
     try {
         const timestamp = new Date().getTime();
         const res = await fetch(`${JSON_URL}?v=${timestamp}`);
         if (!res.ok) throw new Error("Lỗi tải file JSON");
-        
+
         const data = await res.json();
-        
+
         questionsData = data.map(section => {
             return {
                 sectionTitle: section.sectionTitle,
                 questions: shuffle(section.questions).map(q => {
-                    // 1. Trộn đáp án câu Trắc nghiệm
                     if (q.type === 'multiple' && q.answers) {
                         const mixed = q.answers.map((ans, i) => ({ text: ans, isCorrect: i === q.correct }));
                         shuffle(mixed);
@@ -319,21 +330,22 @@
                             correct: mixed.findIndex(a => a.isCorrect)
                         };
                     }
-                    // 2. Trộn 4 ý nhỏ (a, b, c, d) của câu Đúng/Sai
                     if (q.type === 'true_false' && q.subQuestions) {
                         const mixedSub = shuffle([...q.subQuestions]);
-
-                        return {
-                            ...q,
-                            subQuestions: mixedSub
-                        };
+                        return { ...q, subQuestions: mixedSub };
                     }
-                    return q; // Trả về nguyên bản cho Trả lời ngắn
+                    return q;
                 })
             };
         });
 
+        totalQuestions = 0;
+        questionsData.forEach(section => {
+            section.questions.forEach(() => totalQuestions++);
+        });
+
         renderQuiz();
+
     } catch (e) {
         console.error(e);
         document.getElementById('quiz-container').innerText = "Lỗi: " + e.message;
@@ -436,10 +448,14 @@
     }
 
     function checkTFDone(globalIdx) {
-    if (document.getElementById("quiz-container").classList.contains("quiz-locked")) return;
+        if (document.getElementById("quiz-container").classList.contains("quiz-locked")) return;
 
-    const checked = document.querySelectorAll(`input[name^="tf-${globalIdx}-"]:checked`);
-    if (checked.length === 4) markDone(globalIdx);
+        const checked = document.querySelectorAll(`input[name^="tf-${globalIdx}-"]:checked`);
+        
+        const card = document.getElementById(`card-${globalIdx}`);
+        const totalSub = card.querySelectorAll('.tf-row').length;
+
+        if (checked.length === totalSub) markDone(globalIdx);
     }
 
     function markDone(qIdx) {
@@ -451,7 +467,7 @@
         const textEl = document.getElementById('progressText');
         const totalQs = document.querySelectorAll('.nav-item').length;
         if (isFinished) {
-            textEl.innerText = `Điểm: ${score.toFixed(2)}/${window.totalMaxScore}`;
+            textEl.innerText = `${score.toFixed(2)} / 10`;
             textEl.style.color = "var(--success)";
         } else {
             const doneCount = document.querySelectorAll('.nav-item.done').length;
@@ -461,9 +477,10 @@
 
     // 5. Hàm Nộp bài và Chấm điểm (Logic 0.25đ mỗi ý đúng-sai)
     function handleFinalSubmit() {
-    let userScore = 0;
-    let globalIdx = 0;
-
+        let correctCount = 0;
+        let globalIdx = 0;
+        const basePerQuestion = 10 / totalQuestions;
+        let userScore = 0;
     questionsData.forEach((section) => {
         section.questions.forEach((item) => {
             const navItem = document.getElementById(`nav-${globalIdx}`);
@@ -471,27 +488,36 @@
 
             if (item.type === 'multiple') {
                 const sel = document.querySelector(`input[name="question-${globalIdx}"]:checked`);
-                if (sel && parseInt(sel.value) === item.correct) userScore += 1;
+                if (sel && parseInt(sel.value) === item.correct) {
+                    userScore += basePerQuestion;
+                    correctCount++;
+                }
                 else isPerfect = false;
             } 
-            else if (item.type === 'true_false') {
-                let correctCount = 0;
+                else if (item.type === 'true_false') {
+                    let subCorrect = 0;
 
                 item.subQuestions.forEach((sub, subIdx) => {
                     const sel = document.querySelector(`input[name="tf-${globalIdx}-${subIdx}"]:checked`);
 
                     if (sel && parseInt(sel.value) === sub.correct) {
-                        userScore += 0.25;
-                        correctCount++;
+                        userScore += basePerQuestion / 4;
+                        subCorrect++;
+                        correctCount++; // vẫn dùng biến global
                     }
                 });
 
-                if (correctCount < item.subQuestions.length) isPerfect = false;
+                if (subCorrect < item.subQuestions.length) isPerfect = false;
             }
             else if (item.type === 'short_answer') {
-                const val = document.querySelector(`input[data-qidx="${globalIdx}"]`).value.trim().toLowerCase();
-                if (val === item.correctAnswer.toLowerCase()) userScore += 1;
-                else isPerfect = false;
+                const inputEl = document.querySelector(`input[data-qidx="${globalIdx}"]`);
+const val = inputEl ? inputEl.value.trim().toLowerCase() : "";
+                if (val === item.correctAnswer.toLowerCase()) {
+    userScore += basePerQuestion;
+    correctCount++;
+} else {
+    isPerfect = false;
+}
             }
 
             // Tô màu mục lục
@@ -501,10 +527,11 @@
             globalIdx++;
         });
     });
+const finalScore = userScore;
 
-    window.finalScore = userScore;
-    document.getElementById('scoreValue').innerText = userScore.toFixed(1);
-    document.getElementById('statsText').innerText = `Tổng điểm: ${userScore.toFixed(2)} / ${window.totalMaxScore}`;
+document.getElementById('scoreValue').innerText = finalScore.toFixed(1);
+// cập nhật sidebar
+document.getElementById('progressText').innerText = `${correctCount}/${totalQuestions}`;
     
     closeModal('confirmModal');
     openModal('resultModal');
@@ -553,6 +580,8 @@
 
                     // tô màu từng dòng
                     if (userVal === correctVal) {
+                        if (userVal === correctVal) {
+                        }
                         row.style.background = "#f0fdf4";
                     } else {
                         row.style.background = "#fef2f2";
@@ -614,7 +643,9 @@
 
     // Khởi chạy
     loadQuestions();
-  
+    function confirmRestart() {
+    location.reload();
+}
 </script>
 </body>
 </html>
