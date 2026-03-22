@@ -317,6 +317,17 @@
         opacity: 0;
     }
 }
+/* rơi xuống sau khi nổ */
+@keyframes fallDown {
+    0% {
+        transform: translate(0, -200px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--fallX), 300px) rotate(720deg);
+        opacity: 0;
+    }
+}
 </style>
 </head>
 <body>
@@ -803,37 +814,44 @@ function launchConfetti() {
 
     const colors = ["#22c55e", "#3b82f6", "#facc15", "#ef4444", "#a855f7"];
 
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 120; i++) {
         const confetti = document.createElement("div");
         confetti.classList.add("confetti");
 
-        // màu random
         confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
 
         // random size
-        confetti.style.width = (6 + Math.random() * 6) + "px";
-        confetti.style.height = (10 + Math.random() * 8) + "px";
+        confetti.style.width = (6 + Math.random() * 8) + "px";
+        confetti.style.height = (10 + Math.random() * 10) + "px";
 
-        // random spread
-        const spread = (Math.random() * 300);
+        // vị trí pháo (2 khẩu gần giữa)
+        let startX, spreadX;
 
         if (i % 2 === 0) {
-            // 🔵 pháo bên trái
-            confetti.style.left = "40%";
-            confetti.style.bottom = "0px";
-            confetti.style.setProperty("--x", spread + "px");
-            confetti.style.animation = `shootLeft ${0.8 + Math.random() * 0.6}s ease-out forwards`;
+            startX = "42%"; // pháo trái
+            spreadX = Math.random() * 350;
+            confetti.style.animation = `shootLeft 0.7s ease-out forwards`;
         } else {
-            // 🔴 pháo bên phải
-            confetti.style.left = "60%";
-            confetti.style.bottom = "0px";
-            confetti.style.setProperty("--x", -spread + "px");
-            confetti.style.animation = `shootRight ${0.8 + Math.random() * 0.6}s ease-out forwards`;
+            startX = "58%"; // pháo phải
+            spreadX = -Math.random() * 350;
+            confetti.style.animation = `shootRight 0.7s ease-out forwards`;
         }
+
+        confetti.style.left = startX;
+        confetti.style.bottom = "0px";
+        confetti.style.setProperty("--x", spreadX + "px");
 
         container.appendChild(confetti);
 
-        setTimeout(() => confetti.remove(), 1200);
+        // 🎆 sau khi bay lên -> chuyển sang rơi
+        setTimeout(() => {
+            const fallX = (Math.random() * 200 - 100) + "px";
+            confetti.style.setProperty("--fallX", fallX);
+            confetti.style.animation = `fallDown 1.5s ease-in forwards`;
+        }, 700);
+
+        // xoá
+        setTimeout(() => confetti.remove(), 2200);
     }
 }
 </script>
