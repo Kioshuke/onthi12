@@ -71,7 +71,11 @@
             border: 1px solid #e2e8f0;
         }
         .sidebar-header { font-weight: 800; margin-bottom: 15px; display: flex; justify-content: space-between; }
-        .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(45px, 1fr)); gap: 10px; }
+        .nav-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); /* cố định 4 cột */
+            gap: 8px;
+        }
         .nav-item {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
             border-radius: 10px; border: 1px solid #e2e8f0; font-size: 0.85rem;
@@ -137,11 +141,13 @@
             left: 50%; 
             transform: translate(-50%, -50%); 
             z-index: 2100; 
-            max-height: 80vh; 
+            max-height: 75vh; 
             overflow-y: auto; 
-            width: 100%;
-            min-width: unset;
-            max-width: unset;
+
+            width: 92%;              /* nhỏ lại */
+            max-width: 420px;       /* giới hạn */
+            padding: 15px;          /* giảm padding */
+            border-radius: 16px;    /* bớt bo cho gọn */
         }
 
         .main-layout { display: block; }
