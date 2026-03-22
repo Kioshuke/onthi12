@@ -270,15 +270,6 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 0;
-    pointer-events: none;
-    z-index: 3000;
-}
-#confetti-container {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
     height: 100%;
     pointer-events: none;
     z-index: 3000;
@@ -850,13 +841,13 @@ function launchConfetti() {
 
         // bay lên
         const shootTime = isMobile ? 500 : 700;
-        confetti.style.animation = `shoot ${shootTime}ms ease-out forwards`;
+        confetti.style.animation = `explode ${shootTime}ms ease-out forwards`;
 
         // rơi xuống
         setTimeout(() => {
             const fallX = (Math.random() * 100 - 50) + "px";
             confetti.style.setProperty("--fallX", fallX);
-            confetti.style.animation = `fall ${isMobile ? 1200 : 1800}ms ease-in forwards`;
+            confetti.style.animation = `fallReal ${isMobile ? 1200 : 1800}ms ease-in forwards`;
         }, shootTime);
 
         setTimeout(() => confetti.remove(), 2500);
