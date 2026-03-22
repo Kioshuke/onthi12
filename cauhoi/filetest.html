@@ -73,8 +73,8 @@
         .sidebar-header { font-weight: 800; margin-bottom: 15px; display: flex; justify-content: space-between; }
         .nav-grid { 
             display: grid; 
-            grid-template-columns: repeat(4, 1fr); /* cố định 4 cột */
-            gap: 8px;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 6px;
         }
         .nav-item {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
@@ -194,7 +194,7 @@
         .nav-item.nav-correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: var(--success) !important; }
         .nav-item.nav-wrong { background: #fef2f2 !important; border-color: var(--danger) !important; color: var(--danger) !important; }
 
-        @media (max-width: 600px) { .answers-grid { grid-template-columns: 1fr; } .nav-grid { grid-template-columns: repeat(4, 1fr);}}
+        @media (max-width: 600px) { .answers-grid { grid-template-columns: 1fr; }}
         .short-input:focus {
             outline: none;
             border-color: var(--primary) !important;
