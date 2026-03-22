@@ -16,7 +16,7 @@
             --info: #3b82f6; /* Xanh dương cho review */
         }
 
-        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--text); }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--text); overflow-x: hidden; }
         .container { max-width: 1600px; margin: 0 auto; padding: 0 20px; }
 
         header {
@@ -292,6 +292,7 @@
     height: 14px;
     opacity: 0.95;
     border-radius: 2px;
+    will-change: transform;
 }
 
 @keyframes explode {
@@ -807,47 +808,58 @@ function getFeedback(score) {
         };
     }
 }
+const isMobile = window.innerWidth < 768;
 function launchConfetti() {
     const container = document.getElementById("confetti-container");
+
+    const isMobile = window.innerWidth < 768;
+
+    const particleCount = isMobile ? 60 : 120;
+    const maxSpread = isMobile ? 120 : 300;
+
     const colors = ["#22c55e", "#3b82f6", "#facc15", "#ef4444", "#a855f7"];
 
-    for (let i = 0; i < 180; i++) { // tăng số lượng cho rình rang
+    for (let i = 0; i < particleCount; i++) {
         const confetti = document.createElement("div");
         confetti.classList.add("confetti");
 
         confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
 
-        // random size
-        confetti.style.width = (6 + Math.random() * 10) + "px";
-        confetti.style.height = (10 + Math.random() * 14) + "px";
+        // size
+        confetti.style.width = (6 + Math.random() * 8) + "px";
+        confetti.style.height = (10 + Math.random() * 10) + "px";
 
-        // 🎯 2 khẩu pháo ở giữa
+        // góc + lực
+        const angle = Math.random() * Math.PI * 0.6 + Math.PI * 0.2;
+        const force = isMobile 
+            ? 300 + Math.random() * 300 
+            : 450 + Math.random() * 500;
+
+        const x = Math.cos(angle) * (Math.random() * maxSpread);
+        const y = -Math.sin(angle) * force;
+
+        // vị trí 2 pháo giữa
         const startX = (i % 2 === 0) ? "45%" : "55%";
         confetti.style.left = startX;
         confetti.style.bottom = "0px";
 
-        // 🎆 random góc tỏa (cái quan trọng nhất)
-        const angle = Math.random() * Math.PI * 0.6 + Math.PI * 0.2;
-        const force = 400 + Math.random() * 500;
-
-        const x = Math.cos(angle) * force;
-        const y = -Math.sin(angle) * force;
-
         confetti.style.setProperty("--x", x + "px");
         confetti.style.setProperty("--y", y + "px");
 
-        confetti.style.animation = `explode 0.6s ease-out forwards`;
-
         container.appendChild(confetti);
 
-        // 🎇 sau đó rơi xuống
-        setTimeout(() => {
-            const fallX = (Math.random() * 200 - 100);
-            confetti.style.setProperty("--fallX", fallX + "px");
-            confetti.style.animation = `fallReal 1.8s ease-in forwards`;
-        }, 600);
+        // bay lên
+        const shootTime = isMobile ? 500 : 700;
+        confetti.style.animation = `shoot ${shootTime}ms ease-out forwards`;
 
-        setTimeout(() => confetti.remove(), 2400);
+        // rơi xuống
+        setTimeout(() => {
+            const fallX = (Math.random() * 100 - 50) + "px";
+            confetti.style.setProperty("--fallX", fallX);
+            confetti.style.animation = `fall ${isMobile ? 1200 : 1800}ms ease-in forwards`;
+        }, shootTime);
+
+        setTimeout(() => confetti.remove(), 2500);
     }
 }
 </script>
