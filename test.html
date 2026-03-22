@@ -1689,16 +1689,6 @@ let progress = setInterval(() => {
         }, 800);
     }
 }, 20);
-// đổi text loading
-let loadingInterval = setInterval(() => {
-  textEl.innerText = loadingTexts[textIndex];
-
-  textIndex++;
-
-  if (textIndex >= loadingTexts.length) {
-    clearInterval(loadingInterval);
-  }
-}, 1000);
 function loadQuiz(btn, link){
 
   // ❌ xoá active cũ
