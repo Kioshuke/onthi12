@@ -294,26 +294,24 @@
     border-radius: 2px;
 }
 
-/* bắn từ trái */
-@keyframes shootLeft {
+@keyframes explode {
     0% {
-        transform: translate(0, 0) rotate(0deg);
+        transform: translate(0, 0) scale(1);
         opacity: 1;
     }
     100% {
-        transform: translate(var(--x), -500px) rotate(720deg);
-        opacity: 0;
+        transform: translate(var(--x), var(--y)) scale(0.8);
+        opacity: 1;
     }
 }
 
-/* bắn từ phải */
-@keyframes shootRight {
+@keyframes fallReal {
     0% {
-        transform: translate(0, 0) rotate(0deg);
+        transform: translate(var(--x), var(--y)) rotate(0deg);
         opacity: 1;
     }
     100% {
-        transform: translate(var(--x), -500px) rotate(-720deg);
+        transform: translate(calc(var(--x) + var(--fallX)), calc(var(--y) + 400px)) rotate(720deg);
         opacity: 0;
     }
 }
@@ -811,47 +809,45 @@ function getFeedback(score) {
 }
 function launchConfetti() {
     const container = document.getElementById("confetti-container");
-
     const colors = ["#22c55e", "#3b82f6", "#facc15", "#ef4444", "#a855f7"];
 
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 180; i++) { // tăng số lượng cho rình rang
         const confetti = document.createElement("div");
         confetti.classList.add("confetti");
 
         confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
 
         // random size
-        confetti.style.width = (6 + Math.random() * 8) + "px";
-        confetti.style.height = (10 + Math.random() * 10) + "px";
+        confetti.style.width = (6 + Math.random() * 10) + "px";
+        confetti.style.height = (10 + Math.random() * 14) + "px";
 
-        // vị trí pháo (2 khẩu gần giữa)
-        let startX, spreadX;
-
-        if (i % 2 === 0) {
-            startX = "42%"; // pháo trái
-            spreadX = Math.random() * 350;
-            confetti.style.animation = `shootLeft 0.7s ease-out forwards`;
-        } else {
-            startX = "58%"; // pháo phải
-            spreadX = -Math.random() * 350;
-            confetti.style.animation = `shootRight 0.7s ease-out forwards`;
-        }
-
+        // 🎯 2 khẩu pháo ở giữa
+        const startX = (i % 2 === 0) ? "45%" : "55%";
         confetti.style.left = startX;
         confetti.style.bottom = "0px";
-        confetti.style.setProperty("--x", spreadX + "px");
+
+        // 🎆 random góc tỏa (cái quan trọng nhất)
+        const angle = Math.random() * Math.PI; // 0 -> 180 độ
+        const force = 200 + Math.random() * 300;
+
+        const x = Math.cos(angle) * force;
+        const y = -Math.sin(angle) * force;
+
+        confetti.style.setProperty("--x", x + "px");
+        confetti.style.setProperty("--y", y + "px");
+
+        confetti.style.animation = `explode 0.6s ease-out forwards`;
 
         container.appendChild(confetti);
 
-        // 🎆 sau khi bay lên -> chuyển sang rơi
+        // 🎇 sau đó rơi xuống
         setTimeout(() => {
-            const fallX = (Math.random() * 200 - 100) + "px";
-            confetti.style.setProperty("--fallX", fallX);
-            confetti.style.animation = `fallDown 1.5s ease-in forwards`;
-        }, 700);
+            const fallX = (Math.random() * 200 - 100);
+            confetti.style.setProperty("--fallX", fallX + "px");
+            confetti.style.animation = `fallReal 1.8s ease-in forwards`;
+        }, 600);
 
-        // xoá
-        setTimeout(() => confetti.remove(), 2200);
+        setTimeout(() => confetti.remove(), 2400);
     }
 }
 </script>
