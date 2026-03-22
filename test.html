@@ -480,6 +480,7 @@ top:0;
 left:0;
 width:100%;
 height:100%;
+transition: opacity 0.6s ease, visibility 0.6s ease;
 
 display:flex;
 flex-direction:column;
@@ -575,11 +576,6 @@ min-height: 24px; /* Giữ khung không bị giật khi đổi chữ */
   100%{ background-position:100% 50%; }
 }
 
-/* fade loading */
-#loadingOverlay{
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-
 #loadingOverlay.hide{
   opacity:0;
   visibility:hidden;
@@ -609,6 +605,11 @@ min-height: 24px; /* Giữ khung không bị giật khi đổi chữ */
 @keyframes loadProgress{
 0%{width:0%;}
 100%{width:100%;}
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
 }
 
 .title-box{
@@ -961,6 +962,9 @@ margin:auto;
 animation:spin 0.6s linear infinite;
 }
 
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
 .exam-schedule{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
