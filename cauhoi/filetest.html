@@ -819,13 +819,13 @@ function launchConfetti() {
 
         if (i % 2 === 0) {
             // 🔵 pháo bên trái
-            confetti.style.left = "0px";
+            confetti.style.left = "40%";
             confetti.style.bottom = "0px";
             confetti.style.setProperty("--x", spread + "px");
             confetti.style.animation = `shootLeft ${0.8 + Math.random() * 0.6}s ease-out forwards`;
         } else {
             // 🔴 pháo bên phải
-            confetti.style.left = "100%";
+            confetti.style.left = "60%";
             confetti.style.bottom = "0px";
             confetti.style.setProperty("--x", -spread + "px");
             confetti.style.animation = `shootRight ${0.8 + Math.random() * 0.6}s ease-out forwards`;
