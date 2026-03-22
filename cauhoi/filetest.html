@@ -306,7 +306,7 @@
         opacity: 1;
     }
     100% {
-        transform: translate(calc(var(--x) + var(--fallX)), calc(var(--y) + 500px)) rotate(360deg);
+        transform: translate(calc(var(--x) + var(--fallX)), calc(var(--y) + 700px)) rotate(360deg);
         opacity: 0;
     }
 }
@@ -385,7 +385,7 @@
 </div>
 
 <script>
-    const JSON_URL = "questions.json";
+    const JSON_URL = "cauhoitin1718.json";
     let questionsData = [];
     window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
     let totalQuestions = 0;
@@ -826,7 +826,7 @@ function launchConfetti() {
         // góc + lực
         const angle = Math.random() * Math.PI * 0.6 + Math.PI * 0.2;
         const force = isMobile 
-            ? 180 + Math.random() * 150   // 🔥 giảm mạnh
+            ? 550 + Math.random() * 250
             : 450 + Math.random() * 500;
 
         const x = Math.cos(angle) * (Math.random() * maxSpread);
