@@ -311,7 +311,7 @@
         opacity: 1;
     }
     100% {
-        transform: translate(calc(var(--x) + var(--fallX)), calc(var(--y) + 400px)) rotate(720deg);
+        transform: translate(calc(var(--x) + var(--fallX)), calc(var(--y) + 600px)) rotate(720deg);
         opacity: 0;
     }
 }
@@ -827,8 +827,8 @@ function launchConfetti() {
         confetti.style.bottom = "0px";
 
         // 🎆 random góc tỏa (cái quan trọng nhất)
-        const angle = Math.random() * Math.PI; // 0 -> 180 độ
-        const force = 200 + Math.random() * 300;
+        const angle = Math.random() * Math.PI * 0.6 + Math.PI * 0.2;
+        const force = 400 + Math.random() * 500;
 
         const x = Math.cos(angle) * force;
         const y = -Math.sin(angle) * force;
