@@ -97,7 +97,7 @@
         "type": "multiple",
         "question": "Để nhập hoặc hiển thị tên tệp lưu trữ trang web trên Google Sites, bạn cần sử dụng dòng nào trong giao diện tạo phần đầu trang?",
         "answers": ["Dòng Nhập tên trang web", "Dòng Tiêu đề trang", "Dòng Trang web không có tiêu đề", "Dòng Thay đổi hình ảnh"],
-        "correct": 0
+        "correct": 2
       },
       {
         "type": "multiple",
