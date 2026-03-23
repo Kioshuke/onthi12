@@ -64,160 +64,160 @@
       },
       {
         "type": "multiple",
-        "question": "Khi lập kế hoạch xây dựng nội dung, việc phân loại tư liệu vào các thư mục riêng nhằm mục đích gì?",
-        "answers": ["Làm mã khó đọc", "Trình duyệt tải lâu hơn", "Quản lý tài nguyên khoa học và dễ bảo trì", "Ngăn sao chép"],
+        "question": "Khi lập kế hoạch xây dựng nội dung, việc phân loại tư liệu vào các thư mục riêng (image, video, css) nhằm mục đích gì?",
+        "answers": ["Để làm cho mã HTML trở nên khó đọc và khó hiểu", "Để giúp trình duyệt tìm kiếm dữ liệu lâu hơn một chút", "Để quản lý tài nguyên khoa học và dễ dàng bảo trì", "Để ngăn chặn người dùng khác sao chép nội dung"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Nếu xây dựng trang web CLB Tin học, nội dung nào nên đặt ở trang chủ?",
-        "answers": ["Danh sách thành viên", "Giới thiệu chung và tin nổi bật", "Code phức tạp", "Lịch sử CNTT thế giới"],
+        "question": "Nếu bạn muốn xây dựng một trang web giới thiệu câu lạc bộ Tin học của trường, nội dung nào nên đặt ở trang chủ?",
+        "answers": ["Toàn bộ danh sách các thành viên từ trước đến nay", "Thông tin giới thiệu chung và các tin tức nổi bật", "Các đoạn mã nguồn lập trình phức tạp của học sinh", "Lịch sử chi tiết của ngành Công nghệ thông tin thế giới"],
         "correct": 1
       },
 
       {
         "type": "multiple",
-        "question": "Để truy cập tạo trang web mới Google Sites, địa chỉ nào đúng?",
+        "question": "Để truy cập vào giao diện tạo trang web mới của Google, bạn cần truy cập vào địa chỉ nào?",
         "answers": ["sites.google.com/create", "sites.google.com/new", "drive.google.com/new", "sites.google.com/start"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Trong giao diện đầu tiên Google Sites, phần nào chứa ô tìm kiếm?",
+        "question": "Trong giao diện đầu tiên của Google Sites, phần nào chứa ô tìm kiếm và biểu tượng để truy cập các ứng dụng khác của Google?",
         "answers": ["Phần trên cùng", "Phần thứ hai", "Phần thứ ba", "Phần dưới cùng"],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Khi tạo web mới, bạn có thể chọn gì?",
-        "answers": ["Trang trắng hoặc mẫu", "Web động/tĩnh", "Cá nhân/doanh nghiệp", "Mở/bảo mật"],
+        "question": "Khi tạo một trang web mới trong Google Sites, bạn có thể chọn từ các tùy chọn nào?",
+        "answers": ["Trang web trắng hoặc mẫu có sẵn", "Trang web động hoặc tĩnh", "Trang web cá nhân hoặc doanh nghiệp", "Trang web mở hoặc bảo mật"],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Để nhập tên file trang web, dùng dòng nào?",
-        "answers": ["Nhập tên trang web", "Tiêu đề trang", "Trang web không có tiêu đề", "Thay đổi hình ảnh"],
+        "question": "Để nhập hoặc hiển thị tên tệp lưu trữ trang web trên Google Sites, bạn cần sử dụng dòng nào trong giao diện tạo phần đầu trang?",
+        "answers": ["Dòng Nhập tên trang web", "Dòng Tiêu đề trang", "Dòng Trang web không có tiêu đề", "Dòng Thay đổi hình ảnh"],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Tùy chọn nào KHÔNG có trong kích thước header?",
+        "question": "Tùy chọn nào không có trong phần chọn kích thước phần đầu trang của Google Sites?",
         "answers": ["Bìa", "Biểu ngữ lớn", "Biểu ngữ", "Tiêu đề nhỏ"],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Để thiết lập tiêu đề trang, dùng dòng nào?",
-        "answers": ["Nhập tên web", "Tiêu đề trang", "Thay đổi ảnh", "Trang web không tiêu đề"],
+        "question": "Để thiết lập tiêu đề trang trên Google Sites, bạn cần sử dụng dòng nào trong giao diện tạo phần đầu trang?",
+        "answers": ["Dòng Nhập tên trang web", "Dòng Tiêu đề trang", "Dòng Thay đổi hình ảnh", "Dòng Trang web không có tiêu đề"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Có thể làm gì với ảnh nền header?",
-        "answers": ["Thay đổi ảnh", "Xóa hoàn toàn", "Đổi kích thước", "Đổi màu"],
+        "question": "Khi thiết lập phần đầu trang, bạn có thể làm gì với hình ảnh nền?",
+        "answers": ["Thay đổi hình ảnh nền", "Xóa hoàn toàn hình ảnh nền", "Thay đổi kích thước của hình ảnh nền", "Thay đổi màu sắc của hình ảnh nền"],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Để xuất bản web, cần làm gì?",
-        "answers": ["Xem trước", "Đăng nhập Google", "Chọn mẫu", "Nhập tên"],
+        "question": "Để xuất bản trang web trên Google Sites, bước nào là cần thiết?",
+        "answers": ["Xem trước và chỉnh sửa", "Đăng nhập vào tài khoản Google", "Chọn mẫu cho trang web", "Nhập tên trang web"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Kích thước header gồm?",
-        "answers": ["Bìa", "Chân trang", "Biểu ngữ nhỏ", "Nội dung"],
+        "question": "Trong giao diện tạo phần đầu trang, bạn có thể thiết lập kích thước nào cho phần đầu trang?",
+        "answers": ["Bìa", "Chân trang", "Biểu ngữ nhỏ", "Nội dung chính"],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Thiết lập favicon dùng chức năng nào?",
-        "answers": ["Nhập tên web", "Tiêu đề trang", "Thay đổi ảnh", "Logo và favicon"],
+        "question": "Để thiết lập favicon cho trang web, bạn cần sử dụng chức năng nào trong giao diện tạo phần đầu trang?",
+        "answers": ["Dòng Nhập tên trang web", "Dòng Tiêu đề trang", "Dòng Thay đổi hình ảnh", "Dòng Logo và favicon"],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Header web 'Trường học xanh' nên dùng gì?",
-        "answers": ["Linh kiện", "Logo + màu xanh", "Biểu đồ", "Robot AI"],
+        "question": "Khi xây dựng phần đầu cho trang web \"Trường học xanh\", hình ảnh nào là phù hợp nhất?",
+        "answers": ["Hình ảnh các linh kiện điện tử máy tính", "Biểu tượng logo của trường và màu xanh lá", "Các biểu đồ phân tích dữ liệu chứng khoán", "Hình ảnh về các robot trí tuệ nhân tạo (AI)"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Tối ưu header mobile nên?",
-        "answers": ["Xóa header", "Giữ nguyên", "Menu thu gọn", "Thêm ảnh nặng"],
+        "question": "Để tối ưu hóa phần đầu trang web cho thiết bị di động, người thiết kế nên làm gì?",
+        "answers": ["Loại bỏ hoàn toàn phần đầu của trang web", "Giữ nguyên kích thước như trên máy tính", "Sử dụng menu dạng thu gọn", "Chèn thêm thật nhiều ảnh động dung lượng lớn"],
         "correct": 2
       },
 
       {
         "type": "multiple",
-        "question": "Trong giao diện body, bảng chọn nào dùng để chèn đối tượng?",
+        "question": "Trong giao diện tạo phần thân trang web, bảng chọn nào được sử dụng để chèn các đối tượng như hộp văn bản, hình ảnh và nhúng?",
         "answers": ["Chèn", "Trang", "Giao diện", "Cấu trúc"],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Lệnh Nhúng dùng để làm gì?",
-        "answers": ["Chèn Docs", "Chèn ảnh", "Chèn dữ liệu internet", "Chèn link"],
+        "question": "Lệnh “Nhúng” trong bảng chọn Chèn có chức năng gì?",
+        "answers": ["Chèn văn bản từ Google Drive", "Chèn hình ảnh từ máy tính", "Chèn dữ liệu từ các ứng dụng Internet khác", "Chèn liên kết đến các trang web khác"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Bước đầu tiên khi tạo body?",
-        "answers": ["Thêm ảnh", "Thiết lập cấu trúc", "Chèn bản đồ", "Thêm footer"],
+        "question": "Trong nhiệm vụ tạo phần thân trang web, bước đầu tiên là gì?",
+        "answers": ["Thêm ảnh vào trang web", "Thiết lập cấu trúc nội dung với hai khối", "Chèn bản đồ vào trang web", "Thêm chân trang"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Chèn bản đồ dùng lệnh nào?",
+        "question": "Để chèn bản đồ vào trang web, ta sử dụng lệnh nào trong bảng chọn Chèn?",
         "answers": ["Hộp văn bản", "Hình ảnh", "Nhúng", "Bản đồ"],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Có thể làm gì với đối tượng?",
-        "answers": ["Resize & move", "Chỉ copy", "Chỉ xóa", "Không resize"],
+        "question": "Khi chỉnh sửa các đối tượng trên trang web, thao tác nào sau đây có thể thực hiện?",
+        "answers": ["Thay đổi kích thước và di chuyển đối tượng", "Sao chép đối tượng nhưng không xoá được", "Chỉ xoá đối tượng mà không thể sao chép", "Không thể thay đổi kích thước đối tượng"],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Thêm thông tin footer làm sao?",
-        "answers": ["Hộp văn bản", "Xuống cuối + footer", "Bản đồ", "Nhúng"],
+        "question": "Khi muốn thêm thông tin liên lạc vào phần chân trang, bạn nên làm gì?",
+        "answers": ["Sử dụng lệnh Chèn – Hộp văn bản", "Di chuyển xuống cuối trang và thêm chân trang", "Sử dụng lệnh Chèn – Bản đồ", "Nhúng thông tin từ ứng dụng khác"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Tại sao body quan trọng?",
-        "answers": ["Chứa CSS", "Chứa nội dung", "Ở trên cùng", "Chống spam"],
+        "question": "Tại sao phần thân trang web (Body/Content) lại là phần quan trọng nhất đối với người dùng?",
+        "answers": ["Vì nó chứa mã nguồn CSS định dạng màu sắc", "Vì nó chứa thông tin mà người dùng đang tìm kiếm", "Vì nó luôn nằm ở vị trí trên cùng của trang web", "Vì nó giúp máy tính nhận dạng được các thư rác"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Thêm tiêu đề vào khối?",
-        "answers": ["Nhúng", "Hộp văn bản", "Ảnh", "Drive"],
+        "question": "Trong việc tạo phần thân trang web, làm thế nào để thêm tiêu đề và văn bản vào mỗi khối?",
+        "answers": ["Sử dụng lệnh Chèn  Nhúng", "Sử dụng lệnh Chèn  Hộp văn bản", "Nhấn vào biểu tượng  Thêm ảnh", "Sử dụng lệnh Chèn  Drive"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Nhúng Google Maps vào trang web dùng?",
-        "answers": ["Ảnh", "Nhúng", "Bản đồ", "Drive"],
+        "question": "Khi muốn nhúng Google Maps vào trang web, ta có thể chọn lệnh nào?",
+        "answers": ["Hình ảnh", "Nhúng", "Bản đồ", "Drive"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Chèn dữ liệu từ Google Drive dùng?",
+        "question": "Lệnh nào trong bảng chọn Chèn được sử dụng để chèn thông tin từ Google Drive?",
         "answers": ["Hộp văn bản", "Hình ảnh", "Drive", "Nhúng"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Khác biệt body và footer?",
-        "answers": ["Body thay đổi, footer cố định", "Body chứa logo", "Body chỉ ảnh", "Body ở dưới"],
+        "question": "Điểm khác biệt chính giữa phần thân và phần chân trang web là gì?",
+        "answers": ["Phần thân chứa nội dung thay đổi, phần chân chứa thông tin cố định", "Phần thân chứa logo, phần chân chứa các bài viết chi tiết", "Phần thân chỉ chứa hình ảnh, phần chân chỉ chứa văn bản", "Phần thân nằm dưới cùng, phần chân nằm ở giữa trang web"],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Trang tin tức nên trình bày thế nào?",
-        "answers": ["1 khối", "Chia cột/khối", "Chỉ video", "Liên hệ đầu trang"],
+        "question": "Khi thiết kế phần thân cho một trang web tin tức, cách trình bày nào sau đây là hợp lý nhất?",
+        "answers": ["Đưa tất cả các bài viết vào một khối văn bản duy nhất", "Chia nội dung thành các cột hoặc các khối tin riêng biệt", "Chỉ sử dụng video mà không cần bất kỳ tiêu đề văn bản nào", "Đặt thông tin liên hệ của tòa soạn lên đầu phần nội dung"],
         "correct": 1
       }
     ]
