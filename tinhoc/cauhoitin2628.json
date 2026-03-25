@@ -1,0 +1,152 @@
+[
+  {
+    "sectionTitle": "Phần I. Trắc nghiệm nhiều phương án lựa chọn",
+    "questions": [
+      {
+        "type": "multiple",
+        "question": "Câu 1: Cấu trúc của một trang web thường được tổ chức theo dạng nào?",
+        "answers": ["Đường thẳng", "Hình tròn", "Hình cây", "Hình lưới"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 2: Cụm từ \"Đọc tiếp\" thường được sử dụng để:",
+        "answers": ["Kết thúc bài viết", "Chuyển hướng người dùng đến trang web khác", "Liên kết đến trang web chứa thông tin chi tiết", "Hiển thị hình ảnh"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 3: Trang con là:",
+        "answers": ["Trang chủ của một website", "Trang web mở từ bảng chọn của trang chủ", "Một phần của trang chủ", "Trang web không liên kết với trang chủ"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 4: Thanh điều hướng thường chứa:",
+        "answers": ["Nội dung chính của trang web", "Liên kết đến các trang con", "Hình ảnh và video", "Chỉ dẫn về cách sử dụng"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 5: Để không làm mất cân đối trang web khi trình bày văn bản đầy đủ, ta nên:",
+        "answers": ["Sử dụng ít văn bản hơn", "Chia thành các trang và dùng liên kết", "Dùng phông chữ nhỏ hơn", "Chỉ hiển thị tóm tắt"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 6: Cấu trúc hình cây nghĩa là:",
+        "answers": ["Mỗi trang độc lập", "Các trang xếp chồng", "Có trang gốc và trang con", "Liên kết ngẫu nhiên"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 7: Một trang web có thể có bao nhiêu cấp độ trang con?",
+        "answers": ["Một", "Hai", "Nhiều", "Không có"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 8: Mục đích chính của thanh điều hướng là gì?",
+        "answers": ["Trang trí", "Cung cấp liên kết điều hướng", "Hiển thị quảng cáo", "Lưu trữ dữ liệu"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 9: Phát biểu nào sau đây sai?",
+        "answers": ["Giúp điều hướng", "Có thể tùy chỉnh vị trí", "Bắt buộc phải có", "Có thể chứa link ngoài"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 10: Tại sao cần cấu trúc hình cây?",
+        "answers": ["Giảm chi phí", "Tăng tốc độ", "Dễ điều hướng", "Tăng quảng cáo"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 11: Không có thanh điều hướng sẽ gây gì?",
+        "answers": ["Nhanh hơn", "Khó chuyển trang", "Lỗi AI", "Lỗi HTML"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 12: Thiết kế thanh điều hướng tốt cần:",
+        "answers": ["Nhiều hiệu ứng", "Đặt link quan trọng dễ thấy", "Ẩn sâu", "Chỉ text"],
+        "correct": 1
+      },
+
+      {
+        "type": "multiple",
+        "question": "Câu 13: Nội dung trang web cần:",
+        "answers": ["Ít bài viết", "Chỉ chữ", "Có đa phương tiện", "Chỉ hình"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 14: Bố cục trang web cần:",
+        "answers": ["Phức tạp", "Hợp lí", "Không cần", "Chỉ dọc"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 15: Sử dụng phông chữ:",
+        "answers": ["Càng to càng tốt", "Hợp lí", "Chỉ 1 font", "Không quan trọng"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 16: Chọn màu và font thuộc bước:",
+        "answers": ["Chuẩn bị", "Ý tưởng", "Thiết kế", "Nội dung"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 17: Không phải yêu cầu:",
+        "answers": ["Có liên kết", "Trang thuần chữ", "Có form", "Media mọi trang"],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 18: Nhúng video cần chú ý:",
+        "answers": ["Độ phân giải", "Bản quyền", "Kích thước", "Không cần quan tâm"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 19: Tối ưu mobile cần:",
+        "answers": ["Màu sắc", "Độ dài", "Trình duyệt", "Kích thước ảnh"],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 20: Nội dung ngoài nên:",
+        "answers": ["Upload hết", "Nhúng", "Để footer", "Tăng font"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 21: Sai về chia sẻ:",
+        "answers": ["Có thể chia quyền", "Giới hạn người xem", "Editor sửa được", "Viewer sửa được"],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 22: Template giúp:",
+        "answers": ["Tạo nội dung", "Đổi màu", "Cung cấp layout", "Không tác dụng"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 23: Trang kết quả học tập nên:",
+        "answers": ["Nhúng nhiều iframe", "Trình bày dữ liệu khoa học", "Mô phỏng mạng", "Chỉ 1 ảnh"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 24: Tăng tương tác cần:",
+        "answers": ["Form phản hồi", "Text dài", "Link linh tinh", "Nhiều style"],
+        "correct": 0
+      }
+    ]
+  }
+]
