@@ -253,7 +253,7 @@
         "Chuẩn bị các điều kiện cho sự ra đời của Đảng Cộng sản Việt Nam",
         "Gắn phong trào cách mạng Việt Nam với cách mạng thế giới"
       ],
-      "correct": 1
+      "correct": 3
     },
     {
     "type": "multiple",
@@ -341,7 +341,7 @@
       "Tổng khởi nghĩa trong cả nước khi Nhật Bản đầu hàng quân Đồng minh",
       "Tổng khởi nghĩa trong cả nước khi quân Đồng minh vào Đông Dương"
     ],
-    "correct": 2
+    "correct": 3
   },
   {
     "type": "multiple",
@@ -352,7 +352,7 @@
       "Tiến hành tổng tiến công và nổi dậy",
       "Tổng khởi nghĩa từ khi Nhật đảo chính Pháp"
     ],
-    "correct": 2
+    "correct": 0
   },
   {
     "type": "multiple",
@@ -429,7 +429,7 @@
           "Chống Mỹ trên hai mặt trận là quân sự và ngoại giao",
           "Xây dựng chủ nghĩa xã hội ở những vùng giải phóng"
         ],
-        "correct": 1
+        "correct": 0
       },
       {
         "type": "multiple",
@@ -517,7 +517,7 @@
           "Phát huy giá trị to lớn của tư tưởng, đạo đức Hồ Chí Minh",
           "Nâng cao năng lực học tập của nhân dân trong thời đại mới"
         ],
-        "correct": 0
+        "correct": 2
       }
     ]
   }
