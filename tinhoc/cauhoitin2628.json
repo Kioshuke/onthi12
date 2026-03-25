@@ -4,147 +4,220 @@
     "questions": [
       {
         "type": "multiple",
-        "question": "Câu 1: Cấu trúc của một trang web thường được tổ chức theo dạng nào?",
+        "question": "Cấu trúc của một trang web thường được tổ chức theo dạng nào?",
         "answers": ["Đường thẳng", "Hình tròn", "Hình cây", "Hình lưới"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 2: Cụm từ \"Đọc tiếp\" thường được sử dụng để:",
+        "question": "Cụm từ \"Đọc tiếp\" thường được sử dụng để:",
         "answers": ["Kết thúc bài viết", "Chuyển hướng người dùng đến trang web khác", "Liên kết đến trang web chứa thông tin chi tiết", "Hiển thị hình ảnh"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 3: Trang con là:",
+        "question": "Trang con là:",
         "answers": ["Trang chủ của một website", "Trang web mở từ bảng chọn của trang chủ", "Một phần của trang chủ", "Trang web không liên kết với trang chủ"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 4: Thanh điều hướng thường chứa:",
+        "question": "Thanh điều hướng thường chứa:",
         "answers": ["Nội dung chính của trang web", "Liên kết đến các trang con", "Hình ảnh và video", "Chỉ dẫn về cách sử dụng"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 5: Để không làm mất cân đối trang web khi trình bày văn bản đầy đủ, ta nên:",
-        "answers": ["Sử dụng ít văn bản hơn", "Chia thành các trang và dùng liên kết", "Dùng phông chữ nhỏ hơn", "Chỉ hiển thị tóm tắt"],
+        "question": "Để không làm mất cân đối trang web khi trình bày văn bản đầy đủ, ta nên:",
+        "answers": ["Sử dụng ít văn bản hơn", "Chia thành các trang độc lập và sử dụng liên kết", "Sử dụng phông chữ nhỏ hơn", "Chỉ hiển thị tóm tắt ngắn gọn"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 6: Cấu trúc hình cây nghĩa là:",
-        "answers": ["Mỗi trang độc lập", "Các trang xếp chồng", "Có trang gốc và trang con", "Liên kết ngẫu nhiên"],
+        "question": "Trang web tổ chức theo cấu trúc giống như cây thư mục nghĩa là:",
+        "answers": ["Mỗi trang đều độc lập", "Các trang được xếp chồng lên nhau", "Có một trang gốc và các trang con liên kết với nhau", "Mọi trang đều liên kết ngẫu nhiên"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 7: Một trang web có thể có bao nhiêu cấp độ trang con?",
-        "answers": ["Một", "Hai", "Nhiều", "Không có"],
+        "question": "Một trang web có thể có bao nhiêu cấp độ trang con?",
+        "answers": ["Chỉ có một cấp độ", "Hai cấp độ", "Nhiều cấp độ", "Không thể có trang con"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 8: Mục đích chính của thanh điều hướng là gì?",
-        "answers": ["Trang trí", "Cung cấp liên kết điều hướng", "Hiển thị quảng cáo", "Lưu trữ dữ liệu"],
+        "question": "Mục đích chính của thanh điều hướng là gì?",
+        "answers": ["Trang trí trang web", "Cung cấp liên kết đến các phần khác nhau của trang web", "Hiển thị quảng cáo", "Lưu trữ thông tin cá nhân"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 9: Phát biểu nào sau đây sai?",
-        "answers": ["Giúp điều hướng", "Có thể tùy chỉnh vị trí", "Bắt buộc phải có", "Có thể chứa link ngoài"],
+        "question": "Phát biểu nào sau đây sai về thanh điều hướng?",
+        "answers": ["Giúp điều hướng", "Có thể tùy chỉnh vị trí", "Bắt buộc phải có", "Có thể chứa liên kết ngoài"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 10: Tại sao cần cấu trúc hình cây?",
-        "answers": ["Giảm chi phí", "Tăng tốc độ", "Dễ điều hướng", "Tăng quảng cáo"],
+        "question": "Tại sao cần tổ chức trang web theo cấu trúc hình cây?",
+        "answers": ["Giảm chi phí", "Tăng tốc độ", "Giúp người dùng dễ điều hướng", "Tăng quảng cáo"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 11: Không có thanh điều hướng sẽ gây gì?",
-        "answers": ["Nhanh hơn", "Khó chuyển trang", "Lỗi AI", "Lỗi HTML"],
+        "question": "Không có thanh điều hướng sẽ dẫn đến:",
+        "answers": ["Trang web nhanh hơn", "Khó chuyển trang", "Lỗi AI", "Lỗi HTML"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 12: Thiết kế thanh điều hướng tốt cần:",
-        "answers": ["Nhiều hiệu ứng", "Đặt link quan trọng dễ thấy", "Ẩn sâu", "Chỉ text"],
+        "question": "Thiết kế thanh điều hướng tốt cần:",
+        "answers": ["Nhiều hiệu ứng", "Đặt liên kết quan trọng dễ thấy", "Ẩn sâu", "Chỉ dùng văn bản"],
         "correct": 1
       },
 
       {
         "type": "multiple",
-        "question": "Câu 13: Nội dung trang web cần:",
-        "answers": ["Ít bài viết", "Chỉ chữ", "Có đa phương tiện", "Chỉ hình"],
+        "question": "Khi tạo biểu mẫu trên web dùng ứng dụng nào?",
+        "answers": ["Google Docs", "Google Sheets", "Google Slides", "Google Forms"],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Bước đầu tiên khi tạo Google Forms là gì?",
+        "answers": ["Tạo câu hỏi", "Chuẩn bị biểu mẫu", "Nhúng vào web", "Xem thống kê"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Trong giao diện Google Forms, bạn có thể tạo được bao nhiêu loại câu hỏi khác nhau?",
+        "answers": ["3", "5", "7", "10"],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Cách nhúng biểu mẫu từ Google Forms vào trang web được thực hiện bằng cách nào?",
+        "answers": ["Sao chép và dán liên kết", "Sử dụng công cụ Nhúng của Google Sites", "Tạo biểu mẫu trực tiếp trên trang web", "Tải biểu mẫu lên từ máy tính"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Để xem dữ liệu thống kê phản hồi từ biểu mẫu, người dùng cần truy cập vào đâu?",
+        "answers": ["Google Sheets", "Google Docs", "Google Slides", "Google Forms"],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Lệnh nào trong Google Forms cho phép thêm các câu hỏi mới vào biểu mẫu?",
+        "answers": ["Tạo câu hỏi mới", "Thêm trang mới", "Thêm tiêu đề", "Tạo phần mới"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Khi muốn thêm một biểu mẫu từ Google Forms vào trang web trong Google Sites, bạn cần thực hiện thao tác nào?",
+        "answers": ["Chọn Image và tải lên", "Chọn Embed và dán URL", "Chọn Text box", "Chọn File"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Một nhóm học sinh cần tạo trang web để tổ chức một sự kiện thể thao. Khi nào việc sử dụng biểu mẫu Google Forms là thích hợp?",
+        "answers": ["Tạo thông báo", "Trình bày hình ảnh", "Thu thập đăng ký", "Chỉ chia sẻ thông tin"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 14: Bố cục trang web cần:",
+        "question": "Tính năng nào trong Google Forms cho phép thu thập thông tin phản hồi chi tiết hơn?",
+        "answers": ["Câu hỏi trắc nghiệm", "Câu hỏi hộp văn bản dài", "Câu hỏi lưới", "Câu hỏi thả xuống"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Cách thức hoạt động cơ bản của một biểu mẫu trên trang web là gì?",
+        "answers": ["Hiển thị thông tin", "Nhận thông tin và gửi đến máy chủ", "Tự thay đổi bố cục", "Xóa dữ liệu"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Nếu bạn muốn tạo một biểu mẫu để người dùng góp ý về trang web, bạn cần yếu tố nào?",
+        "answers": ["Một ô nhập văn bản lớn và nút gửi thông tin", "Danh sách thiết bị mạng", "Đoạn mã AI", "Tệp CSS"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Khi thiết kế biểu mẫu đăng ký thành viên, việc đặt tên các phần tử rõ ràng giúp:",
+        "answers": ["Không nhận dữ liệu", "Người dùng dễ hiểu và nhập chính xác", "Tăng dung lượng", "Khó dùng"],
+        "correct": 1
+      },
+
+      {
+        "type": "multiple",
+        "question": "Điều nào dưới đây là yêu cầu đối với nội dung của trang web trong bài thực hành tổng hợp?",
+        "answers": ["Ít bài viết", "Chỉ văn bản", "Đa phương tiện", "Chỉ hình ảnh"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Bố cục trang web cần phải như thế nào?",
         "answers": ["Phức tạp", "Hợp lí", "Không cần", "Chỉ dọc"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 15: Sử dụng phông chữ:",
-        "answers": ["Càng to càng tốt", "Hợp lí", "Chỉ 1 font", "Không quan trọng"],
+        "question": "Yêu cầu nào sau đây là đúng về sử dụng phông chữ trên trang web?",
+        "answers": ["To nhất", "Hợp lí", "Một loại", "Không quan trọng"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 16: Chọn màu và font thuộc bước:",
+        "question": "Khi thiết kế một trang web, việc chọn bảng màu và phông chữ thuộc về bước nào?",
         "answers": ["Chuẩn bị", "Ý tưởng", "Thiết kế", "Nội dung"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 17: Không phải yêu cầu:",
-        "answers": ["Có liên kết", "Trang thuần chữ", "Có form", "Media mọi trang"],
+        "question": "Điều nào dưới đây không phải là yêu cầu?",
+        "answers": ["Có liên kết", "Trang thuần chữ", "Có biểu mẫu", "Media mọi trang"],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Câu 18: Nhúng video cần chú ý:",
-        "answers": ["Độ phân giải", "Bản quyền", "Kích thước", "Không cần quan tâm"],
+        "question": "Khi nhúng video từ YouTube vào trang web, cần chú ý điều gì?",
+        "answers": ["Độ phân giải", "Bản quyền", "Kích thước", "Không cần"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 19: Tối ưu mobile cần:",
-        "answers": ["Màu sắc", "Độ dài", "Trình duyệt", "Kích thước ảnh"],
+        "question": "Khi tối ưu hoá trang web cho thiết bị di động, cần chú ý yếu tố nào?",
+        "answers": ["Màu sắc", "Độ dài văn bản", "Trình duyệt", "Kích thước hình ảnh"],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Câu 20: Nội dung ngoài nên:",
-        "answers": ["Upload hết", "Nhúng", "Để footer", "Tăng font"],
+        "question": "Khi trang web có nhiều nội dung ngoài, nên làm gì?",
+        "answers": ["Upload hết", "Nhúng", "Để footer", "Font lớn"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 21: Sai về chia sẻ:",
-        "answers": ["Có thể chia quyền", "Giới hạn người xem", "Editor sửa được", "Viewer sửa được"],
+        "question": "Nội dung nào sau đây sai về tính năng chia sẻ?",
+        "answers": ["Có thể chia quyền sửa", "Giới hạn xem", "Editor sửa được", "Viewer sửa được"],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Câu 22: Template giúp:",
-        "answers": ["Tạo nội dung", "Đổi màu", "Cung cấp layout", "Không tác dụng"],
+        "question": "Mẫu giao diện của Google Sites có thể giúp gì?",
+        "answers": ["Tạo nội dung", "Đổi màu", "Cung cấp bố cục", "Không tác dụng"],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 23: Trang kết quả học tập nên:",
-        "answers": ["Nhúng nhiều iframe", "Trình bày dữ liệu khoa học", "Mô phỏng mạng", "Chỉ 1 ảnh"],
+        "question": "Khi thực hành trang web \"Kết quả học tập\", nên ưu tiên điều gì?",
+        "answers": ["Nhiều iframe", "Trình bày khoa học", "Mô phỏng mạng", "1 ảnh"],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 24: Tăng tương tác cần:",
-        "answers": ["Form phản hồi", "Text dài", "Link linh tinh", "Nhiều style"],
+        "question": "Để tăng tương tác, nên thêm gì?",
+        "answers": ["Biểu mẫu phản hồi", "Text dài", "Link không liên quan", "Nhiều style"],
         "correct": 0
       }
     ]
