@@ -73,6 +73,152 @@
         "question": "Nếu bạn muốn xây dựng một trang web giới thiệu câu lạc bộ Tin học, nội dung nào nên đặt ở trang chủ?",
         "answers": ["Danh sách thành viên", "Thông tin giới thiệu và tin nổi bật", "Mã nguồn lập trình", "Lịch sử CNTT thế giới"],
         "correct": 1
+      },
+
+      {
+        "type": "multiple",
+        "question": "Để truy cập vào giao diện tạo trang web mới của Google, bạn cần truy cập vào địa chỉ nào?",
+        "answers": ["sites.google.com/create", "sites.google.com/new", "drive.google.com/new", "sites.google.com/start"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Trong giao diện đầu tiên của Google Sites, phần nào chứa ô tìm kiếm và biểu tượng ứng dụng?",
+        "answers": ["Phần trên cùng", "Phần thứ hai", "Phần thứ ba", "Phần dưới cùng"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Khi tạo một trang web mới trong Google Sites, bạn có thể chọn gì?",
+        "answers": ["Trang web trắng hoặc mẫu có sẵn", "Trang web động hoặc tĩnh", "Trang cá nhân hoặc doanh nghiệp", "Trang mở hoặc bảo mật"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Để nhập tên tệp lưu trữ trang web, bạn dùng dòng nào?",
+        "answers": ["Nhập tên trang web", "Tiêu đề trang", "Trang web không có tiêu đề", "Thay đổi hình ảnh"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Tùy chọn nào không có trong kích thước phần đầu trang?",
+        "answers": ["Bìa", "Biểu ngữ lớn", "Biểu ngữ", "Tiêu đề nhỏ"],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Để thiết lập tiêu đề trang, bạn dùng dòng nào?",
+        "answers": ["Nhập tên trang web", "Tiêu đề trang", "Thay đổi hình ảnh", "Trang web không có tiêu đề"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Bạn có thể làm gì với hình ảnh nền phần đầu trang?",
+        "answers": ["Thay đổi hình ảnh", "Xóa hoàn toàn", "Thay đổi kích thước", "Thay đổi màu"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Để xuất bản trang web, bước nào cần thiết?",
+        "answers": ["Xem trước", "Đăng nhập Google", "Chọn mẫu", "Nhập tên"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Kích thước phần đầu trang có thể là?",
+        "answers": ["Bìa", "Chân trang", "Biểu ngữ nhỏ", "Nội dung chính"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Để thiết lập favicon, dùng chức năng nào?",
+        "answers": ["Nhập tên", "Tiêu đề", "Hình ảnh", "Logo và favicon"],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Trang 'Trường học xanh' nên chọn hình nào?",
+        "answers": ["Linh kiện điện tử", "Logo trường và màu xanh", "Biểu đồ chứng khoán", "Robot AI"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Để tối ưu cho di động, nên làm gì?",
+        "answers": ["Xóa header", "Giữ nguyên", "Menu thu gọn", "Thêm ảnh nặng"],
+        "correct": 2
+      },
+
+      {
+        "type": "multiple",
+        "question": "Trong giao diện tạo phần thân trang, bảng nào dùng để chèn đối tượng?",
+        "answers": ["Chèn", "Trang", "Giao diện", "Cấu trúc"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Lệnh 'Nhúng' có chức năng gì?",
+        "answers": ["Chèn văn bản Drive", "Chèn ảnh", "Chèn dữ liệu từ Internet", "Chèn link"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Bước đầu tiên khi tạo phần thân là gì?",
+        "answers": ["Thêm ảnh", "Thiết lập cấu trúc", "Chèn bản đồ", "Thêm footer"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Để chèn bản đồ dùng lệnh nào?",
+        "answers": ["Hộp văn bản", "Hình ảnh", "Nhúng", "Bản đồ"],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Có thể làm gì khi chỉnh sửa đối tượng?",
+        "answers": ["Resize và di chuyển", "Chỉ copy", "Chỉ xóa", "Không đổi size"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Thêm thông tin liên lạc ở footer bằng cách nào?",
+        "answers": ["Chèn textbox", "Xuống cuối và thêm footer", "Chèn map", "Nhúng"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Vì sao body là phần quan trọng nhất?",
+        "answers": ["Chứa CSS", "Chứa nội dung", "Ở trên cùng", "Chống spam"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Thêm tiêu đề và văn bản vào khối bằng cách nào?",
+        "answers": ["Nhúng", "Hộp văn bản", "Thêm ảnh", "Drive"],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Nhúng Google Maps dùng lệnh nào?",
+        "answers": ["Hình ảnh", "Nhúng", "Bản đồ", "Drive"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Chèn dữ liệu từ Google Drive dùng lệnh nào?",
+        "answers": ["Hộp văn bản", "Hình ảnh", "Drive", "Nhúng"],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Khác biệt giữa body và footer?",
+        "answers": ["Body thay đổi, footer cố định", "Body logo", "Body ảnh", "Body dưới cùng"],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Thiết kế web tin tức hợp lý nhất?",
+        "answers": ["1 khối", "Chia khối/cột", "Chỉ video", "Liên hệ đầu"],
+        "correct": 1
       }
     ]
   }
