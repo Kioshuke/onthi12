@@ -365,9 +365,6 @@
     ],
     "correct": 3
   },
-  {
-    "sectionTitle": "Phần I. Trắc nghiệm nhiều phương án lựa chọn",
-    "questions": [
       {
         "type": "multiple",
         "question": "Trong việc giải quyết mối quan hệ Việt – Pháp (từ đầu tháng 3 đến trước ngày 19/12/1946), Chủ tịch Hồ Chí Minh và Ban Thường vụ Trung ương Đảng đã",
@@ -520,7 +517,7 @@
           "Phát huy giá trị to lớn của tư tưởng, đạo đức Hồ Chí Minh",
           "Nâng cao năng lực học tập của nhân dân trong thời đại mới"
         ],
-        "correct": 2
+        "correct": 0
       }
     ]
   }
