@@ -60,7 +60,7 @@
         "type": "multiple",
         "question": "Một trong những yếu tố quan trọng khi thiết kế phần đầu trang là gì?",
         "answers": ["Xác định cấu trúc nội dung", "Tạo favicon", "Lựa chọn phông chữ", "Chọn màu nền cho phần chân trang"],
-        "correct": 1
+        "correct": 2
       },
       {
         "type": "multiple",
