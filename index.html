@@ -13,12 +13,39 @@
 <title>LearnHub - THPT Tân Hồng</title>
 
 <style>
+:root{
+  --bg-main: #f6f8ff;
+  --bg-pattern: #d6dcff;
 
+  --text-main: #111827;
+  --text-sub: #6b7280;
+
+  --card-bg: linear-gradient(135deg, #ffffff, #f3f6ff);
+  --card-text: #2b3a67;
+  --card-sub: #6b7280;
+
+  --menu-bg: rgba(255,255,255,0.7);
+  --popup-bg: rgba(255,255,255,0.75);
+}
+body.dark-mode{
+  --bg-main: #0f172a;
+  --bg-pattern: #1e293b;
+
+  --text-main: #f1f5f9;
+  --text-sub: #cbd5f5;
+
+  --card-bg: linear-gradient(135deg, #1e293b, #0f172a);
+  --card-text: #f1f5f9;
+  --card-sub: #cbd5f5;
+
+  --menu-bg: rgba(30,41,59,0.7);
+  --popup-bg: rgba(30,41,59,0.9);
+}
 body{
 margin:0;
 font-family:'Segoe UI',Arial,sans-serif;
-background-color:#f6f8ff;
-background-image: radial-gradient(#d6dcff 1.2px, transparent 1.2px);
+background-color: var(--bg-main);
+background-image: radial-gradient(var(--bg-pattern) 1.2px, transparent 1.2px);
 background-size:28px 28px;
 overflow-x:hidden;
 animation:fadeIn 0.6s ease;
@@ -87,12 +114,11 @@ box-shadow:
 display:flex;
 justify-content:center;
 gap:5px;
-background:white;
+background: var(--menu-bg);
 padding:8px;
 box-shadow:0 3px 10px rgba(0,0,0,0.1);
 flex-wrap:wrap;
 backdrop-filter:blur(10px);
-background:rgba(255,255,255,0.7);
 }
 
 .menu button{
@@ -163,7 +189,7 @@ gap:25px;
 .card{
   position: relative;
   will-change: transform;
-  background: linear-gradient(135deg, #ffffff, #f3f6ff);
+  background: var(--card-bg);
   padding:22px;
   border-radius:14px;
 
@@ -262,11 +288,11 @@ gap:25px;
 /* text polish */
 .card h3{
   margin-top:0;
-  color:#2b3a67;
+  color: var(--card-text);
   font-weight:600;
 }
 .card p{
-  color:#6b7280;
+  color: var(--card-sub);
   font-size:14px;
 }
 #ly .card{
@@ -502,7 +528,7 @@ backdrop-filter: blur(6px);
 #loadingText{
 margin:0;
 font-size:15px;
-color:#333;
+color: var(--text-main);
 font-weight:500;
 letter-spacing:0.3px;
 animation: pulseText 1.2s infinite;
@@ -657,7 +683,7 @@ overscroll-behavior: none; /* giảm giật scroll */
 margin-right: auto; 
 font-size: 14px; 
 font-weight: 600; 
-color: #4b5563;
+color: var(--text-sub);
 padding-left: 10px;
 }
 
@@ -740,13 +766,13 @@ text-align: center;
 font-size: 18px;
 font-weight: 600;
 margin: 4px 0 2px;
-color: #111;
+color: var(--text-main);
 }
 #popupEmail {
 text-align: center;
 margin: 0;
 font-size: 13px;
-color: #6b7280;;
+color: var(--text-sub);
 margin-bottom: 10px;
 }
 #popupQuote {
@@ -779,7 +805,7 @@ transition: all 0.25s ease;
 
 /* 🔥 hover */
 .popup-close:hover{
-color: #111;
+color: var(--text-main);
 transform: scale(1.25) rotate(90deg);
 }
 /* Tìm chỗ này trong CSS và thêm vào */
@@ -863,7 +889,7 @@ transform: scale(0.96);
 
 .loading-footer p{
   font-size:12px;
-  color:#333;
+  color: var(--text-main);
 }
 .dark-toggle{
   display:flex;
@@ -916,30 +942,9 @@ transform: scale(0.96);
 .switch input:checked + .slider::before{
   transform:translateX(22px);
 }
-body.dark{
-  background:#0f172a;
-  color:#e5e7eb;
-}
 
-body.dark .menu{
-  background: rgba(30,41,59,0.7);
-}
-
-body.dark .card{
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-}
-
-body.dark .card p{
-  color:#9ca3af;
-}
-
-body.dark .quiz-box,
-body.dark #userPopup{
-  background: rgba(30,41,59,0.85);
-}
-
-body.dark #loadingText{
-  color:#e5e7eb;
+body.dark-mode .card{
+  border:1px solid rgba(255,255,255,0.08);
 }
 </style>
 
@@ -2388,17 +2393,17 @@ const toggle = document.getElementById("darkModeToggle");
 
 // load lại trạng thái cũ
 if(localStorage.getItem("darkMode") === "on"){
-  document.body.classList.add("dark");
+  document.body.classList.toggle("dark-mode");
   toggle.checked = true;
 }
 
 // khi bấm
 toggle.addEventListener("change", () => {
   if(toggle.checked){
-    document.body.classList.add("dark");
+    document.body.classList.toggle("dark-mode");
     localStorage.setItem("darkMode", "on");
   }else{
-    document.body.classList.remove("dark");
+    document.body.classList.toggle("dark-mode");
     localStorage.setItem("darkMode", "off");
   }
 });
