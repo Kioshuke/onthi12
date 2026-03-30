@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="T8hlEJb2HT-iCvVbHPeribVXAyr7x9ShD570c1TR710" />
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
 
@@ -13,12 +14,39 @@
 <title>LearnHub - THPT Tân Hồng</title>
 
 <style>
+:root{
+  --bg-main: #f6f8ff;
+  --bg-pattern: #d6dcff;
 
+  --text-main: #111827;
+  --text-sub: #6b7280;
+
+  --card-bg: linear-gradient(135deg, #ffffff, #f3f6ff);
+  --card-text: #2b3a67;
+  --card-sub: #6b7280;
+
+  --menu-bg: rgba(255,255,255,0.7);
+  --popup-bg: rgba(255,255,255,0.75);
+}
+body.dark-mode{
+  --bg-main: #0f172a;
+  --bg-pattern: #1e293b;
+
+  --text-main: #f1f5f9;
+  --text-sub: #cbd5f5;
+
+  --card-bg: linear-gradient(135deg, #1e293b, #0f172a);
+  --card-text: #f1f5f9;
+  --card-sub: #cbd5f5;
+
+  --menu-bg: rgba(30,41,59,0.7);
+  --popup-bg: rgba(30,41,59,0.9);
+}
 body{
 margin:0;
 font-family:'Segoe UI',Arial,sans-serif;
-background-color:#f6f8ff;
-background-image: radial-gradient(#d6dcff 1.2px, transparent 1.2px);
+background-color: var(--bg-main);
+background-image: radial-gradient(var(--bg-pattern) 1.2px, transparent 1.2px);
 background-size:28px 28px;
 overflow-x:hidden;
 animation:fadeIn 0.6s ease;
@@ -87,12 +115,12 @@ box-shadow:
 display:flex;
 justify-content:center;
 gap:5px;
-background:white;
+background: var(--menu-bg);
 padding:8px;
 box-shadow:0 3px 10px rgba(0,0,0,0.1);
 flex-wrap:wrap;
 backdrop-filter:blur(10px);
-background:rgba(255,255,255,0.7);
+border: 1px solid rgba(255,255,255,0.08);
 }
 
 .menu button{
@@ -103,6 +131,7 @@ font-size:15px;
 cursor:pointer;
 transition:all 0.25s ease;
 border-radius:8px;
+color: var(--text-main);
 }
 
 .menu button.active{
@@ -128,7 +157,7 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
   --btn-color:#8b5cf6;
 }
 .menu button[data-subject]:not(.active):hover{
-  background: color-mix(in srgb, var(--btn-color) 20%, white);
+  background: color-mix(in srgb, var(--btn-color) 25%, transparent);
 }
 .menu button[data-subject="lich"]{
   --btn-color:#d4068f;
@@ -138,7 +167,7 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
 .content{
 max-width:1100px;
 margin:auto;
-padding:40px 20px;
+padding:15px 20px 30px;
 }
 .fade-out{
 opacity:0;
@@ -163,7 +192,7 @@ gap:25px;
 .card{
   position: relative;
   will-change: transform;
-  background: linear-gradient(135deg, #ffffff, #f3f6ff);
+  background: var(--card-bg);
   padding:22px;
   border-radius:14px;
 
@@ -262,11 +291,11 @@ gap:25px;
 /* text polish */
 .card h3{
   margin-top:0;
-  color:#2b3a67;
+  color: var(--card-text);
   font-weight:600;
 }
 .card p{
-  color:#6b7280;
+  color: var(--card-sub);
   font-size:14px;
 }
 #ly .card{
@@ -370,7 +399,7 @@ margin-bottom:10px;
 }
 
 .popup-box{
-background:white;
+background: var(--popup-bg);
 padding:28px;
 border-radius:14px;
 width:340px;
@@ -502,10 +531,10 @@ backdrop-filter: blur(6px);
 #loadingText{
 margin:0;
 font-size:15px;
-color:#333;
+color: #111827;
 font-weight:500;
 letter-spacing:0.3px;
-animation: textBounce 0.6s ease;
+animation: pulseText 1.2s infinite;
 transition: all 0.3s ease;
 min-height: 24px; /* Giữ khung không bị giật khi đổi chữ */
 }
@@ -536,13 +565,35 @@ min-height: 24px; /* Giữ khung không bị giật khi đổi chữ */
 
 /* Thanh bar chính */
 .progress-bar {
-    flex-grow: 1;        /* Để thanh bar chiếm hết không gian còn lại */
+    flex-grow: 1;
     position: relative;
     height: 12px;
     background: #cfd8ff;
     border-radius: 30px;
     border: 2px solid #2f5cff;
-    overflow: hidden;    /* Để phần fill không tràn ra ngoài */
+    overflow: hidden;
+}
+
+/* ✨ hiệu ứng ánh sáng */
+.progress-bar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.7),
+        transparent
+    );
+    animation: shimmer 1.6s infinite;
+}
+@keyframes shimmer{
+  100%{
+    left:100%;
+  }
 }
 
 /* thanh chạy */
@@ -554,6 +605,7 @@ min-height: 24px; /* Giữ khung không bị giật khi đổi chữ */
   background-size:200% 100%;
   animation: gradientMove 2s linear infinite;
   transition: width 0.2s ease;
+  border-radius:inherit; /* 👈 fix bo góc chuẩn */
 }
 .progress-fill.complete{
   animation: pulse 0.8s ease;
@@ -591,7 +643,7 @@ min-height: 24px; /* Giữ khung không bị giật khi đổi chữ */
 .progress-percent {
     font-size: 20px;
     font-weight: 800;
-    color: #2d313e;
+    color: #111827;
     min-width: 55px;    /* Giữ vị trí cố định để không bị giật khi nhảy số */
     text-align: left;
 } 
@@ -634,7 +686,7 @@ overscroll-behavior: none; /* giảm giật scroll */
 margin-right: auto; 
 font-size: 14px; 
 font-weight: 600; 
-color: #4b5563;
+color: var(--text-sub);
 padding-left: 10px;
 }
 
@@ -666,7 +718,7 @@ padding: 16px;
 
 border-radius: 20px;
 
-background: rgba(255, 255, 255, 0.75); /* kính trắng */
+background: var(--popup-bg);
 backdrop-filter: blur(14px);
 
 box-shadow: 
@@ -705,9 +757,7 @@ border-radius: 50%;
 display: block;
 margin: 0 auto 10px;
 
-border: 3px solid rgba(255,255,255,0.9);
-
-
+border: 3px solid var(--menu-bg);
 box-shadow: 
 0 5px 15px rgba(0,0,0,0.15),
 0 0 10px rgba(255,255,255,0.6);
@@ -717,20 +767,20 @@ text-align: center;
 font-size: 18px;
 font-weight: 600;
 margin: 4px 0 2px;
-color: #111;
+color: var(--text-main) !important;;
 }
 #popupEmail {
 text-align: center;
 margin: 0;
 font-size: 13px;
-color: #6b7280;;
+color: var(--text-sub);
 margin-bottom: 10px;
 }
 #popupQuote {
 font-size: 15px;
 text-align: center;
 margin: 4px 0 6px;
-color: #6366f1; /* tím nhẹ */;
+color: color-mix(in srgb, var(--text-main) 70%, #6366f1);
 margin: 10px 0;
 font-style: italic;
 font-weight: bold;
@@ -747,7 +797,7 @@ top: 10px;
 right: 14px;
 
 font-size: 22px;
-color: #9ca3af;
+color: var(--text-sub);
 cursor: pointer;
 font-weight: bold;
 
@@ -756,7 +806,7 @@ transition: all 0.25s ease;
 
 /* 🔥 hover */
 .popup-close:hover{
-color: #111;
+color: var(--text-main);
 transform: scale(1.25) rotate(90deg);
 }
 /* Tìm chỗ này trong CSS và thêm vào */
@@ -804,6 +854,114 @@ transform: scale(0.96);
 .quiz-box:-webkit-full-screen .quiz-header {
   display: none;
 }
+.loading-brand{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.loading-brand img{
+  width:60px;
+  height:60px;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  margin-bottom:8px;
+}
+
+.loading-brand h2{
+  margin:0;
+  font-size:18px;
+  font-weight:600;
+  color: #111827;
+}
+.loading-footer{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  opacity:0.7;
+}
+
+.loading-footer img{
+  width:30px;
+  height:30px;
+  margin-bottom:5px;
+}
+
+.loading-footer p{
+  font-size:12px;
+  color: #111827;
+}
+.dark-toggle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:12px;
+  font-size:14px;
+  font-weight:500;
+  color: var(--text-main);
+}
+.dark-toggle span {
+  color: var(--text-main);
+}
+
+.switch{
+  position:relative;
+  display:inline-block;
+  width:46px;
+  height:24px;
+}
+
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  cursor:pointer;
+  inset:0;
+  background:#d1d5db;
+  border-radius:999px;
+  transition:0.3s;
+}
+
+.slider::before{
+  content:"";
+  position:absolute;
+  height:18px;
+  width:18px;
+  left:3px;
+  top:3px;
+  background:white;
+  border-radius:50%;
+  transition:0.3s;
+  box-shadow:0 2px 6px rgba(0,0,0,0.3);
+}
+
+.switch input:checked + .slider{
+  background:#4f46e5;
+}
+
+.switch input:checked + .slider::before{
+  transform:translateX(22px);
+}
+
+body.dark-mode .card{
+  border:1px solid rgba(255,255,255,0.08);
+}
+.popup-divider{
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--text-sub),
+    transparent
+  );
+  margin: 15px 0;
+}
 </style>
 
 </head>
@@ -811,19 +969,25 @@ transform: scale(0.96);
 <div id="loadingOverlay">
 
 <div class="loading-box">
-
+  <div class="loading-brand">
+    <img src="logoweb2.png">
+    <h2>LearnHub</h2>
+  </div>
 <div class="progress-wrapper">
       <div class="progress-bar">
         <div id="progressFill" class="progress-fill"></div>
       </div>
-      <div id="progressText" class="progress-text">0%</div>
+      <div id="progressText" class="progress-percent">0%</div>
     </div>
 <div class="loading-text-box">
 <p id="loadingText">🧠 Đang chuẩn bị kiến thức...</p>
 </div>
 
 </div>
-
+<div class="loading-footer">
+  <img src="logoweb2.png">
+  <p>© 2026 LearnHub • THPT Tân Hồng</p>
+</div>
 </div>
 <div id="popup">
 <div class="popup-box">
@@ -959,12 +1123,13 @@ gap:20px;
 }
 
 .exam-day{
-background:white;
+background: var(--card-bg);
+color: var(--card-text);
 padding:20px;
 border-radius:12px;
 box-shadow:0 4px 15px rgba(0,0,0,0.08);
 transition:all 0.3s;
-border-left:6px solid #d0d7ff;
+border-left:6px solid color-mix(in srgb, var(--text-sub) 40%, transparent);
 }
 
 .exam-day:hover{
@@ -972,24 +1137,44 @@ transform:translateY(-5px);
 }
 
 .exam-day.today{
-border-left:6px solid #ff4d4f;
-background:#fff5f5;
-box-shadow:0 8px 20px rgba(255,0,0,0.2);
+  border-left:6px solid #ff4d4f;
+
+  background: color-mix(in srgb, #ff4d4f 12%, var(--card-bg));
+
+  box-shadow:
+    0 8px 20px color-mix(in srgb, #ff4d4f 25%, transparent);
+}
+.exam-day h3{
+  color: var(--card-text);
+}
+
+.exam-day p{
+  color: var(--card-sub);
 }
 /* ngày đã thi */
 
 .exam-day.past{
-opacity:0.6;
-filter:grayscale(0.7);
-border-left:6px solid #999;
+  border-left:6px solid #6b7280;
+
+  background: color-mix(in srgb, #6b7280 10%, var(--card-bg));
+
+  opacity:0.65;
+  filter: grayscale(0.4);
+
+  box-shadow:none;
 }
 
 /* ngày mai thi */
 
 .exam-day.tomorrow{
-border-left:6px solid #ffc107;
-background:#fff8e1;
-animation:shake 1s infinite;
+  border-left:6px solid #f59e0b;
+
+  background: color-mix(in srgb, #f59e0b 12%, var(--card-bg));
+
+  box-shadow:
+    0 8px 20px color-mix(in srgb, #f59e0b 25%, transparent);
+
+  animation: shake 1s infinite;
 }
 
 /* rung nhẹ */
@@ -1155,13 +1340,13 @@ align-items: center;
 gap: 12px;
 
 border-radius: 50px;
-background: rgba(255, 255, 255, 0.9);
+background: var(--menu-bg);
 backdrop-filter: blur(10px);
 box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 border: 1px solid rgba(0,0,0,0.05);
 }
 #welcomeText{
-color:#676d77;
+color: var(--text-sub);
 font-size:15px;
 font-weight:400;
 }
@@ -1417,45 +1602,45 @@ animation: pulse-green 2s infinite;
 </style>
 <div id="mainContent" class="content">
 <div id="lich">
+  <h2 style="
+margin:5px 0 20px 0;
+font-size:28px;
+font-weight:700;
+text-align:center;
 
+background: linear-gradient(90deg,#2563eb,#06b6d4,#22c55e);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+letter-spacing:0.5px;
+">
+Lịch Thi Cuối Học Kỳ II - THPT Tân Hồng
+</h2>
 <div class="exam-schedule">
 
-<div class="exam-day" data-date="2026-03-16">
-<h3>16/03 - Ngữ Văn + Vật Lý</h3>
-<p>🕒 7:05 - Ngữ Văn</p>
-<p>🕒 8:45 - Vật Lý</p>
+<div class="exam-day" data-date="2026-04-20">
+<h3>Thứ 2 | 20/04 Updating</h3>
+<p>Unknown</p>
 </div>
 
-<div class="exam-day" data-date="2026-03-17">
-<h3>17/03 - Toán</h3>
-<p>🕒 7:05 - Toán</p>
+<div class="exam-day" data-date="2026-04-21">
+<h3>Thứ 3 | 21/04 Updating</h3>
+<p>Unknown</p>
 </div>
 
-<div class="exam-day" data-date="2026-03-18">
-<h3>18/03 - Lịch Sử + Hoá</h3>
-<p>🕒 7:05 - Lịch Sử</p>
-<p>🕒 8:00 - Hoá</p>
+<div class="exam-day" data-date="2026-04-22">
+<h3>Thứ 4 | 22/04 Updating</h3>
+<p>Unknown</p>
 </div>
 
-<div class="exam-day" data-date="2026-03-19">
-<h3>19/03 - Sinh + Anh</h3>
-<p>🕒 7:05 - Sinh</p>
-<p>🕒 8:15 - Anh</p>
-</div>
-
-<div class="exam-day" data-date="2026-03-20">
-<h3>20/03</h3>
-<p>Hôm nay bạn không có lịch thi</p>
-</div>
-
-<div class="exam-day" data-date="2026-03-21">
-<h3>21/03 - Tin</h3>
-<p>🕒 7:05 - Tin học</p>
+<div class="exam-day" data-date="2026-04-23">
+<h3>Thứ 5 | 23/04 Updating</h3>
+<p>Unknown</p>
 </div>
 
 <!-- COUNTDOWN -->
 <div class="countdown-card countdown-fix">
-<div class="title">🔥 Đếm ngược THPT</div>
+<div class="title">Countdown THPTQG</div>
 
 <div class="time-container">
 <div class="time-item">
@@ -1626,6 +1811,12 @@ animation: pulse-green 2s infinite;
 <a class="btn" onclick="loadQuiz(this,'lichsu/dungsaicd9.html')">Làm bài</a>
 </div>
 
+<div class="card">
+<h3>File Đáp án</h3>
+<p>Đáp Án Phần Trắc Nghiệm</p>
+<a class="btn" onclick="loadQuiz(this,'lichsu/Sử TN HK2.pdf')">Xem</a>
+</div>
+  
 </div>
 
 </div>
@@ -2033,36 +2224,59 @@ document.getElementById("loginBox").style.display="flex";
 // chỉ giữ login trong tab hiện tại
 
 
-window.googleLogin = function(){
+window.googleLogin = function() {
+    signInWithPopup(auth, provider)
+    .then(async (result) => {
+        const user = result.user;
 
-signInWithPopup(auth, provider)
-.then(async (result)=>{
+        // 1. Kiểm tra quyền truy cập (AllowList)
+        if (!allowList.includes(user.email)) {
+            alert("❌ Tài khoản không được cấp quyền!");
+            await signOut(auth);
+            return;
+        }
 
-const user = result.user;
+        // 2. Ghi dữ liệu vào Firestore
+        await setDoc(doc(db, "users", user.uid), {
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+            lastLogin: new Date().toISOString(),
+            lastActive: Date.now(),
+            online: true 
+        }, { merge: true }); // Dùng merge để không ghi đè mất dữ liệu cũ nếu có
 
-if(!allowList.includes(user.email)){
-alert("❌ Tài khoản không được cấp quyền!");
-await signOut(auth);
-return;
-}
+        // 3. Ẩn hộp đăng nhập trên Web
+        if (document.getElementById("loginBox")) {
+            document.getElementById("loginBox").style.display = "none";
+        }
 
-await setDoc(doc(db,"users",user.uid),{
-  name: user.displayName,
-  email: user.email,
-  photo: user.photoURL,
-  lastLogin: new Date().toISOString(),
-  lastActive: Date.now(),
-  online: true // ✅ GIỮ LẠI
-});
+        console.log("✅ Đăng nhập & Lưu dữ liệu thành công!");
 
-document.getElementById("loginBox").style.display="none";
+        // 4. ĐIỀU HƯỚNG QUAY VỀ APP (Deep Link)
+        // Kiểm tra xem có đang mở từ WebView Android không
+        const isApp = navigator.userAgent.includes("Android");
 
-})
-.catch((error)=>{
-alert("Lỗi đăng nhập: " + error.message);
-console.error(error);
-});
+        if (isApp) {
+            // Delay 1 xíu để đảm bảo Firebase đã lưu xong Session trên trình duyệt
+            setTimeout(() => {
+                // Gọi tới scheme mà ông đã khai báo trong AndroidManifest.xml
+                window.location.href = "myapp://auth";
+            }, 1000);
+        } else {
+            // Nếu dùng trình duyệt máy tính bình thường thì load lại để cập nhật giao diện
+            window.location.reload();
+        }
 
+    })
+    .catch((error) => {
+        console.error("Lỗi Google Login:", error);
+        if (error.code === 'auth/popup-blocked') {
+            alert("⚠️ Vui lòng cho phép hiện Popup để đăng nhập!");
+        } else {
+            alert("❌ Lỗi: " + error.message);
+        }
+    });
 };
 // Xử lý khi ẩn tab hoặc đóng trình duyệt
 const updateStatus = (isOnline) => {
@@ -2113,7 +2327,7 @@ div.innerHTML = `
        <div style="display:flex; align-items:center; gap:10px; padding:6px 8px;">
          <img src="${u.photo || 'https://i.imgur.com/6VBx3io.png'}"
               style="width:26px;height:26px;border-radius:50%;">
-         <span>${u.name || "User"}</span>
+         <span style="color: var(--text-main);">${u.name || "User"}</span>
          <div class="online-pulse" style="width:8px;height:8px;background:#22c55e;border-radius:50%;"></div>
        </div>
      `;
@@ -2200,14 +2414,21 @@ pop.style.display = "none";
 <p id="popupQuote"></p>
 </div>
 
-<hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+<hr class="popup-divider">
 
-<div style="font-weight: 600; font-size: 12px; color: #999; margin-bottom: 8px;">
+<div style="font-weight: 600; font-size: 12px; color: var(--text-sub); margin-bottom: 8px;">
 Đang trực tuyến
 </div>
 
 <div id="onlineList" style="max-height: 150px; overflow-y: auto;"></div>
+<div class="dark-toggle">
+  <span>🌙 Dark mode</span>
 
+  <label class="switch">
+    <input type="checkbox" id="darkModeToggle">
+    <span class="slider"></span>
+  </label>
+</div>
 <button id="logoutBtn" onclick="logout()">Đăng xuất</button>
 
 </div>
@@ -2228,6 +2449,24 @@ function updateProgress(percent){
     }, 800);
   }
 }
+const toggle = document.getElementById("darkModeToggle");
+
+// load lại trạng thái cũ
+if(localStorage.getItem("darkMode") === "on"){
+  document.body.classList.toggle("dark-mode");
+  toggle.checked = true;
+}
+
+// khi bấm
+toggle.addEventListener("change", () => {
+  if(toggle.checked){
+    document.body.classList.add("dark-mode");
+    localStorage.setItem("darkMode", "on");
+  }else{
+    document.body.classList.remove("dark-mode");
+    localStorage.setItem("darkMode", "off");
+  }
+});
 </script>
 </body>
 </html>
