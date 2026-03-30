@@ -119,6 +119,7 @@ padding:8px;
 box-shadow:0 3px 10px rgba(0,0,0,0.1);
 flex-wrap:wrap;
 backdrop-filter:blur(10px);
+border: 1px solid rgba(255,255,255,0.08);
 }
 
 .menu button{
@@ -129,6 +130,7 @@ font-size:15px;
 cursor:pointer;
 transition:all 0.25s ease;
 border-radius:8px;
+color: var(--text-main);
 }
 
 .menu button.active{
@@ -154,7 +156,7 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
   --btn-color:#8b5cf6;
 }
 .menu button[data-subject]:not(.active):hover{
-  background: color-mix(in srgb, var(--btn-color) 20%, white);
+  background: color-mix(in srgb, var(--btn-color) 25%, transparent);
 }
 .menu button[data-subject="lich"]{
   --btn-color:#d4068f;
@@ -1120,12 +1122,13 @@ gap:20px;
 }
 
 .exam-day{
-background:white;
+background: var(--card-bg);
+color: var(--card-text);
 padding:20px;
 border-radius:12px;
 box-shadow:0 4px 15px rgba(0,0,0,0.08);
 transition:all 0.3s;
-border-left:6px solid #d0d7ff;
+border-left:6px solid color-mix(in srgb, var(--text-sub) 40%, transparent);
 }
 
 .exam-day:hover{
@@ -1133,24 +1136,44 @@ transform:translateY(-5px);
 }
 
 .exam-day.today{
-border-left:6px solid #ff4d4f;
-background:#fff5f5;
-box-shadow:0 8px 20px rgba(255,0,0,0.2);
+  border-left:6px solid #ff4d4f;
+
+  background: color-mix(in srgb, #ff4d4f 12%, var(--card-bg));
+
+  box-shadow:
+    0 8px 20px color-mix(in srgb, #ff4d4f 25%, transparent);
+}
+.exam-day h3{
+  color: var(--card-text);
+}
+
+.exam-day p{
+  color: var(--card-sub);
 }
 /* ngày đã thi */
 
 .exam-day.past{
-opacity:0.6;
-filter:grayscale(0.7);
-border-left:6px solid #999;
+  border-left:6px solid #6b7280;
+
+  background: color-mix(in srgb, #6b7280 10%, var(--card-bg));
+
+  opacity:0.65;
+  filter: grayscale(0.4);
+
+  box-shadow:none;
 }
 
 /* ngày mai thi */
 
 .exam-day.tomorrow{
-border-left:6px solid #ffc107;
-background:#fff8e1;
-animation:shake 1s infinite;
+  border-left:6px solid #f59e0b;
+
+  background: color-mix(in srgb, #f59e0b 12%, var(--card-bg));
+
+  box-shadow:
+    0 8px 20px color-mix(in srgb, #f59e0b 25%, transparent);
+
+  animation: shake 1s infinite;
 }
 
 /* rung nhẹ */
