@@ -510,7 +510,7 @@ z-index:99999;
 
 backdrop-filter:blur(6px);
 
-background:linear-gradient(270deg,#dce7ff,#bcd3ff,#dce7ff,#c6dbff);
+color: var(--text-main);
 background-size:400% 400%;
 animation:bgMove 8s ease infinite;
 }
@@ -528,7 +528,7 @@ backdrop-filter: blur(6px);
 #loadingText{
 margin:0;
 font-size:15px;
-color: var(--text-main);
+color: inherit;
 font-weight:500;
 letter-spacing:0.3px;
 animation: pulseText 1.2s infinite;
@@ -948,6 +948,9 @@ transform: scale(0.96);
 body.dark-mode .card{
   border:1px solid rgba(255,255,255,0.08);
 }
+body.dark-mode #loadingOverlay{
+  background: linear-gradient(270deg,#0f172a,#1e293b,#0f172a);
+}
 .popup-divider{
   border: 0;
   height: 1px;
@@ -958,6 +961,14 @@ body.dark-mode .card{
     transparent
   );
   margin: 15px 0;
+}
+.text-bounce{
+  display:inline-block;
+  animation: bounceUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+#userPopup,
+#userPopup *{
+  color: var(--text-main);
 }
 </style>
 
@@ -2280,7 +2291,9 @@ div.innerHTML = `
        <div style="display:flex; align-items:center; gap:10px; padding:6px 8px;">
          <img src="${u.photo || 'https://i.imgur.com/6VBx3io.png'}"
               style="width:26px;height:26px;border-radius:50%;">
-         <span>${u.name || "User"}</span>
+         <span style="color: var(--text-main); font-weight:500;">
+            ${name}
+          </span>
          <div class="online-pulse" style="width:8px;height:8px;background:#22c55e;border-radius:50%;"></div>
        </div>
      `;
