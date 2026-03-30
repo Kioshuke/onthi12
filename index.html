@@ -2229,27 +2229,35 @@ window.googleLogin = function() {
     .then(async (result) => {
         const user = result.user;
 
-        // 1. Kiểm tra quyền truy cập
+        // 1. Kiểm tra quyền truy cập (AllowList)
         if (!allowList.includes(user.email)) {
             alert("❌ Tài khoản không được cấp quyền!");
             await signOut(auth);
             return;
         }
 
-        // 2. Nếu đăng nhập thành công và hợp lệ:
+        // 2. Đăng nhập thành công
         console.log("✅ Đăng nhập thành công:", user.email);
 
-        // Kiểm tra xem có đang chạy trong App không (dựa vào User Agent hoặc tự định nghĩa)
-        // Hoặc đơn giản là luôn gọi link deep link để ép quay về App nếu đang mở từ Webview
-        setTimeout(() => {
-            window.location.href = "myapp://auth";
-        }, 500); // Delay một chút để Firebase kịp lưu Session xong
+        // 3. Xử lý điều hướng quay về App LearnHub
+        // Kiểm tra xem có phải đang chạy trong môi trường WebView/App không
+        const isApp = navigator.userAgent.includes("Android") || window.location.href.includes("app=true");
+
+        if (isApp) {
+            // Đợi 1 chút cho Firebase lưu Session/Cookie rồi mới nhảy
+            setTimeout(() => {
+                window.location.href = "myapp://auth";
+            }, 800);
+        } else {
+            // Nếu dùng web bình thường thì chỉ cần load lại trang là xong
+            window.location.reload();
+        }
 
     })
     .catch((error) => {
         console.error("Lỗi Google Login:", error);
         if (error.code === 'auth/popup-blocked') {
-            alert("⚠️ Vui lòng cho phép hiện Popup để đăng nhập!");
+            alert("⚠️ Trình duyệt đã chặn Popup. Hãy cho phép để tiếp tục!");
         } else {
             alert("❌ Lỗi: " + error.message);
         }
