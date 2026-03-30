@@ -764,7 +764,7 @@ text-align: center;
 font-size: 18px;
 font-weight: 600;
 margin: 4px 0 2px;
-color: var(--text-main);
+color: var(--text-main) !important;;
 }
 #popupEmail {
 text-align: center;
@@ -777,7 +777,7 @@ margin-bottom: 10px;
 font-size: 15px;
 text-align: center;
 margin: 4px 0 6px;
-color: #6366f1; /* tím nhẹ */;
+color: color-mix(in srgb, var(--text-main) 70%, #6366f1);
 margin: 10px 0;
 font-style: italic;
 font-weight: bold;
@@ -896,6 +896,7 @@ transform: scale(0.96);
   margin-top:12px;
   font-size:14px;
   font-weight:500;
+  color: var(--text-main);
 }
 
 .switch{
