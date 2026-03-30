@@ -640,7 +640,7 @@ min-height: 24px; /* Giữ khung không bị giật khi đổi chữ */
 .progress-percent {
     font-size: 20px;
     font-weight: 800;
-    color: #2d313e;
+    color: var(--text-main);
     min-width: 55px;    /* Giữ vị trí cố định để không bị giật khi nhảy số */
     text-align: left;
 } 
@@ -868,7 +868,7 @@ transform: scale(0.96);
   margin:0;
   font-size:18px;
   font-weight:600;
-  color:#1f2937;
+  color: var(--text-main);
 }
 .loading-footer{
   position:fixed;
@@ -896,6 +896,9 @@ transform: scale(0.96);
   margin-top:12px;
   font-size:14px;
   font-weight:500;
+  color: var(--text-main);
+}
+.dark-toggle span {
   color: var(--text-main);
 }
 
@@ -944,6 +947,17 @@ transform: scale(0.96);
 
 body.dark-mode .card{
   border:1px solid rgba(255,255,255,0.08);
+}
+.popup-divider{
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--text-sub),
+    transparent
+  );
+  margin: 15px 0;
 }
 </style>
 
@@ -1302,7 +1316,7 @@ align-items: center;
 gap: 12px;
 
 border-radius: 50px;
-background: rgba(255, 255, 255, 0.9);
+background: var(--menu-bg);
 backdrop-filter: blur(10px);
 box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 border: 1px solid rgba(0,0,0,0.05);
@@ -2353,9 +2367,9 @@ pop.style.display = "none";
 <p id="popupQuote"></p>
 </div>
 
-<hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+<hr class="popup-divider">
 
-<div style="font-weight: 600; font-size: 12px; color: #999; margin-bottom: 8px;">
+<div style="font-weight: 600; font-size: 12px; color: var(--text-sub); margin-bottom: 8px;">
 Đang trực tuyến
 </div>
 
@@ -2399,10 +2413,10 @@ if(localStorage.getItem("darkMode") === "on"){
 // khi bấm
 toggle.addEventListener("change", () => {
   if(toggle.checked){
-    document.body.classList.toggle("dark-mode");
+    document.body.classList.add("dark-mode");
     localStorage.setItem("darkMode", "on");
   }else{
-    document.body.classList.toggle("dark-mode");
+    document.body.classList.remove("dark-mode");
     localStorage.setItem("darkMode", "off");
   }
 });
