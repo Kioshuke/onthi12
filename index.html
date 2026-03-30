@@ -536,24 +536,28 @@ min-height: 24px; /* Giữ khung không bị giật khi đổi chữ */
 
 /* Thanh bar chính */
 .progress-bar {
-    flex-grow: 1;        /* Để thanh bar chiếm hết không gian còn lại */
+    flex-grow: 1;
     position: relative;
     height: 12px;
     background: #cfd8ff;
     border-radius: 30px;
     border: 2px solid #2f5cff;
-    overflow: hidden;    /* Để phần fill không tràn ra ngoài */
-      content:"";
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
+    overflow: hidden;
+}
+
+/* ✨ hiệu ứng ánh sáng */
+.progress-bar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(
-      120deg,
-      transparent,
-      rgba(255,255,255,0.7),
-      transparent
+        120deg,
+        transparent,
+        rgba(255,255,255,0.7),
+        transparent
     );
     animation: shimmer 1.6s infinite;
 }
@@ -572,6 +576,7 @@ min-height: 24px; /* Giữ khung không bị giật khi đổi chữ */
   background-size:200% 100%;
   animation: gradientMove 2s linear infinite;
   transition: width 0.2s ease;
+  border-radius:inherit; /* 👈 fix bo góc chuẩn */
 }
 .progress-fill.complete{
   animation: pulse 0.8s ease;
@@ -875,7 +880,7 @@ transform: scale(0.96);
       <div class="progress-bar">
         <div id="progressFill" class="progress-fill"></div>
       </div>
-      <div id="progressText" class="progress-text">0%</div>
+      <div id="progressText" class="progress-percent">0%</div>
     </div>
 <div class="loading-text-box">
 <p id="loadingText">🧠 Đang chuẩn bị kiến thức...</p>
