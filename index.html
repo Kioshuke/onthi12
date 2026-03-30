@@ -2236,20 +2236,35 @@ window.googleLogin = function() {
             return;
         }
 
-        // 2. Đăng nhập thành công
-        console.log("✅ Đăng nhập thành công:", user.email);
+        // 2. Ghi dữ liệu vào Firestore
+        await setDoc(doc(db, "users", user.uid), {
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+            lastLogin: new Date().toISOString(),
+            lastActive: Date.now(),
+            online: true 
+        }, { merge: true }); // Dùng merge để không ghi đè mất dữ liệu cũ nếu có
 
-        // 3. Xử lý điều hướng quay về App LearnHub
-        // Kiểm tra xem có phải đang chạy trong môi trường WebView/App không
-        const isApp = navigator.userAgent.includes("Android") || window.location.href.includes("app=true");
+        // 3. Ẩn hộp đăng nhập trên Web
+        if (document.getElementById("loginBox")) {
+            document.getElementById("loginBox").style.display = "none";
+        }
+
+        console.log("✅ Đăng nhập & Lưu dữ liệu thành công!");
+
+        // 4. ĐIỀU HƯỚNG QUAY VỀ APP (Deep Link)
+        // Kiểm tra xem có đang mở từ WebView Android không
+        const isApp = navigator.userAgent.includes("Android");
 
         if (isApp) {
-            // Đợi 1 chút cho Firebase lưu Session/Cookie rồi mới nhảy
+            // Delay 1 xíu để đảm bảo Firebase đã lưu xong Session trên trình duyệt
             setTimeout(() => {
+                // Gọi tới scheme mà ông đã khai báo trong AndroidManifest.xml
                 window.location.href = "myapp://auth";
-            }, 800);
+            }, 1000);
         } else {
-            // Nếu dùng web bình thường thì chỉ cần load lại trang là xong
+            // Nếu dùng trình duyệt máy tính bình thường thì load lại để cập nhật giao diện
             window.location.reload();
         }
 
@@ -2257,29 +2272,11 @@ window.googleLogin = function() {
     .catch((error) => {
         console.error("Lỗi Google Login:", error);
         if (error.code === 'auth/popup-blocked') {
-            alert("⚠️ Trình duyệt đã chặn Popup. Hãy cho phép để tiếp tục!");
+            alert("⚠️ Vui lòng cho phép hiện Popup để đăng nhập!");
         } else {
             alert("❌ Lỗi: " + error.message);
         }
     });
-};
-await setDoc(doc(db,"users",user.uid),{
-  name: user.displayName,
-  email: user.email,
-  photo: user.photoURL,
-  lastLogin: new Date().toISOString(),
-  lastActive: Date.now(),
-  online: true // ✅ GIỮ LẠI
-});
-
-document.getElementById("loginBox").style.display="none";
-
-})
-.catch((error)=>{
-alert("Lỗi đăng nhập: " + error.message);
-console.error(error);
-});
-
 };
 // Xử lý khi ẩn tab hoặc đóng trình duyệt
 const updateStatus = (isOnline) => {
