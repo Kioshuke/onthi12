@@ -865,6 +865,82 @@ transform: scale(0.96);
   font-size:12px;
   color:#333;
 }
+.dark-toggle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:12px;
+  font-size:14px;
+  font-weight:500;
+}
+
+.switch{
+  position:relative;
+  display:inline-block;
+  width:46px;
+  height:24px;
+}
+
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  cursor:pointer;
+  inset:0;
+  background:#d1d5db;
+  border-radius:999px;
+  transition:0.3s;
+}
+
+.slider::before{
+  content:"";
+  position:absolute;
+  height:18px;
+  width:18px;
+  left:3px;
+  top:3px;
+  background:white;
+  border-radius:50%;
+  transition:0.3s;
+  box-shadow:0 2px 6px rgba(0,0,0,0.3);
+}
+
+.switch input:checked + .slider{
+  background:#4f46e5;
+}
+
+.switch input:checked + .slider::before{
+  transform:translateX(22px);
+}
+body.dark{
+  background:#0f172a;
+  color:#e5e7eb;
+}
+
+body.dark .menu{
+  background: rgba(30,41,59,0.7);
+}
+
+body.dark .card{
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+}
+
+body.dark .card p{
+  color:#9ca3af;
+}
+
+body.dark .quiz-box,
+body.dark #userPopup{
+  background: rgba(30,41,59,0.85);
+}
+
+body.dark #loadingText{
+  color:#e5e7eb;
+}
 </style>
 
 </head>
@@ -2280,7 +2356,14 @@ pop.style.display = "none";
 </div>
 
 <div id="onlineList" style="max-height: 150px; overflow-y: auto;"></div>
+<div class="dark-toggle">
+  <span>🌙 Dark mode</span>
 
+  <label class="switch">
+    <input type="checkbox" id="darkModeToggle">
+    <span class="slider"></span>
+  </label>
+</div>
 <button id="logoutBtn" onclick="logout()">Đăng xuất</button>
 
 </div>
@@ -2301,6 +2384,24 @@ function updateProgress(percent){
     }, 800);
   }
 }
+const toggle = document.getElementById("darkModeToggle");
+
+// load lại trạng thái cũ
+if(localStorage.getItem("darkMode") === "on"){
+  document.body.classList.add("dark");
+  toggle.checked = true;
+}
+
+// khi bấm
+toggle.addEventListener("change", () => {
+  if(toggle.checked){
+    document.body.classList.add("dark");
+    localStorage.setItem("darkMode", "on");
+  }else{
+    document.body.classList.remove("dark");
+    localStorage.setItem("darkMode", "off");
+  }
+});
 </script>
 </body>
 </html>
