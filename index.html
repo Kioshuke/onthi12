@@ -2224,19 +2224,37 @@ document.getElementById("loginBox").style.display="flex";
 // chỉ giữ login trong tab hiện tại
 
 
-window.googleLogin = function(){
+window.googleLogin = function() {
+    signInWithPopup(auth, provider)
+    .then(async (result) => {
+        const user = result.user;
 
-signInWithPopup(auth, provider)
-.then(async (result)=>{
+        // 1. Kiểm tra quyền truy cập
+        if (!allowList.includes(user.email)) {
+            alert("❌ Tài khoản không được cấp quyền!");
+            await signOut(auth);
+            return;
+        }
 
-const user = result.user;
+        // 2. Nếu đăng nhập thành công và hợp lệ:
+        console.log("✅ Đăng nhập thành công:", user.email);
 
-if(!allowList.includes(user.email)){
-alert("❌ Tài khoản không được cấp quyền!");
-await signOut(auth);
-return;
-}
+        // Kiểm tra xem có đang chạy trong App không (dựa vào User Agent hoặc tự định nghĩa)
+        // Hoặc đơn giản là luôn gọi link deep link để ép quay về App nếu đang mở từ Webview
+        setTimeout(() => {
+            window.location.href = "myapp://auth";
+        }, 500); // Delay một chút để Firebase kịp lưu Session xong
 
+    })
+    .catch((error) => {
+        console.error("Lỗi Google Login:", error);
+        if (error.code === 'auth/popup-blocked') {
+            alert("⚠️ Vui lòng cho phép hiện Popup để đăng nhập!");
+        } else {
+            alert("❌ Lỗi: " + error.message);
+        }
+    });
+};
 await setDoc(doc(db,"users",user.uid),{
   name: user.displayName,
   email: user.email,
