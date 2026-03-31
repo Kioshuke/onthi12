@@ -13,7 +13,7 @@
             --text-sub: #6b7280;
             --card: #ffffff;
             --card-gradient: linear-gradient(135deg, #ffffff, #f3f6ff);
-            
+            --minibox: #ffffff;
             --primary: #1a73e8; /* Màu xanh thương hiệu LearnHub */
             --primary-light: #eff6ff;
             --danger: #ef4444;
@@ -45,6 +45,7 @@
         /* Định nghĩa màu sắc khi ở chế độ Dark Mode */
         body.dark-mode {
             --bg: #0f172a;
+            --minibox: #1e293b;
             --bg-pattern: #1e293b;
             --text: #f1f5f9;
             --text-sub: #cbd5f5;
@@ -149,7 +150,7 @@
         .nav-item {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
             border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.8rem;
-            font-weight: 600; cursor: pointer; transition: 0.2s; background: var(--bg-pattern);
+            font-weight: 600; cursor: pointer; transition: 0.2s; background: var(--minibox);
         }
         .nav-item.done { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
         .nav-item:hover { border-color: var(--primary); }
