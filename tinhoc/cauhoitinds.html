@@ -21,6 +21,8 @@
             --info: #3173de;
             --anshover: #d0d7df;
             --answrong: #fdacac;
+            --success-light: #dcfce7;
+            --danger-light: #fee2e2;
         }
         body { 
             font-family: 'Inter', system-ui, sans-serif; 
@@ -57,6 +59,8 @@
             --card-gradient: linear-gradient(135deg, #1e293b, #0f172a);
             --anshover: #595b5e;
             --primary-light: rgba(30, 41, 59, 0.5);
+            --success-light: #14532d;
+            --danger-light: #7f1d1d;
         }
 
         /* Các chi tiết khác để nhìn rõ hơn trong bóng tối */
@@ -286,7 +290,7 @@
             display: flex;
             align-items: center;
             padding: 12px;
-            border-bottom: 1px solid #edf2f7;
+            border-bottom: 1px solid var(--bg-pattern);
             gap: 15px;
             transition: background 0.2s;
         }
@@ -299,7 +303,7 @@
         }
         /* Hover vẫn sáng lên cho UX */
         .quiz-locked .ans-label:hover {
-          background: #003060;
+          background: #c5d6e8;
           border-color: #cbd5e1;
           cursor: not-allowed;
         }
@@ -586,17 +590,17 @@ async function loadQuestions() {
                 else if (item.type === 'true_false') {
                     window.totalMaxScore += 1; 
                     answersContent = `
-                        <div class="tf-wrapper" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+                        <div class="tf-wrapper" style="background: var(--card); border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
                             ${item.subQuestions.map((sub, subIdx) => `
                                 <div class="tf-row">
                                     <div class="tf-question-text">
                                         <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub.text}
                                     </div>
                                     <div class="tf-options">
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: var(--minibox); padding:6px 12px; border-radius:8px; border: 1px solid var(--bg-pattern);">
                                             <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
                                         </label>
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: var(--minibox); padding:6px 12px; border-radius:8px; border: 1px solid var(--bg-pattern);">
                                             <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>S</b>
                                         </label>
                                     </div>
@@ -802,9 +806,9 @@ scoreCircle.style.animation = feedback.animation + " 0.6s ease";
                     if (userVal === correctVal) {
                         if (userVal === correctVal) {
                         }
-                        row.style.background = "#f0fdf4";
+                        row.style.background = "var(--success-light)";
                     } else {
-                        row.style.background = "#fef2f2";
+                        row.style.background = "var(--danger-light)";
                         allSubCorrect = false;
                     }
 
