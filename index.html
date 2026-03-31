@@ -55,7 +55,6 @@ body{
   background-size:28px 28px;
   overflow-x:hidden;
   overscroll-behavior: none;
-
   animation:fadeIn 0.6s ease;
 }
 @keyframes fadeIn{
@@ -118,36 +117,59 @@ box-shadow:
 }
 /* MENU */
 
-.menu{
-display:flex;
-justify-content:center;
-gap:5px;
-background: var(--menu-bg);
-padding:8px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-flex-wrap:wrap;
-backdrop-filter:blur(10px);
-border: 1px solid rgba(255,255,255,0.08);
+.menu {
+  /* MẶC ĐỊNH CHO ĐIỆN THOẠI */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px; 
+  height: 100dvh;
+  z-index: 1000;
+  
+  /* Đẩy sát ra ngoài để không bị lộ dù chỉ 1px */
+  transform: translateX(-100%); 
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* HÒA QUYỆN NỀN: Dùng chung gradient và hiệu ứng với .header */
+  background: linear-gradient(
+    135deg,
+    rgb(30, 90, 200),
+    rgb(58, 134, 255),
+    rgb(120, 100, 255)
+  );
+  background-size: 300% 300%;
+  animation: headerFlow 10s ease infinite; /* Màu chảy đồng bộ với header */
+  
+  display: flex;
+  flex-direction: column;
+  padding: 80px 20px 20px;
+  gap: 12px;
+  backdrop-filter: blur(15px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
 }
-
-.menu button{
-padding:12px 22px;
-border:none;
-background:none;
-font-size:15px;
-cursor:pointer;
-transition:all 0.25s ease;
-border-radius:8px;
-color: var(--text-main);
-position: relative;
-overflow: hidden;
+.menu.active {
+  transform: translateX(0);
+  box-shadow: 15px 0 50px rgba(0,0,0,0.3);
 }
-
-.menu button.active{
-background: var(--btn-color, #1a73e8);
-color:white;
-font-weight:600;
-box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
+.menu button {
+  width: 100%;
+  text-align: left;
+  padding: 14px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-radius: 12px;
+  color: white; /* Chữ trắng cho nổi trên nền gradient */
+  font-weight: 500;
+}
+.menu button.active {
+  background: white;
+  color: #1a73e8 !important; /* Chữ xanh khi chọn */
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 /* màu theo môn */
 .menu button[data-subject="ly"]{
@@ -173,10 +195,10 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
 }
 /* CONTENT */
 
-.content{
-max-width:1100px;
-margin:auto;
-padding:15px 20px 30px;
+.content {
+  max-width: 1100px;
+  margin: auto;
+  padding: 15px 20px 30px;
 }
 .fade-out{
 opacity:0;
@@ -1610,13 +1632,18 @@ animation: pulse-green 2s infinite;
 }
 /* NAVBAR */
 .navbar{
+position: sticky;   /* 🔥 dính lên trên */
+top: 0;
+z-index: 999;
+
 display:flex;
 justify-content:space-between;
 align-items:center;
 
 padding:10px 16px;
-background: rgba(255,255,255,0.7);
-backdrop-filter: blur(10px);
+
+background: rgba(255,255,255,0.85);
+backdrop-filter: blur(12px);
 
 border-bottom:1px solid rgba(0,0,0,0.05);
 }
@@ -1643,12 +1670,13 @@ border-radius:8px;
 }
 
 /* MENU PC */
-.nav-menu{
+.menu{
 display:flex;
 gap:6px;
+align-items:center;
 }
 
-.nav-menu button{
+.menu button{
 border:none;
 background:none;
 padding:8px 14px;
@@ -1658,7 +1686,7 @@ font-size:14px;
 transition:0.2s;
 }
 
-.nav-menu button.active{
+.menu button.active{
 background:#2563eb;
 color:white;
 }
@@ -1685,6 +1713,7 @@ top:0;
 left:-260px;
 width:260px;
 height:100%;
+box-shadow: 5px 0 20px rgba(0,0,0,0.2);
 
 background:white;
 padding:20px;
@@ -1732,8 +1761,20 @@ visibility:visible;
 /* MOBILE */
 @media (max-width:768px){
 
-.nav-menu{
+.menu{
+overflow-x:auto;
+flex-wrap:nowrap;
+gap:8px;
+padding:6px 0;
+}
+
+.menu::-webkit-scrollbar{
 display:none;
+}
+
+.menu button{
+flex-shrink:0;
+white-space:nowrap;
 }
 
 .hamburger{
@@ -2622,13 +2663,14 @@ toggle.addEventListener("change", () => {
     localStorage.setItem("darkMode", "off");
   }
 });
-function toggleSidebar(){
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
-
-sidebar.classList.toggle("active");
-overlay.classList.toggle("active");
-}
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  sidebar.classList.toggle("active");
+  
+  // Nếu có overlay (lớp phủ đen), bạn cũng cho nó hiện lên
+  const overlay = document.getElementById("overlay");
+  if(overlay) overlay.classList.toggle("show");
+} 
 </script>
 </body>
   </html>
