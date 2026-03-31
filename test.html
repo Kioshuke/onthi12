@@ -48,13 +48,15 @@ body.dark-mode{
   --popup-bg: rgba(30,41,59,0.9);
 }
 body{
-margin:0;
-font-family:'Segoe UI',Arial,sans-serif;
-background-color: var(--bg-main);
-background-image: radial-gradient(var(--bg-pattern) 1.2px, transparent 1.2px);
-background-size:28px 28px;
-overflow-x:hidden;
-animation:fadeIn 0.6s ease;
+  margin:0;
+  font-family:'Segoe UI',Arial,sans-serif;
+  background-color: var(--bg-main);
+  background-image: radial-gradient(var(--bg-pattern) 1.2px, transparent 1.2px);
+  background-size:28px 28px;
+  overflow-x:hidden;
+  overscroll-behavior: none;
+
+  animation:fadeIn 0.6s ease;
 }
 @keyframes fadeIn{
 from{opacity:0;}
@@ -237,6 +239,7 @@ gap:25px;
     linear-gradient(var(--card-color), var(--card-color)) left / 6px 100% no-repeat,
     linear-gradient(var(--card-color), var(--card-color)) right / 6px 100% no-repeat,
     linear-gradient(120deg, #3b82f633, #6366f133);
+  opacity:1;
 }
 .card::after{
   content:"";
@@ -284,9 +287,6 @@ gap:25px;
     linear-gradient(var(--card-color), var(--card-color)) left / 6px 100% no-repeat,
     linear-gradient(var(--card-color), var(--card-color)) right / 6px 100% no-repeat,
     linear-gradient(120deg, #3b82f633, #6366f133);
-}
-.card:hover::before{
-  opacity:1;
 }
 
 .card:hover::after{
@@ -370,14 +370,13 @@ padding:12px;
 border-radius:12px;
 box-shadow:0 4px 15px rgba(0,0,0,0.1);
 position: relative;
-height: 100vh;
+height: 100dvh;
 }
 
 iframe{
 width:100%;
 height:100%;
 border:none;
-will-change: transform;
 }
 
 /* CLOSE BUTTON */
@@ -400,7 +399,7 @@ margin-bottom:10px;
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:3000; /* 🔥 cao hơn menu */
+  z-index:900; /* 🔥 cao hơn menu */
 }
 
 .popup-box{
@@ -452,9 +451,6 @@ to{
 transform:translateY(-40px) scale(0.9);
 opacity:0;
 }
-}
-*{
-box-sizing:border-box;
 }
 
 #loginBox .login-card{
@@ -514,7 +510,7 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 
-z-index:99999;
+z-index:9999;
 
 backdrop-filter:blur(6px);
 
@@ -684,9 +680,6 @@ letter-spacing:1px;
 -webkit-tap-highlight-color: transparent; /* bỏ highlight khi bấm */
 }
 
-body{
-overscroll-behavior: none; /* giảm giật scroll */
-}
 #currentTime {
 margin-right: auto; 
 font-size: 14px; 
@@ -713,7 +706,7 @@ z-index: 10;
 }
 
 #userPopup {
-z-index: 2000; /* 🔥 cao hơn menu */
+z-index: 800; /* 🔥 cao hơn menu */
 position: absolute;
 top: 70px;
 right: 20px;
@@ -1044,11 +1037,11 @@ body.dark-mode .card{
 
   <div class="nav-menu">
     <button data-subject="lich" class="active" onclick="show('lich')">Lịch</button>
-    <button data-subject="ly" onclick="show('ly')">Lý</button>
-    <button data-subject="sinh" onclick="show('sinh')">Sinh</button>
-    <button data-subject="tin" onclick="show('tin')">Tin</button>
-    <button data-subject="su" onclick="show('su')">Sử</button>
-    <button data-subject="hoa" onclick="show('hoa')">Hóa</button>
+    <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
+    <button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
+    <button data-subject="tin" onclick="show('tin')">Tin Học</button>
+    <button data-subject="su" onclick="show('su')">Lịch Sử</button>
+    <button data-subject="hoa" onclick="show('hoa')">Hóa Học</button>
   </div>
 
   <div class="nav-right">
@@ -1416,10 +1409,6 @@ transform:none;
 .card:hover{
 transform:none;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
-}
-
-body{
-overscroll-behavior:none;
 }
 
 *{
@@ -2170,10 +2159,15 @@ active.classList.add("fade-in");
 const buttons = document.querySelectorAll(".menu button");
 
 buttons.forEach(btn => {
-btn.addEventListener("click", () => {
-buttons.forEach(b => b.classList.remove("active"));
-btn.classList.add("active");
-});
+  btn.onclick = () => {
+
+    // remove active
+    buttons.forEach(b => b.classList.remove("active"));
+
+    // add active
+    btn.classList.add("active");
+
+  };
 });
 const now = new Date();
 
