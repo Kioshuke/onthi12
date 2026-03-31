@@ -2118,21 +2118,14 @@ setInterval(updateCountdown,1000);
 updateCountdown();
 window.addEventListener("load", function(){
 
-const savedTab = localStorage.getItem("activeTab") || "lich";
+// 1. Xóa tất cả trạng thái active cũ của các nút menu
+document.querySelectorAll(".menu button").forEach(b => b.classList.remove("active"));
 
-// bỏ active cũ
-document.querySelectorAll(".menu button")
-.forEach(b => b.classList.remove("active"));
+// 2. Tìm đúng nút "Lịch Thi" để thêm class active (dựa vào thuộc tính onclick chứa chữ 'lich')
+const btnLich = Array.from(document.querySelectorAll(".menu button")).find(btn => btn.getAttribute("onclick").includes('lich'));
+if(btnLich) btnLich.classList.add("active");
 
-// set lại active đúng nút
-document.querySelectorAll(".menu button")
-.forEach(btn=>{
-if(btn.getAttribute("onclick").includes(savedTab)){
-btn.classList.add("active");
-}
-});
-
-// gọi show
+// 3. Gọi hàm hiển thị nội dung Lịch thi
 show("lich");
 
 });
