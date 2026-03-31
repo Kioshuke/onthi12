@@ -61,63 +61,9 @@ body{
 from{opacity:0;}
 to{opacity:1;}
 }
-/* HEADER */
-
-.header{
-position:relative;
-background: linear-gradient(
-135deg,
-rgb(30, 90, 200),     /* xanh đậm */
-rgb(58, 134, 255),    /* xanh chính */
-rgb(120, 100, 255)    /* tím nhẹ */
-);
-box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-background-size:300% 300%;
-color:white;
-padding:20px 40px;
-display:flex;
-justify-content:center;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-backdrop-filter: blur(10px);
-animation:headerFlow 10s ease infinite;
-}
-@keyframes headerFlow {
-0% {
-background-position: 0% 50%;
-}
-50% {
-background-position: 100% 50%;
-}
-100% {
-background-position: 0% 50%;
-}
-}
-
-.header-inner{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:15px;
-}
-
-.logo{
-width:55px;
-height:55px;
-border-radius:14px;
-box-shadow:0 8px 20px rgba(0,0,0,0.3);
-transition:0.3s;
-background:white; /* 👈 thêm dòng này */
-}
-
-.logo:hover{
-transform:scale(1.08);
-box-shadow:
-0 0 25px rgba(125,249,255,0.9),
-0 10px 25px rgba(0,0,0,0.3);
-}
 /* MENU */
 
-.menu {
+.nav-menu {
   /* MẶC ĐỊNH CHO ĐIỆN THOẠI */
   position: fixed;
   top: 0;
@@ -148,11 +94,11 @@ box-shadow:
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: none;
 }
-.menu.active {
+.nav-menu.active {
   transform: translateX(0);
   box-shadow: 15px 0 50px rgba(0,0,0,0.3);
 }
-.menu button {
+.nav-menu button {
   width: 100%;
   text-align: left;
   padding: 14px 20px;
@@ -165,32 +111,32 @@ box-shadow:
   color: white; /* Chữ trắng cho nổi trên nền gradient */
   font-weight: 500;
 }
-.menu button.active {
+.nav-menu button.active {
   background: white;
   color: #1a73e8 !important; /* Chữ xanh khi chọn */
   font-weight: 700;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 /* màu theo môn */
-.menu button[data-subject="ly"]{
+.nav-menu button[data-subject="ly"]{
   --btn-color:#3b82f6;
 }
-.menu button[data-subject="sinh"]{
+.nav-menu button[data-subject="sinh"]{
   --btn-color:#22c55e;
 }
-.menu button[data-subject="tin"]{
+.nav-menu button[data-subject="tin"]{
   --btn-color:#f59e0b;
 }
-.menu button[data-subject="su"]{
+.nav-menu button[data-subject="su"]{
   --btn-color:#ef4444;
 }
-.menu button[data-subject="hoa"]{
+.nav-menu button[data-subject="hoa"]{
   --btn-color:#8b5cf6;
 }
-.menu button[data-subject]:not(.active):hover{
+.nav-menu button[data-subject]:not(.active):hover{
   background: color-mix(in srgb, var(--btn-color) 25%, transparent);
 }
-.menu button[data-subject="lich"]{
+.nav-menu button[data-subject="lich"]{
   --btn-color:#d4068f;
 }
 /* CONTENT */
@@ -423,7 +369,7 @@ margin-bottom:10px;
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:900; /* 🔥 cao hơn menu */
+  z-index:3000; /* 🔥 cao hơn menu */
 }
 
 .popup-box{
@@ -1059,7 +1005,7 @@ body.dark-mode .card{
     </div>
   </div>
 
-  <div class="menu">
+  <div class="nav-menu">
     <button data-subject="lich" class="active" onclick="show('lich')">Lịch</button>
     <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
     <button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
@@ -1075,7 +1021,7 @@ body.dark-mode .card{
 </div>
 
 <!-- SIDEBAR MOBILE -->
-<div class="sidebar" id="sidebar">
+<div class="sidebar-menu" id="sidebar">
   <button onclick="show('lich')">📅 Lịch</button>
   <button onclick="show('ly')">📘 Vật Lý</button>
   <button onclick="show('sinh')">🧬 Sinh</button>
@@ -1634,7 +1580,7 @@ animation: pulse-green 2s infinite;
 .navbar{
 position: sticky;   /* 🔥 dính lên trên */
 top: 0;
-z-index: 999;
+z-index: 100;
 
 display:flex;
 justify-content:space-between;
@@ -1706,38 +1652,6 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* SIDEBAR */
-.sidebar{
-position:fixed;
-top:0;
-left:-260px;
-width:260px;
-height:100%;
-box-shadow: 5px 0 20px rgba(0,0,0,0.2);
-
-background:white;
-padding:20px;
-display:flex;
-flex-direction:column;
-gap:12px;
-
-transition:0.3s;
-z-index:2000;
-}
-
-.sidebar.active{
-left:0;
-}
-
-.sidebar button{
-padding:12px;
-border:none;
-background:#f1f5f9;
-border-radius:10px;
-text-align:left;
-cursor:pointer;
-}
-
 /* OVERLAY */
 .overlay{
 position:fixed;
@@ -1750,7 +1664,7 @@ background:rgba(0,0,0,0.4);
 opacity:0;
 visibility:hidden;
 transition:0.3s;
-z-index:1000;
+z-index:1500;
 }
 
 .overlay.active{
