@@ -118,13 +118,13 @@ box-shadow:
 
 .menu {
     display: flex;
-    align-items: center; /* Căn giữa logo và nút theo chiều dọc */
-    justify-content: space-between; /* Đẩy logo sang trái, nút sang phải/giữa */
-    padding: 10px 20px;
+    align-items: center;
+    justify-content: space-between; /* Đẩy Brand sang trái, Buttons sang phải */
+    padding: 8px 15px;
     background: var(--menu-bg);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(0,0,0,0.05);
-    position: sticky; /* Giữ menu ở trên cùng khi cuộn nếu muốn */
+    position: sticky;
     top: 0;
     z-index: 1000;
 }
@@ -140,10 +140,31 @@ box-shadow:
 .menu-button {
     display: flex;
     gap: 5px;
-    flex-grow: 1;
-    justify-content: center; /* Căn các nút môn học vào giữa */
+    overflow-x: auto; /* Hỗ trợ cuộn ngang trên điện thoại */
+    padding-left: 15px;
+}
+.menu-button::-webkit-scrollbar {
+    display: none;
+}
+.menu-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa logo và chữ */
 }
 
+.menu-brand img {
+    width: 35px; /* Chỉnh nhỏ lại để vừa thanh menu */
+    height: 35px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.menu-brand span {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a73e8; /* Giữ màu xanh thương hiệu */
+    white-space: nowrap;
+}
 .menu button.active{
 background: var(--btn-color, #1a73e8);
 color:white;
@@ -1047,7 +1068,10 @@ body.dark-mode .card{
 </div>
 
 <div class="menu">
-    <img src="logoweb2.png" class="menu-logo" alt="Logo">
+    <div class="menu-brand">
+        <img src="logoweb2.png" alt="Logo">
+        <span>LearnHub</span>
+    </div>
     
     <div class="menu-buttons">
         <button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
