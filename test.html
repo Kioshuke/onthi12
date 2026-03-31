@@ -186,6 +186,22 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
     color: #1a73e8; /* Giữ màu xanh thương hiệu */
     white-space: nowrap;
 }
+.menu-buttons {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto; /* Hỗ trợ cuộn ngang trên điện thoại */
+    padding-left: 15px;
+}
+.menu-buttons::-webkit-scrollbar {
+    display: none;
+}
+
+/* Responsive cho điện thoại nhỏ */
+@media (max-width: 480px) {
+    .menu-brand span {
+        display: none; /* Ẩn chữ LearnHub trên máy quá nhỏ, chỉ để lại logo */
+    }
+}
 /* CONTENT */
 
 .content{
