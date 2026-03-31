@@ -1005,13 +1005,14 @@ body.dark-mode .card{
     </div>
   </div>
 
-  <div class="nav-menu">
-    <button data-subject="lich" class="active" onclick="show('lich')">Lịch</button>
-    <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
-    <button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
-    <button data-subject="tin" onclick="show('tin')">Tin Học</button>
-    <button data-subject="su" onclick="show('su')">Lịch Sử</button>
-    <button data-subject="hoa" onclick="show('hoa')">Hóa Học</button>
+  <!-- MENU PC -->
+  <div class="menu">
+    <button class="active" onclick="show('lich')">Lịch</button>
+    <button onclick="show('ly')">Vật Lý</button>
+    <button onclick="show('sinh')">Sinh Học</button>
+    <button onclick="show('tin')">Tin Học</button>
+    <button onclick="show('su')">Lịch Sử</button>
+    <button onclick="show('hoa')">Hóa Học</button>
   </div>
 
   <div class="nav-right">
@@ -1289,12 +1290,7 @@ padding:16px;
 @media (max-width: 768px){
 
 .menu{
-flex-wrap:nowrap;              /* ❌ không cho xuống dòng */
-overflow-x:auto;               /* 👉 kéo ngang */
-justify-content:flex-start;
-padding:10px;
-gap:10px;
-scroll-snap-type: x mandatory; /* 🔥 thêm dòng này */
+display:none;
 }
 
 .menu button{
@@ -1695,6 +1691,21 @@ white-space:nowrap;
 display:block;
 }
 
+}
+.sidebar-menu{
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background: white;
+  padding: 70px 15px;
+  transition: 0.3s;
+  z-index: 2000;
+}
+
+.sidebar-menu.active{
+  left: 0;
 }
 </style>
 <div id="mainContent" class="content">
@@ -2577,14 +2588,10 @@ toggle.addEventListener("change", () => {
     localStorage.setItem("darkMode", "off");
   }
 });
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.classList.toggle("active");
-  
-  // Nếu có overlay (lớp phủ đen), bạn cũng cho nó hiện lên
-  const overlay = document.getElementById("overlay");
-  if(overlay) overlay.classList.toggle("show");
-} 
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
 </script>
 </body>
   </html>
