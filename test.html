@@ -116,27 +116,32 @@ box-shadow:
 }
 /* MENU */
 
-.menu{
-display:flex;
-justify-content:center;
-gap:5px;
-background: var(--menu-bg);
-padding:8px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-flex-wrap:wrap;
-backdrop-filter:blur(10px);
-border: 1px solid rgba(255,255,255,0.08);
+.menu {
+    display: flex;
+    align-items: center; /* Căn giữa logo và nút theo chiều dọc */
+    justify-content: space-between; /* Đẩy logo sang trái, nút sang phải/giữa */
+    padding: 10px 20px;
+    background: var(--menu-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    position: sticky; /* Giữ menu ở trên cùng khi cuộn nếu muốn */
+    top: 0;
+    z-index: 1000;
+}
+.menu-logo {
+    width: 40px; /* Kích thước nhỏ gọn để khớp với thanh menu */
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.menu button{
-padding:12px 22px;
-border:none;
-background:none;
-font-size:15px;
-cursor:pointer;
-transition:all 0.25s ease;
-border-radius:8px;
-color: var(--text-main);
+.menu-button {
+    display: flex;
+    gap: 5px;
+    flex-grow: 1;
+    justify-content: center; /* Căn các nút môn học vào giữa */
 }
 
 .menu button.active{
@@ -1042,12 +1047,16 @@ body.dark-mode .card{
 </div>
 
 <div class="menu">
-<button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
-<button data-subject="ly" onclick="show('ly')">Vật Lý</button>
-<button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
-<button data-subject="tin" onclick="show('tin')">Tin Học</button>
-<button data-subject="su" onclick="show('su')">Lịch Sử</button>
-<button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
+    <img src="logoweb2.png" class="menu-logo" alt="Logo">
+    
+    <div class="menu-buttons">
+        <button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
+        <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
+        <button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
+        <button data-subject="tin" onclick="show('tin')">Tin Học</button>
+        <button data-subject="su" onclick="show('su')">Lịch Sử</button>
+        <button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
+    </div>
 </div>
 <div class="ticker-container">
 <div class="ticker-text">
@@ -1307,18 +1316,17 @@ padding:16px;
 @media (max-width: 768px){
 
 .menu{
-flex-wrap:nowrap;              /* ❌ không cho xuống dòng */
-overflow-x:auto;               /* 👉 kéo ngang */
-justify-content:flex-start;
 padding:10px;
-gap:10px;
-scroll-snap-type: x mandatory; /* 🔥 thêm dòng này */
 }
-
-.menu button{
-flex-shrink:0;                 /* ❌ không bị co */
-white-space:nowrap;            /* không xuống dòng chữ */
-scroll-snap-align: start; /* 🔥 thêm dòng này */
+.menu-logo {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+.menu-button {
+  overflow-x: auto;
+  justify-content: flex-start;
+  white-space: nowrap;
 }
 
 }
