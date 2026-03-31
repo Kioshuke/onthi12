@@ -6,104 +6,160 @@
     <title>Hệ thống Luyện thi</title>
     <style>
         :root {
-            /* Lấy chính xác tone màu từ file chính của bạn */
-            --bg: #f6f8ff;
-            --bg-pattern: #d6dcff;
-            --text: #111827;
-            --text-sub: #6b7280;
-            --card: #ffffff;
-            --card-gradient: linear-gradient(135deg, #ffffff, #f3f6ff);
-            
-            --primary: #1a73e8; /* Màu xanh thương hiệu LearnHub */
-            --primary-light: #eff6ff;
-            --danger: #ef4444;
-            --success: #10b981;
-            --info: #3b82f6;
-        }
-        body { 
-            font-family: 'Inter', system-ui, sans-serif; 
-            background: var(--bg); 
-            margin: 0; 
-            padding: 20px; 
-            color: var(--text); 
-            transition: all 0.3s ease; /* Hiệu ứng chuyển màu mượt */
-        }
-        .container { max-width: 1600px; margin: 0 auto; padding: 0 20px; }
+    /* --- LIGHT MODE (Tone Xanh trắng nhẹ) --- */
+    --bg: #f6f8ff;
+    --text: #111827;
+    --text-sub: #6b7280;
+    --card: #ffffff;
+    --card-gradient: linear-gradient(135deg, #ffffff, #f3f6ff);
+    --option-hover: #eff6ff; 
+    
+    --primary: #1a73e8; /* Màu xanh thương hiệu LearnHub */
+    --primary-light: #eff6ff;
+    --danger: #ef4444;
+    --success: #10b981;
+    --info: #3b82f6;
+}
 
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--card); 
-            padding: 12px 20px; 
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-            margin-bottom: 25px;
-            position: sticky; top: 15px; z-index: 100;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
+/* --- DARK MODE (Tone Xanh đen slate đồng bộ file chính) --- */
+body.dark-mode {
+    --bg: #0f172a;
+    --text: #f1f5f9;
+    --text-sub: #cbd5f5;
+    --card: #1e293b;
+    --card-gradient: linear-gradient(135deg, #1e293b, #0f172a);
+    --option-hover: #2d3748; /* Màu hover tối slate, không bị chá */
+    --primary-light: rgba(30, 41, 59, 0.5);
+}
 
-        .logo-area h2 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--primary); }
-        /* Định nghĩa màu sắc khi ở chế độ Dark Mode */
-        body.dark-mode {
-            --bg: #0f172a;
-            --bg-pattern: #1e293b;
-            --text: #f1f5f9;
-            --text-sub: #cbd5f5;
-            --card: #1e293b;
-            --card-gradient: linear-gradient(135deg, #1e293b, #0f172a);
-            
-            --primary-light: rgba(30, 41, 59, 0.5);
-        }
+/* --- GLOBAL STYLE --- */
+body { 
+    font-family: 'Inter', system-ui, sans-serif; 
+    background: var(--bg); 
+    margin: 0; 
+    padding: 20px; 
+    color: var(--text); 
+    transition: all 0.3s ease;
+}
 
-        /* Các chi tiết khác để nhìn rõ hơn trong bóng tối */
-        body.dark-mode header,
-        body.dark-mode .option {
-            border-color: rgba(255,255,255,0.05);
-        }
+.container { max-width: 1600px; margin: 0 auto; padding: 0 20px; }
 
-        body.dark-mode .question-card {
-            border-color: rgba(255,255,255,0.1);
-        }
+header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    background: var(--card); 
+    padding: 12px 20px; 
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+    margin-bottom: 25px;
+    position: sticky; 
+    top: 15px; 
+    z-index: 100;
+    border: 1px solid rgba(0,0,0,0.05);
+}
 
-        /* Nút bấm */
-        button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .question-card {
-            background: var(--card-gradient);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
-            color: var(--text);
-        }
-        .option {
-            background: var(--card);
-            border: 2px solid transparent;
-            padding: 16px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex; align-items: center; gap: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            color: var(--text);
-        }
-        .option:hover {
-            background: var(--primary-light);
-            transform: translateX(5px);
-        }
+.logo-area h2 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--primary); }
 
-        .option.selected {
-            border-color: var(--primary);
-            background: var(--primary-light);
-        }
+/* --- QUESTION CARD --- */
+.question-card {
+    background: var(--card-gradient);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+    color: var(--text);
+}
+
+/* --- OPTIONS (Đáp án) --- */
+.option {
+    background: var(--card);
+    border: 2px solid transparent;
+    padding: 16px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex; 
+    align-items: center; 
+    gap: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    color: var(--text);
+}
+
+.option:hover {
+    background: var(--option-hover);
+    transform: translateX(5px);
+}
+
+.option.selected {
+    border-color: var(--primary);
+    background: var(--option-hover);
+}
+
+/* --- MỤC LỤC (Question dots) --- */
+.question-nav {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+    margin-top: 15px;
+}
+
+.question-dot {
+    width: 35px; 
+    height: 35px;
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--text);
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-size: 14px; 
+    font-weight: 600;
+    cursor: pointer; 
+    transition: all 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.question-dot:hover {
+    background: var(--option-hover);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.question-dot.answered {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* --- NÚT BẤM --- */
+button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* --- DARK MODE SPECIFIC BORDERS --- */
+body.dark-mode header,
+body.dark-mode .option,
+body.dark-mode .question-dot {
+    border-color: rgba(255,255,255,0.05);
+}
+
+body.dark-mode .question-card {
+    border-color: rgba(255,255,255,0.1);
+}
         .q-header { display: block; gap: 12px; margin-bottom: 20px; font-weight: 600; font-size: 1.05rem; align-items: flex-start; line-height: 1.6; }
         .q-badge { 
             display: inline-block; /* Quan trọng để chữ có thể chảy bao quanh nó */
@@ -429,7 +485,7 @@
         <h3>⚠️ Xác nhận nộp bài?</h3>
         <p>❓Bạn có chắc chắn muốn kết thúc bài thi này?</p>
         <div style="display: flex; justify-content: center; gap: 10px; margin-top: 25px;">
-            <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('confirmModal')">🔙 Quay lại</button>
+            <button class="btn" style="flex:1; background:#cc3030;" onclick="closeModal('confirmModal')">🔙 Quay lại</button>
             <button class="btn btn-primary" style="flex:1" onclick="handleFinalSubmit()">🚀 Nộp ngay</button>
         </div>
     </div>
@@ -445,7 +501,7 @@
         <p>Để xem chi tiết vui lòng bấm vào mục lục nhé!</p>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 25px;">
             <button class="btn btn-primary" style="justify-content: center;" onclick="reviewMode()">👁️ Xem bài làm</button>
-            <button class="btn" style="justify-content: center; background: #f1f5f9" onclick="openModal('restartModal')">🔄 Làm lại</button>
+            <button class="btn" style="justify-content: center; background: #cc3030" onclick="openModal('restartModal')">🔄 Làm lại</button>
         </div>
     </div>
 </div>
@@ -454,7 +510,7 @@
         <h3>🔄 Xác nhận làm lại?</h3>
         <p>❗Bạn sẽ mất toàn bộ bài làm hiện tại.</p>
         <div style="display: flex; justify-content: center; gap: 10px; margin-top: 25px;">
-            <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('restartModal')">↩️ Quay lại</button>
+            <button class="btn" style="flex:1; background: #cc3030;" onclick="closeModal('restartModal')">↩️ Quay lại</button>
             <button class="btn btn-primary" style="flex:1" onclick="confirmRestart()">👍 Đồng ý</button>
         </div>
     </div>
