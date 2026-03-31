@@ -172,8 +172,10 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
 .menu-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex: 1; /* Chiếm 1 phần không gian bên trái */
+    gap: 8px;
+    flex-shrink: 0; /* QUAN TRỌNG: Ngăn không cho cụm này bị co lại hoặc di chuyển */
+    margin-right: 15px;
+    padding-right: 10px;
 }
 
 .menu-brand img {
