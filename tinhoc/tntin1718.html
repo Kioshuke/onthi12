@@ -27,12 +27,36 @@
         }
 
         .logo-area h2 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--primary); }
+        /* Định nghĩa màu sắc khi ở chế độ Dark Mode */
         body.dark-mode {
-            background-color: #121212 !important;
-            color: #ffffff !important;
+            --bg: #121212;
+            --card: #1e1e1e;
+            --text: #e2e8f0;
+            --primary-light: #1e293b;
+            color: var(--text);
+            background-color: var(--bg);
         }
-        body.dark-mode .container {
-            background-color: #1e1e1e;
+
+        /* Các chi tiết khác để nhìn rõ hơn trong bóng tối */
+        body.dark-mode header {
+            background: var(--card);
+            border-color: #334155;
+        }
+
+        body.dark-mode .question-card {
+            background: var(--card);
+            border-color: #334155;
+            color: var(--text);
+        }
+
+        body.dark-mode .option {
+            background: #2d3748;
+            border-color: #4a5568;
+            color: var(--text);
+        }
+
+        body.dark-mode .option:hover {
+            background: #4a5568;
         }
         .question-card {
             background: var(--card); padding: 28px; border-radius: 20px;
