@@ -116,54 +116,29 @@ box-shadow:
 }
 /* MENU */
 
-.menu {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Chia 3 phần: Brand - Nav - Spacer */
-    padding: 10px 20px;
-    background: var(--menu-bg);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-.menu-logo {
-    width: 40px; /* Kích thước nhỏ gọn để khớp với thanh menu */
-    height: 40px;
-    border-radius: 8px;
-    object-fit: cover;
-    background: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.menu{
+display:flex;
+justify-content:center;
+gap:5px;
+background: var(--menu-bg);
+padding:8px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+flex-wrap:wrap;
+backdrop-filter:blur(10px);
+border: 1px solid rgba(255,255,255,0.08);
 }
 
-.menu-button {
-    display: flex;
-    gap: 5px;
-    overflow-x: auto; /* Hỗ trợ cuộn ngang trên điện thoại */
-    padding-left: 15px;
-}
-.menu-button::-webkit-scrollbar {
-    display: none;
-}
-.menu-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1; /* Chiếm 1 phần bên trái */
+.menu button{
+padding:12px 22px;
+border:none;
+background:none;
+font-size:15px;
+cursor:pointer;
+transition:all 0.25s ease;
+border-radius:8px;
+color: var(--text-main);
 }
 
-.menu-brand img {
-    width: 35px;
-    height: 35px;
-    border-radius: 8px;
-}
-
-.menu-brand span {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #1a73e8;
-}
 .menu button.active{
 background: var(--btn-color, #1a73e8);
 color:white;
@@ -1055,23 +1030,28 @@ body.dark-mode .card{
 
 </div>
 </div>
+<div class="header">
+<div class="header-inner">
+<img src="logoweb2.png" class="logo">
+
+<div class="title-box">
+<h1>LearnHub</h1>
+<p>Smart Study Platform</p>
+</div>
+</div>
+</div>
 
 <div class="menu">
-    <div class="menu-brand">
-        <img src="logoweb2.png" alt="Logo">
-        <span>LearnHub</span>
-    </div>
-    
-    <div class="menu-nav">
-        <button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
-        <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
-        <button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
-        <button data-subject="tin" onclick="show('tin')">Tin Học</button>
-        <button data-subject="su" onclick="show('su')">Lịch Sử</button>
-        <button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
-    </div>
-    
-    <div class="menu-spacer"></div>
+<div class="menu-brand">
+  <img src="logoweb2.png" alt="Logo">
+  <span>LearnHub</span>
+</div>
+<button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
+<button data-subject="ly" onclick="show('ly')">Vật Lý</button>
+<button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
+<button data-subject="tin" onclick="show('tin')">Tin Học</button>
+<button data-subject="su" onclick="show('su')">Lịch Sử</button>
+<button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
 </div>
 <div class="ticker-container">
 <div class="ticker-text">
@@ -1296,27 +1276,6 @@ transform: translateX(-40%);
 opacity:0.5;
 filter: blur(1px);
 }
-@media (max-width: 768px) {
-    .menu-brand span, .menu-spacer {
-        display: none; /* Ẩn bớt để dành chỗ cho nút */
-    }
-    
-    .menu {
-        justify-content: flex-start;
-    }
-
-    .menu-nav {
-        flex: 1;
-        justify-content: flex-start;
-        overflow-x: auto; /* Cho phép vuốt ngang nếu quá dài */
-        white-space: nowrap;
-        padding-left: 10px;
-    }
-    
-    .menu-nav::-webkit-scrollbar {
-        display: none; /* Ẩn thanh cuộn xấu xí */
-    }
-}
 @media (max-width: 768px){
 
 /* grid về 1 cột cho đẹp */
@@ -1352,29 +1311,20 @@ padding:16px;
 @media (max-width: 768px){
 
 .menu{
+flex-wrap:nowrap;              /* ❌ không cho xuống dòng */
+overflow-x:auto;               /* 👉 kéo ngang */
+justify-content:flex-start;
 padding:10px;
-}
-.menu-logo {
-  width: 35px;
-  height: 35px;
-  margin-right: 10px;
-}
-.menu-button {
-  overflow-x: auto;
-  justify-content: flex-start;
-  white-space: nowrap;
-}
-.menu-nav {
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-    flex: 2; /* Chiếm phần lớn ở giữa */
+gap:10px;
+scroll-snap-type: x mandatory; /* 🔥 thêm dòng này */
 }
 
-/* Khoảng trống để cân bằng phía bên phải */
-.menu-spacer {
-    flex: 1;
+.menu button{
+flex-shrink:0;                 /* ❌ không bị co */
+white-space:nowrap;            /* không xuống dòng chữ */
+scroll-snap-align: start; /* 🔥 thêm dòng này */
 }
+
 }
 
 /* avatar */
