@@ -6,34 +6,123 @@
     <title>Hệ thống Luyện thi</title>
     <style>
         :root {
-            --primary: #2563eb; /* Xanh dương đậm */
-            --primary-light: #eff6ff;
-            --bg: #f8fafc;
+            /* Lấy chính xác tone màu từ file chính của bạn */
+            --bg: #f6f8ff;
+            --bg-pattern: #d6dcff;
+            --text: #111827;
+            --text-sub: #6b7280;
             --card: #ffffff;
-            --text: #1e293b;
+            --card-gradient: linear-gradient(135deg, #ffffff, #f3f6ff);
+            --minibox: #ffffff;
+            --primary: #1a73e8; /* Màu xanh thương hiệu LearnHub */
+            --primary-light: #eff6ff;
             --danger: #ef4444;
             --success: #10b981;
-            --info: #3b82f6; /* Xanh dương cho review */
+            --info: #3173de;
+            --anshover: #d0d7df;
+            --answrong: #fdacac;
+            --success-light: #b6fdcf;
+            --danger-light: #f7b7b7;
+            --tf-bg: #f8fafc;       /* nền mệnh đề */
+            --tf-hover: #eef2ff;    /* hover nhẹ */
+            --tf-border: #e2e8f0;
+            --true-asw: #15803d;
+            --false-asw: #b91d1d;
         }
-
-        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--text); overflow-x: hidden; }
+        body { 
+            font-family: 'Inter', system-ui, sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            padding: 20px; 
+            color: var(--text); 
+            transition: all 0.3s ease; /* Hiệu ứng chuyển màu mượt */
+        }
         .container { max-width: 1600px; margin: 0 auto; padding: 0 20px; }
 
         header {
             display: flex; justify-content: space-between; align-items: center;
-            background: var(--card); padding: 12px 20px; border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); margin-bottom: 25px;
-            position: sticky; top: 15px; z-index: 100; border: 1px solid #e2e8f0;
+            background: var(--card); 
+            padding: 12px 20px; 
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+            margin-bottom: 25px;
+            position: sticky; top: 15px; z-index: 100;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .logo-area h2 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--primary); }
-        
-        .question-card {
-            background: var(--card); padding: 28px; border-radius: 20px;
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); margin-bottom: 20px;
-            border: 2px solid transparent; transition: all 0.3s ease;
+        /* Định nghĩa màu sắc khi ở chế độ Dark Mode */
+        body.dark-mode {
+            --bg: #0f172a;
+            --minibox: #1e293b;
+            --bg-pattern: #1e293b;
+            --answrong: #522525;
+            --text: #f1f5f9;
+            --info: #4585eb;
+            --text-sub: #cbd5f5;
+            --card: #1e293b;
+            --card-gradient: linear-gradient(135deg, #1e293b, #0f172a);
+            --anshover: #595b5e;
+            --primary-light: rgba(30, 41, 59, 0.5);
+            --success-light: #14532d;
+            --danger-light: #7f1d1d;
+            --tf-bg: #1e293b;
+            --tf-hover: #334155;
+            --tf-border: #334155;
+            --true-asw: #2ddc6d;
+            --false-asw: #f73c3c;
         }
 
+        /* Các chi tiết khác để nhìn rõ hơn trong bóng tối */
+        body.dark-mode header,
+        body.dark-mode .option {
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        body.dark-mode .question-card {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        /* Nút bấm */
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .question-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+            border: 2px solid rgba(0,0,0,0.05);
+            color: var(--text);
+        }
+        .option {
+            background: var(--card);
+            border: 2px solid transparent;
+            padding: 16px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            color: var(--text);
+        }
+        .option:hover {
+            background: var(--primary-light);
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
         .q-header { display: block; gap: 12px; margin-bottom: 20px; font-weight: 600; font-size: 1.05rem; align-items: flex-start; line-height: 1.6; }
         .q-badge { 
             display: inline-block; /* Quan trọng để chữ có thể chảy bao quanh nó */
@@ -79,7 +168,7 @@
         .nav-item {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
             border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.8rem;
-            font-weight: 600; cursor: pointer; transition: 0.2s; background: white;
+            font-weight: 600; cursor: pointer; transition: 0.2s; background: transparent;
         }
         .nav-item.done { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
         .nav-item:hover { border-color: var(--primary); }
@@ -159,13 +248,13 @@
             cursor: pointer; display: flex; align-items: center; transition: all 0.2s;
             position: relative; overflow: hidden; align-items: center;
         }
-        .ans-label:hover:not(.disabled) { background: #f1f5f9; border-color: #cbd5e1; }
+        .ans-label:hover:not(.disabled) { background: var(--anshover); border-color: #cbd5e1; }
         .ans-label.selected { border-color: var(--primary); background: var(--primary-light); }
         
         /* Trạng thái Review - Đổi sang Xanh dương theo yêu cầu */
         .review-correct { border: 2px solid var(--success) !important; background: transparent !important; }
         .review-wrong { border: 2px solid var(--danger) !important; background: transparent !important; }
-        .ans-label.review-wrong { background: #fef2f2 !important; }
+        .ans-label.review-wrong { background: var(--answrong) !important; }
         .true-answer-highlight { border: 2px solid var(--info) !important; background: var(--primary-light) !important; }
         .true-answer-highlight::after { content: "✓ Đáp án đúng"; position: absolute; right: 8px; top: 2px; font-size: 0.65rem; color: var(--info); font-weight: bold; }
 
@@ -180,7 +269,7 @@
             justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(6px);
         }
         .modal-content {
-            background: white; padding: 35px; border-radius: 28px;
+            background: var(--card); padding: 35px; border-radius: 28px;
             width: 90%; max-width: 400px; text-align: center;
         }
 
@@ -211,9 +300,10 @@
             display: flex;
             align-items: center;
             padding: 12px;
-            border-bottom: 1px solid #edf2f7;
+            border-bottom: 1px solid var(--tf-border);
             gap: 15px;
             transition: background 0.2s;
+            background: var(--tf-bg); /* 🔥 thêm dòng này */
         }
         .quiz-locked {
           user-select: text;
@@ -224,23 +314,35 @@
         }
         /* Hover vẫn sáng lên cho UX */
         .quiz-locked .ans-label:hover {
-          background: #f1f5f9;
+          background: #c5d6e8;
           border-color: #cbd5e1;
           cursor: not-allowed;
         }
         
-        .quiz-locked .tf-row:hover {
-          background: #f1f5f9;
-          cursor: not-allowed;
-        }
-.tf-row:hover { background: #f1f5f9; }
+.quiz-locked .tf-row:hover {
+  background: var(--tf-hover);
+}
+.tf-row:hover {
+    background: var(--tf-hover);
+}
 .tf-question-text { flex: 1; font-size: 0.95rem; line-height: 1.5; }
 .tf-options { display: flex; gap: 10px; }
 /* Màu cho câu Trắc nghiệm và Đúng/Sai */
 .review-true { background-color: #dcfce7 !important; border-color: #22c55e !important; } /* Xanh lá nhạt */
 .review-false { background-color: #fee2e2 !important; border-color: #ef4444 !important; } /* Đỏ nhạt */
-.true-text { color: #15803d; font-weight: bold; }
-.false-text { color: #b91d1d; font-weight: bold; }
+.true-text { color: var(--true-asw); font-weight: bold; }
+.false-text { color: var(--false-asw); font-weight: bold; }
+.tf-options input {
+    accent-color: var(--primary);
+}
+
+.tf-options label {
+    transition: all 0.2s;
+}
+
+.tf-options input:checked + b {
+    color: var(--primary);
+}
 /* ===== Feedback Animation ===== */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(10px); }
@@ -359,7 +461,7 @@
         <h3>⚠️ Xác nhận nộp bài?</h3>
         <p>❓Bạn có chắc chắn muốn kết thúc bài thi này?</p>
         <div style="display: flex; justify-content: center; gap: 10px; margin-top: 25px;">
-            <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('confirmModal')">🔙 Quay lại</button>
+            <button class="btn" style="flex:1; background: #c81515;" onclick="closeModal('confirmModal')">🔙 Quay lại</button>
             <button class="btn btn-primary" style="flex:1" onclick="handleFinalSubmit()">🚀 Nộp ngay</button>
         </div>
     </div>
@@ -375,7 +477,7 @@
         <p>Để xem chi tiết vui lòng bấm vào mục lục nhé!</p>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 25px;">
             <button class="btn btn-primary" style="justify-content: center;" onclick="reviewMode()">👁️ Xem bài làm</button>
-            <button class="btn" style="justify-content: center; background: #f1f5f9" onclick="openModal('restartModal')">🔄 Làm lại</button>
+            <button class="btn" style="justify-content: center; background: #c81515" onclick="openModal('restartModal')">🔄 Làm lại</button>
         </div>
     </div>
 </div>
@@ -384,13 +486,30 @@
         <h3>🔄 Xác nhận làm lại?</h3>
         <p>❗Bạn sẽ mất toàn bộ bài làm hiện tại.</p>
         <div style="display: flex; justify-content: center; gap: 10px; margin-top: 25px;">
-            <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('restartModal')">↩️ Quay lại</button>
+            <button class="btn" style="flex:1; background: #c81515;" onclick="closeModal('restartModal')">↩️ Quay lại</button>
             <button class="btn btn-primary" style="flex:1" onclick="confirmRestart()">👍 Đồng ý</button>
         </div>
     </div>
 </div>
 
 <script>
+// Lắng nghe tín hiệu từ trang chính gửi tới
+window.addEventListener('message', (event) => {
+    // Kiểm tra nếu tin nhắn gửi tới là lệnh đổi Dark Mode
+    if (event.data && event.data.type === 'DARK_MODE') {
+        const isDark = event.data.value;
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+    }
+});
+
+// Kiểm tra trạng thái lúc mới load (đề phòng mở riêng trang này)
+if (localStorage.getItem("darkMode") === "on") {
+    document.body.classList.add("dark-mode");
+}
     const JSON_URL = "tracnghiemsucd8.json";
     let questionsData = [];
     window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
@@ -494,17 +613,17 @@ async function loadQuestions() {
                 else if (item.type === 'true_false') {
                     window.totalMaxScore += 1; 
                     answersContent = `
-                        <div class="tf-wrapper" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+                        <div class="tf-wrapper" style="background: var(--card); border: 1px solid var(--tf-border); border-radius: 12px; overflow: hidden;">
                             ${item.subQuestions.map((sub, subIdx) => `
                                 <div class="tf-row">
                                     <div class="tf-question-text">
                                         <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub.text}
                                     </div>
                                     <div class="tf-options">
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: transparent; padding:6px 12px; border-radius:8px; border: 1.5px solid var(--tf-border);">
                                             <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
                                         </label>
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: transparent; padding:6px 12px; border-radius:8px; border: 1.5px solid var(--tf-border);">
                                             <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>S</b>
                                         </label>
                                     </div>
@@ -710,9 +829,9 @@ scoreCircle.style.animation = feedback.animation + " 0.6s ease";
                     if (userVal === correctVal) {
                         if (userVal === correctVal) {
                         }
-                        row.style.background = "#f0fdf4";
+                        row.style.background = "var(--success-light)";
                     } else {
-                        row.style.background = "#fef2f2";
+                        row.style.background = "var(--danger-light)";
                         allSubCorrect = false;
                     }
 
