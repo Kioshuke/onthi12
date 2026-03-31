@@ -19,6 +19,7 @@
             --danger: #ef4444;
             --success: #10b981;
             --info: #3b82f6;
+            --anshover: #d0d7df;
         }
         body { 
             font-family: 'Inter', system-ui, sans-serif; 
@@ -51,7 +52,7 @@
             --text-sub: #cbd5f5;
             --card: #1e293b;
             --card-gradient: linear-gradient(135deg, #1e293b, #0f172a);
-            
+            --anshover: #66686a;
             --primary-light: rgba(30, 41, 59, 0.5);
         }
 
@@ -230,7 +231,7 @@
             cursor: pointer; display: flex; align-items: center; transition: all 0.2s;
             position: relative; overflow: hidden; align-items: center;
         }
-        .ans-label:hover:not(.disabled) { background: #f1f5f9; border-color: #cbd5e1; }
+        .ans-label:hover:not(.disabled) { background: #d0d7df; border-color: #cbd5e1; }
         .ans-label.selected { border-color: var(--primary); background: var(--primary-light); }
         
         /* Trạng thái Review - Đổi sang Xanh dương theo yêu cầu */
