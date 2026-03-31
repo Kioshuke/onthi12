@@ -48,13 +48,15 @@ body.dark-mode{
   --popup-bg: rgba(30,41,59,0.9);
 }
 body{
-margin:0;
-font-family:'Segoe UI',Arial,sans-serif;
-background-color: var(--bg-main);
-background-image: radial-gradient(var(--bg-pattern) 1.2px, transparent 1.2px);
-background-size:28px 28px;
-overflow-x:hidden;
-animation:fadeIn 0.6s ease;
+  margin:0;
+  font-family:'Segoe UI',Arial,sans-serif;
+  background-color: var(--bg-main);
+  background-image: radial-gradient(var(--bg-pattern) 1.2px, transparent 1.2px);
+  background-size:28px 28px;
+  overflow-x:hidden;
+  overscroll-behavior: none;
+
+  animation:fadeIn 0.6s ease;
 }
 @keyframes fadeIn{
 from{opacity:0;}
@@ -137,6 +139,8 @@ cursor:pointer;
 transition:all 0.25s ease;
 border-radius:8px;
 color: var(--text-main);
+position: relative;
+overflow: hidden;
 }
 
 .menu button.active{
@@ -237,6 +241,7 @@ gap:25px;
     linear-gradient(var(--card-color), var(--card-color)) left / 6px 100% no-repeat,
     linear-gradient(var(--card-color), var(--card-color)) right / 6px 100% no-repeat,
     linear-gradient(120deg, #3b82f633, #6366f133);
+  opacity:1;
 }
 .card::after{
   content:"";
@@ -284,9 +289,6 @@ gap:25px;
     linear-gradient(var(--card-color), var(--card-color)) left / 6px 100% no-repeat,
     linear-gradient(var(--card-color), var(--card-color)) right / 6px 100% no-repeat,
     linear-gradient(120deg, #3b82f633, #6366f133);
-}
-.card:hover::before{
-  opacity:1;
 }
 
 .card:hover::after{
@@ -370,14 +372,13 @@ padding:12px;
 border-radius:12px;
 box-shadow:0 4px 15px rgba(0,0,0,0.1);
 position: relative;
-height: 100vh;
+height: 100dvh;
 }
 
 iframe{
 width:100%;
 height:100%;
 border:none;
-will-change: transform;
 }
 
 /* CLOSE BUTTON */
@@ -400,7 +401,7 @@ margin-bottom:10px;
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:3000; /* 🔥 cao hơn menu */
+  z-index:900; /* 🔥 cao hơn menu */
 }
 
 .popup-box{
@@ -452,9 +453,6 @@ to{
 transform:translateY(-40px) scale(0.9);
 opacity:0;
 }
-}
-*{
-box-sizing:border-box;
 }
 
 #loginBox .login-card{
@@ -514,7 +512,7 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 
-z-index:99999;
+z-index:9999;
 
 backdrop-filter:blur(6px);
 
@@ -684,9 +682,6 @@ letter-spacing:1px;
 -webkit-tap-highlight-color: transparent; /* bỏ highlight khi bấm */
 }
 
-body{
-overscroll-behavior: none; /* giảm giật scroll */
-}
 #currentTime {
 margin-right: auto; 
 font-size: 14px; 
@@ -713,7 +708,7 @@ z-index: 10;
 }
 
 #userPopup {
-z-index: 2000; /* 🔥 cao hơn menu */
+z-index: 800; /* 🔥 cao hơn menu */
 position: absolute;
 top: 70px;
 right: 20px;
@@ -1030,25 +1025,44 @@ body.dark-mode .card{
 
 </div>
 </div>
-<div class="header">
-<div class="header-inner">
-<img src="logoweb2.png" class="logo">
+<!-- NAVBAR -->
+<div class="navbar">
 
-<div class="title-box">
-<h1>LearnHub</h1>
-<p>Smart Study Platform</p>
-</div>
-</div>
+  <div class="nav-left">
+    <div class="hamburger" onclick="toggleSidebar()">☰</div>
+
+    <div class="brand">
+      <img src="logoweb2.png">
+      <span>LearnHub</span>
+    </div>
+  </div>
+
+  <div class="menu">
+    <button data-subject="lich" class="active" onclick="show('lich')">Lịch</button>
+    <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
+    <button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
+    <button data-subject="tin" onclick="show('tin')">Tin Học</button>
+    <button data-subject="su" onclick="show('su')">Lịch Sử</button>
+    <button data-subject="hoa" onclick="show('hoa')">Hóa Học</button>
+  </div>
+
+  <div class="nav-right">
+    <div class="bell">🔔</div>
+  </div>
+
 </div>
 
-<div class="menu">
-<button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
-<button data-subject="ly" onclick="show('ly')">Vật Lý</button>
-<button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
-<button data-subject="tin" onclick="show('tin')">Tin Học</button>
-<button data-subject="su" onclick="show('su')">Lịch Sử</button>
-<button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
+<!-- SIDEBAR MOBILE -->
+<div class="sidebar" id="sidebar">
+  <button onclick="show('lich')">📅 Lịch</button>
+  <button onclick="show('ly')">📘 Vật Lý</button>
+  <button onclick="show('sinh')">🧬 Sinh</button>
+  <button onclick="show('tin')">💻 Tin</button>
+  <button onclick="show('su')">📖 Sử</button>
+  <button onclick="show('hoa')">⚗️ Hóa</button>
 </div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="ticker-container">
 <div class="ticker-text">
 Cảm ơn các bạn đã sử dụng sản phẩm! Web đang trong quá trình phát triển, một vài tính năng khác sẽ sớm ra mắt ^-^
@@ -1399,10 +1413,6 @@ transform:none;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
-body{
-overscroll-behavior:none;
-}
-
 *{
 -webkit-tap-highlight-color: transparent;
 }
@@ -1415,12 +1425,6 @@ justify-content:flex-start;
 padding:10px;
 gap:10px;
 scroll-snap-type:x mandatory;
-}
-
-.menu button{
-flex-shrink:0;
-white-space:nowrap;
-scroll-snap-align:start;
 }
 
 /* ===== USER BOX (FIX CHÍNH) ===== */
@@ -1603,6 +1607,139 @@ animation: pulse-green 2s infinite;
     font-size: 13px;
     padding: 8px 14px;
   }
+}
+/* NAVBAR */
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:10px 16px;
+background: rgba(255,255,255,0.7);
+backdrop-filter: blur(10px);
+
+border-bottom:1px solid rgba(0,0,0,0.05);
+}
+
+/* LEFT */
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:8px;
+font-weight:600;
+font-size:18px;
+}
+
+.brand img{
+width:28px;
+height:28px;
+border-radius:8px;
+}
+
+/* MENU PC */
+.nav-menu{
+display:flex;
+gap:6px;
+}
+
+.nav-menu button{
+border:none;
+background:none;
+padding:8px 14px;
+border-radius:8px;
+cursor:pointer;
+font-size:14px;
+transition:0.2s;
+}
+
+.nav-menu button.active{
+background:#2563eb;
+color:white;
+}
+
+/* RIGHT */
+.nav-right{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:18px;
+}
+
+/* HAMBURGER */
+.hamburger{
+display:none;
+font-size:22px;
+cursor:pointer;
+}
+
+/* SIDEBAR */
+.sidebar{
+position:fixed;
+top:0;
+left:-260px;
+width:260px;
+height:100%;
+
+background:white;
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:12px;
+
+transition:0.3s;
+z-index:2000;
+}
+
+.sidebar.active{
+left:0;
+}
+
+.sidebar button{
+padding:12px;
+border:none;
+background:#f1f5f9;
+border-radius:10px;
+text-align:left;
+cursor:pointer;
+}
+
+/* OVERLAY */
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+
+opacity:0;
+visibility:hidden;
+transition:0.3s;
+z-index:1000;
+}
+
+.overlay.active{
+opacity:1;
+visibility:visible;
+}
+
+/* MOBILE */
+@media (max-width:768px){
+
+.nav-menu{
+display:none;
+}
+
+.hamburger{
+display:block;
+}
+
 }
 </style>
 <div id="mainContent" class="content">
@@ -2014,14 +2151,27 @@ active.classList.add("fade-in");
 },10);
 
 },200);
+// thêm đoạn này cuối hàm show()
+document.querySelectorAll(".sidebar button").forEach(btn=>{
+  btn.classList.remove("active");
+  if(btn.getAttribute("onclick").includes(id)){
+    btn.classList.add("active");
+  }
+});
 }
 const buttons = document.querySelectorAll(".menu button");
 
 buttons.forEach(btn => {
-btn.addEventListener("click", () => {
-buttons.forEach(b => b.classList.remove("active"));
-btn.classList.add("active");
-});
+  btn.addEventListener("click", () => {
+    
+    // ❌ bỏ active cũ
+    buttons.forEach(b => b.classList.remove("active"));
+    
+    // ✅ thêm active mới
+    btn.classList.add("active");
+
+    // (nếu có load nội dung thì giữ nguyên phía dưới)
+  });
 });
 const now = new Date();
 
@@ -2098,8 +2248,8 @@ document.querySelectorAll(".menu button")
 // set lại active đúng nút
 document.querySelectorAll(".menu button")
 .forEach(btn=>{
-if(btn.getAttribute("onclick").includes(savedTab)){
-btn.classList.add("active");
+if(btn.dataset.subject === savedTab){
+  btn.classList.add("active");
 }
 });
 
@@ -2472,6 +2622,13 @@ toggle.addEventListener("change", () => {
     localStorage.setItem("darkMode", "off");
   }
 });
+function toggleSidebar(){
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+sidebar.classList.toggle("active");
+overlay.classList.toggle("active");
+}
 </script>
 </body>
   </html>
