@@ -119,8 +119,8 @@ box-shadow:
 .menu {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Đẩy Brand sang trái, Buttons sang phải */
-    padding: 8px 15px;
+    justify-content: space-between; /* Chia 3 phần: Brand - Nav - Spacer */
+    padding: 10px 20px;
     background: var(--menu-bg);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(0,0,0,0.05);
@@ -149,21 +149,20 @@ box-shadow:
 .menu-brand {
     display: flex;
     align-items: center;
-    gap: 10px; /* Khoảng cách giữa logo và chữ */
+    gap: 8px;
+    flex: 1; /* Chiếm 1 phần bên trái */
 }
 
 .menu-brand img {
-    width: 35px; /* Chỉnh nhỏ lại để vừa thanh menu */
+    width: 35px;
     height: 35px;
-    border-radius: 6px;
-    object-fit: cover;
+    border-radius: 8px;
 }
 
 .menu-brand span {
-    font-size: 18px;
     font-weight: 700;
-    color: #1a73e8; /* Giữ màu xanh thương hiệu */
-    white-space: nowrap;
+    font-size: 1.1rem;
+    color: #1a73e8;
 }
 .menu button.active{
 background: var(--btn-color, #1a73e8);
@@ -1056,16 +1055,6 @@ body.dark-mode .card{
 
 </div>
 </div>
-<div class="header">
-<div class="header-inner">
-<img src="logoweb2.png" class="logo">
-
-<div class="title-box">
-<h1>LearnHub</h1>
-<p>Smart Study Platform</p>
-</div>
-</div>
-</div>
 
 <div class="menu">
     <div class="menu-brand">
@@ -1073,7 +1062,7 @@ body.dark-mode .card{
         <span>LearnHub</span>
     </div>
     
-    <div class="menu-buttons">
+    <div class="menu-nav">
         <button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
         <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
         <button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
@@ -1081,6 +1070,8 @@ body.dark-mode .card{
         <button data-subject="su" onclick="show('su')">Lịch Sử</button>
         <button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
     </div>
+    
+    <div class="menu-spacer"></div>
 </div>
 <div class="ticker-container">
 <div class="ticker-text">
@@ -1305,6 +1296,27 @@ transform: translateX(-40%);
 opacity:0.5;
 filter: blur(1px);
 }
+@media (max-width: 768px) {
+    .menu-brand span, .menu-spacer {
+        display: none; /* Ẩn bớt để dành chỗ cho nút */
+    }
+    
+    .menu {
+        justify-content: flex-start;
+    }
+
+    .menu-nav {
+        flex: 1;
+        justify-content: flex-start;
+        overflow-x: auto; /* Cho phép vuốt ngang nếu quá dài */
+        white-space: nowrap;
+        padding-left: 10px;
+    }
+    
+    .menu-nav::-webkit-scrollbar {
+        display: none; /* Ẩn thanh cuộn xấu xí */
+    }
+}
 @media (max-width: 768px){
 
 /* grid về 1 cột cho đẹp */
@@ -1352,7 +1364,17 @@ padding:10px;
   justify-content: flex-start;
   white-space: nowrap;
 }
+.menu-nav {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex: 2; /* Chiếm phần lớn ở giữa */
+}
 
+/* Khoảng trống để cân bằng phía bên phải */
+.menu-spacer {
+    flex: 1;
+}
 }
 
 /* avatar */
