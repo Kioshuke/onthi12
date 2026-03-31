@@ -21,6 +21,13 @@
             --info: #3173de;
             --anshover: #d0d7df;
             --answrong: #fdacac;
+            --success-light: #b6fdcf;
+            --danger-light: #f7b7b7;
+            --tf-bg: #f8fafc;       /* nền mệnh đề */
+            --tf-hover: #eef2ff;    /* hover nhẹ */
+            --tf-border: #e2e8f0;
+            --true-asw: #15803d;
+            --false-asw: #b91d1d;
         }
         body { 
             font-family: 'Inter', system-ui, sans-serif; 
@@ -57,6 +64,13 @@
             --card-gradient: linear-gradient(135deg, #1e293b, #0f172a);
             --anshover: #595b5e;
             --primary-light: rgba(30, 41, 59, 0.5);
+            --success-light: #14532d;
+            --danger-light: #7f1d1d;
+            --tf-bg: #1e293b;
+            --tf-hover: #334155;
+            --tf-border: #334155;
+            --true-asw: #2ddc6d;
+            --false-asw: #f73c3c;
         }
 
         /* Các chi tiết khác để nhìn rõ hơn trong bóng tối */
@@ -85,7 +99,7 @@
             padding: 25px;
             margin-bottom: 25px;
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 2px solid rgba(0,0,0,0.05);
             color: var(--text);
         }
         .option {
@@ -154,7 +168,7 @@
         .nav-item {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
             border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.8rem;
-            font-weight: 600; cursor: pointer; transition: 0.2s; background: var(--minibox);
+            font-weight: 600; cursor: pointer; transition: 0.2s; background: transparent;
         }
         .nav-item.done { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
         .nav-item:hover { border-color: var(--primary); }
@@ -286,9 +300,10 @@
             display: flex;
             align-items: center;
             padding: 12px;
-            border-bottom: 1px solid #edf2f7;
+            border-bottom: 1px solid var(--tf-border);
             gap: 15px;
             transition: background 0.2s;
+            background: var(--tf-bg); /* 🔥 thêm dòng này */
         }
         .quiz-locked {
           user-select: text;
@@ -299,23 +314,35 @@
         }
         /* Hover vẫn sáng lên cho UX */
         .quiz-locked .ans-label:hover {
-          background: #f1f5f9;
+          background: #c5d6e8;
           border-color: #cbd5e1;
           cursor: not-allowed;
         }
         
-        .quiz-locked .tf-row:hover {
-          background: #f1f5f9;
-          cursor: not-allowed;
-        }
-.tf-row:hover { background: #f1f5f9; }
+.quiz-locked .tf-row:hover {
+  background: var(--tf-hover);
+}
+.tf-row:hover {
+    background: var(--tf-hover);
+}
 .tf-question-text { flex: 1; font-size: 0.95rem; line-height: 1.5; }
 .tf-options { display: flex; gap: 10px; }
 /* Màu cho câu Trắc nghiệm và Đúng/Sai */
 .review-true { background-color: #dcfce7 !important; border-color: #22c55e !important; } /* Xanh lá nhạt */
 .review-false { background-color: #fee2e2 !important; border-color: #ef4444 !important; } /* Đỏ nhạt */
-.true-text { color: #15803d; font-weight: bold; }
-.false-text { color: #b91d1d; font-weight: bold; }
+.true-text { color: var(--true-asw); font-weight: bold; }
+.false-text { color: var(--false-asw); font-weight: bold; }
+.tf-options input {
+    accent-color: var(--primary);
+}
+
+.tf-options label {
+    transition: all 0.2s;
+}
+
+.tf-options input:checked + b {
+    color: var(--primary);
+}
 /* ===== Feedback Animation ===== */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(10px); }
@@ -483,7 +510,7 @@ window.addEventListener('message', (event) => {
 if (localStorage.getItem("darkMode") === "on") {
     document.body.classList.add("dark-mode");
 }
-    const JSON_URL = "cauhoitin1718.json";
+    const JSON_URL = "tntin1718.json";
     let questionsData = [];
     window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
     let totalQuestions = 0;
@@ -586,17 +613,17 @@ async function loadQuestions() {
                 else if (item.type === 'true_false') {
                     window.totalMaxScore += 1; 
                     answersContent = `
-                        <div class="tf-wrapper" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+                        <div class="tf-wrapper" style="background: var(--card); border: 1px solid var(--tf-border); border-radius: 12px; overflow: hidden;">
                             ${item.subQuestions.map((sub, subIdx) => `
                                 <div class="tf-row">
                                     <div class="tf-question-text">
                                         <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub.text}
                                     </div>
                                     <div class="tf-options">
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: transparent; padding:6px 12px; border-radius:8px; border: 1.5px solid var(--tf-border);">
                                             <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
                                         </label>
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background:#f8fafc; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: transparent; padding:6px 12px; border-radius:8px; border: 1.5px solid var(--tf-border);">
                                             <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>S</b>
                                         </label>
                                     </div>
@@ -802,9 +829,9 @@ scoreCircle.style.animation = feedback.animation + " 0.6s ease";
                     if (userVal === correctVal) {
                         if (userVal === correctVal) {
                         }
-                        row.style.background = "#f0fdf4";
+                        row.style.background = "var(--success-light)";
                     } else {
-                        row.style.background = "#fef2f2";
+                        row.style.background = "var(--danger-light)";
                         allSubCorrect = false;
                     }
 
