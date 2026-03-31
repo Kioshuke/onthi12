@@ -125,7 +125,7 @@ box-shadow:
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.08);
-    position: sticky;
+    position: relative;
     top: 0;
     z-index: 1000;
 } 
@@ -2467,7 +2467,11 @@ pop.style.display = "none";
   </label>
 </div>
 <button id="logoutBtn" onclick="logout()">Đăng xuất</button>
-<p>© 2026 LearnHub • THPT Tân Hồng</p>
+<p style="text-align: center;
+margin: 0;
+font-size: 13px;
+color: var(--text-sub);
+margin-bottom: 10px;">© 2026 LearnHub • THPT Tân Hồng</p>
 
 </div>
 <script>
