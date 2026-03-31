@@ -20,6 +20,7 @@
             --success: #10b981;
             --info: #3b82f6;
             --anshover: #d0d7df;
+            --answrong: #fdacac;
         }
         body { 
             font-family: 'Inter', system-ui, sans-serif; 
@@ -48,6 +49,7 @@
             --bg: #0f172a;
             --minibox: #1e293b;
             --bg-pattern: #1e293b;
+            --answrong: #522525;
             --text: #f1f5f9;
             --text-sub: #cbd5f5;
             --card: #1e293b;
@@ -237,7 +239,7 @@
         /* Trạng thái Review - Đổi sang Xanh dương theo yêu cầu */
         .review-correct { border: 2px solid var(--success) !important; background: transparent !important; }
         .review-wrong { border: 2px solid var(--danger) !important; background: transparent !important; }
-        .ans-label.review-wrong { background: #b8de3b !important; }
+        .ans-label.review-wrong { background: var(--answrong) !important; }
         .true-answer-highlight { border: 2px solid var(--info) !important; background: var(--primary-light) !important; }
         .true-answer-highlight::after { content: "✓ Đáp án đúng"; position: absolute; right: 8px; top: 2px; font-size: 0.65rem; color: var(--info); font-weight: bold; }
 
