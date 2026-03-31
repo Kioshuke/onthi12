@@ -167,6 +167,25 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
 .menu button[data-subject="lich"]{
   --btn-color:#d4068f;
 }
+.menu-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa logo và chữ */
+}
+
+.menu-brand img {
+    width: 35px; /* Chỉnh nhỏ lại để vừa thanh menu */
+    height: 35px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.menu-brand span {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a73e8; /* Giữ màu xanh thương hiệu */
+    white-space: nowrap;
+}
 /* CONTENT */
 
 .content{
