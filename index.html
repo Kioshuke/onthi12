@@ -48,103 +48,131 @@ body.dark-mode{
   --popup-bg: rgba(30,41,59,0.9);
 }
 body{
-  margin:0;
-  font-family:'Segoe UI',Arial,sans-serif;
-  background-color: var(--bg-main);
-  background-image: radial-gradient(var(--bg-pattern) 1.2px, transparent 1.2px);
-  background-size:28px 28px;
-  overflow-x:hidden;
-  overscroll-behavior: none;
-  animation:fadeIn 0.6s ease;
+margin:0;
+font-family:'Segoe UI',Arial,sans-serif;
+background-color: var(--bg-main);
+background-image: radial-gradient(var(--bg-pattern) 1.2px, transparent 1.2px);
+background-size:28px 28px;
+overflow-x:hidden;
+animation:fadeIn 0.6s ease;
 }
 @keyframes fadeIn{
 from{opacity:0;}
 to{opacity:1;}
 }
+/* HEADER */
+
+.header{
+position:relative;
+background: linear-gradient(
+135deg,
+rgb(30, 90, 200),     /* xanh đậm */
+rgb(58, 134, 255),    /* xanh chính */
+rgb(120, 100, 255)    /* tím nhẹ */
+);
+box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+background-size:300% 300%;
+color:white;
+padding:20px 40px;
+display:flex;
+justify-content:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+backdrop-filter: blur(10px);
+animation:headerFlow 10s ease infinite;
+}
+@keyframes headerFlow {
+0% {
+background-position: 0% 50%;
+}
+50% {
+background-position: 100% 50%;
+}
+100% {
+background-position: 0% 50%;
+}
+}
+
+.header-inner{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:15px;
+}
+
+.logo{
+width:55px;
+height:55px;
+border-radius:14px;
+box-shadow:0 8px 20px rgba(0,0,0,0.3);
+transition:0.3s;
+background:white; /* 👈 thêm dòng này */
+}
+
+.logo:hover{
+transform:scale(1.08);
+box-shadow:
+0 0 25px rgba(125,249,255,0.9),
+0 10px 25px rgba(0,0,0,0.3);
+}
 /* MENU */
 
-.nav-menu {
-  /* MẶC ĐỊNH CHO ĐIỆN THOẠI */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 280px; 
-  height: 100dvh;
-  z-index: 1000;
-  
-  /* Đẩy sát ra ngoài để không bị lộ dù chỉ 1px */
-  transform: translateX(-100%); 
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* HÒA QUYỆN NỀN: Dùng chung gradient và hiệu ứng với .header */
-  background: linear-gradient(
-    135deg,
-    rgb(30, 90, 200),
-    rgb(58, 134, 255),
-    rgb(120, 100, 255)
-  );
-  background-size: 300% 300%;
-  animation: headerFlow 10s ease infinite; /* Màu chảy đồng bộ với header */
-  
-  display: flex;
-  flex-direction: column;
-  padding: 80px 20px 20px;
-  gap: 12px;
-  backdrop-filter: blur(15px);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: none;
+.menu{
+display:flex;
+justify-content:center;
+gap:5px;
+background: var(--menu-bg);
+padding:8px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+flex-wrap:wrap;
+backdrop-filter:blur(10px);
+border: 1px solid rgba(255,255,255,0.08);
 }
-.nav-menu.active {
-  transform: translateX(0);
-  box-shadow: 15px 0 50px rgba(0,0,0,0.3);
+
+.menu button{
+padding:12px 22px;
+border:none;
+background:none;
+font-size:15px;
+cursor:pointer;
+transition:all 0.25s ease;
+border-radius:8px;
+color: var(--text-main);
 }
-.nav-menu button {
-  width: 100%;
-  text-align: left;
-  padding: 14px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.08);
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  border-radius: 12px;
-  color: white; /* Chữ trắng cho nổi trên nền gradient */
-  font-weight: 500;
-}
-.nav-menu button.active {
-  background: white;
-  color: #1a73e8 !important; /* Chữ xanh khi chọn */
-  font-weight: 700;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+.menu button.active{
+background: var(--btn-color, #1a73e8);
+color:white;
+font-weight:600;
+box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
 }
 /* màu theo môn */
-.nav-menu button[data-subject="ly"]{
+.menu button[data-subject="ly"]{
   --btn-color:#3b82f6;
 }
-.nav-menu button[data-subject="sinh"]{
+.menu button[data-subject="sinh"]{
   --btn-color:#22c55e;
 }
-.nav-menu button[data-subject="tin"]{
+.menu button[data-subject="tin"]{
   --btn-color:#f59e0b;
 }
-.nav-menu button[data-subject="su"]{
+.menu button[data-subject="su"]{
   --btn-color:#ef4444;
 }
-.nav-menu button[data-subject="hoa"]{
+.menu button[data-subject="hoa"]{
   --btn-color:#8b5cf6;
 }
-.nav-menu button[data-subject]:not(.active):hover{
+.menu button[data-subject]:not(.active):hover{
   background: color-mix(in srgb, var(--btn-color) 25%, transparent);
 }
-.nav-menu button[data-subject="lich"]{
+.menu button[data-subject="lich"]{
   --btn-color:#d4068f;
 }
 /* CONTENT */
 
-.content {
-  max-width: 1100px;
-  margin: auto;
-  padding: 15px 20px 30px;
+.content{
+max-width:1100px;
+margin:auto;
+padding:15px 20px 30px;
 }
 .fade-out{
 opacity:0;
@@ -209,7 +237,6 @@ gap:25px;
     linear-gradient(var(--card-color), var(--card-color)) left / 6px 100% no-repeat,
     linear-gradient(var(--card-color), var(--card-color)) right / 6px 100% no-repeat,
     linear-gradient(120deg, #3b82f633, #6366f133);
-  opacity:1;
 }
 .card::after{
   content:"";
@@ -257,6 +284,9 @@ gap:25px;
     linear-gradient(var(--card-color), var(--card-color)) left / 6px 100% no-repeat,
     linear-gradient(var(--card-color), var(--card-color)) right / 6px 100% no-repeat,
     linear-gradient(120deg, #3b82f633, #6366f133);
+}
+.card:hover::before{
+  opacity:1;
 }
 
 .card:hover::after{
@@ -340,13 +370,14 @@ padding:12px;
 border-radius:12px;
 box-shadow:0 4px 15px rgba(0,0,0,0.1);
 position: relative;
-height: 100dvh;
+height: 100vh;
 }
 
 iframe{
 width:100%;
 height:100%;
 border:none;
+will-change: transform;
 }
 
 /* CLOSE BUTTON */
@@ -422,6 +453,9 @@ transform:translateY(-40px) scale(0.9);
 opacity:0;
 }
 }
+*{
+box-sizing:border-box;
+}
 
 #loginBox .login-card{
 background:white;
@@ -480,7 +514,7 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 
-z-index:9999;
+z-index:99999;
 
 backdrop-filter:blur(6px);
 
@@ -650,6 +684,9 @@ letter-spacing:1px;
 -webkit-tap-highlight-color: transparent; /* bỏ highlight khi bấm */
 }
 
+body{
+overscroll-behavior: none; /* giảm giật scroll */
+}
 #currentTime {
 margin-right: auto; 
 font-size: 14px; 
@@ -676,7 +713,7 @@ z-index: 10;
 }
 
 #userPopup {
-z-index: 800; /* 🔥 cao hơn menu */
+z-index: 2000; /* 🔥 cao hơn menu */
 position: absolute;
 top: 70px;
 right: 20px;
@@ -993,45 +1030,25 @@ body.dark-mode .card{
 
 </div>
 </div>
-<!-- NAVBAR -->
-<div class="navbar">
+<div class="header">
+<div class="header-inner">
+<img src="logoweb2.png" class="logo">
 
-  <div class="nav-left">
-    <div class="hamburger" onclick="toggleSidebar()">☰</div>
-
-    <div class="brand">
-      <img src="logoweb2.png">
-      <span>LearnHub</span>
-    </div>
-  </div>
-
-  <!-- MENU PC -->
-  <div class="menu">
-    <button class="active" onclick="show('lich')">Lịch</button>
-    <button onclick="show('ly')">Vật Lý</button>
-    <button onclick="show('sinh')">Sinh Học</button>
-    <button onclick="show('tin')">Tin Học</button>
-    <button onclick="show('su')">Lịch Sử</button>
-    <button onclick="show('hoa')">Hóa Học</button>
-  </div>
-
-  <div class="nav-right">
-    <div class="bell">🔔</div>
-  </div>
-
+<div class="title-box">
+<h1>LearnHub</h1>
+<p>Smart Study Platform</p>
+</div>
+</div>
 </div>
 
-<!-- SIDEBAR MOBILE -->
-<div class="sidebar-menu" id="sidebar">
-  <button onclick="show('lich')">📅 Lịch</button>
-  <button onclick="show('ly')">📘 Vật Lý</button>
-  <button onclick="show('sinh')">🧬 Sinh</button>
-  <button onclick="show('tin')">💻 Tin</button>
-  <button onclick="show('su')">📖 Sử</button>
-  <button onclick="show('hoa')">⚗️ Hóa</button>
+<div class="menu">
+<button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
+<button data-subject="ly" onclick="show('ly')">Vật Lý</button>
+<button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
+<button data-subject="tin" onclick="show('tin')">Tin Học</button>
+<button data-subject="su" onclick="show('su')">Lịch Sử</button>
+<button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
 </div>
-
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="ticker-container">
 <div class="ticker-text">
 Cảm ơn các bạn đã sử dụng sản phẩm! Web đang trong quá trình phát triển, một vài tính năng khác sẽ sớm ra mắt ^-^
@@ -1290,7 +1307,12 @@ padding:16px;
 @media (max-width: 768px){
 
 .menu{
-display:none;
+flex-wrap:nowrap;              /* ❌ không cho xuống dòng */
+overflow-x:auto;               /* 👉 kéo ngang */
+justify-content:flex-start;
+padding:10px;
+gap:10px;
+scroll-snap-type: x mandatory; /* 🔥 thêm dòng này */
 }
 
 .menu button{
@@ -1377,6 +1399,10 @@ transform:none;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
+body{
+overscroll-behavior:none;
+}
+
 *{
 -webkit-tap-highlight-color: transparent;
 }
@@ -1389,6 +1415,12 @@ justify-content:flex-start;
 padding:10px;
 gap:10px;
 scroll-snap-type:x mandatory;
+}
+
+.menu button{
+flex-shrink:0;
+white-space:nowrap;
+scroll-snap-align:start;
 }
 
 /* ===== USER BOX (FIX CHÍNH) ===== */
@@ -1571,145 +1603,6 @@ animation: pulse-green 2s infinite;
     font-size: 13px;
     padding: 8px 14px;
   }
-}
-/* NAVBAR */
-.navbar{
-position: sticky;   /* 🔥 dính lên trên */
-top: 0;
-z-index: 100;
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-padding:10px 16px;
-
-background: rgba(255,255,255,0.85);
-backdrop-filter: blur(12px);
-
-border-bottom:1px solid rgba(0,0,0,0.05);
-}
-
-/* LEFT */
-.nav-left{
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.brand{
-display:flex;
-align-items:center;
-gap:8px;
-font-weight:600;
-font-size:18px;
-}
-
-.brand img{
-width:28px;
-height:28px;
-border-radius:8px;
-}
-
-/* MENU PC */
-.menu{
-display:flex;
-gap:6px;
-align-items:center;
-}
-.sidebar-menu{
-  display: none;
-}
-
-.menu button{
-border:none;
-background:none;
-padding:8px 14px;
-border-radius:8px;
-cursor:pointer;
-font-size:14px;
-transition:0.2s;
-}
-
-.menu button.active{
-background:#2563eb;
-color:white;
-}
-
-/* RIGHT */
-.nav-right{
-display:flex;
-align-items:center;
-gap:10px;
-font-size:18px;
-}
-
-/* HAMBURGER */
-.hamburger{
-display:none;
-font-size:22px;
-cursor:pointer;
-}
-
-/* OVERLAY */
-.overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.4);
-
-opacity:0;
-visibility:hidden;
-transition:0.3s;
-z-index:1500;
-}
-
-.overlay.active{
-opacity:1;
-visibility:visible;
-}
-
-/* MOBILE */
-@media (max-width:768px){
-
-.menu{
-overflow-x:auto;
-flex-wrap:nowrap;
-gap:8px;
-padding:6px 0;
-}
-
-.menu::-webkit-scrollbar{
-display:none;
-}
-
-.menu button{
-flex-shrink:0;
-white-space:nowrap;
-}
-
-.hamburger{
-display:block;
-}
-
-}
-.sidebar-menu{
-  position: fixed;
-  top: 0;
-  display: block;
-  left: -260px;
-  width: 260px;
-  height: 100%;
-  background: white;
-  padding: 70px 15px;
-  transition: 0.3s;
-  z-index: 2000;
-}
-
-.sidebar-menu.active{
-  left: 0;
 }
 </style>
 <div id="mainContent" class="content">
@@ -2121,27 +2014,14 @@ active.classList.add("fade-in");
 },10);
 
 },200);
-// thêm đoạn này cuối hàm show()
-document.querySelectorAll(".sidebar button").forEach(btn=>{
-  btn.classList.remove("active");
-  if(btn.getAttribute("onclick").includes(id)){
-    btn.classList.add("active");
-  }
-});
 }
 const buttons = document.querySelectorAll(".menu button");
 
 buttons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    
-    // ❌ bỏ active cũ
-    buttons.forEach(b => b.classList.remove("active"));
-    
-    // ✅ thêm active mới
-    btn.classList.add("active");
-
-    // (nếu có load nội dung thì giữ nguyên phía dưới)
-  });
+btn.addEventListener("click", () => {
+buttons.forEach(b => b.classList.remove("active"));
+btn.classList.add("active");
+});
 });
 const now = new Date();
 
@@ -2218,8 +2098,8 @@ document.querySelectorAll(".menu button")
 // set lại active đúng nút
 document.querySelectorAll(".menu button")
 .forEach(btn=>{
-if(btn.dataset.subject === savedTab){
-  btn.classList.add("active");
+if(btn.getAttribute("onclick").includes(savedTab)){
+btn.classList.add("active");
 }
 });
 
@@ -2592,10 +2472,6 @@ toggle.addEventListener("change", () => {
     localStorage.setItem("darkMode", "off");
   }
 });
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("active");
-  document.getElementById("overlay").classList.toggle("active");
-}
 </script>
 </body>
   </html>
