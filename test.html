@@ -55,7 +55,6 @@ body{
   background-size:28px 28px;
   overflow-x:hidden;
   overscroll-behavior: none;
-
   animation:fadeIn 0.6s ease;
 }
 @keyframes fadeIn{
@@ -139,6 +138,8 @@ cursor:pointer;
 transition:all 0.25s ease;
 border-radius:8px;
 color: var(--text-main);
+position: relative;
+overflow: hidden;
 }
 
 .menu button.active{
@@ -1035,7 +1036,7 @@ body.dark-mode .card{
     </div>
   </div>
 
-  <div class="nav-menu">
+  <div class="menu">
     <button data-subject="lich" class="active" onclick="show('lich')">Lịch</button>
     <button data-subject="ly" onclick="show('ly')">Vật Lý</button>
     <button data-subject="sinh" onclick="show('sinh')">Sinh Học</button>
@@ -1425,12 +1426,6 @@ gap:10px;
 scroll-snap-type:x mandatory;
 }
 
-.menu button{
-flex-shrink:0;
-white-space:nowrap;
-scroll-snap-align:start;
-}
-
 /* ===== USER BOX (FIX CHÍNH) ===== */
 #userBox{
 display:flex;
@@ -1614,13 +1609,18 @@ animation: pulse-green 2s infinite;
 }
 /* NAVBAR */
 .navbar{
+position: sticky;   /* 🔥 dính lên trên */
+top: 0;
+z-index: 999;
+
 display:flex;
 justify-content:space-between;
 align-items:center;
 
 padding:10px 16px;
-background: rgba(255,255,255,0.7);
-backdrop-filter: blur(10px);
+
+background: rgba(255,255,255,0.85);
+backdrop-filter: blur(12px);
 
 border-bottom:1px solid rgba(0,0,0,0.05);
 }
@@ -1647,12 +1647,13 @@ border-radius:8px;
 }
 
 /* MENU PC */
-.nav-menu{
+.menu{
 display:flex;
 gap:6px;
+align-items:center;
 }
 
-.nav-menu button{
+.menu button{
 border:none;
 background:none;
 padding:8px 14px;
@@ -1662,7 +1663,7 @@ font-size:14px;
 transition:0.2s;
 }
 
-.nav-menu button.active{
+.menu button.active{
 background:#2563eb;
 color:white;
 }
@@ -1689,7 +1690,7 @@ top:0;
 left:-260px;
 width:260px;
 height:100%;
-
+box-shadow: 5px 0 20px rgba(0,0,0,0.2);
 background:white;
 padding:20px;
 display:flex;
@@ -1736,8 +1737,20 @@ visibility:visible;
 /* MOBILE */
 @media (max-width:768px){
 
-.nav-menu{
+.menu{
+overflow-x:auto;
+flex-wrap:nowrap;
+gap:8px;
+padding:6px 0;
+}
+
+.menu::-webkit-scrollbar{
 display:none;
+}
+
+.menu button{
+flex-shrink:0;
+white-space:nowrap;
 }
 
 .hamburger{
@@ -2155,19 +2168,27 @@ active.classList.add("fade-in");
 },10);
 
 },200);
+// thêm đoạn này cuối hàm show()
+document.querySelectorAll(".sidebar button").forEach(btn=>{
+  btn.classList.remove("active");
+  if(btn.getAttribute("onclick").includes(id)){
+    btn.classList.add("active");
+  }
+});
 }
 const buttons = document.querySelectorAll(".menu button");
 
 buttons.forEach(btn => {
-  btn.onclick = () => {
-
-    // remove active
+  btn.addEventListener("click", () => {
+    
+    // ❌ bỏ active cũ
     buttons.forEach(b => b.classList.remove("active"));
-
-    // add active
+    
+    // ✅ thêm active mới
     btn.classList.add("active");
 
-  };
+    // (nếu có load nội dung thì giữ nguyên phía dưới)
+  });
 });
 const now = new Date();
 
@@ -2244,8 +2265,8 @@ document.querySelectorAll(".menu button")
 // set lại active đúng nút
 document.querySelectorAll(".menu button")
 .forEach(btn=>{
-if(btn.getAttribute("onclick").includes(savedTab)){
-btn.classList.add("active");
+if(btn.dataset.subject === savedTab){
+  btn.classList.add("active");
 }
 });
 
