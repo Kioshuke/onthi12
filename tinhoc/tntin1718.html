@@ -27,7 +27,13 @@
         }
 
         .logo-area h2 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--primary); }
-        
+        body.dark-mode {
+            background-color: #121212 !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+        }
         .question-card {
             background: var(--card); padding: 28px; border-radius: 20px;
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); margin-bottom: 20px;
@@ -391,6 +397,23 @@
 </div>
 
 <script>
+// Lắng nghe tín hiệu từ trang chính gửi tới
+window.addEventListener('message', (event) => {
+    // Kiểm tra nếu tin nhắn gửi tới là lệnh đổi Dark Mode
+    if (event.data && event.data.type === 'DARK_MODE') {
+        const isDark = event.data.value;
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+    }
+});
+
+// Kiểm tra trạng thái lúc mới load (đề phòng mở riêng trang này)
+if (localStorage.getItem("darkMode") === "on") {
+    document.body.classList.add("dark-mode");
+}
     const JSON_URL = "cauhoitin1718.json";
     let questionsData = [];
     window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
