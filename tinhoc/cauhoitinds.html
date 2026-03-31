@@ -26,6 +26,8 @@
             --tf-bg: #f8fafc;       /* nền mệnh đề */
             --tf-hover: #eef2ff;    /* hover nhẹ */
             --tf-border: #e2e8f0;
+            --true-asw: #15803d;
+            --false-asw: #b91d1d;
         }
         body { 
             font-family: 'Inter', system-ui, sans-serif; 
@@ -67,6 +69,8 @@
             --tf-bg: #1e293b;
             --tf-hover: #334155;
             --tf-border: #334155;
+            --true-asw: #2ddc6d;
+            --false-asw: #f73c3c;
         }
 
         /* Các chi tiết khác để nhìn rõ hơn trong bóng tối */
@@ -326,8 +330,8 @@
 /* Màu cho câu Trắc nghiệm và Đúng/Sai */
 .review-true { background-color: #dcfce7 !important; border-color: #22c55e !important; } /* Xanh lá nhạt */
 .review-false { background-color: #fee2e2 !important; border-color: #ef4444 !important; } /* Đỏ nhạt */
-.true-text { color: #15803d; font-weight: bold; }
-.false-text { color: #b91d1d; font-weight: bold; }
+.true-text { color: var(--true-asw); font-weight: bold; }
+.false-text { color: var(--false-asw); font-weight: bold; }
 .tf-options input {
     accent-color: var(--primary);
 }
