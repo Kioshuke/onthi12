@@ -149,7 +149,7 @@
         .nav-item {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
             border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.8rem;
-            font-weight: 600; cursor: pointer; transition: 0.2s; background: white;
+            font-weight: 600; cursor: pointer; transition: 0.2s; background: var(--bg-pattern);
         }
         .nav-item.done { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
         .nav-item:hover { border-color: var(--primary); }
@@ -429,7 +429,7 @@
         <h3>⚠️ Xác nhận nộp bài?</h3>
         <p>❓Bạn có chắc chắn muốn kết thúc bài thi này?</p>
         <div style="display: flex; justify-content: center; gap: 10px; margin-top: 25px;">
-            <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('confirmModal')">🔙 Quay lại</button>
+            <button class="btn" style="flex:1; background: #c81515;" onclick="closeModal('confirmModal')">🔙 Quay lại</button>
             <button class="btn btn-primary" style="flex:1" onclick="handleFinalSubmit()">🚀 Nộp ngay</button>
         </div>
     </div>
@@ -445,7 +445,7 @@
         <p>Để xem chi tiết vui lòng bấm vào mục lục nhé!</p>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 25px;">
             <button class="btn btn-primary" style="justify-content: center;" onclick="reviewMode()">👁️ Xem bài làm</button>
-            <button class="btn" style="justify-content: center; background: #f1f5f9" onclick="openModal('restartModal')">🔄 Làm lại</button>
+            <button class="btn" style="justify-content: center; background: #c81515" onclick="openModal('restartModal')">🔄 Làm lại</button>
         </div>
     </div>
 </div>
@@ -454,7 +454,7 @@
         <h3>🔄 Xác nhận làm lại?</h3>
         <p>❗Bạn sẽ mất toàn bộ bài làm hiện tại.</p>
         <div style="display: flex; justify-content: center; gap: 10px; margin-top: 25px;">
-            <button class="btn" style="flex:1; background:#f1f5f9;" onclick="closeModal('restartModal')">↩️ Quay lại</button>
+            <button class="btn" style="flex:1; background: #c81515;" onclick="closeModal('restartModal')">↩️ Quay lại</button>
             <button class="btn btn-primary" style="flex:1" onclick="confirmRestart()">👍 Đồng ý</button>
         </div>
     </div>
