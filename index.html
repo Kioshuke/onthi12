@@ -18,6 +18,14 @@
 <meta property="og:description" content="Hệ thống hỗ trợ học tập và thi cử trực tuyến cho học sinh THPT.">
 <meta property="og:image" content="favicon.png">
 <meta property="og:url" content="https://kioshuke.github.io/onthi12/">
+<!-- Preconnect để tăng tốc Firebase + Google -->
+<link rel="preconnect" href="https://www.gstatic.com">
+<link rel="preconnect" href="https://www.googleapis.com">
+<link rel="preconnect" href="https://firestore.googleapis.com">
+
+<!-- Nếu có Google Fonts thì thêm -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
 :root{
   --bg-main: #f6f8ff;
@@ -1035,9 +1043,8 @@ body.dark-mode .card{
 <div id="popup">
 <div class="popup-box">
 <span class="close">&times;</span>
-<h3>📢 Chuyên mục khều donate</h3>
-<p style="text-align:left; padding-left:20px; line-height:1.7;"> Chủ web xin được nhận lòng hảo tâm của quý người dùng để mua mì gói với thuốc trị trĩ cũng như phí duy trì website. Donate trực tiếp qua mã QR bên dưới. Xin cảm ơn!</p>
-<img src="qrcode.jpg" alt="QR code đăng nhập LearnHub" style="max-width:320px; width:90%;">
+<h3>📢 Thông báo</h3>
+<p style="text-align:left; padding-left:20px; line-height:1.7;"> Nodata</p>
 </div>
 </div>
 <div id="loginBox" style="
@@ -1071,7 +1078,7 @@ body.dark-mode .card{
 
 <div class="menu">
 <div class="menu-brand">
-  <img src="logoweb2.png" alt="Logo">
+  <img src="logoweb2.webp" width="60" height="60" alt="Logo LearnHub">
   <span>LearnHub – Nâng cấp cách bạn học</span>
 </div>
 <button data-subject="lich" class="active" onclick="show('lich')">Lịch Thi</button>
@@ -2133,30 +2140,42 @@ show("lich");
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 
 import { 
-getAuth,
-onAuthStateChanged,
-GoogleAuthProvider,
-signInWithPopup,
-signOut,
-setPersistence,
-browserLocalPersistence
+  getAuth,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getFirestore, doc, setDoc }
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-const firebaseConfig = {
-apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
-authDomain: "onthi12-thpttanhong.firebaseapp.com",
-projectId: "onthi12-thpttanhong",
-storageBucket: "onthi12-thpttanhong.firebasestorage.app",
-messagingSenderId: "922115936320",
-appId: "1:922115936320:web:67b86c06af9149ff584fa5"
-};
-const app = initializeApp(firebaseConfig);
 
+/* 🔥 DÙNG FIRESTORE LITE (nhẹ hơn rất nhiều) */
+import { 
+  getFirestore,
+  doc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore-lite.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
+  authDomain: "onthi12-thpttanhong.firebaseapp.com",
+  projectId: "onthi12-thpttanhong",
+  storageBucket: "onthi12-thpttanhong.firebasestorage.app",
+  messagingSenderId: "922115936320",
+  appId: "1:922115936320:web:67b86c06af9149ff584fa5"
+};
+
+/* Init */
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+/* Giữ đăng nhập */
 await setPersistence(auth, browserLocalPersistence);
+
+/* 🔥 Firestore bản nhẹ */
 const db = getFirestore(app);
 
+/* Google login */
 const provider = new GoogleAuthProvider();
 
 const allowList = [
