@@ -2136,46 +2136,23 @@ show("lich");
 
 });
 </script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-
-import { 
-  getAuth,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  setPersistence,
-  browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-
-/* 🔥 DÙNG FIRESTORE LITE (nhẹ hơn rất nhiều) */
-import { 
-  getFirestore,
-  doc,
-  setDoc
-} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore-lite.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
-  authDomain: "onthi12-thpttanhong.firebaseapp.com",
-  projectId: "onthi12-thpttanhong",
-  storageBucket: "onthi12-thpttanhong.firebasestorage.app",
-  messagingSenderId: "922115936320",
-  appId: "1:922115936320:web:67b86c06af9149ff584fa5"
-};
-
-/* Init */
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-/* Giữ đăng nhập */
-await setPersistence(auth, browserLocalPersistence);
-
-/* 🔥 Firestore bản nhẹ */
-const db = getFirestore(app);
-
-/* Google login */
+<script type="module"> import { initializeApp } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"; 
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, setPersistence, browserLocalPersistence } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"; 
+import { getFirestore, doc, setDoc } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"; 
+const firebaseConfig = { 
+  apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c", 
+  authDomain: "onthi12-thpttanhong.firebaseapp.com", 
+  projectId: "onthi12-thpttanhong", 
+  storageBucket: "onthi12-thpttanhong.firebasestorage.app", 
+  messagingSenderId: "922115936320", 
+  appId: "1:922115936320:web:67b86c06af9149ff584fa5" 
+}; 
+const app = initializeApp(firebaseConfig); 
+const auth = getAuth(app); await setPersistence(auth, browserLocalPersistence); 
+const db = getFirestore(app); 
 const provider = new GoogleAuthProvider();
 
 const allowList = [
