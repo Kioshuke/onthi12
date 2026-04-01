@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Forum</title>
 
-  <!-- Firebase CDN -->
+  <!-- Firebase (Realtime Database) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
@@ -119,28 +119,41 @@
 </div>
 
 <script>
-// Firebase config (THAY BẰNG CONFIG CỦA BẠN)
+/* ================= FIREBASE ================= */
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-  projectId: "YOUR_PROJECT",
+  apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
+  authDomain: "onthi12-thpttanhong.firebaseapp.com",
+  projectId: "onthi12-thpttanhong",
+  storageBucket: "onthi12-thpttanhong.firebasestorage.app",
+  messagingSenderId: "922115936320",
+  appId: "1:922115936320:web:67b86c06af9149ff584fa5"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+/* ================= USER STATE ================= */
 let currentUser = null;
 let replyTo = null;
 
-// Nhận user từ iframe cha
+/* ================= RECEIVE USER FROM PARENT ================= */
 window.addEventListener("message", (event) => {
-  if(event.data && event.data.type === "USER_INFO"){
+  if (event.data && event.data.type === "USER_INFO") {
     currentUser = event.data.user;
-    document.getElementById("userBox").innerText = currentUser.name;
+
+    const userBox = document.getElementById("userBox");
+    if (userBox) {
+      userBox.innerText = currentUser.name;
+    }
   }
 });
 
+/* ================= READY SIGNAL ================= */
+window.addEventListener("load", () => {
+  window.parent.postMessage({ type: "FORUM_READY" }, "*");
+});
+
+/* ================= SEND POST ================= */
 function sendPost(){
   const text = document.getElementById("content").value.trim();
   if(!text || !currentUser) return;
@@ -159,6 +172,9 @@ function sendPost(){
   replyTo = null;
   document.getElementById("replyingTo").innerHTML = "";
 }
+
+/* ================= RENDER POSTS ================= */
+db.ref("posts").on("value", renderPosts);
 
 function renderPosts(snapshot){
   const data = snapshot.val();
@@ -187,8 +203,8 @@ function createPostElement(post, allPosts){
     <div class="reply-btn" onclick="setReply('${post.id}', '${post.user}')">↳ Trả lời</div>
   `;
 
-  // replies
   const replies = allPosts.filter(p => p.parentId === post.id);
+
   replies.forEach(rep => {
     const repDiv = document.createElement("div");
     repDiv.className = "reply";
@@ -203,7 +219,13 @@ function createPostElement(post, allPosts){
   return div;
 }
 
+/* ================= REPLY ================= */
 function setReply(id, user){
   replyTo = id;
-  document.getElementById("replyingTo").innerHTML = 
-    `<div
+  document.getElementById("replyingTo").innerHTML =
+    `<div class="replying">Đang trả lời: ${user}</div>`;
+}
+</script>
+
+</body>
+</html>
