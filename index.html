@@ -1031,7 +1031,7 @@ body.dark-mode .card{
 </head>
 <body>
 <div id="loadingOverlay">
-<audio id="welcomeSound" src="windows-xp-startup.mp3" preload="auto"></audio>
+<audio id="startup" src="windows-xp-startup.mp3" preload="auto"></audio>
 <div class="loading-box">
   <div class="loading-brand">
     <img src="logoweb.webp" alt="logo">
@@ -2519,10 +2519,9 @@ function updateProgress(percent){
 
   if(percent >= 100){
     fill.classList.add("complete");
-    const sound = document.getElementById("welcomeSound");
-    if(sound) {
-        sound.play().catch(e => console.log("Âm thanh bị chặn bởi trình duyệt:", e));
-    }
+    const sound = document.getElementById("startup");
+      sound.currentTime = 0;
+      sound.play();
 
     setTimeout(() => {
       document.getElementById("loadingOverlay").classList.add("hide");
