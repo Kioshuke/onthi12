@@ -1031,7 +1031,7 @@ body.dark-mode .card{
 </head>
 <body>
 <div id="loadingOverlay">
-<audio id="clickSound" src="minecraft_click (mp3cut.net).mp3" preload="auto"></audio>
+<audio id="clickSound" src="mocor-os-keypad-sound.mp3" preload="auto"></audio>
 <audio id="dotest" src="windows-xp-startup.mp3" preload="auto"></audio>
 <div class="loading-box">
   <div class="loading-brand">
@@ -2574,7 +2574,7 @@ document.querySelectorAll('.menu button').forEach(button => {
     });
 });
 // Gán sự kiện click cho cả nút Menu VÀ nút Làm bài (class .btn)
-document.querySelectorAll('.menu button, .btn').forEach(button => {
+document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', () => {
         const clickSnd = document.getElementById("dotest");
         if(clickSnd) {
