@@ -182,7 +182,7 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
   --btn-color:#8b5cf6;
 }
 .menu button[data-subject="bxh"]{
-  --btn-color:#787c18;
+  --btn-color:#068682;
 }
 .menu button[data-subject]:not(.active):hover{
   background: color-mix(in srgb, var(--btn-color) 25%, transparent);
@@ -423,34 +423,20 @@ box-shadow:0 8px 20px rgba(0,0,0,0.25);
 /* QUIZ */
 
 .quiz-box{
-  margin-top:30px;
-  background:white;
-  padding:12px;
-  border-radius:12px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.1);
-  position: relative;
-  height: 100vh;
+margin-top:30px;
+background:white;
+padding:12px;
+border-radius:12px;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+position: relative;
+height: 100vh;
 }
 
-/* 👇 THÊM ĐOẠN NÀY */
-#quiz.iframe-mode{
-  padding: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-iframe {
-  width: 100%;
-  height: 80vh;
-  border: none;
-  display: block;
-}
-
-.card.iframe-mode {
-  padding: 0 !important;
-  border: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
+iframe{
+width:100%;
+height:100%;
+border:none;
+will-change: transform;
 }
 
 /* CLOSE BUTTON */
@@ -1916,7 +1902,8 @@ Lịch Thi Cuối Học Kỳ II - THPT Tân Hồng
 <div id="bxh" style="display:none">
   <div class="grid">
     <iframe 
-      src="leaderboard.html" 
+      id="forumFrame" 
+      src="forum.html" 
       style="width:100%; height:600px; border:none; border-radius:12px;">
     </iframe>
   </div>
@@ -1973,8 +1960,7 @@ let progress = setInterval(() => {
     }
 }, 20);
 function loadQuiz(btn, link){
-  const container = document.getElementById("quiz");
-  container.classList.add("iframe-mode");
+
   // ❌ xoá active cũ
   document.querySelectorAll(".card").forEach(c=>{
     c.classList.remove("active-card");
@@ -2163,15 +2149,12 @@ show("lich");
 
 });
 </script>
-<script type="module"> 
-import { initializeApp } 
+<script type="module"> import { initializeApp } 
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"; 
 import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, setPersistence, browserLocalPersistence } 
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"; 
 import { getFirestore, doc, setDoc } 
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-import { getDatabase, ref, set, get } 
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"; 
 const firebaseConfig = { 
   apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c", 
   authDomain: "onthi12-thpttanhong.firebaseapp.com", 
@@ -2181,12 +2164,8 @@ const firebaseConfig = {
   appId: "1:922115936320:web:67b86c06af9149ff584fa5" 
 }; 
 const app = initializeApp(firebaseConfig); 
-const auth = getAuth(app);
-setPersistence(auth, browserLocalPersistence).catch(err => console.log(err));
-document.getElementById("loginBox").style.display = "none";
-console.log("✅ Persistence OK");
+const auth = getAuth(app); await setPersistence(auth, browserLocalPersistence); 
 const db = getFirestore(app); 
-const rtdb = getDatabase(app);
 const provider = new GoogleAuthProvider();
 
 const allowList = [
@@ -2209,71 +2188,121 @@ const allowList = [
 "xmai9839@gmail.com",
 ];
 let activeInterval = null;
-let startTime = Date.now();
-let totalTime = 0;
+onAuthStateChanged(auth, (user)=>{
+if(user){
+  function sendUserToForum(user){
+  const forumIframe = document.getElementById("forumFrame");
 
-async function initTime(user){
-  const snapshot = await get(ref(rtdb, "leaderboard/" + user.uid))
-  
-  if(snapshot.exists()){
-    totalTime = snapshot.val().time || 0;
+  if(!forumIframe) return;
+
+  const send = () => {
+    forumIframe.contentWindow.postMessage({
+      type: "USER_INFO",
+      user: {
+        uid: user.uid,
+        name: user.displayName || user.email
+      }
+    }, "*");
+  };
+
+  if(forumIframe.contentWindow){
+    send();
   }
+
+  forumIframe.onload = send;
 }
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    // 1. Lo cho dữ liệu thời gian trước
-    await initTime(user);
-    startTime = Date.now();
-
-    if(!window.timeInterval){
-      window.timeInterval = setInterval(() => {
-        const sessionTime = Math.floor((Date.now() - startTime) / 1000);
-        set(ref(rtdb, "leaderboard/" + user.uid), {
-          name: user.displayName,
-          avatar: user.photoURL,
-          time: totalTime + sessionTime
-        });
-      }, 5000);
-    }
-
-    // 2. CHÍNH LÀ ĐÂY: Đưa logic hiển thị vào TRONG này
-    const hour = new Date().getHours();
-    let greeting = hour < 11 ? "☀️ Chào buổi sáng," : hour < 14 ? "🌤️ Nghỉ trưa thôi," : hour < 18 ? "☕ Chào buổi chiều," : "🌙 Chào buổi tối,";
-    let quote = hour < 11 ? "Chúc bạn học tốt!" : hour < 14 ? "Nghỉ ngơi tí nhé!" : hour < 18 ? "Cố lên sắp xong rồi!" : "Ngủ sớm giữ sức nhé!";
-
-    // Gán dữ liệu vào HTML (Phải ở trong này mới có biến 'user')
-    if(document.getElementById("greetingText")) document.getElementById("greetingText").innerText = greeting;
-    if(document.getElementById("popupName")) document.getElementById("popupName").innerText = user.displayName || "Bạn";
-    if(document.getElementById("popupEmail")) document.getElementById("popupEmail").innerText = user.email;
-    if(document.getElementById("popupQuote")) document.getElementById("popupQuote").innerText = quote;
-    if(document.getElementById("userName")) document.getElementById("userName").innerText = user.displayName;
-    
-    const avatarPath = user.photoURL || "https://i.imgur.com/6VBx3io.png";
-    if(document.getElementById("userAvatar")) document.getElementById("userAvatar").src = avatarPath;
-    if(document.getElementById("popupAvatar")) document.getElementById("popupAvatar").src = avatarPath;
-
-    // Hiện giao diện, ẩn login
-    document.getElementById("loginBox").style.display = "none";
-    startListening(); 
-
-  } else {
-    // Nếu chưa đăng nhập thì hiện cái khung Login lên
-    document.getElementById("loginBox").style.display = "flex";
+function sendUserToForum(user){
+  if(!activeInterval){
+  activeInterval = setInterval(()=>{
+  const user = auth.currentUser;
+  if(user){
+    setDoc(doc(db,"users",user.uid),{
+      lastActive: Date.now(),
+      online: true   // 🔥 THÊM DÒNG NÀY
+    },{ merge:true });
   }
+}, 5000);
+}
+
+startListening(); // 🔥 luôn gọi
+
+// vì bên trong đã có:
+
+// greeting logic
+const hour = new Date().getHours();
+let greeting = "";
+let quote = "";
+
+if (hour >= 5 && hour < 11) {
+greeting = "☀️ Chào buổi sáng,";
+quote = "Chúc bạn một ngày học tập năng suất!";
+} else if (hour >= 11 && hour < 14) {
+greeting = "🌤️ Nghỉ trưa thôi,";
+quote = "Nạp năng lượng để chiến đấu tiếp nhé!";
+} else if (hour >= 14 && hour < 18) {
+greeting = "☕ Chào buổi chiều,";
+quote = "Sắp hết ngày rồi, cố gắng lên nào!";
+} else {
+greeting = "🌙 Chào buổi tối,";
+quote = "Đừng thức quá khuya, giữ sức khỏe nhé!";
+}
+
+// set UI
+const greetingEl = document.getElementById("greetingText");
+if(greetingEl){
+greetingEl.innerText = greeting;
+}
+const nameEl = document.getElementById("popupName");
+if(nameEl) nameEl.innerText = user.displayName || "Bạn";
+
+const emailEl = document.getElementById("popupEmail");
+if(emailEl) emailEl.innerText = user.email;
+
+const quoteEl = document.getElementById("popupQuote");
+if(quoteEl) quoteEl.innerText = quote;
+document.getElementById("loginBox").style.display="none";
+
+document.getElementById("welcomeText").innerText =
+"Chúc bạn ôn thi thật tốt,";
+
+document.getElementById("userName").innerText = user.displayName;
+
+// Avatar chính
+const userAvatar = document.getElementById("userAvatar");
+userAvatar.src = user.photoURL || "https://i.imgur.com/6VBx3io.png";
+userAvatar.alt = user.displayName 
+  ? `Ảnh đại diện của ${user.displayName}` 
+  : "Ảnh đại diện người dùng";
+
+// Avatar popup
+const popupAvatar = document.getElementById("popupAvatar");
+if (popupAvatar) {
+  popupAvatar.src = user.photoURL || "https://i.imgur.com/6VBx3io.png";
+  popupAvatar.alt = user.displayName 
+    ? `Ảnh đại diện của ${user.displayName}` 
+    : "Ảnh đại diện người dùng";
+}
+
+} else {
+  document.getElementById("loginBox").style.display = "flex";
+}
 });
-window.googleLogin = async function() {
-    try {
-        const result = await signInWithPopup(auth, provider);
+// chỉ giữ login trong tab hiện tại
+
+
+window.googleLogin = function() {
+    signInWithPopup(auth, provider)
+    .then(async (result) => {
         const user = result.user;
 
-        // Giữ nguyên logic allowList của bạn
+        // 1. Kiểm tra quyền truy cập (AllowList)
         if (!allowList.includes(user.email)) {
             alert("❌ Tài khoản không được cấp quyền!");
             await signOut(auth);
             return;
         }
 
-        // Giữ nguyên logic setDoc của bạn
+        // 2. Ghi dữ liệu vào Firestore
         await setDoc(doc(db, "users", user.uid), {
             name: user.displayName,
             email: user.email,
@@ -2281,18 +2310,39 @@ window.googleLogin = async function() {
             lastLogin: new Date().toISOString(),
             lastActive: Date.now(),
             online: true 
-        }, { merge: true });
+        }, { merge: true }); // Dùng merge để không ghi đè mất dữ liệu cũ nếu có
 
-        // Logic điều hướng giữ nguyên
+        // 3. Ẩn hộp đăng nhập trên Web
+        if (document.getElementById("loginBox")) {
+            document.getElementById("loginBox").style.display = "none";
+        }
+
+        console.log("✅ Đăng nhập & Lưu dữ liệu thành công!");
+
+        // 4. ĐIỀU HƯỚNG QUAY VỀ APP (Deep Link)
+        // Kiểm tra xem có đang mở từ WebView Android không
         const isApp = navigator.userAgent.includes("Android");
+
         if (isApp) {
-            setTimeout(() => { window.location.href = "myapp://auth"; }, 1000);
+            // Delay 1 xíu để đảm bảo Firebase đã lưu xong Session trên trình duyệt
+            setTimeout(() => {
+                // Gọi tới scheme mà ông đã khai báo trong AndroidManifest.xml
+                window.location.href = "myapp://auth";
+            }, 1000);
         } else {
+            // Nếu dùng trình duyệt máy tính bình thường thì load lại để cập nhật giao diện
             window.location.reload();
         }
-    } catch (error) {
-        console.error("Lỗi:", error);
-    }
+
+    })
+    .catch((error) => {
+        console.error("Lỗi Google Login:", error);
+        if (error.code === 'auth/popup-blocked') {
+            alert("⚠️ Vui lòng cho phép hiện Popup để đăng nhập!");
+        } else {
+            alert("❌ Lỗi: " + error.message);
+        }
+    });
 };
 // Xử lý khi ẩn tab hoặc đóng trình duyệt
 const updateStatus = (isOnline) => {
@@ -2352,18 +2402,33 @@ list.appendChild(div);
 });
 });
 }
-window.logout = async function() {
-    const user = auth.currentUser;
-    if (user) {
-        await setDoc(doc(db, "users", user.uid), { online: false }, { merge: true });
-    }
-    // Xóa các interval để tránh lỗi ghi đè sau khi thoát
-    if(activeInterval) clearInterval(activeInterval);
-    if(window.timeInterval) clearInterval(window.timeInterval);
-    
-    await signOut(auth);
-    location.reload();
-};
+window.logout = async function(){
+const user = auth.currentUser;
+
+// cập nhật offline
+if(user){
+await setDoc(doc(db, "users", user.uid), {
+online: false
+}, { merge: true });
+}
+
+// 🔥 TẮT interval (THÊM Ở ĐÂY)
+if(activeInterval){
+  clearInterval(activeInterval);
+  activeInterval = null;
+}
+
+// 🔥 tắt realtime listener
+if(unsubscribeUsers){
+unsubscribeUsers();
+unsubscribeUsers = null;
+}
+
+// logout
+signOut(auth).then(()=>{
+location.reload();
+});
+}
 document.addEventListener("click", function(e){
 const popup = document.getElementById("userPopup");
 const avatarBox = document.querySelector(".avatar-box");
