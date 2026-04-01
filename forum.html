@@ -219,9 +219,6 @@ window.addEventListener("load", () => {
 function sendPost(){
   const text = document.getElementById("content").value.trim();
   if(!text || !currentUser) return;
-  const sound = document.getElementById("clickSound");
-  sound.currentTime = 0;
-  sound.play();
 
   const newPost = {
     text,
@@ -232,6 +229,10 @@ function sendPost(){
   };
 
   db.ref("posts").push(newPost);
+  db.ref("events").push({
+    type: "post",
+    time: Date.now()
+  });
 
   document.getElementById("content").value = "";
   replyTo = null;
@@ -399,9 +400,35 @@ function toggleLike(postId, isLike){
     }
 
     ref.update({ likes, dislikes });
+    db.ref("events").push({
+      type: isLike ? "like" : "dislike",
+      time: Date.now()
+    });
   });
 }
+function playSound(type){
+  let sound;
+
+  if(type === "post") sound = document.getElementById("soundPost");
+  if(type === "like") sound = document.getElementById("soundLike");
+  if(type === "dislike") sound = document.getElementById("soundDislike");
+
+  if(sound){
+    sound.currentTime = 0;
+    sound.play();
+  }
+}
+
+// nghe realtime events
+db.ref("events").limitToLast(1).on("child_added", (snap) => {
+  const ev = snap.val();
+  if(!ev) return;
+
+  playSound(ev.type);
+});
 </script>
-<audio id="clickSound" src="minecraft_click (mp3cut.net).mp3" preload="auto"></audio>
+<audio id="soundPost" src="sound/post.mp3" preload="auto"></audio>
+<audio id="soundLike" src="sound/like.mp3" preload="auto"></audio>
+<audio id="soundDislike" src="sound/dislike.mp3" preload="auto"></audio>
 </body>
 </html>
