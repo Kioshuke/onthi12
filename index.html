@@ -1032,6 +1032,7 @@ body.dark-mode .card{
 <body>
 <div id="loadingOverlay">
 <audio id="clickSound" src="minecraft_click (mp3cut.net).mp3" preload="auto"></audio>
+<audio id="dotest" src="windows-xp-startup.mp3" preload="auto"></audio>
 <div class="loading-box">
   <div class="loading-brand">
     <img src="logoweb.webp" alt="logo">
@@ -2569,6 +2570,16 @@ document.querySelectorAll('.menu button').forEach(button => {
         if(clickSnd) {
             clickSnd.currentTime = 0; // Reset về 0 để bấm liên tục được
             clickSnd.play().catch(e => console.log("Click sound blocked"));
+        }
+    });
+});
+// Gán sự kiện click cho cả nút Menu VÀ nút Làm bài (class .btn)
+document.querySelectorAll('.menu button, .btn').forEach(button => {
+    button.addEventListener('click', () => {
+        const clickSnd = document.getElementById("dotest");
+        if(clickSnd) {
+            clickSnd.currentTime = 0; // Reset để có thể bấm liên tục
+            clickSnd.play().catch(e => console.log("Âm thanh bị chặn:", e));
         }
     });
 });
