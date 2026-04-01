@@ -1559,7 +1559,7 @@ animation: pulse-green 2s infinite;
     align-items: center;
     justify-content: center;
     padding: 10px 20px;
-    min-width: 100px; /* Giảm từ 140px xuống 100px để tiết kiệm chỗ */
+    min-width: 100px;
     font-size: 14px;
     font-weight: 600;
     border-radius: 12px;
@@ -1568,25 +1568,38 @@ animation: pulse-green 2s infinite;
     color: #1f2937;
     cursor: pointer;
     transition: all 0.2s ease;
-    touch-action: manipulation; /* Tối ưu cho việc chạm trên mobile */
+    /* Thêm dòng này để chắc chắn nhận diện cảm ứng */
+    touch-action: manipulation; 
+    position: relative;
+    z-index: 10;
 }
 
-/* Nút đóng - Chỉnh lại cho đẹp và nhích sang trái */
 .close-btn {
-    z-index: 9999;
-    color: #ef4444;
-    border: 1px solid #fecaca;
-    background: #fff5f5;
-    min-width: 80px;      /* Vẫn giữ độ rộng vừa phải để dễ bấm */
-    padding: 8px 12px;    /* Cân đối lại padding */
-    font-size: 13px;
-    box-shadow: 0 2px 5px rgba(239, 68, 68, 0.1); /* Thêm tí bóng cho nổi */
+    color: #ef4444 !important;
+    border: 1px solid #fecaca !important;
+    background: #fff5f5 !important;
+    /* Chỉnh kích thước vừa đủ để không quá bé */
+    min-width: 85px !important; 
+    height: 40px !important;
+    padding: 0 12px !important;
+    font-size: 13px !important;
 }
 
-/* Hiệu ứng khi bấm - Quan trọng để biết là đã bấm trúng */
+/* Hiệu ứng khi bấm để xác nhận là đã ăn lệnh */
 .close-btn:active {
-    background: #fee2e2;
+    background: #fee2e2 !important;
     transform: scale(0.92);
+}
+
+@media (max-width: 1024px) {
+    header {
+        /* Nhích toàn bộ nội dung sang phải để né nút hệ thống */
+        padding-left: 85px !important; 
+    }
+    .close-btn {
+        /* Cho nút nhích sát về lề trái nhất có thể */
+        margin-left: -5px;
+    }
 }
 /* click */
 .quiz-btn:active{
