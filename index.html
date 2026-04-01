@@ -1554,27 +1554,39 @@ animation: pulse-green 2s infinite;
 }
 
 /* nút đóng - Đã tinh chỉnh nhỏ lại */
+.quiz-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    min-width: 100px; /* Giảm từ 140px xuống 100px để tiết kiệm chỗ */
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #1f2937;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation; /* Tối ưu cho việc chạm trên mobile */
+}
+
+/* Nút đóng - Chỉnh lại cho đẹp và nhích sang trái */
 .close-btn {
     color: #ef4444;
     border: 1px solid #fecaca;
     background: #fff5f5;
-    
-    /* Ghi đè lại các thuộc tính để nút nhỏ đi */
-    min-width: auto;       /* Bỏ độ dài tối thiểu 140px */
-    padding: 6px 12px;    /* Giảm padding cho nút lùn và ngắn lại */
-    font-size: 12px;      /* Chữ nhỏ hơn một chút */
-    margin-bottom: 0;     /* Bỏ margin thừa nếu đang nằm trong header */
-    
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 80px;      /* Vẫn giữ độ rộng vừa phải để dễ bấm */
+    padding: 8px 12px;    /* Cân đối lại padding */
+    font-size: 13px;
+    box-shadow: 0 2px 5px rgba(239, 68, 68, 0.1); /* Thêm tí bóng cho nổi */
 }
 
-/* Thêm hiệu ứng nhấn cho chuyên nghiệp */
+/* Hiệu ứng khi bấm - Quan trọng để biết là đã bấm trúng */
 .close-btn:active {
-    transform: scale(0.95);
+    background: #fee2e2;
+    transform: scale(0.92);
 }
-
 /* click */
 .quiz-btn:active{
   transform: scale(0.96);
