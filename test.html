@@ -2181,7 +2181,9 @@ const firebaseConfig = {
   appId: "1:922115936320:web:67b86c06af9149ff584fa5" 
 }; 
 const app = initializeApp(firebaseConfig); 
-const auth = getAuth(app); await setPersistence(auth, browserLocalPersistence); 
+const auth = getAuth(app);
+await setPersistence(auth, browserLocalPersistence);
+console.log("✅ Persistence OK");
 const db = getFirestore(app); 
 const provider = new GoogleAuthProvider();
 
@@ -2356,7 +2358,9 @@ window.googleLogin = function() {
             }, 1000);
         } else {
             // Nếu dùng trình duyệt máy tính bình thường thì load lại để cập nhật giao diện
-            window.location.reload();
+            setTimeout(()=>{
+              window.location.reload();
+            }, 500);
         }
 
     })
