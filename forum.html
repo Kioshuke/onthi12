@@ -213,6 +213,7 @@ function sendPost(){
   document.getElementById("content").value = "";
   replyTo = null;
   document.getElementById("replyingTo").innerHTML = "";
+  document.getElementById("content").focus();
 }
 
 /* ================= RENDER POSTS (FIX THIẾU) ================= */
@@ -231,6 +232,7 @@ function renderPosts(snapshot){
   }));
 
   const parents = posts.filter(p => !p.parentId);
+  parents.sort((a, b) => b.time - a.time);
 
   parents.forEach(post => {
     const el = createPostElement(post, posts);
@@ -255,59 +257,80 @@ function createPostElement(post, allPosts){
     <div class="reply-btn" onclick="setReply('${post.id}', '${post.user}')">↳ Trả lời</div>
   `;
 
-  const replies = allPosts.filter(p => p.parentId === post.id);
-
-  let expanded = false;
-  const maxShow = 2;
-
   const repliesContainer = document.createElement("div");
 
-  function renderReplies(){
-    repliesContainer.innerHTML = "";
+  function renderReplies(parentId, container, level = 1){
+    const replies = allPosts.filter(p => p.parentId === parentId);
 
-    const list = expanded ? replies : replies.slice(0, maxShow);
+    let expanded = false;
+    const maxShow = 2;
 
-    list.forEach(rep => {
-      const repDiv = document.createElement("div");
-      repDiv.className = "reply";
+    const wrapper = document.createElement("div");
 
-      repDiv.innerHTML = `
-        <div class="meta"><b>${rep.user}</b> • ${formatTime(rep.time)}</div>
-        <div>${rep.text}</div>
-        <div class="reply-btn" onclick="setReply('${rep.id}', '${rep.user}')">↳ Trả lời</div>
-      `;
+    function renderList(){
+      wrapper.innerHTML = "";
 
-      repliesContainer.appendChild(repDiv);
-    });
+      const list = expanded ? replies : replies.slice(0, maxShow);
 
-    if(replies.length > maxShow){
-      const btn = document.createElement("div");
-      btn.className = "reply-btn";
+      list.forEach(rep => {
+        const repDiv = document.createElement("div");
+        repDiv.className = "reply";
+        repDiv.style.marginLeft = (level * 20) + "px";
 
-      btn.innerText = expanded
-        ? "Thu gọn"
-        : `Xem thêm ${replies.length - maxShow} phản hồi`;
+        repDiv.innerHTML = `
+          <div class="meta"><b>${rep.user}</b> • ${formatTime(rep.time)}</div>
+          <div>${rep.text}</div>
+          <div class="reply-btn" onclick="setReply('${rep.id}', '${rep.user}')">↳ Trả lời</div>
+        `;
 
-      btn.onclick = () => {
-        expanded = !expanded;
-        renderReplies();
-      };
+        // render reply con (đệ quy)
+        renderReplies(rep.id, repDiv, level + 1);
 
-      repliesContainer.appendChild(btn);
+        wrapper.appendChild(repDiv);
+      });
+
+      if(replies.length > maxShow){
+        const btn = document.createElement("div");
+        btn.className = "reply-btn";
+
+        btn.innerText = expanded
+          ? "Thu gọn"
+          : `Xem thêm ${replies.length - maxShow} phản hồi`;
+
+        btn.onclick = () => {
+          expanded = !expanded;
+          renderList();
+        };
+
+        wrapper.appendChild(btn);
+      }
     }
+
+    renderList();
+    container.appendChild(wrapper);
   }
 
-  renderReplies();
-  div.appendChild(repliesContainer);
+  renderReplies(post.id, repliesContainer);
 
+  div.appendChild(repliesContainer);
   return div;
 }
 
 /* ================= REPLY ================= */
 function setReply(id, user){
   replyTo = id;
+
   document.getElementById("replyingTo").innerHTML =
     `<div class="replying">Đang trả lời: ${user}</div>`;
+
+  // 👉 scroll lên form nhập
+  document.querySelector(".post-box").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+  // 👉 focus vào textarea
+  document.getElementById("content").focus();
 }
 </script>
 
