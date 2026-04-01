@@ -2566,46 +2566,51 @@ toggle.addEventListener("change", () => {
     sendDarkModeToIframe(isDark);
 });
 // Gán sự kiện click cho tất cả các nút trong Menu
-document.querySelectorAll('.menu button').forEach(button => {
-    button.addEventListener('click', () => {
-        const clickSnd = document.getElementById("clickSound");
-        if(clickSnd) {
-            clickSnd.currentTime = 0; // Reset về 0 để bấm liên tục được
-            clickSnd.play().catch(e => console.log("Click sound blocked"));
-        }
-    });
-});
-// Gán sự kiện click cho cả nút Menu VÀ nút Làm bài (class .btn)
-document.querySelectorAll('.btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const clickSnd = document.getElementById("dotest");
-        if(clickSnd) {
-            clickSnd.currentTime = 0; // Reset để có thể bấm liên tục
-            clickSnd.play().catch(e => console.log("Âm thanh bị chặn:", e));
-        }
-    });
-});
-// Xử lý riêng âm thanh cho nút "Đóng bài" 
-document.addEventListener('click', function(e) {
-    // Trong code của bạn, nút Đóng bài có class là 'close-btn'
-    if (e.target && e.target.classList.contains('close-btn')) {
-        const offSound = document.getElementById("offtest");
-        if (offSound) {
-            offSound.currentTime = 0; // Chạy lại từ đầu nếu bấm nhanh
-            offSound.play().catch(err => console.log("Lỗi phát âm thanh đóng:", err));
-        }
+/* ================= TỐI ƯU CHO PAGESPEED ================= */
+let isFirstLoad = true;
+
+// Hàm phát nhạc thông minh hơn
+function playSound(id) {
+    const audio = document.getElementById(id);
+    if (audio) {
+        audio.currentTime = 0;
+        // Thêm .catch để PSI không báo lỗi khi trình duyệt chặn tự phát
+        audio.play().catch(() => {}); 
     }
+}
+
+// Gom tất cả click vào một chỗ để trình duyệt xử lý mượt hơn
+document.addEventListener('click', function(e) {
+    const target = e.target;
+
+    // Nút Menu môn học
+    if (target.closest('.menu button')) playSound("clickSound");
+    
+    // Nút Làm bài
+    if (target.closest('.btn')) playSound("dotest");
+    
+    // Nút Đóng bài (Check chữ hoặc class)
+    if (target.classList.contains('close-btn') || target.innerText === "Đóng bài") playSound("offtest");
+    
+    // Nút mở Popup Avatar
+    if (target.closest('.avatar-box')) playSound("openpopup");
 });
-// Gán âm thanh cho: Menu, Nút làm bài, Nút đóng, và Nút mở popup (avatar)
-document.querySelectorAll('.avatar-box').forEach(button => {
-    button.addEventListener('click', () => {
-        const clickSnd = document.getElementById("openpopup");
-        if(clickSnd) {
-            clickSnd.currentTime = 0; // Reset để có thể bấm liên tục
-            clickSnd.play().catch(e => console.log("Âm thanh bị chặn:", e));
+
+// Nghe sự kiện Firebase (Chặn tiếng kêu lúc mới load)
+if (typeof db !== 'undefined') {
+    db.ref("events").limitToLast(1).on("child_added", (snap) => {
+        if (isFirstLoad) {
+            isFirstLoad = false;
+            return;
+        }
+        
+        const ev = snap.val();
+        if (ev && (Date.now() - ev.time < 5000)) { // Chỉ phát nếu sự kiện mới trong 5s
+            let sId = ev.type === "post" ? "soundPost" : (ev.type === "like" ? "soundLike" : "soundDislike");
+            playSound(sId);
         }
     });
-});
+}
 </script>
 </body>
 </html>
