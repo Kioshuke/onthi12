@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bảng xếp hạng - LearnHub</title>
+
+<style>
+:root{
+  --bg: #f6f8ff;
+  --card: #ffffff;
+  --text: #1f2937;
+  --sub: #6b7280;
+  --accent: #f59e0b;
+}
+
+body.dark-mode{
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #f1f5f9;
+  --sub: #cbd5f5;
+}
+
+body{
+  margin:0;
+  font-family: "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* HEADER */
+.header{
+  padding:20px;
+  text-align:center;
+  font-size:22px;
+  font-weight:700;
+  background: linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:white;
+}
+
+/* TABLE */
+.container{
+  max-width:900px;
+  margin:20px auto;
+  padding:0 15px;
+}
+
+.leaderboard{
+  background: var(--card);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.row{
+  display:flex;
+  align-items:center;
+  padding:14px 16px;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+}
+
+.row:last-child{
+  border-bottom:none;
+}
+
+.rank{
+  width:50px;
+  font-weight:700;
+  font-size:18px;
+}
+
+.name{
+  flex:1;
+  font-weight:600;
+}
+
+.score{
+  font-weight:700;
+  color:#22c55e;
+}
+
+/* TOP 3 */
+.top1{
+  background: linear-gradient(90deg,#fff7ed,#ffedd5);
+}
+.top2{
+  background: linear-gradient(90deg,#f1f5f9,#e2e8f0);
+}
+.top3{
+  background: linear-gradient(90deg,#fef3c7,#fde68a);
+}
+
+/* DARK MODE FIX */
+body.dark-mode .top1{
+  background: linear-gradient(90deg,#7c2d12,#9a3412);
+}
+body.dark-mode .top2{
+  background: linear-gradient(90deg,#334155,#475569);
+}
+body.dark-mode .top3{
+  background: linear-gradient(90deg,#78350f,#92400e);
+}
+
+/* AVATAR */
+.avatar{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  margin-right:10px;
+  object-fit:cover;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .row{
+    padding:12px;
+  }
+  .name{
+    font-size:14px;
+  }
+  .score{
+    font-size:14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">🏆 Bảng xếp hạng</div>
+
+<div class="container">
+  <div class="leaderboard" id="board">
+
+    <!-- JS sẽ render ở đây -->
+
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+/* 🔥 CONFIG của bạn (copy từ project Firebase) */
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  databaseURL: "YOUR_DB_URL",
+  projectId: "YOUR_ID",
+  storageBucket: "YOUR_BUCKET",
+  messagingSenderId: "YOUR_MSG_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* FORMAT TIME */
+function formatTime(seconds){
+  const h = String(Math.floor(seconds / 3600)).padStart(2,'0');
+  const m = String(Math.floor((seconds % 3600) / 60)).padStart(2,'0');
+  const s = String(seconds % 60).padStart(2,'0');
+  return `${h}:${m}:${s}`;
+}
+
+/* RENDER */
+const board = document.getElementById("board");
+
+const leaderboardRef = ref(db, "leaderboard");
+
+/* 🔥 REALTIME UPDATE */
+onValue(leaderboardRef, (snapshot) => {
+  board.innerHTML = "";
+
+  const data = snapshot.val();
+  if(!data) return;
+
+  const arr = Object.values(data);
+
+  // sort theo time
+  arr.sort((a,b)=>b.time - a.time);
+
+  arr.forEach((user,index)=>{
+    const row = document.createElement("div");
+    row.className = "row";
+
+    if(index===0) row.classList.add("top1");
+    if(index===1) row.classList.add("top2");
+    if(index===2) row.classList.add("top3");
+
+    row.innerHTML = `
+      <div class="rank">#${index+1}</div>
+      <img class="avatar" src="${user.avatar || 'https://i.pravatar.cc/40'}">
+      <div class="name">${user.name}</div>
+      <div class="score">${formatTime(user.time || 0)}</div>
+    `;
+
+    board.appendChild(row);
+  });
+});
+</script>
+
+</body>
+</html>
