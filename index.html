@@ -1574,30 +1574,51 @@ animation: pulse-green 2s infinite;
     z-index: 10;
 }
 
+/* Nút đóng - Bản nâng cấp: Đẹp, Nổi, Nhạy */
 .close-btn {
-    color: #ef4444 !important;
-    border: 1px solid #fecaca !important;
-    background: #fff5f5 !important;
-    /* Chỉnh kích thước vừa đủ để không quá bé */
-    min-width: 85px !important; 
-    height: 40px !important;
-    padding: 0 12px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    
+    /* Giảm padding để chữ gần viền hơn (trước là 12px-15px) */
+    padding: 0 10px !important; 
+    min-width: 75px !important; /* Thu hẹp độ rộng tối thiểu */
+    height: 34px !important;    /* Giảm chiều cao một chút cho thanh thoát */
+    
     font-size: 13px !important;
+    font-weight: 700 !important; /* Chữ đậm lên cho nổi */
+    border-radius: 10px !important; /* Bo góc nhẹ hơn tí cho hiện đại */
+    
+    /* Màu sắc và Viền */
+    color: #ffffff !important;      /* Chữ trắng cho nổi bật */
+    background: #ef4444 !important; /* Nền đỏ đậm (danger) */
+    border: none !important;        /* Bỏ viền cũ */
+    
+    /* Hiệu ứng nổi (Shadow) */
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3) !important;
+    
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    pointer-events: all !important;
+    z-index: 101 !important;
 }
 
-/* Hiệu ứng khi bấm để xác nhận là đã ăn lệnh */
+/* Hiệu ứng Hover - Di chuột vào */
+.close-btn:hover {
+    background: #dc2626 !important; /* Đỏ đậm hơn khi di chuột */
+    box-shadow: 0 6px 12px rgba(239, 68, 68, 0.4) !important;
+    transform: translateY(-1px); /* Nhích nhẹ lên trên */
+}
+
+/* Hiệu ứng Active - Khi nhấn vào */
 .close-btn:active {
-    background: #fee2e2 !important;
-    transform: scale(0.92);
+    transform: scale(0.95) translateY(0); /* Nhấn lún xuống */
+    box-shadow: 0 2px 5px rgba(239, 68, 68, 0.2) !important;
 }
 
+/* Mobile: Nhích sát lề để không đè chữ LearnHub */
 @media (max-width: 1024px) {
-    header {
-        /* Nhích toàn bộ nội dung sang phải để né nút hệ thống */
-        padding-left: 85px !important; 
-    }
     .close-btn {
-        /* Cho nút nhích sát về lề trái nhất có thể */
         margin-left: -5px;
     }
 }
@@ -1973,7 +1994,7 @@ function loadQuiz(btn, link){
   <div class="quiz-box">
 
     <div class="quiz-header">
-      <button class="quiz-btn close-btn" onclick="closeQuiz();" style="pointer-events: all !important;">Đóng</button>
+      <button class="quiz-btn close-btn" onclick="closeQuiz();" style="pointer-events: all !important;">Đóng bài</button>
     </div>
 
     <div class="loader" id="loader">
