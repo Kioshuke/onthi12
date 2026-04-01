@@ -2163,12 +2163,15 @@ show("lich");
 
 });
 </script>
-<script type="module"> import { initializeApp } 
+<script type="module"> 
+import { initializeApp } 
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"; 
 import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, setPersistence, browserLocalPersistence } 
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"; 
 import { getFirestore, doc, setDoc } 
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"; 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { getDatabase, ref, set, get } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 const firebaseConfig = { 
   apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c", 
   authDomain: "onthi12-thpttanhong.firebaseapp.com", 
@@ -2202,8 +2205,35 @@ const allowList = [
 "xmai9839@gmail.com",
 ];
 let activeInterval = null;
-onAuthStateChanged(auth, (user)=>{
-if(user){
+let startTime = Date.now();
+let totalTime = 0;
+
+async function initTime(user){
+  const snapshot = await get(ref(db, "leaderboard/" + user.uid));
+  
+  if(snapshot.exists()){
+    totalTime = snapshot.val().time || 0;
+  }
+}
+onAuthStateChanged(auth, async (user)=>{
+  if(user){
+
+    await initTime(user);
+    startTime = Date.now();
+
+    // ✅ FIX: tránh tạo nhiều interval
+    if(!window.timeInterval){
+      window.timeInterval = setInterval(()=>{
+        const sessionTime = Math.floor((Date.now() - startTime)/1000);
+        const finalTime = totalTime + sessionTime;
+
+        set(ref(db, "leaderboard/" + user.uid), {
+          name: user.displayName,
+          avatar: user.photoURL,
+          time: finalTime
+        });
+
+      }, 5000);
   if(!activeInterval){
   activeInterval = setInterval(()=>{
   const user = auth.currentUser;
