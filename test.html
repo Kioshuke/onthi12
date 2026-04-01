@@ -2234,17 +2234,19 @@ onAuthStateChanged(auth, async (user)=>{
         });
 
       }, 5000);
-    }
-  if(!activeInterval){
+}
+
+if(!activeInterval){
   activeInterval = setInterval(()=>{
-  const user = auth.currentUser;
-  if(user){
-    setDoc(doc(db,"users",user.uid),{
-      lastActive: Date.now(),
-      online: true   // 🔥 THÊM DÒNG NÀY
-    },{ merge:true });
-  }
-}, 5000);
+    const currentUser = auth.currentUser; // ✅ đổi tên
+
+    if(currentUser){
+      setDoc(doc(db,"users",currentUser.uid),{
+        lastActive: Date.now(),
+        online: true
+      },{ merge:true });
+    }
+  }, 5000);
 }
 
 startListening(); // 🔥 luôn gọi
