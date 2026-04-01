@@ -182,7 +182,7 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
   --btn-color:#8b5cf6;
 }
 .menu button[data-subject="bxh"]{
-  --btn-color:#787c18;
+  --btn-color:#068682;
 }
 .menu button[data-subject]:not(.active):hover{
   background: color-mix(in srgb, var(--btn-color) 25%, transparent);
@@ -432,14 +432,11 @@ position: relative;
 height: 100vh;
 }
 
-iframe {
-  width: 100%;
-  height: 100%;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  display: block;
-  background: transparent;
+iframe{
+width:100%;
+height:100%;
+border:none;
+will-change: transform;
 }
 
 /* CLOSE BUTTON */
