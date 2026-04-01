@@ -2190,41 +2190,47 @@ const allowList = [
 let activeInterval = null;
 onAuthStateChanged(auth, (user)=>{
 if(user){
+
+  // ✅ GỬI USER SANG FORUM IFRAME
   function sendUserToForum(user){
-  const forumIframe = document.getElementById("forumFrame");
+    const forumIframe = document.getElementById("forumFrame");
+    if(!forumIframe) return;
 
-  if(!forumIframe) return;
+    const send = () => {
+      forumIframe.contentWindow.postMessage({
+        type: "USER_INFO",
+        user: {
+          uid: user.uid,
+          name: user.displayName || user.email
+        }
+      }, "*");
+    };
 
-  const send = () => {
-    forumIframe.contentWindow.postMessage({
-      type: "USER_INFO",
-      user: {
-        uid: user.uid,
-        name: user.displayName || user.email
-      }
-    }, "*");
-  };
+    if(forumIframe.contentWindow){
+      send();
+    }
 
-  if(forumIframe.contentWindow){
-    send();
+    forumIframe.onload = send;
   }
 
-  forumIframe.onload = send;
-}
-function sendUserToForum(user){
+  // ✅ GỌI HÀM
+  sendUserToForum(user);
+
+  // ✅ UPDATE ONLINE STATUS
   if(!activeInterval){
-  activeInterval = setInterval(()=>{
-  const user = auth.currentUser;
-  if(user){
-    setDoc(doc(db,"users",user.uid),{
-      lastActive: Date.now(),
-      online: true   // 🔥 THÊM DÒNG NÀY
-    },{ merge:true });
+    activeInterval = setInterval(()=>{
+      const u = auth.currentUser;
+      if(u){
+        setDoc(doc(db,"users",u.uid),{
+          lastActive: Date.now(),
+          online: true
+        },{ merge:true });
+      }
+    }, 5000);
   }
-}, 5000);
-}
 
-startListening(); // 🔥 luôn gọi
+  // ✅ START LISTENER
+  startListening();
 
 // vì bên trong đã có:
 
