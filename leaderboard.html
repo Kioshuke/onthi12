@@ -3,200 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bảng xếp hạng - LearnHub</title>
+<title>Forum Hỏi Bài</title>
 
 <style>
-:root{
-  --bg: #f6f8ff;
-  --card: #ffffff;
-  --text: #1f2937;
-  --sub: #6b7280;
-  --accent: #f59e0b;
-}
-
-body.dark-mode{
-  --bg: #0f172a;
-  --card: #1e293b;
-  --text: #f1f5f9;
-  --sub: #cbd5f5;
-}
-
 body{
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
   margin:0;
-  font-family: "Segoe UI", sans-serif;
-  background: var(--bg);
-  color: var(--text);
 }
 
-/* HEADER */
-.header{
+.forum-box{
+  max-width:600px;
+  margin:40px auto;
+  background:#fff;
   padding:20px;
-  text-align:center;
-  font-size:22px;
-  font-weight:700;
-  background: linear-gradient(135deg,#f59e0b,#fbbf24);
-  color:white;
-}
-
-/* TABLE */
-.container{
-  max-width:900px;
-  margin:20px auto;
-  padding:0 15px;
-}
-
-.leaderboard{
-  background: var(--card);
-  border-radius:14px;
-  overflow:hidden;
+  border-radius:12px;
   box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
-.row{
+h2{
+  margin-bottom:15px;
+}
+
+.input-area{
   display:flex;
-  align-items:center;
-  padding:14px 16px;
-  border-bottom:1px solid rgba(0,0,0,0.05);
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:15px;
 }
 
-.row:last-child{
-  border-bottom:none;
+.input-area input{
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
 }
 
-.rank{
-  width:50px;
-  font-weight:700;
-  font-size:18px;
+.input-area button{
+  padding:10px;
+  border:none;
+  background:#2563eb;
+  color:#fff;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.input-area button:hover{
+  background:#1d4ed8;
+}
+
+#forum{
+  max-height:400px;
+  overflow-y:auto;
+}
+
+.message{
+  background:#f8fafc;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:10px;
+  animation: fadeIn 0.3s ease;
 }
 
 .name{
-  flex:1;
-  font-weight:600;
+  font-weight:bold;
+  color:#2563eb;
 }
 
-.score{
-  font-weight:700;
-  color:#22c55e;
+.time{
+  font-size:12px;
+  color:#888;
 }
 
-/* TOP 3 */
-.top1{
-  background: linear-gradient(90deg,#fff7ed,#ffedd5);
-}
-.top2{
-  background: linear-gradient(90deg,#f1f5f9,#e2e8f0);
-}
-.top3{
-  background: linear-gradient(90deg,#fef3c7,#fde68a);
-}
-
-/* DARK MODE FIX */
-body.dark-mode .top1{
-  background: linear-gradient(90deg,#7c2d12,#9a3412);
-}
-body.dark-mode .top2{
-  background: linear-gradient(90deg,#334155,#475569);
-}
-body.dark-mode .top3{
-  background: linear-gradient(90deg,#78350f,#92400e);
-}
-
-/* AVATAR */
-.avatar{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  margin-right:10px;
-  object-fit:cover;
-}
-
-/* RESPONSIVE */
-@media(max-width:600px){
-  .row{
-    padding:12px;
-  }
-  .name{
-    font-size:14px;
-  }
-  .score{
-    font-size:14px;
-  }
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(5px);}
+  to{opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">🏆 Bảng xếp hạng</div>
+<div class="forum-box">
+  <h2>💬 Hỏi bài nhanh</h2>
 
-<div class="container">
-  <div class="leaderboard" id="board">
-
-    <!-- JS sẽ render ở đây -->
-
+  <div class="input-area">
+    <input id="name" placeholder="Tên của bạn (hoặc để ẩn danh)">
+    <input id="message" placeholder="Nhập câu hỏi...">
+    <button onclick="sendMessage()">Gửi</button>
   </div>
+
+  <div id="forum"></div>
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-/* 🔥 CONFIG của bạn (copy từ project Firebase) */
+// 🔥 DÁN CONFIG FIREBASE CỦA M VÀO ĐÂY
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  databaseURL: "YOUR_DB_URL",
-  projectId: "YOUR_ID",
-  storageBucket: "YOUR_BUCKET",
-  messagingSenderId: "YOUR_MSG_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
+  authDomain: "onthi12-thpttanhong.firebaseapp.com",
+  databaseURL: "https://onthi12-thpttanhong-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  projectId: "onthi12-thpttanhong"
 };
+const auth = getAuth(app);
+let currentUser = null;
 
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+
+    // auto điền tên
+    document.getElementById("name").value = user.displayName || "User";
+  }
+});
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-/* FORMAT TIME */
-function formatTime(seconds){
-  const h = String(Math.floor(seconds / 3600)).padStart(2,'0');
-  const m = String(Math.floor((seconds % 3600) / 60)).padStart(2,'0');
-  const s = String(seconds % 60).padStart(2,'0');
-  return `${h}:${m}:${s}`;
+let lastSend = 0;
+
+// 👉 gửi tin
+window.sendMessage = function(){
+  let now = Date.now();
+  if(now - lastSend < 3000){
+    alert("Chờ 3s 😅");
+    return;
+  }
+  lastSend = now;
+
+  let name = "Ẩn danh";
+
+    if(currentUser){
+    name = currentUser.displayName || currentUser.email;
+    }
+  let msg = document.getElementById("message").value;
+
+  if(msg.trim() === "") return;
+
+    push(ref(db, "forum"), {
+    name: name,
+    message: msg,
+    time: Date.now(),
+    uid: currentUser ? currentUser.uid : null,
+    avatar: currentUser ? currentUser.photoURL : null
+    });
+
+  document.getElementById("message").value = "";
 }
 
-/* RENDER */
-const board = document.getElementById("board");
+// 👉 hiển thị realtime
+onValue(ref(db, "forum"), (snapshot)=>{
+  let data = snapshot.val();
+  let html = "";
 
-const leaderboardRef = ref(db, "leaderboard");
+  for(let id in data){
+    let item = data[id];
 
-/* 🔥 REALTIME UPDATE */
-onValue(leaderboardRef, (snapshot) => {
-  board.innerHTML = "";
-
-  const data = snapshot.val();
-  if(!data) return;
-
-  const arr = Object.values(data);
-
-  // sort theo time
-  arr.sort((a,b)=>b.time - a.time);
-
-  arr.forEach((user,index)=>{
-    const row = document.createElement("div");
-    row.className = "row";
-
-    if(index===0) row.classList.add("top1");
-    if(index===1) row.classList.add("top2");
-    if(index===2) row.classList.add("top3");
-
-    row.innerHTML = `
-      <div class="rank">#${index+1}</div>
-      <img class="avatar" src="${user.avatar || 'https://i.pravatar.cc/40'}">
-      <div class="name">${user.name}</div>
-      <div class="score">${formatTime(user.time || 0)}</div>
+    html += `
+      <div class="message">
+        <div class="name">${item.name}</div>
+        <div>${item.message}</div>
+        <div class="time">${new Date(item.time).toLocaleString()}</div>
+      </div>
     `;
+  }
 
-    board.appendChild(row);
-  });
+  document.getElementById("forum").innerHTML = html;
+
+  // auto scroll xuống cuối
+  document.getElementById("forum").scrollTop = 999999;
 });
 </script>
 
