@@ -1100,7 +1100,7 @@ body.dark-mode .card{
 <button data-subject="tin" onclick="show('tin')">Tin Học</button>
 <button data-subject="su" onclick="show('su')">Lịch Sử</button>
 <button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
-<button data-subject="bxh" onclick="show('bxh')">Forum</button>
+<button data-subject="bxh" onclick="show('bxh')">Bảng xếp hạng</button>
 </div>
 <div class="ticker-container">
 <div class="ticker-text">
@@ -2162,6 +2162,8 @@ const firebaseConfig = {
   storageBucket: "onthi12-thpttanhong.firebasestorage.app", 
   messagingSenderId: "922115936320", 
   appId: "1:922115936320:web:67b86c06af9149ff584fa5" 
+  databaseURL: "https://onthi12-thpttanhong-default-rtdb.asia-southeast1.firebasedatabase.app"
+
 }; 
 const app = initializeApp(firebaseConfig); 
 const auth = getAuth(app); await setPersistence(auth, browserLocalPersistence); 
