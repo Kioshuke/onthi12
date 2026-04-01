@@ -2185,6 +2185,7 @@ const auth = getAuth(app);
 await setPersistence(auth, browserLocalPersistence);
 console.log("✅ Persistence OK");
 const db = getFirestore(app); 
+const rtdb = getDatabase(app);
 const provider = new GoogleAuthProvider();
 
 const allowList = [
@@ -2211,7 +2212,7 @@ let startTime = Date.now();
 let totalTime = 0;
 
 async function initTime(user){
-  const snapshot = await get(ref(db, "leaderboard/" + user.uid));
+  const snapshot = await get(ref(rtdb, "leaderboard/" + user.uid))
   
   if(snapshot.exists()){
     totalTime = snapshot.val().time || 0;
@@ -2229,7 +2230,7 @@ onAuthStateChanged(auth, async (user)=>{
         const sessionTime = Math.floor((Date.now() - startTime)/1000);
         const finalTime = totalTime + sessionTime;
 
-        set(ref(db, "leaderboard/" + user.uid), {
+        set(ref(rtdb, "leaderboard/" + user.uid), {
           name: user.displayName,
           avatar: user.photoURL,
           time: finalTime
@@ -2311,7 +2312,11 @@ if (popupAvatar) {
 }
 
 } else {
-  document.getElementById("loginBox").style.display = "flex";
+  setTimeout(()=>{
+    if(!auth.currentUser){
+      document.getElementById("loginBox").style.display = "flex";
+    }
+  }, 800);
 }
 });
 // chỉ giữ login trong tab hiện tại
@@ -2360,7 +2365,7 @@ window.googleLogin = function() {
             // Nếu dùng trình duyệt máy tính bình thường thì load lại để cập nhật giao diện
             setTimeout(()=>{
               window.location.reload();
-            }, 500);
+            }, 1500);
         }
 
     })
