@@ -53,23 +53,45 @@ body {
   margin-bottom: 20px;
 }
 
+/* Sửa lại textarea để ẩn thanh cuộn khi tự giãn */
 textarea {
   width: 100%;
   box-sizing: border-box;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
+  padding: 14px 16px; /* Tăng padding cho thoáng */
+  border-radius: 12px; /* Bo tròn hơn chút */
+  border: 1.5px solid #e2e8f0; /* Viền thanh mảnh hơn */
   resize: none;
   outline: none;
-  font-size: 14px;
-  transition: 0.2s;
+  
+  /* Chỉnh kiểu chữ ở đây */
+  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.6; /* Khoảng cách dòng giúp văn bản không bị dính lẹo */
+  color: #1e293b; /* Màu chữ xanh đen chuyên nghiệp */
+  
+  transition: all 0.2s ease;
+  overflow: hidden;
+  min-height: 100px;
+  background-color: #f8fafc; /* Nền hơi xám nhẹ cho phân biệt với card */
+}
+
+/* Style cho dòng đếm ký tự */
+.char-counter {
+  font-size: 12px;
+  color: var(--sub);
+  text-align: right;
+  margin-top: 4px;
 }
 
 textarea:focus {
+  background-color: #ffffff; /* Khi gõ thì nền trắng lên */
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(37,99,235,0.1);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); /* Hiệu ứng tỏa sáng nhẹ */
 }
-
+textarea::placeholder {
+  color: #94a3b8;
+  font-style: italic;
+}
 button {
   margin-top: 10px;
   padding: 10px 16px;
@@ -94,7 +116,12 @@ button:hover { background: #1d4ed8; transform: translateY(-1px); }
 }
 
 .meta { font-size: 13px; color: var(--sub); margin-bottom: 6px; }
-
+.post div[style*="white-space: pre-wrap;"] {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #334155;
+  margin-top: 5px; /* Thêm chút khoảng cách với phần tên user cho thoáng */
+}
 .reply {
   margin-left: 20px;
   border-left: 2px solid #e2e8f0;
@@ -165,7 +192,9 @@ button:hover { background: #1d4ed8; transform: translateY(-1px); }
 
   <div class="post-box">
     <div id="replyingTo"></div>
-    <textarea id="content" placeholder="Bạn muốn trao đổi điều gì?"></textarea>
+    <textarea id="content" placeholder="Bạn muốn trao đổi điều gì?" maxlength="500"></textarea>
+    <div class="char-counter"><span id="charCount">0</span>/500</div>
+    
     <button onclick="sendPost()">Đăng</button>
     <button id="muteBtn" onclick="toggleMute()" style="background: #64748b; margin-left: 5px; min-width: 140px;">
       🔊 Âm thanh: Bật
@@ -247,19 +276,30 @@ window.addEventListener("message", (event) => {
 window.addEventListener("load", () => {
   updateMuteUI();
   
-  const modal = document.getElementById("customModal");
+  const contentArea = document.getElementById("content");
+  const charCountDisplay = document.getElementById("charCount");
 
-  // Gán sự kiện cho nút Hủy
-  document.getElementById("modalCancel").onclick = () => {
-    modal.style.display = "none";
-  };
-  
-  // Gán sự kiện cho nút Xác nhận
+  // Xử lý Tự giãn và Đếm ký tự
+  contentArea.addEventListener("input", function() {
+    // 1. Logic Tự giãn (Auto-resize)
+    this.style.height = "auto"; // Reset về auto để tính lại chiều cao
+    this.style.height = (this.scrollHeight) + "px"; // Gán chiều cao mới theo nội dung
+
+    // 2. Logic Đếm ký tự
+    const len = this.value.length;
+    charCountDisplay.innerText = len;
+    
+    // Đổi màu nếu sắp hết dung lượng (ví dụ trên 450 ký tự thì hiện màu đỏ)
+    charCountDisplay.style.color = len >= 450 ? "#ef4444" : "#64748b";
+  });
+
+  // --- Giữ nguyên các đoạn code cũ của bạn bên dưới ---
+  const modal = document.getElementById("customModal");
+  document.getElementById("modalCancel").onclick = () => { modal.style.display = "none"; };
   document.getElementById("modalConfirm").onclick = () => {
     if (typeof modalAction === "function") modalAction();
     modal.style.display = "none";
   };
-
   window.parent.postMessage({ type: "FORUM_READY" }, "*");
 });
 
@@ -293,7 +333,9 @@ function playSound(type){
 
 /* ================= GỬI BÀI VIẾT / PHẢN HỒI ================= */
 function sendPost(){
-  const text = document.getElementById("content").value.trim();
+  const contentArea = document.getElementById("content");
+  const text = contentArea.value.trim();
+
   if(!text) return;
   if(!currentUser) {
     alert("Vui lòng chờ ứng dụng xác thực thông tin người dùng...");
@@ -308,13 +350,19 @@ function sendPost(){
     time: Date.now()
   };
 
+  // 1. Đẩy dữ liệu lên Firebase
   db.ref("posts").push(newPost);
   db.ref("events").push({ type: "post", time: Date.now() });
 
-  document.getElementById("content").value = "";
+  // 2. Reset toàn bộ form về trạng thái ban đầu
+  contentArea.value = ""; 
+  contentArea.style.height = "80px"; // Đặt lại chiều cao min-height bạn đã set trong CSS
+  document.getElementById("charCount").innerText = "0"; 
+  document.getElementById("charCount").style.color = "#64748b"; // Reset màu chữ đếm ký tự
+  
   replyTo = null;
   document.getElementById("replyingTo").innerHTML = "";
-  document.getElementById("content").focus();
+  contentArea.focus();
 }
 
 /* ================= HIỂN THỊ BÀI VIẾT (RENDER) ================= */
