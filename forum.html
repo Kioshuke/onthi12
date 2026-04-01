@@ -406,21 +406,29 @@ function toggleLike(postId, isLike){
     });
   });
 }
+let isFirstLoad = true;
+
 function playSound(type){
   let sound;
-
   if(type === "post") sound = document.getElementById("soundPost");
   if(type === "like") sound = document.getElementById("soundLike");
   if(type === "dislike") sound = document.getElementById("soundDislike");
 
   if(sound){
     sound.currentTime = 0;
-    sound.play();
+    sound.play().catch(e => console.log("Âm thanh bị chặn bởi trình duyệt"));
   }
 }
 
-// nghe realtime events
+// 2. THAY ĐỔI ĐOẠN NGHE EVENTS NÀY
 db.ref("events").limitToLast(1).on("child_added", (snap) => {
+  // Nếu là lần đầu load trang, Firebase sẽ trả về dữ liệu cũ nhất hiện có
+  // Chúng ta gán isFirstLoad = false và return để không phát nhạc cái dữ liệu cũ đó
+  if (isFirstLoad) {
+    isFirstLoad = false; 
+    return; 
+  }
+
   const ev = snap.val();
   if(!ev) return;
 
