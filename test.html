@@ -2183,6 +2183,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig); 
 const auth = getAuth(app);
 await setPersistence(auth, browserLocalPersistence);
+document.getElementById("loginBox").style.display = "none";
 console.log("✅ Persistence OK");
 const db = getFirestore(app); 
 const rtdb = getDatabase(app);
@@ -2312,11 +2313,7 @@ if (popupAvatar) {
 }
 
 } else {
-  setTimeout(()=>{
-    if(!auth.currentUser){
-      document.getElementById("loginBox").style.display = "flex";
-    }
-  }, 800);
+  document.getElementById("loginBox").style.display = "flex";
 }
 });
 // chỉ giữ login trong tab hiện tại
@@ -2363,9 +2360,9 @@ window.googleLogin = function() {
             }, 1000);
         } else {
             // Nếu dùng trình duyệt máy tính bình thường thì load lại để cập nhật giao diện
-            setTimeout(()=>{
-              window.location.reload();
-            }, 1500);
+          setTimeout(()=>{
+            window.location.reload();
+          }, 2500);
         }
 
     })
