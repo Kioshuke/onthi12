@@ -135,7 +135,7 @@ button:hover { background: #1d4ed8; transform: translateY(-1px); }
 </div>
 
 <script>
-/* ================= FIREBASE ================= */
+/* ================= FIREBASE CONFIG ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
   authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -147,28 +147,30 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-/* ================= STATE & STORAGE ================= */
+/* ================= BIẾN TOÀN CỤC ================= */
 let currentUser = null;
 let replyTo = null;
 let isFirstLoad = true;
 let isMuted = localStorage.getItem("forum_muted") === "true";
 
-/* ================= RECEIVE USER ================= */
+/* ================= NHẬN THÔNG TIN USER TỪ APP CHÍNH ================= */
 window.addEventListener("message", (event) => {
   if (event.data && event.data.type === "USER_INFO") {
     currentUser = event.data.user;
     document.getElementById("userBox").innerText = currentUser.name;
+    // Tải lại bài viết để cập nhật quyền Xóa/Sửa khi đã nhận diện User
     db.ref("posts").once("value", renderPosts);
   }
 });
 
-/* ================= READY ================= */
+/* ================= KHI TRANG LOAD XONG ================= */
 window.addEventListener("load", () => {
   updateMuteUI();
+  // Thông báo cho App Android/Web cha rằng Forum đã sẵn sàng
   window.parent.postMessage({ type: "FORUM_READY" }, "*");
 });
 
-/* ================= MUTE CONTROL ================= */
+/* ================= QUẢN LÝ ÂM THANH ================= */
 function updateMuteUI() {
   const btn = document.getElementById("muteBtn");
   if (isMuted) {
@@ -194,63 +196,70 @@ function toggleMute() {
 
 function playSound(type){
   if (isMuted) return;
-  let sound = document.getElementById("sound" + type.charAt(0).toUpperCase() + type.slice(1));
+  // type có thể là 'post', 'like', 'dislike'
+  let id = "sound" + type.charAt(0).toUpperCase() + type.slice(1);
+  let sound = document.getElementById(id);
   if(sound){
     sound.currentTime = 0;
-    sound.play().catch(e => console.log("Sound error"));
+    sound.play().catch(e => console.log("Sound error: " + e));
   }
 }
 
-/* ================= SEND POST ================= */
+/* ================= GỬI BÀI VIẾT / PHẢN HỒI ================= */
 function sendPost(){
   const text = document.getElementById("content").value.trim();
-  if(!text || !currentUser) return;
+  if(!text) return;
+  if(!currentUser) {
+    alert("Vui lòng chờ ứng dụng xác thực thông tin người dùng...");
+    return;
+  }
 
   const newPost = {
-    text,
+    text: text,
     user: currentUser.name,
     uid: currentUser.uid || null,
-    parentId: replyTo || null,
+    parentId: replyTo || null, // Nếu là reply thì có ID bài gốc, không thì null
     time: Date.now()
   };
 
   db.ref("posts").push(newPost);
+  // Đẩy sự kiện để các máy khác phát âm thanh
   db.ref("events").push({ type: "post", time: Date.now() });
 
+  // Reset form
   document.getElementById("content").value = "";
   replyTo = null;
   document.getElementById("replyingTo").innerHTML = "";
   document.getElementById("content").focus();
 }
 
-/* ================= RENDER LOGIC ================= */
+/* ================= HIỂN THỊ BÀI VIẾT (RENDER) ================= */
 db.ref("posts").on("value", renderPosts);
 
 function renderPosts(snapshot){
   const data = snapshot.val();
   const container = document.getElementById("posts");
+  if(!container) return;
   container.innerHTML = "";
+  
   if(!data) return;
 
-  const posts = Object.entries(data).map(([id,val]) => ({ id, ...val }));
-  const parents = posts.filter(p => !p.parentId).sort((a, b) => b.time - a.time);
+  // Chuyển dữ liệu Firebase thành mảng bài viết có kèm ID
+  const allPosts = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+  
+  // Lọc bài viết gốc (không có parentId) và sắp xếp mới nhất lên đầu
+  const parents = allPosts.filter(p => !p.parentId).sort((a, b) => b.time - a.time);
 
   parents.forEach(post => {
-    container.appendChild(createPostElement(post, posts));
+    container.appendChild(createPostElement(post, allPosts));
   });
 }
 
-function formatTime(timestamp){
-  const d = new Date(timestamp);
-  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}
-
-/* ================= CREATE POST ELEMENT ================= */
 function createPostElement(post, allPosts){
   const div = document.createElement("div");
   div.className = "post";
 
-  // Kiểm tra quyền: Nếu UID bài viết trùng với người dùng đang đăng nhập
+  // Kiểm tra quyền sở hữu bài viết
   const isOwner = currentUser && post.uid === currentUser.uid;
   const ownerActions = isOwner ? `
     <span class="edit-btn" onclick="editPost('${post.id}', '${post.text.replace(/'/g, "\\'")}')">✎ Sửa</span>
@@ -262,8 +271,7 @@ function createPostElement(post, allPosts){
       <b>${post.user}</b> • ${formatTime(post.time)} 
       ${ownerActions}
     </div>
-    <div id="text-${post.id}">${post.text}</div>
-
+    <div style="white-space: pre-wrap;">${post.text}</div>
     <div class="actions">
       <span class="like-btn" onclick="toggleLike('${post.id}', true)">👍 ${countLikes(post)}</span>
       <span class="like-btn" onclick="toggleLike('${post.id}', false)">👎 ${countDislikes(post)}</span>
@@ -271,37 +279,31 @@ function createPostElement(post, allPosts){
     </div>
   `;
 
-  // Tạo container chứa các phản hồi
+  // Container cho các phản hồi con
   const repliesContainer = document.createElement("div");
-  
-  // Gọi hàm render đệ quy để hiển thị reply
-  renderReplies(post.id, repliesContainer, allPosts);
-  
+  renderReplies(post.id, repliesContainer, allPosts, 1);
   div.appendChild(repliesContainer);
+  
   return div;
 }
 
-/* ================= RENDER REPLIES (ĐỆ QUY) ================= */
-function renderReplies(parentId, container, allPosts, level = 1){
-  // Tìm tất cả các phản hồi có parentId trùng với id bài viết hiện tại
+/* ================= HIỂN THỊ PHẢN HỒI (ĐỆ QUY) ================= */
+function renderReplies(parentId, container, allPosts, level){
   const replies = allPosts.filter(p => p.parentId === parentId);
   if(replies.length === 0) return;
 
-  let expanded = false; // Trạng thái đóng/mở của nút "Xem thêm"
-  const maxShow = 2;    // Số lượng reply hiển thị mặc định
+  let expanded = false;
+  const maxShow = 2; // Hiển thị tối đa 2 reply đầu, còn lại ẩn sau nút "Xem thêm"
   const wrapper = document.createElement("div");
 
-  function renderList(){
+  const renderList = () => {
     wrapper.innerHTML = "";
-    // Nếu expanded = true thì hiện hết, ngược lại chỉ hiện 2 cái đầu
     const list = expanded ? replies : replies.slice(0, maxShow);
 
     list.forEach(rep => {
       const repDiv = document.createElement("div");
       repDiv.className = "reply";
-      repDiv.style.marginLeft = (level * 20) + "px"; // Thụt lề theo cấp độ
-
-      // Kiểm tra quyền xóa sửa cho từng phản hồi
+      
       const isOwner = currentUser && rep.uid === currentUser.uid;
       const ownerActions = isOwner ? `
         <span class="edit-btn" onclick="editPost('${rep.id}', '${rep.text.replace(/'/g, "\\'")}')">✎</span>
@@ -309,54 +311,44 @@ function renderReplies(parentId, container, allPosts, level = 1){
       ` : "";
 
       repDiv.innerHTML = `
-        <div class="meta">
-          <b>${rep.user}</b> • ${formatTime(rep.time)} 
-          ${ownerActions}
-        </div>
-        <div>${rep.text}</div>
+        <div class="meta"><b>${rep.user}</b> • ${formatTime(rep.time)} ${ownerActions}</div>
+        <div style="white-space: pre-wrap;">${rep.text}</div>
         <div class="reply-btn" onclick="setReply('${rep.id}', '${rep.user}')">↳ Trả lời</div>
       `;
-
-      // Tiếp tục đệ quy để tìm các phản hồi cấp sâu hơn (con của rep hiện tại)
+      
+      // Gọi đệ quy cho các phản hồi con của phản hồi này
       renderReplies(rep.id, repDiv, allPosts, level + 1);
       wrapper.appendChild(repDiv);
     });
 
-    // Logic nút Xem thêm / Thu gọn
+    // Nút Xem thêm / Thu gọn
     if(replies.length > maxShow){
       const btn = document.createElement("div");
       btn.className = "reply-btn";
-      btn.style.marginLeft = (level * 20) + "px";
+      btn.style.marginTop = "8px";
       btn.innerText = expanded ? "Thu gọn" : `Xem thêm ${replies.length - maxShow} phản hồi`;
-      
       btn.onclick = (e) => {
-        e.stopPropagation(); // Ngăn sự kiện bị lan ra ngoài
+        e.stopPropagation();
         expanded = !expanded;
-        renderList(); // Vẽ lại danh sách reply khi bấm nút
+        renderList();
       };
       wrapper.appendChild(btn);
     }
-  }
+  };
 
   renderList();
   container.appendChild(wrapper);
 }
 
-/* ================= XÓA & SỬA LOGIC ================= */
-function deletePost(postId) {
-  if (confirm("Bạn có chắc chắn muốn xóa bài viết này không?")) {
-    db.ref("posts/" + postId).remove().catch(err => alert("Lỗi: " + err));
-  }
+/* ================= TIỆN ÍCH (THỜI GIAN, LIKE) ================= */
+function formatTime(t){
+  const d = new Date(t);
+  return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
 }
 
-function editPost(postId, oldText) {
-  const newText = prompt("Chỉnh sửa nội dung:", oldText);
-  if (newText !== null && newText.trim() !== "" && newText !== oldText) {
-    db.ref("posts/" + postId).update({ text: newText.trim(), isEdited: true, editTime: Date.now() });
-  }
-}
+function countLikes(p){ return p.likes ? Object.keys(p.likes).length : 0; }
+function countDislikes(p){ return p.dislikes ? Object.keys(p.dislikes).length : 0; }
 
-/* ================= ACTIONS ================= */
 function setReply(id, user){
   replyTo = id;
   document.getElementById("replyingTo").innerHTML = `<div class="replying">Đang trả lời: ${user}</div>`;
@@ -364,14 +356,30 @@ function setReply(id, user){
   document.getElementById("content").focus();
 }
 
-function countLikes(post){ return post.likes ? Object.keys(post.likes).length : 0; }
-function countDislikes(post){ return post.dislikes ? Object.keys(post.dislikes).length : 0; }
+/* ================= LOGIC XÓA & SỬA ================= */
+function deletePost(postId) {
+  if (confirm("Xác nhận xóa bài viết này?")) {
+    db.ref("posts/" + postId).remove().catch(e => alert("Lỗi xóa bài: " + e));
+  }
+}
 
+function editPost(postId, oldText) {
+  const newText = prompt("Chỉnh sửa nội dung bài viết:", oldText);
+  if (newText !== null && newText.trim() !== "" && newText !== oldText) {
+    db.ref("posts/" + postId).update({
+      text: newText.trim(),
+      isEdited: true,
+      editTime: Date.now()
+    });
+  }
+}
+
+/* ================= TƯƠNG TÁC LIKE/DISLIKE ================= */
 function toggleLike(postId, isLike){
   if(!currentUser) return;
   const ref = db.ref("posts/" + postId);
-  ref.once("value").then(snapshot => {
-    const post = snapshot.val();
+  ref.once("value").then(snap => {
+    const post = snap.val();
     let likes = post.likes || {};
     let dislikes = post.dislikes || {};
     const uid = currentUser.uid;
@@ -388,6 +396,7 @@ function toggleLike(postId, isLike){
   });
 }
 
+/* ================= LẮNG NGHE SỰ KIỆN ÂM THANH ================= */
 db.ref("events").limitToLast(1).on("child_added", (snap) => {
   if (isFirstLoad) { isFirstLoad = false; return; }
   const ev = snap.val();
