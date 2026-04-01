@@ -112,6 +112,46 @@ button:hover { background: #1d4ed8; transform: translateY(-1px); }
 .edit-btn, .delete-btn { font-size: 12px; cursor: pointer; margin-left: 10px; padding: 2px 6px; border-radius: 4px; transition: 0.2s; }
 .edit-btn { color: #059669; background: #ecfdf5; }
 .delete-btn { color: #dc2626; background: #fef2f2; }
+/* Style cho Popup */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none; /* Ẩn mặc định */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-content h3 { margin-top: 0; color: var(--text); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+#modalInput {
+  width: 100%; height: 100px; padding: 10px;
+  border-radius: 8px; border: 1px solid #ddd;
+  margin-top: 10px; font-family: inherit;
+  box-sizing: border-box; /* Thêm dòng này */
+}
+
+.btn-secondary { background: #e2e8f0; color: #475569; }
+.btn-secondary:hover { background: #cbd5e1; }
+
 </style>
 </head>
 <body>
@@ -152,6 +192,36 @@ let currentUser = null;
 let replyTo = null;
 let isFirstLoad = true;
 let isMuted = localStorage.getItem("forum_muted") === "true";
+let modalAction = null; // Lưu hàm thực thi khi nhấn Xác nhận
+
+/* ================= HỆ THỐNG MODAL (POPUP) ================= */
+function showModal(title, msg, isInput, currentText, onConfirm) {
+  const modal = document.getElementById("customModal");
+  const modalInput = document.getElementById("modalInput");
+  const modalMsg = document.getElementById("modalMsg");
+  const modalTitle = document.getElementById("modalTitle");
+
+  modalTitle.innerText = title;
+  modalMsg.innerText = msg;
+  modalAction = onConfirm; 
+  
+  if (isInput) {
+    modalInput.style.display = "block";
+    modalInput.value = currentText;
+    modalMsg.style.display = "none";
+    setTimeout(() => modalInput.focus(), 100); // Tự động focus vào ô nhập
+  } else {
+    modalInput.style.display = "none";
+    modalMsg.style.display = "block";
+  }
+  modal.style.display = "flex";
+}
+// Gán sự kiện cho 2 nút trong Modal
+document.getElementById("modalCancel").onclick = () => modal.style.display = "none";
+btnConfirm.onclick = () => {
+  if (modalAction) modalAction();
+  modal.style.display = "none";
+};
 
 /* ================= NHẬN THÔNG TIN USER TỪ APP CHÍNH ================= */
 window.addEventListener("message", (event) => {
@@ -164,10 +234,27 @@ window.addEventListener("message", (event) => {
 /* ================= KHI TRANG LOAD XONG ================= */
 window.addEventListener("load", () => {
   updateMuteUI();
-  // Thông báo cho App Android/Web cha rằng Forum đã sẵn sàng
+  
+  const modal = document.getElementById("customModal");
+  
+  // Nút Hủy
+  document.getElementById("modalCancel").onclick = () => {
+    modal.style.display = "none";
+  };
+  
+  // Nút Xác nhận
+  document.getElementById("modalConfirm").onclick = () => {
+    if (typeof modalAction === "function") modalAction();
+    modal.style.display = "none";
+  };
+
+  // Đóng modal khi nhấn ra ngoài vùng trắng
+  window.onclick = (event) => {
+    if (event.target == modal) modal.style.display = "none";
+  };
+
   window.parent.postMessage({ type: "FORUM_READY" }, "*");
 });
-
 /* ================= QUẢN LÝ ÂM THANH ================= */
 function updateMuteUI() {
   const btn = document.getElementById("muteBtn");
@@ -361,54 +448,39 @@ function setReply(id, user){
   document.getElementById("content").focus();
 }
 
-/* ================= LOGIC XÓA & SỬA ================= */
 /* ================= LOGIC XÓA SẠCH DATABASE (XÓA CẢ CON) ================= */
 async function deletePost(postId) {
-  if (confirm("Xác nhận xóa bài viết này và tất cả phản hồi liên quan?")) {
-    try {
-      // 1. Lấy toàn bộ dữ liệu posts để tìm các con
-      const snapshot = await db.ref("posts").once("value");
-      const allData = snapshot.val();
-      
-      if (!allData) return;
-
-      // 2. Hàm tìm tất cả ID của con, cháu, chắt... (đệ quy)
-      function getAllChildIds(id, data) {
-        let ids = [id];
-        for (let key in data) {
-          if (data[key].parentId === id) {
-            ids = ids.concat(getAllChildIds(key, data));
-          }
-        }
-        return ids;
+  showModal("Xác nhận xóa", "Bạn có chắc muốn xóa bài này và các phản hồi liên quan?", false, "", async () => {
+    // Giữ nguyên logic xóa đệ quy hôm nãy ở đây
+    const snapshot = await db.ref("posts").once("value");
+    const allData = snapshot.val();
+    if (!allData) return;
+    
+    function getAllChildIds(id, data) {
+      let ids = [id];
+      for (let key in data) {
+        if (data[key].parentId === id) ids = ids.concat(getAllChildIds(key, data));
       }
-
-      const idsToDelete = getAllChildIds(postId, allData);
-
-      // 3. Thực hiện xóa tất cả các ID đã tìm được
-      const updates = {};
-      idsToDelete.forEach(id => {
-        updates["posts/" + id] = null;
-      });
-
-      await db.ref().update(updates);
-      console.log("Đã xóa sạch:", idsToDelete);
-      
-    } catch (error) {
-      alert("Lỗi khi xóa bài: " + error);
+      return ids;
     }
-  }
+
+    const updates = {};
+    getAllChildIds(postId, allData).forEach(id => { updates["posts/" + id] = null; });
+    await db.ref().update(updates);
+  });
 }
 
 function editPost(postId, oldText) {
-  const newText = prompt("Chỉnh sửa nội dung bài viết:", oldText);
-  if (newText !== null && newText.trim() !== "" && newText !== oldText) {
-    db.ref("posts/" + postId).update({
-      text: newText.trim(),
-      isEdited: true,
-      editTime: Date.now()
-    });
-  }
+  showModal("Chỉnh sửa bài viết", "", true, oldText, () => {
+    const newText = modalInput.value.trim();
+    if (newText && newText !== oldText) {
+      db.ref("posts/" + postId).update({
+        text: newText,
+        isEdited: true,
+        editTime: Date.now()
+      });
+    }
+  });
 }
 
 /* ================= TƯƠNG TÁC LIKE/DISLIKE ================= */
@@ -440,7 +512,19 @@ db.ref("events").limitToLast(1).on("child_added", (snap) => {
   if(ev) playSound(ev.type);
 });
 </script>
-
+<div id="customModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 id="modalTitle">Thông báo</h3>
+    <div id="modalBody">
+      <textarea id="modalInput" style="display:none;"></textarea>
+      <p id="modalMsg"></p>
+    </div>
+    <div class="modal-actions">
+      <button id="modalCancel" class="btn-secondary">Hủy</button>
+      <button id="modalConfirm" class="btn-primary">Xác nhận</button>
+    </div>
+  </div>
+</div>
 <audio id="soundPost" src="sound/post.mp3" preload="auto"></audio>
 <audio id="soundLike" src="sound/like.mp3" preload="auto"></audio>
 <audio id="soundDislike" src="sound/dislike.mp3" preload="auto"></audio>
