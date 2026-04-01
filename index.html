@@ -1031,7 +1031,7 @@ body.dark-mode .card{
 </head>
 <body>
 <div id="loadingOverlay">
-<audio id="startup" src="windows-xp-startup.mp3" preload="auto"></audio>
+<audio id="clickSound" src="https://www.myinstants.com/instant/mocor-os-keypad-sound-6295/embed/" preload="auto"></audio>
 <div class="loading-box">
   <div class="loading-brand">
     <img src="logoweb.webp" alt="logo">
@@ -2519,9 +2519,6 @@ function updateProgress(percent){
 
   if(percent >= 100){
     fill.classList.add("complete");
-    const sound = document.getElementById("startup");
-      sound.currentTime = 0;
-      sound.play();
 
     setTimeout(() => {
       document.getElementById("loadingOverlay").classList.add("hide");
@@ -2564,6 +2561,16 @@ toggle.addEventListener("change", () => {
     
     // Gửi tín hiệu ngay lập tức sang iframe
     sendDarkModeToIframe(isDark);
+});
+// Gán sự kiện click cho tất cả các nút trong Menu
+document.querySelectorAll('.menu button').forEach(button => {
+    button.addEventListener('click', () => {
+        const clickSnd = document.getElementById("clickSound");
+        if(clickSnd) {
+            clickSnd.currentTime = 0; // Reset về 0 để bấm liên tục được
+            clickSnd.play().catch(e => console.log("Click sound blocked"));
+        }
+    });
 });
 </script>
 </body>
