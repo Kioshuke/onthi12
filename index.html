@@ -181,6 +181,9 @@ box-shadow: 0 4px 12px color-mix(in srgb, var(--btn-color) 40%, transparent);
 .menu button[data-subject="hoa"]{
   --btn-color:#8b5cf6;
 }
+.menu button[data-subject="bxh"]{
+  --btn-color:#00fff7c1;
+}
 .menu button[data-subject]:not(.active):hover{
   background: color-mix(in srgb, var(--btn-color) 25%, transparent);
 }
@@ -1097,7 +1100,7 @@ body.dark-mode .card{
 <button data-subject="tin" onclick="show('tin')">Tin Học</button>
 <button data-subject="su" onclick="show('su')">Lịch Sử</button>
 <button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
-<button data-subject="leaderboard" onclick="window.location.href='leaderboard.html'">Bảng xếp hạng</button>
+<button data-subject="leaderboard" onclick="show('bxh')">Bảng xếp hạng</button>
 </div>
 <div class="ticker-container">
 <div class="ticker-text">
