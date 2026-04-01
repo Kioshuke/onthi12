@@ -1057,7 +1057,7 @@ body.dark-mode .card{
 <div class="popup-box">
 <span class="close">&times;</span>
 <h3>📢 Thông báo</h3>
-<p style="text-align:left; padding-left:20px; line-height:1.7;"> Nodata</p>
+<p style="text-align:left; padding-left:20px; line-height:1.7;"> Tính năng mới: LearnHub Forum, bạn có thể trao đổi với các thành viên khác tại đây. Để truy cập hãy bấm vào ô Forum trên thanh Menu!</p>
 </div>
 </div>
 <div id="loginBox" style="
@@ -1100,7 +1100,7 @@ body.dark-mode .card{
 <button data-subject="tin" onclick="show('tin')">Tin Học</button>
 <button data-subject="su" onclick="show('su')">Lịch Sử</button>
 <button data-subject="hoa" onclick="show('hoa')">Hoá Học</button>
-<button data-subject="bxh" onclick="show('bxh')">Bảng xếp hạng</button>
+<button data-subject="bxh" onclick="show('bxh')">Forum</button>
 </div>
 <div class="ticker-container">
 <div class="ticker-text">
@@ -1902,7 +1902,8 @@ Lịch Thi Cuối Học Kỳ II - THPT Tân Hồng
 <div id="bxh" style="display:none">
   <div class="grid">
     <iframe 
-      src="leaderboard.html" 
+      id="forumFrame" 
+      src="forum.html" 
       style="width:100%; height:600px; border:none; border-radius:12px;">
     </iframe>
   </div>
@@ -2189,19 +2190,47 @@ const allowList = [
 let activeInterval = null;
 onAuthStateChanged(auth, (user)=>{
 if(user){
-  if(!activeInterval){
-  activeInterval = setInterval(()=>{
-  const user = auth.currentUser;
-  if(user){
-    setDoc(doc(db,"users",user.uid),{
-      lastActive: Date.now(),
-      online: true   // 🔥 THÊM DÒNG NÀY
-    },{ merge:true });
-  }
-}, 5000);
-}
 
-startListening(); // 🔥 luôn gọi
+  // ✅ GỬI USER SANG FORUM IFRAME
+  function sendUserToForum(user){
+    const forumIframe = document.getElementById("forumFrame");
+    if(!forumIframe) return;
+
+    const send = () => {
+      forumIframe.contentWindow.postMessage({
+        type: "USER_INFO",
+        user: {
+          uid: user.uid,
+          name: user.displayName || user.email
+        }
+      }, "*");
+    };
+
+    if(forumIframe.contentWindow){
+      send();
+    }
+
+    forumIframe.onload = send;
+  }
+
+  // ✅ GỌI HÀM
+  sendUserToForum(user);
+
+  // ✅ UPDATE ONLINE STATUS
+  if(!activeInterval){
+    activeInterval = setInterval(()=>{
+      const u = auth.currentUser;
+      if(u){
+        setDoc(doc(db,"users",u.uid),{
+          lastActive: Date.now(),
+          online: true
+        },{ merge:true });
+      }
+    }, 5000);
+  }
+
+  // ✅ START LISTENER
+  startListening();
 
 // vì bên trong đã có:
 
