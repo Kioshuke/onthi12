@@ -219,6 +219,9 @@ window.addEventListener("load", () => {
 function sendPost(){
   const text = document.getElementById("content").value.trim();
   if(!text || !currentUser) return;
+  const sound = document.getElementById("clickSound");
+  sound.currentTime = 0;
+  sound.play();
 
   const newPost = {
     text,
@@ -399,6 +402,6 @@ function toggleLike(postId, isLike){
   });
 }
 </script>
-
+<audio id="clickSound" src="minecraft_click (mp3cut.net).mp3" preload="auto"></audio>
 </body>
 </html>
