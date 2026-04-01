@@ -1033,6 +1033,8 @@ body.dark-mode .card{
 <div id="loadingOverlay">
 <audio id="clickSound" src="sound/mocor-os-keypad-sound.mp3" preload="auto"></audio>
 <audio id="dotest" src="sound/windows-xp-startup.mp3" preload="auto"></audio>
+<audio id="offtest" src="sound/preview_4.mp3" preload="auto"></audio>
+<audio id="openpopup" src="sound/discord-notification.mp3" preload="auto"></audio>
 <div class="loading-box">
   <div class="loading-brand">
     <img src="logoweb.webp" alt="logo">
@@ -2577,6 +2579,26 @@ document.querySelectorAll('.menu button').forEach(button => {
 document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', () => {
         const clickSnd = document.getElementById("dotest");
+        if(clickSnd) {
+            clickSnd.currentTime = 0; // Reset để có thể bấm liên tục
+            clickSnd.play().catch(e => console.log("Âm thanh bị chặn:", e));
+        }
+    });
+});
+// Thêm .close-btn và .close vào danh sách để phát âm thanh khi đóng
+document.querySelectorAll('.close').forEach(button => {
+    button.addEventListener('click', () => {
+        const clickSnd = document.getElementById("offtest");
+        if(clickSnd) {
+            clickSnd.currentTime = 0; // Reset để bấm liên tục được
+            clickSnd.play().catch(e => console.log("Âm thanh bị chặn:", e));
+        }
+    });
+});
+// Gán âm thanh cho: Menu, Nút làm bài, Nút đóng, và Nút mở popup (avatar)
+document.querySelectorAll('.avatar-box').forEach(button => {
+    button.addEventListener('click', () => {
+        const clickSnd = document.getElementById("openpopup");
         if(clickSnd) {
             clickSnd.currentTime = 0; // Reset để có thể bấm liên tục
             clickSnd.play().catch(e => console.log("Âm thanh bị chặn:", e));
