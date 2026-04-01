@@ -2220,65 +2220,47 @@ async function initTime(user){
   }
 }
 onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        await initTime(user);
-        startTime = Date.now();
+  if (user) {
+    // 1. Lo cho dữ liệu thời gian trước
+    await initTime(user);
+    startTime = Date.now();
 
-        if(!window.timeInterval){
-            window.timeInterval = setInterval(() => {
-                const sessionTime = Math.floor((Date.now() - startTime) / 1000);
-                set(ref(rtdb, "leaderboard/" + user.uid), {
-                    name: user.displayName,
-                    avatar: user.photoURL,
-                    time: totalTime + sessionTime
-                });
-            }, 5000);
-        }
-
-        // --- Giao diện Greeting & Profile (Đưa vào đây mới chạy được) ---
-        const hour = new Date().getHours();
-        let greeting = "";
-        let quote = "";
-
-        if (hour >= 5 && hour < 11) {
-            greeting = "☀️ Chào buổi sáng,";
-            quote = "Chúc bạn một ngày học tập năng suất!";
-        } else if (hour >= 11 && hour < 14) {
-            greeting = "🌤️ Nghỉ trưa thôi,";
-            quote = "Nạp năng lượng để chiến đấu tiếp nhé!";
-        } else if (hour >= 14 && hour < 18) {
-            greeting = "☕ Chào buổi chiều,";
-            quote = "Sắp hết ngày rồi, cố gắng lên nào!";
-        } else {
-            greeting = "🌙 Chào buổi tối,";
-            quote = "Đừng thức quá khuya, giữ sức khỏe nhé!";
-        }
-
-        if(document.getElementById("greetingText")) document.getElementById("greetingText").innerText = greeting;
-        if(document.getElementById("popupName")) document.getElementById("popupName").innerText = user.displayName || "Bạn";
-        if(document.getElementById("popupEmail")) document.getElementById("popupEmail").innerText = user.email;
-        if(document.getElementById("popupQuote")) document.getElementById("popupQuote").innerText = quote;
-        if(document.getElementById("welcomeText")) document.getElementById("welcomeText").innerText = "Chúc bạn ôn thi thật tốt,";
-        if(document.getElementById("userName")) document.getElementById("userName").innerText = user.displayName;
-
-        const userAvatar = document.getElementById("userAvatar");
-        if(userAvatar) userAvatar.src = user.photoURL || "https://i.imgur.com/6VBx3io.png";
-
-        const popupAvatar = document.getElementById("popupAvatar");
-        if (popupAvatar) popupAvatar.src = user.photoURL || "https://i.imgur.com/6VBx3io.png";
-
-        // Ẩn login, chạy listener online
-        document.getElementById("loginBox").style.display = "none";
-        startListening(); 
-
-    } else {
-        // Nếu chưa login thì hiện box đăng nhập
-        document.getElementById("loginBox").style.display = "flex";
+    if(!window.timeInterval){
+      window.timeInterval = setInterval(() => {
+        const sessionTime = Math.floor((Date.now() - startTime) / 1000);
+        set(ref(rtdb, "leaderboard/" + user.uid), {
+          name: user.displayName,
+          avatar: user.photoURL,
+          time: totalTime + sessionTime
+        });
+      }, 5000);
     }
+
+    // 2. CHÍNH LÀ ĐÂY: Đưa logic hiển thị vào TRONG này
+    const hour = new Date().getHours();
+    let greeting = hour < 11 ? "☀️ Chào buổi sáng," : hour < 14 ? "🌤️ Nghỉ trưa thôi," : hour < 18 ? "☕ Chào buổi chiều," : "🌙 Chào buổi tối,";
+    let quote = hour < 11 ? "Chúc bạn học tốt!" : hour < 14 ? "Nghỉ ngơi tí nhé!" : hour < 18 ? "Cố lên sắp xong rồi!" : "Ngủ sớm giữ sức nhé!";
+
+    // Gán dữ liệu vào HTML (Phải ở trong này mới có biến 'user')
+    if(document.getElementById("greetingText")) document.getElementById("greetingText").innerText = greeting;
+    if(document.getElementById("popupName")) document.getElementById("popupName").innerText = user.displayName || "Bạn";
+    if(document.getElementById("popupEmail")) document.getElementById("popupEmail").innerText = user.email;
+    if(document.getElementById("popupQuote")) document.getElementById("popupQuote").innerText = quote;
+    if(document.getElementById("userName")) document.getElementById("userName").innerText = user.displayName;
+    
+    const avatarPath = user.photoURL || "https://i.imgur.com/6VBx3io.png";
+    if(document.getElementById("userAvatar")) document.getElementById("userAvatar").src = avatarPath;
+    if(document.getElementById("popupAvatar")) document.getElementById("popupAvatar").src = avatarPath;
+
+    // Hiện giao diện, ẩn login
+    document.getElementById("loginBox").style.display = "none";
+    startListening(); 
+
+  } else {
+    // Nếu chưa đăng nhập thì hiện cái khung Login lên
+    document.getElementById("loginBox").style.display = "flex";
+  }
 });
-// chỉ giữ login trong tab hiện tại
-
-
 window.googleLogin = async function() {
     try {
         const result = await signInWithPopup(auth, provider);
