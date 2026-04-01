@@ -2585,15 +2585,16 @@ document.querySelectorAll('.btn').forEach(button => {
         }
     });
 });
-// Thêm .close-btn và .close vào danh sách để phát âm thanh khi đóng
-document.querySelectorAll('.quiz-btn close-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const clickSnd = document.getElementById("offtest");
-        if(clickSnd) {
-            clickSnd.currentTime = 0; // Reset để bấm liên tục được
-            clickSnd.play().catch(e => console.log("Âm thanh bị chặn:", e));
+// Xử lý riêng âm thanh cho nút "Đóng bài" 
+document.addEventListener('click', function(e) {
+    // Trong code của bạn, nút Đóng bài có class là 'close-btn'
+    if (e.target && e.target.classList.contains('close-btn')) {
+        const offSound = document.getElementById("offtest");
+        if (offSound) {
+            offSound.currentTime = 0; // Chạy lại từ đầu nếu bấm nhanh
+            offSound.play().catch(err => console.log("Lỗi phát âm thanh đóng:", err));
         }
-    });
+    }
 });
 // Gán âm thanh cho: Menu, Nút làm bài, Nút đóng, và Nút mở popup (avatar)
 document.querySelectorAll('.avatar-box').forEach(button => {
