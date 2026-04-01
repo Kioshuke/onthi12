@@ -114,6 +114,10 @@ button:hover { background: #1d4ed8; transform: translateY(-1px); }
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   transition: 0.2s;
 }
+.post:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
 
 .meta { font-size: 13px; color: var(--sub); margin-bottom: 6px; }
 .post div[style*="white-space: pre-wrap;"] {
@@ -131,7 +135,46 @@ button:hover { background: #1d4ed8; transform: translateY(-1px); }
 
 .reply-btn { font-size: 12px; color: var(--primary); cursor: pointer; margin-top: 6px; }
 .reply-btn:hover { text-decoration: underline; }
-.replying { font-size: 13px; color: #ef4444; margin-bottom: 6px; }
+/* Khung bọc trạng thái đang trả lời */
+.reply-status-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #eff6ff; /* Màu xanh nhạt dễ chịu */
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 4px solid var(--primary);
+  animation: slideIn 0.3s ease;
+}
+
+.replying-text {
+  font-size: 13px;
+  color: #1e40af;
+  font-weight: 500;
+}
+
+.replying-text b {
+  color: var(--primary);
+  background: rgba(37, 99, 235, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.cancel-reply {
+  font-size: 18px;
+  color: #64748b;
+  cursor: pointer;
+  line-height: 1;
+  transition: 0.2s;
+}
+
+.cancel-reply:hover { color: #ef4444; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 .actions { margin-top: 8px; display: flex; gap: 12px; align-items: center; }
 .like-btn { font-size: 13px; cursor: pointer; color: #334155; background: #f1f5f9; padding: 4px 8px; border-radius: 6px; transition: 0.2s; }
@@ -489,10 +532,28 @@ function formatTime(t){
 function countLikes(p){ return p.likes ? Object.keys(p.likes).length : 0; }
 function countDislikes(p){ return p.dislikes ? Object.keys(p.dislikes).length : 0; }
 
-function setReply(id, user){
+function setReply(id, user) {
   replyTo = id;
-  document.getElementById("replyingTo").innerHTML = `<div class="replying">Đang trả lời: ${user}</div>`;
+  const replyBox = document.getElementById("replyingTo");
+  
+  replyBox.innerHTML = `
+    <div class="reply-status-container">
+      <div class="replying-text">
+        <span>↳ Đang trả lời <b>@${user}</b></span>
+      </div>
+      <div class="cancel-reply" onclick="cancelReply()" title="Hủy trả lời">×</div>
+    </div>
+  `;
+  
+  // Cuộn lên khung nhập liệu
   document.querySelector(".post-box").scrollIntoView({ behavior: "smooth", block: "center" });
+  document.getElementById("content").focus();
+}
+
+// Thêm hàm hủy trả lời mới
+function cancelReply() {
+  replyTo = null;
+  document.getElementById("replyingTo").innerHTML = "";
   document.getElementById("content").focus();
 }
 
