@@ -40,17 +40,60 @@
         .container { max-width: 1600px; margin: 0 auto; padding: 0 20px; }
 
         header {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex; 
+            align-items: center;
+            justify-content: space-between;
             background: var(--card); 
             padding: 12px 20px; 
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
             margin-bottom: 25px;
-            position: sticky; top: 15px; z-index: 100;
+            position: sticky; 
+            top: 15px; 
+            z-index: 100;
             border: 1px solid rgba(0,0,0,0.05);
+            gap: 10px; /* Khoảng cách tối thiểu để không đè nhau */
         }
 
-        .logo-area h2 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--primary); }
+        .logo-area {
+            flex: 1;
+            display: flex;
+            justify-content: center; /* Cố gắng đưa chữ ra giữa vùng còn lại */
+            overflow: hidden;
+        }
+
+        .logo-area h2 { 
+            margin: 0; 
+            font-size: 1.1rem; 
+            font-weight: 800; 
+            color: var(--primary); 
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        #action-button-container {
+            flex-shrink: 0; /* Giữ nguyên kích thước nút Nộp bài */
+        }
+
+        /* --- Xử lý riêng cho Mobile --- */
+        @media (max-width: 1024px) {
+            header {
+                /* Nhích toàn bộ nội dung sang phải 70px để né nút Đóng bài */
+                padding-left: 70px !important; 
+                padding-right: 10px;
+            }
+            
+            .logo-area h2 {
+                font-size: 1rem; /* Thu nhỏ chữ một chút để cân đối */
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding-left: 80px !important; /* Màn hình càng nhỏ càng cần nhích nhiều hơn */
+            }
+        }
         /* Định nghĩa màu sắc khi ở chế độ Dark Mode */
         body.dark-mode {
             --bg: #0f172a;
