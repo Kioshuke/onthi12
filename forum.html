@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Forum</title>
+  <title>LearnHub Forum</title>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -112,12 +112,13 @@ button:hover { background: #1d4ed8; transform: translateY(-1px); }
 .edit-btn, .delete-btn { font-size: 12px; cursor: pointer; margin-left: 10px; padding: 2px 6px; border-radius: 4px; transition: 0.2s; }
 .edit-btn { color: #059669; background: #ecfdf5; }
 .delete-btn { color: #dc2626; background: #fef2f2; }
+
 /* Style cho Popup */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  display: none; /* Ẩn mặc định */
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
@@ -146,7 +147,7 @@ button:hover { background: #1d4ed8; transform: translateY(-1px); }
   width: 100%; height: 100px; padding: 10px;
   border-radius: 8px; border: 1px solid #ddd;
   margin-top: 10px; font-family: inherit;
-  box-sizing: border-box; /* Thêm dòng này */
+  box-sizing: border-box;
 }
 
 .btn-secondary { background: #e2e8f0; color: #475569; }
@@ -174,6 +175,24 @@ button:hover { background: #1d4ed8; transform: translateY(-1px); }
   <div id="posts"></div>
 </div>
 
+<div id="customModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 id="modalTitle">Thông báo</h3>
+    <div id="modalBody">
+      <textarea id="modalInput" style="display:none;"></textarea>
+      <p id="modalMsg"></p>
+    </div>
+    <div class="modal-actions">
+      <button id="modalCancel" class="btn-secondary">Hủy</button>
+      <button id="modalConfirm" style="background: var(--primary); color: white; border:none; padding: 10px 16px; border-radius: 10px; cursor:pointer;">Xác nhận</button>
+    </div>
+  </div>
+</div>
+
+<audio id="soundPost" src="sound/post.mp3" preload="auto"></audio>
+<audio id="soundLike" src="sound/like.mp3" preload="auto"></audio>
+<audio id="soundDislike" src="sound/dislike.mp3" preload="auto"></audio>
+
 <script>
 /* ================= FIREBASE CONFIG ================= */
 const firebaseConfig = {
@@ -192,7 +211,7 @@ let currentUser = null;
 let replyTo = null;
 let isFirstLoad = true;
 let isMuted = localStorage.getItem("forum_muted") === "true";
-let modalAction = null; // Lưu hàm thực thi khi nhấn Xác nhận
+let modalAction = null; 
 
 /* ================= HỆ THỐNG MODAL (POPUP) ================= */
 function showModal(title, msg, isInput, currentText, onConfirm) {
@@ -209,19 +228,12 @@ function showModal(title, msg, isInput, currentText, onConfirm) {
     modalInput.style.display = "block";
     modalInput.value = currentText;
     modalMsg.style.display = "none";
-    setTimeout(() => modalInput.focus(), 100); // Tự động focus vào ô nhập
   } else {
     modalInput.style.display = "none";
     modalMsg.style.display = "block";
   }
   modal.style.display = "flex";
 }
-// Gán sự kiện cho 2 nút trong Modal
-document.getElementById("modalCancel").onclick = () => modal.style.display = "none";
-btnConfirm.onclick = () => {
-  if (modalAction) modalAction();
-  modal.style.display = "none";
-};
 
 /* ================= NHẬN THÔNG TIN USER TỪ APP CHÍNH ================= */
 window.addEventListener("message", (event) => {
@@ -236,25 +248,21 @@ window.addEventListener("load", () => {
   updateMuteUI();
   
   const modal = document.getElementById("customModal");
-  
-  // Nút Hủy
+
+  // Gán sự kiện cho nút Hủy
   document.getElementById("modalCancel").onclick = () => {
     modal.style.display = "none";
   };
   
-  // Nút Xác nhận
+  // Gán sự kiện cho nút Xác nhận
   document.getElementById("modalConfirm").onclick = () => {
     if (typeof modalAction === "function") modalAction();
     modal.style.display = "none";
   };
 
-  // Đóng modal khi nhấn ra ngoài vùng trắng
-  window.onclick = (event) => {
-    if (event.target == modal) modal.style.display = "none";
-  };
-
   window.parent.postMessage({ type: "FORUM_READY" }, "*");
 });
+
 /* ================= QUẢN LÝ ÂM THANH ================= */
 function updateMuteUI() {
   const btn = document.getElementById("muteBtn");
@@ -271,17 +279,10 @@ function toggleMute() {
   isMuted = !isMuted;
   localStorage.setItem("forum_muted", isMuted); 
   updateMuteUI();
-  if(isMuted) {
-    ["soundPost", "soundLike", "soundDislike"].forEach(id => {
-      const s = document.getElementById(id);
-      if(s) { s.pause(); s.currentTime = 0; }
-    });
-  }
 }
 
 function playSound(type){
   if (isMuted) return;
-  // type có thể là 'post', 'like', 'dislike'
   let id = "sound" + type.charAt(0).toUpperCase() + type.slice(1);
   let sound = document.getElementById(id);
   if(sound){
@@ -303,15 +304,13 @@ function sendPost(){
     text: text,
     user: currentUser.name,
     uid: currentUser.uid || null,
-    parentId: replyTo || null, // Nếu là reply thì có ID bài gốc, không thì null
+    parentId: replyTo || null,
     time: Date.now()
   };
 
   db.ref("posts").push(newPost);
-  // Đẩy sự kiện để các máy khác phát âm thanh
   db.ref("events").push({ type: "post", time: Date.now() });
 
-  // Reset form
   document.getElementById("content").value = "";
   replyTo = null;
   document.getElementById("replyingTo").innerHTML = "";
@@ -328,7 +327,6 @@ function renderPosts(snapshot){
   const container = document.getElementById("posts");
   if(!container) return;
   
-  // Lưu vị trí cuộn trang hiện tại để không bị nhảy màn hình khi có bài mới
   const scrollPos = window.scrollY;
   container.innerHTML = "";
   
@@ -341,7 +339,6 @@ function renderPosts(snapshot){
     container.appendChild(createPostElement(post, allPosts));
   });
 
-  // Trả lại vị trí cuộn
   window.scrollTo(0, scrollPos);
 }
 
@@ -349,7 +346,6 @@ function createPostElement(post, allPosts){
   const div = document.createElement("div");
   div.className = "post";
 
-  // Kiểm tra quyền sở hữu bài viết
   const isOwner = currentUser && post.uid === currentUser.uid;
   const ownerActions = isOwner ? `
     <span class="edit-btn" onclick="editPost('${post.id}', '${post.text.replace(/'/g, "\\'")}')">✎ Sửa</span>
@@ -370,7 +366,6 @@ function createPostElement(post, allPosts){
     </div>
   `;
 
-  // Container cho các phản hồi con
   const repliesContainer = document.createElement("div");
   renderReplies(post.id, repliesContainer, allPosts, 1);
   div.appendChild(repliesContainer);
@@ -378,13 +373,12 @@ function createPostElement(post, allPosts){
   return div;
 }
 
-/* ================= HIỂN THỊ PHẢN HỒI (ĐỆ QUY) ================= */
 function renderReplies(parentId, container, allPosts, level){
   const replies = allPosts.filter(p => p.parentId === parentId);
   if(replies.length === 0) return;
 
   let expanded = false;
-  const maxShow = 2; // Hiển thị tối đa 2 reply đầu, còn lại ẩn sau nút "Xem thêm"
+  const maxShow = 2;
   const wrapper = document.createElement("div");
 
   const renderList = () => {
@@ -408,12 +402,10 @@ function renderReplies(parentId, container, allPosts, level){
         <div class="reply-btn" onclick="setReply('${rep.id}', '${rep.user}')">↳ Trả lời</div>
       `;
       
-      // Gọi đệ quy cho các phản hồi con của phản hồi này
       renderReplies(rep.id, repDiv, allPosts, level + 1);
       wrapper.appendChild(repDiv);
     });
 
-    // Nút Xem thêm / Thu gọn
     if(replies.length > maxShow){
       const btn = document.createElement("div");
       btn.className = "reply-btn";
@@ -432,10 +424,18 @@ function renderReplies(parentId, container, allPosts, level){
   container.appendChild(wrapper);
 }
 
-/* ================= TIỆN ÍCH (THỜI GIAN, LIKE) ================= */
+/* ================= TIỆN ÍCH (THỜI GIAN THEO FORMAT YÊU CẦU) ================= */
 function formatTime(t){
   const d = new Date(t);
-  return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+  const date = d.getDate().toString().padStart(2,'0');
+  const month = (d.getMonth()+1).toString().padStart(2,'0');
+  const year = d.getFullYear();
+  const hours = d.getHours().toString().padStart(2,'0');
+  const minutes = d.getMinutes().toString().padStart(2,'0');
+  const seconds = d.getSeconds().toString().padStart(2,'0');
+  
+  // Format: Ngày/Tháng/Năm Giờ:Phút:Giây
+  return `${date}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
 
 function countLikes(p){ return p.likes ? Object.keys(p.likes).length : 0; }
@@ -448,10 +448,9 @@ function setReply(id, user){
   document.getElementById("content").focus();
 }
 
-/* ================= LOGIC XÓA SẠCH DATABASE (XÓA CẢ CON) ================= */
+/* ================= LOGIC XÓA SẠCH DATABASE ================= */
 async function deletePost(postId) {
   showModal("Xác nhận xóa", "Bạn có chắc muốn xóa bài này và các phản hồi liên quan?", false, "", async () => {
-    // Giữ nguyên logic xóa đệ quy hôm nãy ở đây
     const snapshot = await db.ref("posts").once("value");
     const allData = snapshot.val();
     if (!allData) return;
@@ -472,7 +471,7 @@ async function deletePost(postId) {
 
 function editPost(postId, oldText) {
   showModal("Chỉnh sửa bài viết", "", true, oldText, () => {
-    const newText = modalInput.value.trim();
+    const newText = document.getElementById("modalInput").value.trim();
     if (newText && newText !== oldText) {
       db.ref("posts/" + postId).update({
         text: newText,
@@ -512,21 +511,5 @@ db.ref("events").limitToLast(1).on("child_added", (snap) => {
   if(ev) playSound(ev.type);
 });
 </script>
-<div id="customModal" class="modal-overlay">
-  <div class="modal-content">
-    <h3 id="modalTitle">Thông báo</h3>
-    <div id="modalBody">
-      <textarea id="modalInput" style="display:none;"></textarea>
-      <p id="modalMsg"></p>
-    </div>
-    <div class="modal-actions">
-      <button id="modalCancel" class="btn-secondary">Hủy</button>
-      <button id="modalConfirm" class="btn-primary">Xác nhận</button>
-    </div>
-  </div>
-</div>
-<audio id="soundPost" src="sound/post.mp3" preload="auto"></audio>
-<audio id="soundLike" src="sound/like.mp3" preload="auto"></audio>
-<audio id="soundDislike" src="sound/dislike.mp3" preload="auto"></audio>
 </body>
 </html>
