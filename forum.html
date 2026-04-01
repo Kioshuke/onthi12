@@ -157,7 +157,16 @@ window.addEventListener("load", () => {
 /* ================= SEND POST ================= */
 function sendPost(){
   const text = document.getElementById("content").value.trim();
-  if(!text || !currentUser) return;
+
+  if(!text){
+    console.log("❌ No text");
+    return;
+  }
+
+  if(!currentUser){
+    console.log("❌ No user");
+    return;
+  }
 
   const newPost = {
     text,
@@ -167,7 +176,15 @@ function sendPost(){
     time: Date.now()
   };
 
-  db.ref("posts").push(newPost);
+  console.log("📤 Sending post:", newPost);
+
+  db.ref("posts").push(newPost)
+    .then(() => {
+      console.log("✅ Post saved");
+    })
+    .catch(err => {
+      console.error("❌ Firebase error:", err);
+    });
 
   document.getElementById("content").value = "";
   replyTo = null;
