@@ -158,8 +158,6 @@ window.addEventListener("message", (event) => {
   if (event.data && event.data.type === "USER_INFO") {
     currentUser = event.data.user;
     document.getElementById("userBox").innerText = currentUser.name;
-    // Tải lại bài viết để cập nhật quyền Xóa/Sửa khi đã nhận diện User
-    db.ref("posts").once("value", renderPosts);
   }
 });
 
@@ -234,25 +232,30 @@ function sendPost(){
 }
 
 /* ================= HIỂN THỊ BÀI VIẾT (RENDER) ================= */
-db.ref("posts").on("value", renderPosts);
+db.ref("posts").on("value", (snapshot) => {
+  renderPosts(snapshot);
+});
 
 function renderPosts(snapshot){
   const data = snapshot.val();
   const container = document.getElementById("posts");
   if(!container) return;
+  
+  // Lưu vị trí cuộn trang hiện tại để không bị nhảy màn hình khi có bài mới
+  const scrollPos = window.scrollY;
   container.innerHTML = "";
   
   if(!data) return;
 
-  // Chuyển dữ liệu Firebase thành mảng bài viết có kèm ID
   const allPosts = Object.entries(data).map(([id, val]) => ({ id, ...val }));
-  
-  // Lọc bài viết gốc (không có parentId) và sắp xếp mới nhất lên đầu
   const parents = allPosts.filter(p => !p.parentId).sort((a, b) => b.time - a.time);
 
   parents.forEach(post => {
     container.appendChild(createPostElement(post, allPosts));
   });
+
+  // Trả lại vị trí cuộn
+  window.scrollTo(0, scrollPos);
 }
 
 function createPostElement(post, allPosts){
@@ -269,6 +272,7 @@ function createPostElement(post, allPosts){
   div.innerHTML = `
     <div class="meta">
       <b>${post.user}</b> • ${formatTime(post.time)} 
+      ${post.isEdited ? '<i style="font-size:10px">(đã chỉnh sửa)</i>' : ''}
       ${ownerActions}
     </div>
     <div style="white-space: pre-wrap;">${post.text}</div>
@@ -303,6 +307,7 @@ function renderReplies(parentId, container, allPosts, level){
     list.forEach(rep => {
       const repDiv = document.createElement("div");
       repDiv.className = "reply";
+      repDiv.style.marginLeft = (level * 15) + "px";
       
       const isOwner = currentUser && rep.uid === currentUser.uid;
       const ownerActions = isOwner ? `
@@ -357,9 +362,41 @@ function setReply(id, user){
 }
 
 /* ================= LOGIC XÓA & SỬA ================= */
-function deletePost(postId) {
-  if (confirm("Xác nhận xóa bài viết này?")) {
-    db.ref("posts/" + postId).remove().catch(e => alert("Lỗi xóa bài: " + e));
+/* ================= LOGIC XÓA SẠCH DATABASE (XÓA CẢ CON) ================= */
+async function deletePost(postId) {
+  if (confirm("Xác nhận xóa bài viết này và tất cả phản hồi liên quan?")) {
+    try {
+      // 1. Lấy toàn bộ dữ liệu posts để tìm các con
+      const snapshot = await db.ref("posts").once("value");
+      const allData = snapshot.val();
+      
+      if (!allData) return;
+
+      // 2. Hàm tìm tất cả ID của con, cháu, chắt... (đệ quy)
+      function getAllChildIds(id, data) {
+        let ids = [id];
+        for (let key in data) {
+          if (data[key].parentId === id) {
+            ids = ids.concat(getAllChildIds(key, data));
+          }
+        }
+        return ids;
+      }
+
+      const idsToDelete = getAllChildIds(postId, allData);
+
+      // 3. Thực hiện xóa tất cả các ID đã tìm được
+      const updates = {};
+      idsToDelete.forEach(id => {
+        updates["posts/" + id] = null;
+      });
+
+      await db.ref().update(updates);
+      console.log("Đã xóa sạch:", idsToDelete);
+      
+    } catch (error) {
+      alert("Lỗi khi xóa bài: " + error);
+    }
   }
 }
 
