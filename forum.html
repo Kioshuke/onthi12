@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Forum</title>
 
-  <!-- Firebase (Realtime Database) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
@@ -25,14 +24,12 @@ body {
   color: var(--text);
 }
 
-/* container */
 .container {
   max-width: 900px;
   margin: auto;
   padding: 20px;
 }
 
-/* header */
 .header {
   background: linear-gradient(135deg, #2563eb, #1e40af);
   color: white;
@@ -58,7 +55,6 @@ body {
   border-radius: 8px;
 }
 
-/* post box */
 .post-box {
   background: var(--card);
   padding: 16px;
@@ -84,7 +80,6 @@ textarea:focus {
   box-shadow: 0 0 0 2px rgba(37,99,235,0.1);
 }
 
-/* button */
 button {
   margin-top: 10px;
   padding: 10px 16px;
@@ -102,7 +97,6 @@ button:hover {
   transform: translateY(-1px);
 }
 
-/* post */
 .post {
   background: var(--card);
   padding: 14px;
@@ -122,7 +116,6 @@ button:hover {
   margin-bottom: 6px;
 }
 
-/* reply */
 .reply {
   margin-left: 20px;
   border-left: 2px solid #e2e8f0;
@@ -146,6 +139,7 @@ button:hover {
   color: #ef4444;
   margin-bottom: 6px;
 }
+
 .actions {
   margin-top: 8px;
   display: flex;
@@ -171,22 +165,25 @@ button:hover {
 <body>
 
 <div class="container">
-<div class="header">
-  <div class="logo">🚀 LearnHub Forum</div>
-  <div class="user-box" id="userBox">Chưa đăng nhập</div>
-</div>
+  <div class="header">
+    <div class="logo">🚀 LearnHub Forum</div>
+    <div class="user-box" id="userBox">Chưa đăng nhập</div>
+  </div>
 
   <div class="post-box">
     <div id="replyingTo"></div>
     <textarea id="content" placeholder="Bạn muốn trao đổi điều gì?"></textarea>
     <button onclick="sendPost()">Đăng</button>
+    <button id="muteBtn" onclick="toggleMute()" style="background: #64748b; margin-left: 5px; min-width: 140px;">
+      🔊 Âm thanh: Bật
+    </button>
   </div>
 
   <div id="posts"></div>
 </div>
 
 <script>
-/* ================= FIREBASE ================= */
+/* ================= FIREBASE & CONFIG ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
   authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -194,27 +191,67 @@ const firebaseConfig = {
   projectId: "onthi12-thpttanhong",
   storageBucket: "onthi12-thpttanhong.appspot.com"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-/* ================= USER STATE ================= */
+/* ================= STATE & STORAGE ================= */
 let currentUser = null;
 let replyTo = null;
+let isFirstLoad = true;
 
-/* ================= RECEIVE USER ================= */
-window.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "USER_INFO") {
-    currentUser = event.data.user;
-    document.getElementById("userBox").innerText = currentUser.name;
+// KIỂM TRA BỘ NHỚ: Nếu trước đó đã tắt thì giữ nguyên trạng thái tắt
+let isMuted = localStorage.getItem("forum_muted") === "true"; 
+
+/* ================= MUTE CONTROL ================= */
+function updateMuteUI() {
+  const btn = document.getElementById("muteBtn");
+  if (isMuted) {
+    btn.innerHTML = "🔇 Âm thanh: Tắt";
+    btn.style.background = "#ef4444"; 
+  } else {
+    btn.innerHTML = "🔊 Âm thanh: Bật";
+    btn.style.background = "#64748b"; 
   }
-});
+}
 
-/* ================= READY ================= */
+function toggleMute() {
+  isMuted = !isMuted;
+  localStorage.setItem("forum_muted", isMuted); // Lưu vào bộ nhớ máy
+  updateMuteUI();
+  
+  // Nếu tắt thì dừng ngay lập tức các âm đang chạy
+  if(isMuted) {
+    ["soundPost", "soundLike", "soundDislike"].forEach(id => {
+      const s = document.getElementById(id);
+      if(s) { s.pause(); s.currentTime = 0; }
+    });
+  }
+}
+
+function playSound(type) {
+  if (isMuted) return; // CHẶN NGAY TỪ ĐẦU
+
+  const sound = document.getElementById("sound" + type.charAt(0).toUpperCase() + type.slice(1));
+  if(sound){
+    sound.currentTime = 0;
+    sound.play().catch(e => console.log("Chặn âm thanh"));
+  }
+}
+
+/* ================= LOAD BAN ĐẦU ================= */
 window.addEventListener("load", () => {
+  updateMuteUI(); // Cập nhật giao diện nút ngay khi vào trang
   window.parent.postMessage({ type: "FORUM_READY" }, "*");
 });
 
+/* ================= LISTEN EVENTS ================= */
+db.ref("events").limitToLast(1).on("child_added", (snap) => {
+  if (isFirstLoad) { isFirstLoad = false; return; }
+  const ev = snap.val();
+  if(ev) playSound(ev.type);
+});
+
+/* ... Giữ nguyên các hàm sendPost, renderPosts, toggleLike bên dưới ... */
 /* ================= SEND POST ================= */
 function sendPost(){
   const text = document.getElementById("content").value.trim();
@@ -240,201 +277,103 @@ function sendPost(){
   document.getElementById("content").focus();
 }
 
-/* ================= RENDER POSTS (FIX THIẾU) ================= */
+/* ================= RENDER ================= */
 db.ref("posts").on("value", renderPosts);
 
 function renderPosts(snapshot){
   const data = snapshot.val();
   const container = document.getElementById("posts");
   container.innerHTML = "";
-
   if(!data) return;
 
-  const posts = Object.entries(data).map(([id,val]) => ({
-    id,
-    ...val
-  }));
-
-  const parents = posts.filter(p => !p.parentId);
-  parents.sort((a, b) => b.time - a.time);
+  const posts = Object.entries(data).map(([id,val]) => ({ id, ...val }));
+  const parents = posts.filter(p => !p.parentId).sort((a, b) => b.time - a.time);
 
   parents.forEach(post => {
-    const el = createPostElement(post, posts);
-    container.appendChild(el);
+    container.appendChild(createPostElement(post, posts));
   });
 }
 
-/* ================= FORMAT TIME ================= */
 function formatTime(timestamp){
   const d = new Date(timestamp);
   return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
-/* ================= CREATE POST ================= */
 function createPostElement(post, allPosts){
   const div = document.createElement("div");
   div.className = "post";
-
   div.innerHTML = `
-  <div class="meta"><b>${post.user}</b> • ${formatTime(post.time)}</div>
-  <div>${post.text}</div>
-
-  <div class="actions">
-    <span class="like-btn" onclick="toggleLike('${post.id}', true)">👍 ${countLikes(post)}</span>
-    <span class="like-btn" onclick="toggleLike('${post.id}', false)">👎 ${countDislikes(post)}</span>
-    <span class="reply-btn" onclick="setReply('${post.id}', '${post.user}')">↳ Trả lời</span>
-  </div>
-`;
+    <div class="meta"><b>${post.user}</b> • ${formatTime(post.time)}</div>
+    <div>${post.text}</div>
+    <div class="actions">
+      <span class="like-btn" onclick="toggleLike('${post.id}', true)">👍 ${post.likes ? Object.keys(post.likes).length : 0}</span>
+      <span class="like-btn" onclick="toggleLike('${post.id}', false)">👎 ${post.dislikes ? Object.keys(post.dislikes).length : 0}</span>
+      <span class="reply-btn" onclick="setReply('${post.id}', '${post.user}')">↳ Trả lời</span>
+    </div>
+  `;
 
   const repliesContainer = document.createElement("div");
-
-  function renderReplies(parentId, container, level = 1){
-    const replies = allPosts.filter(p => p.parentId === parentId);
-
-    let expanded = false;
-    const maxShow = 2;
-
-    const wrapper = document.createElement("div");
-
-    function renderList(){
-      wrapper.innerHTML = "";
-
-      const list = expanded ? replies : replies.slice(0, maxShow);
-
-      list.forEach(rep => {
-        const repDiv = document.createElement("div");
-        repDiv.className = "reply";
-        repDiv.style.marginLeft = (level * 20) + "px";
-
-        repDiv.innerHTML = `
-          <div class="meta"><b>${rep.user}</b> • ${formatTime(rep.time)}</div>
-          <div>${rep.text}</div>
-          <div class="reply-btn" onclick="setReply('${rep.id}', '${rep.user}')">↳ Trả lời</div>
-        `;
-
-        // render reply con (đệ quy)
-        renderReplies(rep.id, repDiv, level + 1);
-
-        wrapper.appendChild(repDiv);
-      });
-
-      if(replies.length > maxShow){
-        const btn = document.createElement("div");
-        btn.className = "reply-btn";
-
-        btn.innerText = expanded
-          ? "Thu gọn"
-          : `Xem thêm ${replies.length - maxShow} phản hồi`;
-
-        btn.onclick = () => {
-          expanded = !expanded;
-          renderList();
-        };
-
-        wrapper.appendChild(btn);
-      }
-    }
-
-    renderList();
-    container.appendChild(wrapper);
-  }
-
-  renderReplies(post.id, repliesContainer);
-
+  renderReplies(post.id, repliesContainer, allPosts);
   div.appendChild(repliesContainer);
   return div;
 }
 
-/* ================= REPLY ================= */
+function renderReplies(parentId, container, allPosts, level = 1){
+  const replies = allPosts.filter(p => p.parentId === parentId);
+  if(replies.length === 0) return;
+
+  replies.forEach(rep => {
+    const repDiv = document.createElement("div");
+    repDiv.className = "reply";
+    repDiv.innerHTML = `
+      <div class="meta"><b>${rep.user}</b> • ${formatTime(rep.time)}</div>
+      <div>${rep.text}</div>
+      <div class="reply-btn" onclick="setReply('${rep.id}', '${rep.user}')">↳ Trả lời</div>
+    `;
+    container.appendChild(repDiv);
+    renderReplies(rep.id, repDiv, allPosts, level + 1);
+  });
+}
+
 function setReply(id, user){
   replyTo = id;
-
-  document.getElementById("replyingTo").innerHTML =
-    `<div class="replying">Đang trả lời: ${user}</div>`;
-
-  // 👉 scroll lên form nhập
-  document.querySelector(".post-box").scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
-
-  // 👉 focus vào textarea
+  document.getElementById("replyingTo").innerHTML = `<div class="replying">Đang trả lời: ${user}</div>`;
+  document.querySelector(".post-box").scrollIntoView({ behavior: "smooth", block: "center" });
   document.getElementById("content").focus();
 }
-function countLikes(post){
-  return post.likes ? Object.keys(post.likes).length : 0;
-}
 
-function countDislikes(post){
-  return post.dislikes ? Object.keys(post.dislikes).length : 0;
-}
 function toggleLike(postId, isLike){
   if(!currentUser) return;
-
   const ref = db.ref("posts/" + postId);
-
   ref.once("value").then(snapshot => {
     const post = snapshot.val();
-
     let likes = post.likes || {};
     let dislikes = post.dislikes || {};
-
     const uid = currentUser.uid;
 
     if(isLike){
-      // like
-      if(likes[uid]){
-        delete likes[uid]; // bỏ like
-      } else {
-        likes[uid] = true;
-        delete dislikes[uid]; // remove dislike nếu có
-      }
+      if(likes[uid]) delete likes[uid];
+      else { likes[uid] = true; delete dislikes[uid]; }
     } else {
-      // dislike
-      if(dislikes[uid]){
-        delete dislikes[uid];
-      } else {
-        dislikes[uid] = true;
-        delete likes[uid];
-      }
+      if(dislikes[uid]) delete dislikes[uid];
+      else { dislikes[uid] = true; delete likes[uid]; }
     }
-
     ref.update({ likes, dislikes });
-    db.ref("events").push({
-      type: isLike ? "like" : "dislike",
-      time: Date.now()
-    });
+    db.ref("events").push({ type: isLike ? "like" : "dislike", time: Date.now() });
   });
 }
-let isFirstLoad = true;
 
-function playSound(type){
-  let sound;
-  if(type === "post") sound = document.getElementById("soundPost");
-  if(type === "like") sound = document.getElementById("soundLike");
-  if(type === "dislike") sound = document.getElementById("soundDislike");
-
-  if(sound){
-    sound.currentTime = 0;
-    sound.play().catch(e => console.log("Âm thanh bị chặn bởi trình duyệt"));
-  }
-}
-
-// 2. THAY ĐỔI ĐOẠN NGHE EVENTS NÀY
+/* ================= LISTEN EVENTS ================= */
 db.ref("events").limitToLast(1).on("child_added", (snap) => {
-  // Nếu là lần đầu load trang, Firebase sẽ trả về dữ liệu cũ nhất hiện có
-  // Chúng ta gán isFirstLoad = false và return để không phát nhạc cái dữ liệu cũ đó
   if (isFirstLoad) {
     isFirstLoad = false; 
     return; 
   }
-
   const ev = snap.val();
-  if(!ev) return;
-
-  playSound(ev.type);
+  if(ev) playSound(ev.type);
 });
 </script>
+
 <audio id="soundPost" src="sound/post.mp3" preload="auto"></audio>
 <audio id="soundLike" src="sound/like.mp3" preload="auto"></audio>
 <audio id="soundDislike" src="sound/dislike.mp3" preload="auto"></audio>
