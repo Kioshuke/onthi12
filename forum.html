@@ -146,6 +146,26 @@ button:hover {
   color: #ef4444;
   margin-bottom: 6px;
 }
+.actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.like-btn {
+  font-size: 13px;
+  cursor: pointer;
+  color: #334155;
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.like-btn:hover {
+  background: #e2e8f0;
+}
 </style>
 </head>
 <body>
@@ -252,10 +272,15 @@ function createPostElement(post, allPosts){
   div.className = "post";
 
   div.innerHTML = `
-    <div class="meta"><b>${post.user}</b> • ${formatTime(post.time)}</div>
-    <div>${post.text}</div>
-    <div class="reply-btn" onclick="setReply('${post.id}', '${post.user}')">↳ Trả lời</div>
-  `;
+  <div class="meta"><b>${post.user}</b> • ${formatTime(post.time)}</div>
+  <div>${post.text}</div>
+
+  <div class="actions">
+    <span class="like-btn" onclick="toggleLike('${post.id}', true)">👍 ${countLikes(post)}</span>
+    <span class="like-btn" onclick="toggleLike('${post.id}', false)">👎 ${countDislikes(post)}</span>
+    <span class="reply-btn" onclick="setReply('${post.id}', '${post.user}')">↳ Trả lời</span>
+  </div>
+`;
 
   const repliesContainer = document.createElement("div");
 
@@ -331,6 +356,47 @@ function setReply(id, user){
 
   // 👉 focus vào textarea
   document.getElementById("content").focus();
+}
+function countLikes(post){
+  return post.likes ? Object.keys(post.likes).length : 0;
+}
+
+function countDislikes(post){
+  return post.dislikes ? Object.keys(post.dislikes).length : 0;
+}
+function toggleLike(postId, isLike){
+  if(!currentUser) return;
+
+  const ref = db.ref("posts/" + postId);
+
+  ref.once("value").then(snapshot => {
+    const post = snapshot.val();
+
+    let likes = post.likes || {};
+    let dislikes = post.dislikes || {};
+
+    const uid = currentUser.uid;
+
+    if(isLike){
+      // like
+      if(likes[uid]){
+        delete likes[uid]; // bỏ like
+      } else {
+        likes[uid] = true;
+        delete dislikes[uid]; // remove dislike nếu có
+      }
+    } else {
+      // dislike
+      if(dislikes[uid]){
+        delete dislikes[uid];
+      } else {
+        dislikes[uid] = true;
+        delete likes[uid];
+      }
+    }
+
+    ref.update({ likes, dislikes });
+  });
 }
 </script>
 
