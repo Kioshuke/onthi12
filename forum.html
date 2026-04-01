@@ -183,7 +183,7 @@ button:hover {
 </div>
 
 <script>
-/* ================= FIREBASE & CONFIG ================= */
+/* ================= FIREBASE ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
   authDomain: "onthi12-thpttanhong.firebaseapp.com",
@@ -191,16 +191,31 @@ const firebaseConfig = {
   projectId: "onthi12-thpttanhong",
   storageBucket: "onthi12-thpttanhong.appspot.com"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-/* ================= STATE & STORAGE ================= */
+/* ================= STATE ================= */
 let currentUser = null;
 let replyTo = null;
 let isFirstLoad = true;
 
-// KIỂM TRA BỘ NHỚ: Nếu trước đó đã tắt thì giữ nguyên trạng thái tắt
-let isMuted = localStorage.getItem("forum_muted") === "true"; 
+// Kiểm tra bộ nhớ LocalStorage để giữ trạng thái tắt âm khi load lại trang
+let isMuted = localStorage.getItem("forum_muted") === "true";
+
+/* ================= RECEIVE USER ================= */
+window.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "USER_INFO") {
+    currentUser = event.data.user;
+    document.getElementById("userBox").innerText = currentUser.name;
+  }
+});
+
+/* ================= READY ================= */
+window.addEventListener("load", () => {
+  updateMuteUI(); // Cập nhật giao diện nút âm thanh ngay khi load
+  window.parent.postMessage({ type: "FORUM_READY" }, "*");
+});
 
 /* ================= MUTE CONTROL ================= */
 function updateMuteUI() {
@@ -216,10 +231,9 @@ function updateMuteUI() {
 
 function toggleMute() {
   isMuted = !isMuted;
-  localStorage.setItem("forum_muted", isMuted); // Lưu vào bộ nhớ máy
+  localStorage.setItem("forum_muted", isMuted); 
   updateMuteUI();
   
-  // Nếu tắt thì dừng ngay lập tức các âm đang chạy
   if(isMuted) {
     ["soundPost", "soundLike", "soundDislike"].forEach(id => {
       const s = document.getElementById(id);
@@ -228,30 +242,20 @@ function toggleMute() {
   }
 }
 
-function playSound(type) {
-  if (isMuted) return; // CHẶN NGAY TỪ ĐẦU
+function playSound(type){
+  if (isMuted) return; // Dừng ngay nếu đang tắt âm
 
-  const sound = document.getElementById("sound" + type.charAt(0).toUpperCase() + type.slice(1));
+  let sound;
+  if(type === "post") sound = document.getElementById("soundPost");
+  if(type === "like") sound = document.getElementById("soundLike");
+  if(type === "dislike") sound = document.getElementById("soundDislike");
+
   if(sound){
     sound.currentTime = 0;
-    sound.play().catch(e => console.log("Chặn âm thanh"));
+    sound.play().catch(e => console.log("Âm thanh bị chặn bởi trình duyệt"));
   }
 }
 
-/* ================= LOAD BAN ĐẦU ================= */
-window.addEventListener("load", () => {
-  updateMuteUI(); // Cập nhật giao diện nút ngay khi vào trang
-  window.parent.postMessage({ type: "FORUM_READY" }, "*");
-});
-
-/* ================= LISTEN EVENTS ================= */
-db.ref("events").limitToLast(1).on("child_added", (snap) => {
-  if (isFirstLoad) { isFirstLoad = false; return; }
-  const ev = snap.val();
-  if(ev) playSound(ev.type);
-});
-
-/* ... Giữ nguyên các hàm sendPost, renderPosts, toggleLike bên dưới ... */
 /* ================= SEND POST ================= */
 function sendPost(){
   const text = document.getElementById("content").value.trim();
@@ -277,20 +281,27 @@ function sendPost(){
   document.getElementById("content").focus();
 }
 
-/* ================= RENDER ================= */
+/* ================= RENDER POSTS ================= */
 db.ref("posts").on("value", renderPosts);
 
 function renderPosts(snapshot){
   const data = snapshot.val();
   const container = document.getElementById("posts");
   container.innerHTML = "";
+
   if(!data) return;
 
-  const posts = Object.entries(data).map(([id,val]) => ({ id, ...val }));
-  const parents = posts.filter(p => !p.parentId).sort((a, b) => b.time - a.time);
+  const posts = Object.entries(data).map(([id,val]) => ({
+    id,
+    ...val
+  }));
+
+  const parents = posts.filter(p => !p.parentId);
+  parents.sort((a, b) => b.time - a.time);
 
   parents.forEach(post => {
-    container.appendChild(createPostElement(post, posts));
+    const el = createPostElement(post, posts);
+    container.appendChild(el);
   });
 }
 
@@ -299,47 +310,87 @@ function formatTime(timestamp){
   return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
+/* ================= CREATE POST (GIỮ NGUYÊN LOGIC CŨ) ================= */
 function createPostElement(post, allPosts){
   const div = document.createElement("div");
   div.className = "post";
+
   div.innerHTML = `
-    <div class="meta"><b>${post.user}</b> • ${formatTime(post.time)}</div>
-    <div>${post.text}</div>
-    <div class="actions">
-      <span class="like-btn" onclick="toggleLike('${post.id}', true)">👍 ${post.likes ? Object.keys(post.likes).length : 0}</span>
-      <span class="like-btn" onclick="toggleLike('${post.id}', false)">👎 ${post.dislikes ? Object.keys(post.dislikes).length : 0}</span>
-      <span class="reply-btn" onclick="setReply('${post.id}', '${post.user}')">↳ Trả lời</span>
-    </div>
-  `;
+  <div class="meta"><b>${post.user}</b> • ${formatTime(post.time)}</div>
+  <div>${post.text}</div>
+
+  <div class="actions">
+    <span class="like-btn" onclick="toggleLike('${post.id}', true)">👍 ${countLikes(post)}</span>
+    <span class="like-btn" onclick="toggleLike('${post.id}', false)">👎 ${countDislikes(post)}</span>
+    <span class="reply-btn" onclick="setReply('${post.id}', '${post.user}')">↳ Trả lời</span>
+  </div>
+`;
 
   const repliesContainer = document.createElement("div");
-  renderReplies(post.id, repliesContainer, allPosts);
+
+  function renderReplies(parentId, container, level = 1){
+    const replies = allPosts.filter(p => p.parentId === parentId);
+    if(replies.length === 0) return;
+
+    let expanded = false;
+    const maxShow = 2;
+    const wrapper = document.createElement("div");
+
+    function renderList(){
+      wrapper.innerHTML = "";
+      const list = expanded ? replies : replies.slice(0, maxShow);
+
+      list.forEach(rep => {
+        const repDiv = document.createElement("div");
+        repDiv.className = "reply";
+        repDiv.style.marginLeft = (level * 20) + "px";
+
+        repDiv.innerHTML = `
+          <div class="meta"><b>${rep.user}</b> • ${formatTime(rep.time)}</div>
+          <div>${rep.text}</div>
+          <div class="reply-btn" onclick="setReply('${rep.id}', '${rep.user}')">↳ Trả lời</div>
+        `;
+
+        renderReplies(rep.id, repDiv, level + 1);
+        wrapper.appendChild(repDiv);
+      });
+
+      if(replies.length > maxShow){
+        const btn = document.createElement("div");
+        btn.className = "reply-btn";
+        btn.innerText = expanded ? "Thu gọn" : `Xem thêm ${replies.length - maxShow} phản hồi`;
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          expanded = !expanded;
+          renderList();
+        };
+        wrapper.appendChild(btn);
+      }
+    }
+
+    renderList();
+    container.appendChild(wrapper);
+  }
+
+  renderReplies(post.id, repliesContainer);
   div.appendChild(repliesContainer);
   return div;
 }
 
-function renderReplies(parentId, container, allPosts, level = 1){
-  const replies = allPosts.filter(p => p.parentId === parentId);
-  if(replies.length === 0) return;
-
-  replies.forEach(rep => {
-    const repDiv = document.createElement("div");
-    repDiv.className = "reply";
-    repDiv.innerHTML = `
-      <div class="meta"><b>${rep.user}</b> • ${formatTime(rep.time)}</div>
-      <div>${rep.text}</div>
-      <div class="reply-btn" onclick="setReply('${rep.id}', '${rep.user}')">↳ Trả lời</div>
-    `;
-    container.appendChild(repDiv);
-    renderReplies(rep.id, repDiv, allPosts, level + 1);
-  });
-}
-
+/* ================= ACTIONS ================= */
 function setReply(id, user){
   replyTo = id;
   document.getElementById("replyingTo").innerHTML = `<div class="replying">Đang trả lời: ${user}</div>`;
   document.querySelector(".post-box").scrollIntoView({ behavior: "smooth", block: "center" });
   document.getElementById("content").focus();
+}
+
+function countLikes(post){
+  return post.likes ? Object.keys(post.likes).length : 0;
+}
+
+function countDislikes(post){
+  return post.dislikes ? Object.keys(post.dislikes).length : 0;
 }
 
 function toggleLike(postId, isLike){
@@ -358,6 +409,7 @@ function toggleLike(postId, isLike){
       if(dislikes[uid]) delete dislikes[uid];
       else { dislikes[uid] = true; delete likes[uid]; }
     }
+
     ref.update({ likes, dislikes });
     db.ref("events").push({ type: isLike ? "like" : "dislike", time: Date.now() });
   });
