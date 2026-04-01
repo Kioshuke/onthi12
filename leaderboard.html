@@ -1,181 +1,209 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forum Hỏi Bài</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forum</title>
 
-<style>
-body{
-  font-family: Arial, sans-serif;
-  background: #f1f5f9;
-  margin:0;
-}
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
-.forum-box{
-  max-width:600px;
-  margin:40px auto;
-  background:#fff;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.1);
-}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6fb;
+      margin: 0;
+      padding: 0;
+    }
 
-h2{
-  margin-bottom:15px;
-}
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
 
-.input-area{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  margin-bottom:15px;
-}
+    .header {
+      background: #2563eb;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.input-area input{
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
+    .user-box {
+      font-size: 14px;
+      opacity: 0.9;
+    }
 
-.input-area button{
-  padding:10px;
-  border:none;
-  background:#2563eb;
-  color:#fff;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
-}
+    .post-box {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
 
-.input-area button:hover{
-  background:#1d4ed8;
-}
+    textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      resize: none;
+    }
 
-#forum{
-  max-height:400px;
-  overflow-y:auto;
-}
+    button {
+      margin-top: 10px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
 
-.message{
-  background:#f8fafc;
-  padding:10px;
-  border-radius:8px;
-  margin-bottom:10px;
-  animation: fadeIn 0.3s ease;
-}
+    .post {
+      background: white;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
 
-.name{
-  font-weight:bold;
-  color:#2563eb;
-}
+    .meta {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 5px;
+    }
 
-.time{
-  font-size:12px;
-  color:#888;
-}
+    .reply {
+      margin-left: 20px;
+      border-left: 2px solid #ddd;
+      padding-left: 10px;
+      margin-top: 8px;
+    }
 
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(5px);}
-  to{opacity:1; transform:translateY(0);}
-}
-</style>
+    .reply-btn {
+      font-size: 12px;
+      color: #2563eb;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .replying {
+      font-size: 13px;
+      color: #ef4444;
+      margin-bottom: 5px;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="forum-box">
-  <h2>💬 Hỏi bài nhanh</h2>
-
-  <div class="input-area">
-    <input id="name" placeholder="Tên của bạn (hoặc để ẩn danh)">
-    <input id="message" placeholder="Nhập câu hỏi...">
-    <button onclick="sendMessage()">Gửi</button>
+<div class="container">
+  <div class="header">
+    <div>💬 Forum</div>
+    <div class="user-box" id="userBox">Chưa đăng nhập</div>
   </div>
 
-  <div id="forum"></div>
+  <div class="post-box">
+    <div id="replyingTo"></div>
+    <textarea id="content" placeholder="Nhập nội dung..."></textarea>
+    <button onclick="sendPost()">Đăng</button>
+  </div>
+
+  <div id="posts"></div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-// 🔥 DÁN CONFIG FIREBASE CỦA M VÀO ĐÂY
+<script>
+// Firebase config (THAY BẰNG CONFIG CỦA BẠN)
 const firebaseConfig = {
-  apiKey: "AIzaSyCOelxKPrcSeiLpYN2WwYPWysHwZjZLd9c",
-  authDomain: "onthi12-thpttanhong.firebaseapp.com",
-  databaseURL: "https://onthi12-thpttanhong-default-rtdb.asia-southeast1.firebasedatabase.app/",
-  projectId: "onthi12-thpttanhong"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+  projectId: "YOUR_PROJECT",
 };
-const auth = getAuth(app);
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
 let currentUser = null;
+let replyTo = null;
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    currentUser = user;
-
-    // auto điền tên
-    document.getElementById("name").value = user.displayName || "User";
+// Nhận user từ iframe cha
+window.addEventListener("message", (event) => {
+  if(event.data && event.data.type === "USER_INFO"){
+    currentUser = event.data.user;
+    document.getElementById("userBox").innerText = currentUser.name;
   }
 });
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
 
-let lastSend = 0;
+function sendPost(){
+  const text = document.getElementById("content").value.trim();
+  if(!text || !currentUser) return;
 
-// 👉 gửi tin
-window.sendMessage = function(){
-  let now = Date.now();
-  if(now - lastSend < 3000){
-    alert("Chờ 3s 😅");
-    return;
-  }
-  lastSend = now;
+  const newPost = {
+    text,
+    user: currentUser.name,
+    uid: currentUser.uid || null,
+    parentId: replyTo || null,
+    time: Date.now()
+  };
 
-  let name = "Ẩn danh";
+  db.ref("posts").push(newPost);
 
-    if(currentUser){
-    name = currentUser.displayName || currentUser.email;
-    }
-  let msg = document.getElementById("message").value;
-
-  if(msg.trim() === "") return;
-
-    push(ref(db, "forum"), {
-    name: name,
-    message: msg,
-    time: Date.now(),
-    uid: currentUser ? currentUser.uid : null,
-    avatar: currentUser ? currentUser.photoURL : null
-    });
-
-  document.getElementById("message").value = "";
+  document.getElementById("content").value = "";
+  replyTo = null;
+  document.getElementById("replyingTo").innerHTML = "";
 }
 
-// 👉 hiển thị realtime
-onValue(ref(db, "forum"), (snapshot)=>{
-  let data = snapshot.val();
-  let html = "";
+function renderPosts(snapshot){
+  const data = snapshot.val();
+  const container = document.getElementById("posts");
+  container.innerHTML = "";
 
-  for(let id in data){
-    let item = data[id];
+  if(!data) return;
 
-    html += `
-      <div class="message">
-        <div class="name">${item.name}</div>
-        <div>${item.message}</div>
-        <div class="time">${new Date(item.time).toLocaleString()}</div>
-      </div>
+  const posts = Object.entries(data).map(([id, val]) => ({id, ...val}));
+
+  const parents = posts.filter(p => !p.parentId);
+
+  parents.forEach(post => {
+    const div = createPostElement(post, posts);
+    container.appendChild(div);
+  });
+}
+
+function createPostElement(post, allPosts){
+  const div = document.createElement("div");
+  div.className = "post";
+
+  div.innerHTML = `
+    <div class="meta"><b>${post.user}</b> • ${new Date(post.time).toLocaleString()}</div>
+    <div>${post.text}</div>
+    <div class="reply-btn" onclick="setReply('${post.id}', '${post.user}')">↳ Trả lời</div>
+  `;
+
+  // replies
+  const replies = allPosts.filter(p => p.parentId === post.id);
+  replies.forEach(rep => {
+    const repDiv = document.createElement("div");
+    repDiv.className = "reply";
+    repDiv.innerHTML = `
+      <div class="meta"><b>${rep.user}</b> • ${new Date(rep.time).toLocaleString()}</div>
+      <div>${rep.text}</div>
+      <div class="reply-btn" onclick="setReply('${rep.id}', '${rep.user}')">↳ Trả lời</div>
     `;
-  }
+    div.appendChild(repDiv);
+  });
 
-  document.getElementById("forum").innerHTML = html;
+  return div;
+}
 
-  // auto scroll xuống cuối
-  document.getElementById("forum").scrollTop = 999999;
-});
-</script>
-
-</body>
-</html>
+function setReply(id, user){
+  replyTo = id;
+  document.getElementById("replyingTo").innerHTML = 
+    `<div
