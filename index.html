@@ -2586,7 +2586,7 @@ document.querySelectorAll('.btn').forEach(button => {
     });
 });
 // Thêm .close-btn và .close vào danh sách để phát âm thanh khi đóng
-document.querySelectorAll('.close').forEach(button => {
+document.querySelectorAll('.quiz-btn close-btn').forEach(button => {
     button.addEventListener('click', () => {
         const clickSnd = document.getElementById("offtest");
         if(clickSnd) {
