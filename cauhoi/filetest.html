@@ -631,89 +631,96 @@ function renderQuiz() {
     const quizContainer = document.getElementById('quiz-container');
     const navContainer = document.getElementById('navGrid');
     
-    let quizHtml = '';
+    let quizHtml = ''; // Chuỗi tổng hợp nội dung
     let navHtml = '';
     let globalIdx = 0;
     window.totalMaxScore = 0;
 
     questionsData.forEach((section) => {
-        // 1. Xử lý tiêu đề phụ (sectionDesc)
-        // Dùng span hoặc div để bao quanh sectionDesc giúp nhận diện HTML từ JSON
+        // 1. Xử lý tiêu đề phụ (nếu có)
         const descHtml = (section.sectionDesc && section.sectionDesc.trim() !== "") ? 
-            `<div class="section-desc" style="margin-top: 10px; font-size: 0.95rem; color: var(--text-sub); font-weight: normal; font-style: italic; line-height: 1.5; border-top: 1px dotted var(--primary); padding-top: 10px;">
+            `<div class="section-desc" style="margin-top: 10px; font-size: 0.95rem; color: var(--text-sub); font-weight: normal; font-style: italic; line-height: 1.5; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px;">
                 <span>${section.sectionDesc}</span>
             </div>` : '';
+
+        // 2. Cộng dồn Tiêu đề phần vào quizHtml (Dùng += để không bị mất dữ liệu cũ)
+        quizHtml += `
+            <div class="section-wrapper" style="margin: 40px 0 25px;">
+                <div class="section-header-box" style="padding: 18px; background: var(--primary-light); color: var(--primary); border-radius: 12px; border-left: 6px solid var(--primary); box-shadow: 0 4px 12px rgba(26, 115, 232, 0.08);">
+                    <div style="font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; font-size: 1.1rem;">${section.sectionTitle}</div>
+                    ${descHtml}
+                </div>
+            </div>`;
         
-        // 3. Render tiêu đề phần vào mục lục
+        // 3. Render tiêu đề phần vào mục lục bên phải
         navHtml += `<div class="nav-section-label" style="grid-column: 1/-1; font-weight: bold; margin: 15px 0 5px; font-size: 0.7rem; color: #64748b; text-transform: uppercase;">${section.sectionTitle}</div>`;
 
-            section.questions.forEach((item) => {
-                // Thay thế đoạn cũ bằng đoạn này
-              const imageHtml = (item.image && item.image.trim() !== "") ? `
-                  <div class="q-image" style="text-align: center; margin: 15px 0;">
-                      <img src="${item.image}" 
-                          onerror="this.parentElement.style.display='none'" 
-                          style="max-width: 100%; max-height: 300px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                  </div>` : '';
+        // 4. Duyệt từng câu hỏi trong phần
+        section.questions.forEach((item) => {
+            const imageHtml = (item.image && item.image.trim() !== "") ? `
+                <div class="q-image" style="text-align: center; margin: 15px 0;">
+                    <img src="${item.image}" onerror="this.parentElement.style.display='none'" style="max-width: 100%; max-height: 300px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>` : '';
 
-                let answersContent = '';
+            let answersContent = '';
 
-                if (item.type === 'multiple') {
-                    window.totalMaxScore += 1;
-                    answersContent = `<div class="answers-grid">
-                        ${item.answers.map((ans, idx) => `
-                            <label class="ans-label" id="label-${globalIdx}-${idx}" onclick="selectAnswer(this, ${globalIdx})">
-                                <input type="radio" name="question-${globalIdx}" value="${idx}">
-                                <span>${ans}</span>
-                            </label>`).join('')}
-                    </div>`;
-                } 
-                // Đoạn này thay thế phần hiển thị true_false trong hàm renderQuiz cũ của bạn
-                else if (item.type === 'true_false') {
-                    window.totalMaxScore += 1; 
-                    answersContent = `
-                        <div class="tf-wrapper" style="background: var(--card); border: 1px solid var(--tf-border); border-radius: 12px; overflow: hidden;">
-                            ${item.subQuestions.map((sub, subIdx) => `
-                                <div class="tf-row">
-                                    <div class="tf-question-text">
-                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> <span>${sub.text}</span>
-                                    </div>
-                                    <div class="tf-options">
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: transparent; padding:6px 12px; border-radius:8px; border: 1.5px solid var(--tf-border);">
-                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
-                                        </label>
-                                        <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: transparent; padding:6px 12px; border-radius:8px; border: 1.5px solid var(--tf-border);">
-                                            <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>S</b>
-                                        </label>
-                                    </div>
+            if (item.type === 'multiple') {
+                window.totalMaxScore += 1;
+                answersContent = `<div class="answers-grid">
+                    ${item.answers.map((ans, idx) => `
+                        <label class="ans-label" id="label-${globalIdx}-${idx}" onclick="selectAnswer(this, ${globalIdx})">
+                            <input type="radio" name="question-${globalIdx}" value="${idx}">
+                            <span>${ans}</span>
+                        </label>`).join('')}
+                </div>`;
+            } 
+            else if (item.type === 'true_false') {
+                window.totalMaxScore += 1; 
+                answersContent = `
+                    <div class="tf-wrapper" style="background: var(--card); border: 1px solid var(--tf-border); border-radius: 12px; overflow: hidden;">
+                        ${item.subQuestions.map((sub, subIdx) => `
+                            <div class="tf-row" style="display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid var(--tf-border); gap: 15px;">
+                                <div class="tf-question-text" style="flex: 1;">
+                                    <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> <span>${sub.text}</span>
                                 </div>
-                            `).join('')}
-                        </div>`;
-                } 
-                else if (item.type === 'short_answer') {
-                    window.totalMaxScore += 1;
-                    answersContent = `<input type="text" class="short-input" placeholder="Nhập đáp án..." 
-                               oninput="markDone(${globalIdx})" data-qidx="${globalIdx}"
-                               style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; outline: none;">`;
-                }
-
-                quizHtml += `
-                    <div class="question-card" id="card-${globalIdx}">
-                        <div class="q-header"><span class="q-badge">Câu ${globalIdx + 1}</span> <span>${item.question}</span></div>
-                        ${imageHtml}
-                        ${answersContent}
+                                <div class="tf-options" style="display: flex; gap: 8px; flex-shrink: 0;">
+                                    <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: transparent; padding:6px 12px; border-radius:8px; border: 1.5px solid var(--tf-border);">
+                                        <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
+                                    </label>
+                                    <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: transparent; padding:6px 12px; border-radius:8px; border: 1.5px solid var(--tf-border);">
+                                        <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>S</b>
+                                    </label>
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>`;
-                
-                navHtml += `<div class="nav-item" id="nav-${globalIdx}" onclick="scrollToQuestion(${globalIdx})">${globalIdx + 1}</div>`;
-                globalIdx++;
-            });
+            } 
+            else if (item.type === 'short_answer') {
+                window.totalMaxScore += 1;
+                answersContent = `<input type="text" class="short-input" placeholder="Nhập đáp án..." oninput="markDone(${globalIdx})" data-qidx="${globalIdx}" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; outline: none;">`;
+            }
+
+            // Cộng dồn Câu hỏi vào quizHtml
+            quizHtml += `
+                <div class="question-card" id="card-${globalIdx}" style="margin-bottom: 25px;">
+                    <div class="q-header" style="margin-bottom: 15px;">
+                        <span class="q-badge" style="background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; margin-right: 8px;">Câu ${globalIdx + 1}</span> 
+                        <span>${item.question}</span>
+                    </div>
+                    ${imageHtml}
+                    ${answersContent}
+                </div>`;
+            
+            navHtml += `<div class="nav-item" id="nav-${globalIdx}" onclick="scrollToQuestion(${globalIdx})">${globalIdx + 1}</div>`;
+            globalIdx++;
         });
+    });
 
-        quizContainer.innerHTML = quizHtml;
-        navContainer.innerHTML = navHtml;
-        updateProgress();
-    }
-
+    // Cuối cùng mới đổ toàn bộ chuỗi đã cộng dồn vào Container
+    quizContainer.innerHTML = quizHtml;
+    navContainer.innerHTML = navHtml;
+    updateProgress();
+}
     // 4. Các hàm bổ trợ xử lý trạng thái làm bài
     function selectAnswer(el, qIdx) {
         // 🔥 Nếu đang khóa thì không làm gì
