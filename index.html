@@ -88,7 +88,6 @@ rgb(30, 90, 200),     /* xanh đậm */
 rgb(58, 134, 255),    /* xanh chính */
 rgb(120, 100, 255)    /* tím nhẹ */
 );
-box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 background-size:300% 300%;
 color:white;
 padding:20px 40px;
@@ -508,9 +507,6 @@ to{
 transform:translateY(-40px) scale(0.9);
 opacity:0;
 }
-}
-*{
-box-sizing:border-box;
 }
 
 #loginBox .login-card{
@@ -1163,10 +1159,6 @@ border-radius:50%;
 margin:auto;
 animation:spin 0.6s linear infinite;
 }
-
-@keyframes spin{
-to{transform:rotate(360deg);}
-}
 .exam-schedule{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -1310,56 +1302,6 @@ color: rgba(255,255,255,0.9);
 font-size:13px;
 margin-top:4px;
 }
-@media (max-width: 768px){
-
-/* grid về 1 cột cho đẹp */
-.exam-schedule{
-grid-template-columns: 1fr;
-}
-
-/* countdown chiếm full */
-.countdown-fix{
-grid-column: auto;
-flex-direction: column;
-align-items: flex-start;
-gap: 15px;
-}
-
-/* chữ nhỏ lại */
-.title{
-font-size:18px;
-}
-
-.time-box{
-width:50px;
-height:50px;
-font-size:22px;
-}
-
-/* padding card gọn lại */
-.exam-day{
-padding:16px;
-}
-
-}
-@media (max-width: 768px){
-
-.menu{
-flex-wrap:nowrap;              /* ❌ không cho xuống dòng */
-overflow-x:auto;               /* 👉 kéo ngang */
-justify-content:flex-start;
-padding:10px;
-gap:10px;
-scroll-snap-type: x mandatory; /* 🔥 thêm dòng này */
-}
-
-.menu button{
-flex-shrink:0;                 /* ❌ không bị co */
-white-space:nowrap;            /* không xuống dòng chữ */
-scroll-snap-align: start; /* 🔥 thêm dòng này */
-}
-
-}
 
 /* avatar */
 .user-bar img{
@@ -1416,6 +1358,47 @@ box-shadow:0 2px 8px rgba(0,0,0,0.15);
 }
 
 @media (max-width:768px){
+.exam-schedule{
+grid-template-columns: 1fr;
+}
+
+/* countdown chiếm full */
+.countdown-fix{
+grid-column: auto;
+flex-direction: column;
+align-items: flex-start;
+gap: 15px;
+}
+
+/* chữ nhỏ lại */
+.title{
+font-size:18px;
+}
+
+.time-box{
+width:50px;
+height:50px;
+font-size:22px;
+}
+
+/* padding card gọn lại */
+.exam-day{
+padding:16px;
+}
+.menu{
+flex-wrap:nowrap;              /* ❌ không cho xuống dòng */
+overflow-x:auto;               /* 👉 kéo ngang */
+justify-content:flex-start;
+padding:10px;
+gap:10px;
+scroll-snap-type: x mandatory; /* 🔥 thêm dòng này */
+}
+
+.menu button{
+flex-shrink:0;                 /* ❌ không bị co */
+white-space:nowrap;            /* không xuống dòng chữ */
+scroll-snap-align: start; /* 🔥 thêm dòng này */
+}
 
 /* ===== TỐI ƯU HIỆU NĂNG ===== */
 .header,
@@ -1440,10 +1423,6 @@ box-shadow:0 4px 12px rgba(0,0,0,0.1);
 
 body{
 overscroll-behavior:none;
-}
-
-*{
--webkit-tap-highlight-color: transparent;
 }
 
 /* ===== MENU SCROLL NGANG ===== */
@@ -1647,47 +1626,7 @@ animation: pulse-green 2s infinite;
 .quiz-btn:active{
   transform: scale(0.96);
 }
-#exitFullscreenBtn{
-  position: fixed;
 
-  bottom: 20px;   
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0.7;
-  padding: 10px 18px;
-  border-radius: 12px;
-
-  background: rgba(0,0,0,0.6);
-  color: white;
-  border: none;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  backdrop-filter: blur(8px);
-  cursor: pointer;
-
-  z-index: 999999;
-
-  display: none;
-
-  transition: all 0.25s ease;
-}
-
-#exitFullscreenBtn:hover{
-  background: rgba(0,0,0,0.8);
-  transform: translateX(-50%) scale(1.05);
-  opacity: 1;
-}
-
-/* 📱 mobile tối ưu */
-@media (max-width:768px){
-  #exitFullscreenBtn{
-    bottom: 15px;
-    font-size: 13px;
-    padding: 8px 14px;
-  }
-}
 </style>
 <div id="mainContent" class="content">
 <div id="lich">
