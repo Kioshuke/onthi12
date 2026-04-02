@@ -550,39 +550,47 @@ window.addEventListener('message', (event) => {
 });
 
 // Kiểm tra trạng thái lúc mới load (đề phòng mở riêng trang này)
+// 1. Kiểm tra Dark Mode (Giữ nguyên logic của bạn)
 if (localStorage.getItem("darkMode") === "on") {
     document.body.classList.add("dark-mode");
 }
-    const JSON_URL = "questions.json";
-    let questionsData = [];
-    window.totalMaxScore = 0; // Biến lưu tổng điểm tối đa toàn bài
-    let totalQuestions = 0;
-    let totalRawMax = 0;
 
-    // 1. Hàm xáo trộn mảng
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
+// 2. LẤY TÊN FILE JSON TỪ URL (Ví dụ: thi.html?de=toan.json)
+const urlParams = new URLSearchParams(window.location.search);
+const JSON_FILE = urlParams.get('de') || "questions.json"; // Nếu không có ?de= thì mặc định dùng questions.json
+
+let questionsData = [];
+window.totalMaxScore = 0; 
+let totalQuestions = 0;
+
+// 3. Hàm xáo trộn mảng (Giữ nguyên)
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
+    return array;
+}
 
-    // 2. Tải câu hỏi và xử lý cấu trúc Section
+// 4. Hàm tải câu hỏi linh hoạt
 async function loadQuestions() {
     try {
         const timestamp = new Date().getTime();
-        const res = await fetch(`${JSON_URL}?v=${timestamp}`);
-        if (!res.ok) throw new Error("Lỗi tải file JSON");
+        
+        // SỬ DỤNG BIẾN JSON_FILE ĐÃ LẤY Ở TRÊN
+        const res = await fetch(`${JSON_FILE}?v=${timestamp}`);
+        
+        if (!res.ok) {
+            throw new Error(`Không tìm thấy file dữ liệu: ${JSON_FILE}`);
+        }
 
         const data = await res.json();
         
-        // Khởi tạo lại các biến đếm
         totalQuestions = 0; 
 
         questionsData = data.map(section => {
             const sectionQuestions = shuffle(section.questions).map(q => {
-                totalQuestions++; // Cứ mỗi câu hỏi xuất hiện thì tăng biến tổng lên 1
+                totalQuestions++; 
                 
                 if (q.type === 'multiple' && q.answers) {
                     const mixed = q.answers.map((ans, i) => ({ text: ans, isCorrect: i === q.correct }));
@@ -610,7 +618,11 @@ async function loadQuestions() {
 
     } catch (e) {
         console.error(e);
-        document.getElementById('quiz-container').innerText = "Lỗi: " + e.message;
+        document.getElementById('quiz-container').innerHTML = `
+            <div style="padding: 20px; background: #fee2e2; color: #ef4444; border-radius: 10px; border: 1px solid #fca5a5;">
+                <strong>Lỗi tải đề thi:</strong> ${e.message} <br>
+                <small>Vui lòng kiểm tra lại đường dẫn file .json</small>
+            </div>`;
     }
 }
 
