@@ -910,13 +910,19 @@ transform: scale(0.96);
 }
 
 .loading-brand img{
-  width:510px;
-  height:510px;
-  border-radius:14px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  width:300px;
+  height:300px;
   margin-bottom:8px;
+  animation: bounceLogo 2s ease-in-out infinite;
 }
-
+@keyframes bounceLogo {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
 .loading-brand h2{
   margin:0;
   font-size:18px;
@@ -1023,7 +1029,7 @@ body.dark-mode .card{
 <audio id="openpopup" src="sound/discord-notification.mp3" preload="auto"></audio>
 <div class="loading-box">
   <div class="loading-brand">
-    <img src="Gemini_Generated_Image_cmdxrvcmdxrvcmdx2.png" alt="logo">
+    <img src="newlogo.png" alt="logo">
     <h2>LearnHub – Your smart path to success</h2>
   </div>
 <div class="progress-wrapper">
