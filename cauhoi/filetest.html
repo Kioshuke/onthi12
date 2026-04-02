@@ -648,16 +648,15 @@ function renderQuiz() {
 
     questionsData.forEach((section) => {
         // 1. Tạo HTML cho tiêu đề phụ (dùng span để nhận diện <b>, <i>, <u>)
-        // 1. Tạo HTML cho phần chú thích (nằm dưới tiêu đề chính)
         const descHtml = (section.sectionDesc && section.sectionDesc.trim() !== "") ? 
-            `<div style="margin-top: 8px; font-size: 0.9rem; color: #4b5563; font-weight: 400; line-height: 1.5; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 8px;">
-                ${section.sectionDesc}
+            `<div style="margin-top: 4px; font-size: 0.85rem; color: #6b7280; font-weight: normal; font-style: italic; line-height: 1.4;">
+                <span>${section.sectionDesc}</span>
             </div>` : '';
 
-        // 2. Render toàn bộ khối tiêu đề phần
+        // 2. Render tiêu đề phần (Dùng div thay cho h2 để tránh lỗi khoảng cách)
         quizHtml += `
-            <div style="margin: 40px 0 25px; padding: 20px 25px; background: var(--card); border-radius: 16px; border-left: 8px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(26, 115, 232, 0.1);">
-                <div style="font-weight: 900; text-transform: uppercase; font-size: 1.4rem; color: var(--primary); letter-spacing: 0.5px; line-height: 1.2;">
+            <div style="margin: 40px 0 20px; padding: 18px 25px; background: var(--card); color: var(--primary); border-radius: 15px; border-left: 8px solid var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid rgba(26, 115, 232, 0.1);">
+                <div style="font-weight: 900; text-transform: uppercase; font-size: 1.4rem; letter-spacing: 1px; line-height: 1.2; display: block !important;">
                     ${section.sectionTitle}
                 </div>
                 ${descHtml}
