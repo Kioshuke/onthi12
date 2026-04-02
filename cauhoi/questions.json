@@ -5,26 +5,26 @@
     "questions": [
       {
         "type": "multiple",
-        "question": "Thủ đô của <b>Việt Nam</b> là gì?",
-        "answers": ["Hà Nội", "TP.HCM", "Đà Nẵng", "Huế"],
+        "question": "Thủ đô của <b>Việt Nam</b> hiện nay là thành phố nào?",
+        "answers": ["Hà Nội", "TP. Hồ Chí Minh", "Đà Nẵng", "Cần Thơ"],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Kết quả của phép tính <i>1 + 1</i> bằng bao nhiêu?",
-        "answers": ["1", "2", "3", "4"],
+        "question": "Trong lập trình Web, <u>HTML</u> đóng vai trò là gì?",
+        "answers": [
+          "Ngôn ngữ lập trình logic",
+          "Ngôn ngữ <i>đánh dấu văn bản</i> tạo cấu trúc trang",
+          "Hệ quản trị cơ sở dữ liệu",
+          "Giao thức truyền tải dữ liệu"
+        ],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "<u>HTML</u> là viết tắt của cụm từ nào sau đây?",
-        "answers": [
-          "HyperText Markup Language",
-          "HighText Machine Language",
-          "HyperTool Multi Language",
-          "None"
-        ],
-        "correct": 0
+        "question": "Biểu thức <i>2 + 2 * 2</i> có kết quả là:",
+        "answers": ["4", "8", "6", "0"],
+        "correct": 2
       }
     ]
   },
@@ -34,38 +34,43 @@
     "questions": [
       {
         "type": "true_false",
-        "question": "Xét các hiện tượng <i>tự nhiên</i> và <i>toán học</i> sau:",
+        "question": "Xét các phát biểu về <b>hệ mặt trời</b> và vật lý:",
         "subQuestions": [
-          { "text": "Trái Đất quay quanh <b>Mặt Trời</b>.", "correct": 1 },
-          { "text": "Nước nguyên chất sôi ở <u>50°C</u> trong điều kiện tiêu chuẩn.", "correct": 0 },
-          { "text": "Các loài cá có thể hô hấp và <i>sống trên cạn</i>.", "correct": 0 },
-          { "text": "Kết quả của phép tính 2 + 2 là <b>4</b>.", "correct": 1 }
+          { "text": "a) Trái Đất là hành tinh <i>thứ ba</i> tính từ Mặt Trời.", "correct": 1 },
+          { "text": "b) Nước sôi ở nhiệt độ <u>50°C</u> trong điều kiện áp suất chuẩn.", "correct": 0 },
+          { "text": "c) <b>Mặt Trăng</b> là vệ tinh tự nhiên duy nhất của Trái Đất.", "correct": 1 },
+          { "text": "d) Vận tốc ánh sáng chậm hơn <i>vận tốc âm thanh</i>.", "correct": 0 }
         ]
       },
       {
         "type": "true_false",
-        "question": "Đánh giá các phát biểu về <b>Kiến thức chung</b>:",
+        "question": "Về lịch sử và địa lý <b>Việt Nam</b>:",
         "subQuestions": [
-          { "text": "<u>Việt Nam</u> là một quốc gia nằm ở khu vực châu Á.", "correct": 1 },
-          { "text": "Mặt Trăng được phân loại là một <i>hành tinh</i>.", "correct": 0 },
-          { "text": "<b>Python</b> là tên một ngôn ngữ lập trình phổ biến hiện nay.", "correct": 1 },
-          { "text": "Hầu hết các loại <b>kim loại</b> đều có khả năng dẫn điện tốt.", "correct": 1 }
+          { "text": "a) Việt Nam thuộc khu vực <u>Đông Nam Á</u>.", "correct": 1 },
+          { "text": "b) Chiến dịch <b>Điện Biên Phủ</b> kết thúc vào năm 1945.", "correct": 0 },
+          { "text": "c) Sông Cửu Long chảy qua miền <i>Nam</i> Việt Nam.", "correct": 1 },
+          { "text": "d) <u>Phan Thiết</u> là thủ đô của Việt Nam.", "correct": 0 }
         ]
       }
     ]
   },
   {
     "sectionTitle": "PHẦN III. CÂU HỎI TRẢ LỜI NGẮN",
-    "sectionDesc": "Lệnh: Hãy <u>nhập đáp án</u> chính xác vào ô trống bên dưới:",
+    "sectionDesc": "Lệnh: Hãy <u>nhập đáp án</u> chính xác vào ô trống bên dưới (Lưu ý: Viết hoa chữ cái đầu nếu là tên riêng):",
     "questions": [
       {
         "type": "short_answer",
-        "question": "Thành phố nào là thủ đô của <b>Nhật Bản</b>?",
-        "correctAnswer": "Tokyo"
+        "question": "Ngôn ngữ lập trình nào thường được dùng để phát triển ứng dụng <b>Android</b> bản địa (native)?",
+        "correctAnswer": "Kotlin"
       },
       {
         "type": "short_answer",
-        "question": "Tính giá trị của biểu thức: <b>2 + 5</b>",
+        "question": "Đỉnh núi nào được mệnh danh là <i>nóc nhà của thế giới</i>?",
+        "correctAnswer": "Everest"
+      },
+      {
+        "type": "short_answer",
+        "question": "Giá trị của biểu thức <b>15 / 3 + 2</b> là bao nhiêu?",
         "correctAnswer": "7"
       }
     ]
