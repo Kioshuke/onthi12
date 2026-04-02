@@ -1,106 +1,108 @@
-{
-  "sectionTitle": "Chủ đề 7. CÔNG CUỘC ĐỔI MỚI Ở VIỆT NAM TỪ NĂM 1986 ĐẾN NAY",
-  "sectionDesc": "Lệnh: Đọc đoạn tư liệu sau đây, chọn Đúng hoặc Sai cho các mệnh đề a), b), c), d):",
-  "questions": [
-    {
-      "type": "true_false",
-      "question": "Câu 1. “Xây dựng và tổ chức thực hiện ba chương trình về lương thực – thực phẩm, hàng tiêu dùng và hàng xuất khẩu ... Ba chương trình mục tiêu là nội dung chủ yếu của kế hoạch 5 năm 1986 – 1990... Đổi mới cơ chế quản lí kinh tế nhằm tạo ra động lực thúc đẩy... Kiên quyết xoá bỏ cơ chế tập trung quan liêu, bao cấp...”",
-      "subQuestions": [
-        { "text": "a) Đảng Cộng sản Việt Nam đưa ra chủ trương xoá bỏ cơ chế quan liêu, bao cấp và tin xây dựng cơ chế quản lí kinh tế mới.", "correct": 1 },
-        { "text": "b) Thực hiện ba chương trình kinh tế là nhiệm vụ chủ yếu của toàn bộ hoạt động kinh tế – xã hội, được tiến hành ngay sau năm 1975.", "correct": 0 },
-        { "text": "c) Mục tiêu của ba chương trình kinh tế là giải quyết các vấn đề dân sinh cấp bách và bước đầu hướng đến xuất khẩu.", "correct": 1 },
-        { "text": "d) Các chính sách đổi mới kinh tế của Đảng nhằm xoá bỏ rào cản, tạo động lực cho toàn bộ nền kinh tế vượt qua khủng hoảng.", "correct": 1 }
-      ]
-    },
-    {
-      "type": "true_false",
-      "question": "Câu 2. “Tháng 6-1991, Đại hội VII của Đảng... sản xuất hàng hoá không đối lập với chủ nghĩa xã hội... xây dựng nền kinh tế nhiều thành phần theo cơ chế thị trường có sự quản lí của Nhà nước...”",
-      "subQuestions": [
-        { "text": "a) Sản xuất hàng hoá là sản phẩm của chủ nghĩa tư bản, cần xoá bỏ trên con đường tiến lên chủ nghĩa xã hội.", "correct": 0 },
-        { "text": "b) Đảng Cộng sản Việt Nam chủ trương xây dựng nền kinh tế thị trường tự vận hành để tháo gỡ mọi khó khăn trong phát triển.", "correct": 0 },
-        { "text": "c) Nhận thức về kinh tế thị trường và các phương thức quản lí nó là một đổi mới bước ngoặt về tư duy của Đảng.", "correct": 1 },
-        { "text": "d) Cương lĩnh năm 1991 góp phần quan trọng vào hoạch định đường lối đổi mới và làm rõ nhận thức về con đường đi lên chủ nghĩa xã hội.", "correct": 1 }
-      ]
-    },
-    {
-      "type": "true_false",
-      "question": "Câu 3. “Phát triển con người toàn diện và xây dựng nền văn hoá Việt Nam tiên tiến, đậm đà bản sắc dân tộc...”",
-      "subQuestions": [
-        { "text": "a) Trong đổi mới đất nước, Đảng Cộng sản Việt Nam xác định văn hoá là sức mạnh nội sinh để xây dựng và bảo vệ Tổ quốc.", "correct": 1 },
-        { "text": "b) Để có thể đưa văn hoá thành sức mạnh, cần tập trung bảo tồn, duy trì nền văn hoá truyền thống, tránh bổ sung các yếu tố văn hoá mới.", "correct": 0 },
-        { "text": "c) Đảng Cộng sản Việt Nam xác định con người là trung tâm, chủ thể, là nguồn lực chủ yếu, và là mục tiêu của sự phát triển văn hoá và xã hội.", "correct": 1 },
-        { "text": "d) Chính sách văn hoá đúng định hướng của Đảng góp phần tạo nên sự ổn định và lành mạnh hoá xã hội, thúc đẩy sự phát triển kinh tế.", "correct": 1 }
-      ]
-    },
-    {
-      "type": "true_false",
-      "question": "Câu 4. “Về quan hệ giữa đổi mới kinh tế và đổi mới chính trị...”",
-      "subQuestions": [
-        { "text": "a) Đảng Cộng sản Việt Nam xác định đổi mới kinh tế là nhiệm vụ trọng tâm, là điều kiện thuận lợi để đổi mới chính trị.", "correct": 1 },
-        { "text": "b) Cần ưu tiên đổi mới kinh tế vì chỉ có thể đổi mới các lĩnh vực khác sau khi đã xây dựng hoàn thiện điều kiện vật chất kĩ thuật cho chủ nghĩa xã hội.", "correct": 0 },
-        { "text": "c) Đảng Cộng sản Việt Nam đặc biệt quan tâm phải nhận thức và giải quyết đúng đắn mối quan hệ giữa đổi mới kinh tế và đổi mới chính trị.", "correct": 1 },
-        { "text": "d) Thực tiễn cho thấy, Đảng Cộng sản Việt Nam có những bước đi phù hợp trong đổi mới chính trị, thận trọng nhưng không bảo thủ, trì trệ.", "correct": 1 }
-      ]
-    },
-    {
-      "type": "true_false",
-      "question": "Câu 5. “Đến Đại hội IX (2001), khái niệm kinh tế thị trường định hướng xã hội chủ nghĩa...”",
-      "subQuestions": [
-        { "text": "a) Mô hình kinh tế tổng quát của Việt Nam thời kì quá độ là kinh tế thị trường định hướng xã hội chủ nghĩa.", "correct": 1 },
-        { "text": "b) Mục tiêu của quá trình phát triển kinh tế thị trường ở Việt Nam là nâng cao đời sống vật chất và tinh thần cho nhân dân.", "correct": 1 },
-        { "text": "c) Đặc điểm của kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam là có ba thành phần kinh tế.", "correct": 0 },
-        { "text": "d) Kinh tế thị trường là phương thức để thực hiện mục đích xây dựng chủ nghĩa xã hội và nâng cao chất lượng cuộc sống của nhân dân.", "correct": 1 }
-      ]
-    },
-    {
-      "type": "true_false",
-      "question": "Câu 6. “Phát triển toàn diện, đồng bộ các lĩnh vực văn hoá...”",
-      "subQuestions": [
-        { "text": "a) Trong thời kì Đổi mới, Đảng chủ trương phát huy giá trị văn hoá truyền thống, hạn chế tác động của các yếu tố bên ngoài.", "correct": 0 },
-        { "text": "b) Mục tiêu của xây dựng nền văn hoá Việt Nam thời kì Đổi mới là tạo động lực cho sự phát triển đất nước và hội nhập quốc tế sâu rộng.", "correct": 1 },
-        { "text": "c) Các hoạt động văn hoá hướng vào bồi đắp cho con người phát triển toàn diện cả về phẩm chất, năng lực.", "correct": 1 },
-        { "text": "d) Đảng chủ trương phát triển công nghiệp văn hoá gắn với quảng bá hình ảnh đất nước và con người Việt Nam.", "correct": 1 }
-      ]
-    },
-    {
-      "type": "true_false",
-      "question": "Câu 7. “Nhìn lại 35 năm thực hiện công cuộc Đổi mới...”",
-      "subQuestions": [
-        { "text": "a) Ngay khi tiến hành Đổi mới, Đảng đã hoàn thiện lí luận về con đường đi lên chủ nghĩa xã hội.", "correct": 0 },
-        { "text": "b) Cương lĩnh thời kì quá độ là cương lĩnh chính trị đầu tiên của Đảng.", "correct": 0 },
-        { "text": "c) Thành tựu Đổi mới chứng minh đường lối đổi mới là đúng đắn.", "correct": 1 },
-        { "text": "d) Đổi mới góp phần nâng cao vị thế quốc gia.", "correct": 1 }
-      ]
-    },
-    {
-      "type": "true_false",
-      "question": "Câu 8. “Quy mô GDP không ngừng được mở rộng...”",
-      "subQuestions": [
-        { "text": "a) Việt Nam là nền kinh tế lớn nhất Đông Nam Á.", "correct": 0 },
-        { "text": "b) Việt Nam trở thành nước thu nhập trung bình.", "correct": 1 },
-        { "text": "c) Việt Nam đã hoàn thành công nghiệp hoá.", "correct": 0 },
-        { "text": "d) Việt Nam thu hút mạnh đầu tư nước ngoài.", "correct": 1 }
-      ]
-    },
-    {
-      "type": "true_false",
-      "question": "Câu 9. “Trên chặng đường thực hiện các mục tiêu Thiên niên kỉ...”",
-      "subQuestions": [
-        { "text": "a) Việt Nam đã hoàn thành phổ cập THPT từ năm 2010.", "correct": 0 },
-        { "text": "b) Trong 10 năm đầu Đổi mới, Việt Nam đã xoá nghèo cùng cực.", "correct": 0 },
-        { "text": "c) Thành tựu góp phần nâng cao vị thế quốc tế.", "correct": 1 },
-        { "text": "d) Có thể đạt mục tiêu nếu quyết tâm cao.", "correct": 1 }
-      ]
-    },
-    {
-      "type": "true_false",
-      "question": "Câu 10. “Đất nước đã ra khỏi khủng hoảng kinh tế – xã hội...”",
-      "subQuestions": [
-        { "text": "a) Đổi mới giúp Việt Nam thoát khủng hoảng.", "correct": 1 },
-        { "text": "b) Công nghiệp hoá đã hoàn thành.", "correct": 0 },
-        { "text": "c) Kết hợp nội lực và ngoại lực.", "correct": 1 },
-        { "text": "d) Thành tựu giúp hoàn thiện nhận thức CNXH.", "correct": 1 }
-      ]
-    }
-  ]
-}
+[
+  {
+    "sectionTitle": "Chủ đề 7. CÔNG CUỘC ĐỔI MỚI Ở VIỆT NAM TỪ NĂM 1986 ĐẾN NAY",
+    "sectionDesc": "Lệnh: Đọc đoạn tư liệu sau đây, chọn Đúng hoặc Sai cho các mệnh đề a), b), c), d):",
+    "questions": [
+      {
+        "type": "true_false",
+        "question": "Câu 1. “Xây dựng và tổ chức thực hiện ba chương trình về lương thực – thực phẩm, hàng tiêu dùng và hàng xuất khẩu ... Ba chương trình mục tiêu là nội dung chủ yếu của kế hoạch 5 năm 1986 – 1990... Đổi mới cơ chế quản lí kinh tế nhằm tạo ra động lực thúc đẩy... Kiên quyết xoá bỏ cơ chế tập trung quan liêu, bao cấp...”",
+        "subQuestions": [
+          { "text": "a) Đảng Cộng sản Việt Nam đưa ra chủ trương xoá bỏ cơ chế quan liêu, bao cấp và tin xây dựng cơ chế quản lí kinh tế mới.", "correct": 1 },
+          { "text": "b) Thực hiện ba chương trình kinh tế là nhiệm vụ chủ yếu của toàn bộ hoạt động kinh tế – xã hội, được tiến hành ngay sau năm 1975.", "correct": 0 },
+          { "text": "c) Mục tiêu của ba chương trình kinh tế là giải quyết các vấn đề dân sinh cấp bách và bước đầu hướng đến xuất khẩu.", "correct": 1 },
+          { "text": "d) Các chính sách đổi mới kinh tế của Đảng nhằm xoá bỏ rào cản, tạo động lực cho toàn bộ nền kinh tế vượt qua khủng hoảng.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Câu 2. “Tháng 6-1991, Đại hội VII của Đảng... sản xuất hàng hoá không đối lập với chủ nghĩa xã hội... xây dựng nền kinh tế nhiều thành phần theo cơ chế thị trường có sự quản lí của Nhà nước...”",
+        "subQuestions": [
+          { "text": "a) Sản xuất hàng hoá là sản phẩm của chủ nghĩa tư bản, cần xoá bỏ trên con đường tiến lên chủ nghĩa xã hội.", "correct": 0 },
+          { "text": "b) Đảng Cộng sản Việt Nam chủ trương xây dựng nền kinh tế thị trường tự vận hành để tháo gỡ mọi khó khăn trong phát triển.", "correct": 0 },
+          { "text": "c) Nhận thức về kinh tế thị trường và các phương thức quản lí nó là một đổi mới bước ngoặt về tư duy của Đảng.", "correct": 1 },
+          { "text": "d) Cương lĩnh năm 1991 góp phần quan trọng vào hoạch định đường lối đổi mới và làm rõ nhận thức về con đường đi lên chủ nghĩa xã hội.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Câu 3. “Phát triển con người toàn diện và xây dựng nền văn hoá Việt Nam tiên tiến, đậm đà bản sắc dân tộc...”",
+        "subQuestions": [
+          { "text": "a) Trong đổi mới đất nước, Đảng Cộng sản Việt Nam xác định văn hoá là sức mạnh nội sinh để xây dựng và bảo vệ Tổ quốc.", "correct": 1 },
+          { "text": "b) Để có thể đưa văn hoá thành sức mạnh, cần tập trung bảo tồn, duy trì nền văn hoá truyền thống, tránh bổ sung các yếu tố văn hoá mới.", "correct": 0 },
+          { "text": "c) Đảng Cộng sản Việt Nam xác định con người là trung tâm, chủ thể, là nguồn lực chủ yếu, và là mục tiêu của sự phát triển văn hoá và xã hội.", "correct": 1 },
+          { "text": "d) Chính sách văn hoá đúng định hướng của Đảng góp phần tạo nên sự ổn định và lành mạnh hoá xã hội, thúc đẩy sự phát triển kinh tế.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Câu 4. “Về quan hệ giữa đổi mới kinh tế và đổi mới chính trị...”",
+        "subQuestions": [
+          { "text": "a) Đảng Cộng sản Việt Nam xác định đổi mới kinh tế là nhiệm vụ trọng tâm, là điều kiện thuận lợi để đổi mới chính trị.", "correct": 1 },
+          { "text": "b) Cần ưu tiên đổi mới kinh tế vì chỉ có thể đổi mới các lĩnh vực khác sau khi đã xây dựng hoàn thiện điều kiện vật chất kĩ thuật cho chủ nghĩa xã hội.", "correct": 0 },
+          { "text": "c) Đảng Cộng sản Việt Nam đặc biệt quan tâm phải nhận thức và giải quyết đúng đắn mối quan hệ giữa đổi mới kinh tế và đổi mới chính trị.", "correct": 1 },
+          { "text": "d) Thực tiễn cho thấy, Đảng Cộng sản Việt Nam có những bước đi phù hợp trong đổi mới chính trị, thận trọng nhưng không bảo thủ, trì trệ.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Câu 5. “Đến Đại hội IX (2001), khái niệm kinh tế thị trường định hướng xã hội chủ nghĩa...”",
+        "subQuestions": [
+          { "text": "a) Mô hình kinh tế tổng quát của Việt Nam thời kì quá độ là kinh tế thị trường định hướng xã hội chủ nghĩa.", "correct": 1 },
+          { "text": "b) Mục tiêu của quá trình phát triển kinh tế thị trường ở Việt Nam là nâng cao đời sống vật chất và tinh thần cho nhân dân.", "correct": 1 },
+          { "text": "c) Đặc điểm của kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam là có ba thành phần kinh tế.", "correct": 0 },
+          { "text": "d) Kinh tế thị trường là phương thức để thực hiện mục đích xây dựng chủ nghĩa xã hội và nâng cao chất lượng cuộc sống của nhân dân.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Câu 6. “Phát triển toàn diện, đồng bộ các lĩnh vực văn hoá...”",
+        "subQuestions": [
+          { "text": "a) Trong thời kì Đổi mới, Đảng chủ trương phát huy giá trị văn hoá truyền thống, hạn chế tác động của các yếu tố bên ngoài.", "correct": 0 },
+          { "text": "b) Mục tiêu của xây dựng nền văn hoá Việt Nam thời kì Đổi mới là tạo động lực cho sự phát triển đất nước và hội nhập quốc tế sâu rộng.", "correct": 1 },
+          { "text": "c) Các hoạt động văn hoá hướng vào bồi đắp cho con người phát triển toàn diện cả về phẩm chất, năng lực.", "correct": 1 },
+          { "text": "d) Đảng chủ trương phát triển công nghiệp văn hoá gắn với quảng bá hình ảnh đất nước và con người Việt Nam.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Câu 7. “Nhìn lại 35 năm thực hiện công cuộc Đổi mới...”",
+        "subQuestions": [
+          { "text": "a) Ngay khi tiến hành Đổi mới, Đảng đã hoàn thiện lí luận về con đường đi lên chủ nghĩa xã hội.", "correct": 0 },
+          { "text": "b) Cương lĩnh thời kì quá độ là cương lĩnh chính trị đầu tiên của Đảng.", "correct": 0 },
+          { "text": "c) Thành tựu Đổi mới chứng minh đường lối đổi mới là đúng đắn.", "correct": 1 },
+          { "text": "d) Đổi mới góp phần nâng cao vị thế quốc gia.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Câu 8. “Quy mô GDP không ngừng được mở rộng...”",
+        "subQuestions": [
+          { "text": "a) Việt Nam là nền kinh tế lớn nhất Đông Nam Á.", "correct": 0 },
+          { "text": "b) Việt Nam trở thành nước thu nhập trung bình.", "correct": 1 },
+          { "text": "c) Việt Nam đã hoàn thành công nghiệp hoá.", "correct": 0 },
+          { "text": "d) Việt Nam thu hút mạnh đầu tư nước ngoài.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Câu 9. “Trên chặng đường thực hiện các mục tiêu Thiên niên kỉ...”",
+        "subQuestions": [
+          { "text": "a) Việt Nam đã hoàn thành phổ cập THPT từ năm 2010.", "correct": 0 },
+          { "text": "b) Trong 10 năm đầu Đổi mới, Việt Nam đã xoá nghèo cùng cực.", "correct": 0 },
+          { "text": "c) Thành tựu góp phần nâng cao vị thế quốc tế.", "correct": 1 },
+          { "text": "d) Có thể đạt mục tiêu nếu quyết tâm cao.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "Câu 10. “Đất nước đã ra khỏi khủng hoảng kinh tế – xã hội...”",
+        "subQuestions": [
+          { "text": "a) Đổi mới giúp Việt Nam thoát khủng hoảng.", "correct": 1 },
+          { "text": "b) Công nghiệp hoá đã hoàn thành.", "correct": 0 },
+          { "text": "c) Kết hợp nội lực và ngoại lực.", "correct": 1 },
+          { "text": "d) Thành tựu giúp hoàn thiện nhận thức CNXH.", "correct": 1 }
+        ]
+      }
+    ]
+  }
+]
