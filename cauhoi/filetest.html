@@ -637,13 +637,13 @@ function renderQuiz() {
     window.totalMaxScore = 0;
 
     questionsData.forEach((section) => {
-        // 1. Tiêu đề phụ: Nhỏ, nghiêng, màu xám, không có margin thừa
+        // 1. Tạo HTML cho tiêu đề phụ (dùng span để nhận diện <b>, <i>, <u>)
         const descHtml = (section.sectionDesc && section.sectionDesc.trim() !== "") ? 
-            `<div style="margin-top: 5px; font-size: 0.85rem; color: #6b7280; font-weight: normal; font-style: italic; line-height: 1.4;">
+            `<div style="margin-top: 4px; font-size: 0.85rem; color: #6b7280; font-weight: normal; font-style: italic; line-height: 1.4;">
                 <span>${section.sectionDesc}</span>
             </div>` : '';
 
-        // 2. Tiêu đề phần: Dùng div để tránh margin mặc định của h2, cỡ chữ 0.95rem gọn gàng
+        // 2. Render tiêu đề phần (Dùng div thay cho h2 để tránh lỗi khoảng cách)
         quizHtml += `
             <div style="margin: 25px 0 15px; padding: 12px 15px; background: #eff6ff; color: #1a73e8; border-radius: 8px; border-left: 5px solid #1a73e8;">
                 <div style="font-weight: bold; text-transform: uppercase; font-size: 0.95rem; display: block !important;">
@@ -656,13 +656,11 @@ function renderQuiz() {
 
         section.questions.forEach((item) => {
             const imageHtml = (item.image && item.image.trim() !== "") ? `
-                <div style="text-align: center; margin: 10px 0;">
+                <div class="q-image" style="text-align: center; margin: 10px 0;">
                     <img src="${item.image}" onerror="this.parentElement.style.display='none'" style="max-width: 100%; max-height: 250px; border-radius: 10px;">
                 </div>` : '';
 
             let answersContent = '';
-
-            // --- TRẮC NGHIỆM ---
             if (item.type === 'multiple') {
                 window.totalMaxScore += 1;
                 answersContent = `<div class="answers-grid">
@@ -673,21 +671,20 @@ function renderQuiz() {
                         </label>`).join('')}
                 </div>`;
             } 
-            // --- ĐÚNG SAI ---
             else if (item.type === 'true_false') {
                 window.totalMaxScore += 1; 
                 answersContent = `
-                    <div class="tf-wrapper" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
+                    <div class="tf-wrapper" style="background: var(--card); border: 1px solid var(--tf-border); border-radius: 10px; overflow: hidden;">
                         ${item.subQuestions.map((sub, subIdx) => `
-                            <div class="tf-row" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid #e2e8f0; gap: 10px;">
-                                <div style="flex: 1; font-size: 0.9rem;">
-                                    <strong style="color:#1a73e8">${String.fromCharCode(97 + subIdx)}.</strong> <span>${sub.text}</span>
+                            <div class="tf-row" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid var(--tf-border); gap: 10px;">
+                                <div class="tf-question-text" style="flex: 1; font-size: 0.9rem;">
+                                    <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> <span>${sub.text}</span>
                                 </div>
-                                <div style="display: flex; gap: 5px; flex-shrink: 0;">
-                                    <label style="cursor:pointer; padding:4px 10px; border-radius:6px; border: 1.2px solid #e2e8f0; font-size: 0.85rem;">
+                                <div class="tf-options" style="display: flex; gap: 5px; flex-shrink: 0;">
+                                    <label style="cursor:pointer; display:flex; align-items:center; gap:3px; background: transparent; padding:4px 10px; border-radius:6px; border: 1.2px solid var(--tf-border); font-size: 0.85rem;">
                                         <input type="radio" name="tf-${globalIdx}-${subIdx}" value="1" onclick="checkTFDone(${globalIdx})"> <b>Đ</b>
                                     </label>
-                                    <label style="cursor:pointer; padding:4px 10px; border-radius:6px; border: 1.2px solid #e2e8f0; font-size: 0.85rem;">
+                                    <label style="cursor:pointer; display:flex; align-items:center; gap:3px; background: transparent; padding:4px 10px; border-radius:6px; border: 1.2px solid var(--tf-border); font-size: 0.85rem;">
                                         <input type="radio" name="tf-${globalIdx}-${subIdx}" value="0" onclick="checkTFDone(${globalIdx})"> <b>S</b>
                                     </label>
                                 </div>
@@ -695,28 +692,15 @@ function renderQuiz() {
                         `).join('')}
                     </div>`;
             } 
-            // --- TRẢ LỜI NGẮN (Đã fix lỗi dính chữ và thêm nhãn) ---
             else if (item.type === 'short_answer') {
                 window.totalMaxScore += 1;
-                answersContent = `
-                    <div style="margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; border: 1px dashed #1a73e8;">
-                        <div style="font-size: 0.8rem; color: #1a73e8; font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">
-                            Nhập đáp án của bạn:
-                        </div>
-                        <input type="text" 
-                            class="short-input" 
-                            placeholder="Viết câu trả lời..." 
-                            oninput="markDone(${globalIdx})" 
-                            data-qidx="${globalIdx}" 
-                            style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 1rem; background: #fff;">
-                    </div>`;
+                answersContent = `<input type="text" class="short-input" placeholder="Nhập đáp án..." oninput="markDone(${globalIdx})" data-qidx="${globalIdx}" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 0.9rem;">`;
             }
 
-            // Render thẻ câu hỏi chung
             quizHtml += `
-                <div class="question-card" id="card-${globalIdx}" style="margin-bottom: 15px; padding: 15px; background: #fff; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                    <div style="margin-bottom: 12px; font-size: 0.95rem; font-weight: 500;">
-                        <span style="background: #1a73e8; color: white; padding: 2px 8px; border-radius: 15px; font-size: 0.75rem; font-weight: bold; margin-right: 5px;">Câu ${globalIdx + 1}</span> 
+                <div class="question-card" id="card-${globalIdx}" style="margin-bottom: 20px; padding: 15px;">
+                    <div class="q-header" style="margin-bottom: 12px; font-size: 0.95rem;">
+                        <span class="q-badge" style="background: var(--primary); color: white; padding: 2px 8px; border-radius: 15px; font-size: 0.75rem; font-weight: bold; margin-right: 5px;">Câu ${globalIdx + 1}</span> 
                         <span>${item.question}</span>
                     </div>
                     ${imageHtml}
