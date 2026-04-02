@@ -5,7 +5,7 @@
       {
         "type": "true_false",
         "question": "Một nhóm học sinh xây dựng trang web bán sách. Các em khai báo CSS nhiều lần cho cùng một phần tử, sử dụng class, id và có hai quy tắc trùng nhau. Khi kiểm tra, màu chữ hiển thị không giống dự đoán ban đầu. Hãy phân tích mức độ ưu tiên dựa vào specificity và rule order.",
-        "image": "dungsaicau1.jpg",
+        "image": "../tinhoc/dungsaicau1.jpg",
         "subQuestions": [
           { "text": "Trọng số của bộ chọn #intro cao hơn .content.", "correct": 1 },
           { "text": "Bộ chọn p có trọng số cao hơn #intro.", "correct": 0 },
