@@ -176,7 +176,7 @@
       {
         "type": "true_false",
         "question": "Một học sinh thiết kế trang giới thiệu lớp học. Em muốn dòng tiêu đề có màu đỏ, nhưng đồng thời thử nghiệm nhiều cách định dạng khác nhau: CSS ngoài, inline CSS và thêm '!important'. Sau khi chạy chương trình, màu chữ hiển thị không như mong đợi. Hãy phân tích đoạn mã sau và xác định các nhận định đúng hay sai theo thứ tự ưu tiên CSS.",
-        "image": "dungsaicau18.png",
+        "image": "../tinhoc/dungsaicau18.png",
         "subQuestions": [
           { "text": "Thuộc tính color: purple !important; có mức ưu tiên cao nhất trong đoạn mã trên.", "correct": 1 },
           { "text": "Inline CSS ( style=\"color:red;\" ) luôn có mức ưu tiên cao hơn !important.", "correct": 0 },
