@@ -694,7 +694,7 @@ function renderQuiz() {
             } 
             else if (item.type === 'short_answer') {
                 window.totalMaxScore += 1;
-                answersContent = `<input type="text" class="short-input" placeholder="Nhập đáp án..." oninput="markDone(${globalIdx})" data-qidx="${globalIdx}" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 0.9rem;">`;
+                answersContent = `<input type="text" class="short-input" placeholder="Nhập đáp án..." oninput="markDone(${globalIdx})" data-qidx="${globalIdx}" style="width: 100%; box-sizing: border-box; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 0.9rem;">`;
             }
 
             quizHtml += `
