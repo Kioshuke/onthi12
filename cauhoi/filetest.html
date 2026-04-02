@@ -166,16 +166,26 @@
             border-color: var(--primary);
             background: var(--primary-light);
         }
-        .q-header { display: block; gap: 12px; margin-bottom: 20px; font-weight: 600; font-size: 1.05rem; align-items: flex-start; line-height: 1.6; }
+        .q-header { 
+            display: block; 
+            margin-bottom: 20px; 
+            font-weight: 600; 
+            font-size: 1.05rem; 
+            line-height: 1.6; /* Ép tất cả các dòng có cùng độ cao */
+            text-align: justify; /* Căn lề đều 2 bên cho đẹp giống SGK */
+        }
         .q-badge { 
-            display: inline-block; /* Quan trọng để chữ có thể chảy bao quanh nó */
+            display: inline-flex; 
+            align-items: center;
             background: var(--primary-light); 
             color: var(--primary); 
-            padding: 2px 10px; 
+            height: 24px;
+            padding: 0px 10px; 
             border-radius: 8px; 
             font-size: 0.8rem;
             margin-right: 8px; /* Khoảng cách với chữ đầu tiên của câu hỏi */
             vertical-align: middle; /* Căn chỉnh cho đẹp với dòng chữ đầu */
+            transform: translateY(-1px);
         }
         /* Tìm đoạn này và sửa lại display thành none */
         .mobile-nav-btn {
@@ -638,15 +648,16 @@ function renderQuiz() {
 
     questionsData.forEach((section) => {
         // 1. Tạo HTML cho tiêu đề phụ (dùng span để nhận diện <b>, <i>, <u>)
+        // 1. Tạo HTML cho phần chú thích (nằm dưới tiêu đề chính)
         const descHtml = (section.sectionDesc && section.sectionDesc.trim() !== "") ? 
-            `<div style="margin-top: 4px; font-size: 0.85rem; color: #6b7280; font-weight: normal; font-style: italic; line-height: 1.4;">
-                <span>${section.sectionDesc}</span>
+            `<div style="margin-top: 8px; font-size: 0.9rem; color: #4b5563; font-weight: 400; line-height: 1.5; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 8px;">
+                ${section.sectionDesc}
             </div>` : '';
 
-        // 2. Render tiêu đề phần (Dùng div thay cho h2 để tránh lỗi khoảng cách)
+        // 2. Render toàn bộ khối tiêu đề phần
         quizHtml += `
-            <div style="margin: 25px 0 15px; padding: 12px 15px; background: #eff6ff; color: #1a73e8; border-radius: 8px; border-left: 5px solid #1a73e8;">
-                <div style="font-weight: bold; text-transform: uppercase; font-size: 0.95rem; display: block !important;">
+            <div style="margin: 40px 0 25px; padding: 20px 25px; background: var(--card); border-radius: 16px; border-left: 8px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(26, 115, 232, 0.1);">
+                <div style="font-weight: 900; text-transform: uppercase; font-size: 1.4rem; color: var(--primary); letter-spacing: 0.5px; line-height: 1.2;">
                     ${section.sectionTitle}
                 </div>
                 ${descHtml}
