@@ -627,7 +627,7 @@ async function loadQuestions() {
 }
 
     // 3. Hàm Render chính - Chia phần bài làm và mục lục
-    function renderQuiz() {
+function renderQuiz() {
     const quizContainer = document.getElementById('quiz-container');
     const navContainer = document.getElementById('navGrid');
     
@@ -637,18 +637,12 @@ async function loadQuestions() {
     window.totalMaxScore = 0;
 
     questionsData.forEach((section) => {
-        // 1. Xử lý tiêu đề phụ (sectionDesc) nếu có
-        // Thay thế đoạn render tiêu đề phần bằng đoạn này:
+        // 1. Xử lý tiêu đề phụ (sectionDesc)
+        // Dùng span hoặc div để bao quanh sectionDesc giúp nhận diện HTML từ JSON
         const descHtml = (section.sectionDesc && section.sectionDesc.trim() !== "") ? 
-            `<div class="section-desc" style="margin-top: 10px; font-size: 0.95rem; color: var(--text-sub); font-weight: normal; font-style: italic; line-height: 1.5; border-top: 1px solid rgba(26, 115, 232, 0.2); padding-top: 10px;">${section.sectionDesc}</div>` : '';
-
-        quizHtml += `
-            <div class="section-wrapper" style="margin: 40px 0 25px;">
-                <div class="section-header-box" style="padding: 18px; background: var(--primary-light); color: var(--primary); border-radius: 12px; border-left: 6px solid var(--primary); box-shadow: 0 4px 12px rgba(26, 115, 232, 0.08);">
-                    <div style="font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; font-size: 1.15rem;">${section.sectionTitle}</div>
-                    ${descHtml}
-                </div>
-            </div>`;
+            `<div class="section-desc" style="margin-top: 10px; font-size: 0.95rem; color: var(--text-sub); font-weight: normal; font-style: italic; line-height: 1.5; border-top: 1px dotted var(--primary); padding-top: 10px;">
+                <span>${section.sectionDesc}</span>
+            </div>` : '';
         
         // 3. Render tiêu đề phần vào mục lục
         navHtml += `<div class="nav-section-label" style="grid-column: 1/-1; font-weight: bold; margin: 15px 0 5px; font-size: 0.7rem; color: #64748b; text-transform: uppercase;">${section.sectionTitle}</div>`;
