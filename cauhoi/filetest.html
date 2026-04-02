@@ -637,17 +637,19 @@ function renderQuiz() {
     window.totalMaxScore = 0;
 
     questionsData.forEach((section) => {
-        // 1. Xử lý tiêu đề phụ (Gọn gàng hơn, không margin thừa)
+        // 1. Tạo HTML cho tiêu đề phụ (dùng span để nhận diện <b>, <i>, <u>)
         const descHtml = (section.sectionDesc && section.sectionDesc.trim() !== "") ? 
-            `<div class="section-desc" style="margin-top: 5px; font-size: 0.85rem; color: var(--text-sub); font-weight: normal; font-style: italic; line-height: 1.4;">${section.sectionDesc}</div>` : '';
+            `<div style="margin-top: 4px; font-size: 0.85rem; color: #6b7280; font-weight: normal; font-style: italic; line-height: 1.4;">
+                <span>${section.sectionDesc}</span>
+            </div>` : '';
 
-        // 2. Render tiêu đề phần (Đã thu nhỏ font-size và xóa margin-top cũ)
+        // 2. Render tiêu đề phần (Dùng div thay cho h2 để tránh lỗi khoảng cách)
         quizHtml += `
-            <div class="section-wrapper" style="margin: 20px 0 15px;">
-                <div class="section-header-box" style="padding: 10px 15px; background: var(--primary-light); color: var(--primary); border-radius: 8px; border-left: 4px solid var(--primary);">
-                    <div style="font-weight: bold; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 0.3px;">${section.sectionTitle}</div>
-                    ${descHtml}
+            <div style="margin: 25px 0 15px; padding: 12px 15px; background: #eff6ff; color: #1a73e8; border-radius: 8px; border-left: 5px solid #1a73e8;">
+                <div style="font-weight: bold; text-transform: uppercase; font-size: 0.95rem; display: block !important;">
+                    ${section.sectionTitle}
                 </div>
+                ${descHtml}
             </div>`;
         
         navHtml += `<div class="nav-section-label" style="grid-column: 1/-1; font-weight: bold; margin: 10px 0 5px; font-size: 0.7rem; color: #64748b; text-transform: uppercase;">${section.sectionTitle}</div>`;
