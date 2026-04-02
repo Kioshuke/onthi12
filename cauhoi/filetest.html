@@ -628,20 +628,30 @@ async function loadQuestions() {
 
     // 3. Hàm Render chính - Chia phần bài làm và mục lục
     function renderQuiz() {
-        const quizContainer = document.getElementById('quiz-container');
-        const navContainer = document.getElementById('navGrid');
-        
-        let quizHtml = '';
-        let navHtml = '';
-        let globalIdx = 0;
-        window.totalMaxScore = 0;
+    const quizContainer = document.getElementById('quiz-container');
+    const navContainer = document.getElementById('navGrid');
+    
+    let quizHtml = '';
+    let navHtml = '';
+    let globalIdx = 0;
+    window.totalMaxScore = 0;
 
-        questionsData.forEach((section) => {
-            // Render tiêu đề phần vào bài làm
-            quizHtml += `<h2 class="section-header" style="margin: 40px 0 20px; padding: 12px; background: var(--primary-light); color: var(--primary); border-radius: 8px; font-size: 1.1rem; border-left: 5px solid var(--primary);">${section.sectionTitle}</h2>`;
-            
-            // Render tiêu đề phần vào mục lục
-            navHtml += `<div class="nav-section-label" style="grid-column: 1/-1; font-weight: bold; margin: 15px 0 5px; font-size: 0.7rem; color: #64748b; text-transform: uppercase;">${section.sectionTitle}</div>`;
+    questionsData.forEach((section) => {
+        // 1. Xử lý tiêu đề phụ (sectionDesc) nếu có
+        const descHtml = section.sectionDesc ? 
+            `<div class="section-desc" style="margin-top: 8px; font-size: 0.95rem; color: var(--text-sub); font-weight: normal; font-style: italic; line-height: 1.5;">${section.sectionDesc}</div>` : '';
+
+        // 2. Render tiêu đề phần vào bài làm (Gộp cả chính và phụ)
+        quizHtml += `
+            <div class="section-wrapper" style="margin: 40px 0 20px;">
+                <h2 class="section-header" style="margin: 0; padding: 15px; background: var(--primary-light); color: var(--primary); border-radius: 8px; font-size: 1.1rem; border-left: 5px solid var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div style="font-weight: bold; text-transform: uppercase;">${section.sectionTitle}</div>
+                    ${descHtml}
+                </h2>
+            </div>`;
+        
+        // 3. Render tiêu đề phần vào mục lục
+        navHtml += `<div class="nav-section-label" style="grid-column: 1/-1; font-weight: bold; margin: 15px 0 5px; font-size: 0.7rem; color: #64748b; text-transform: uppercase;">${section.sectionTitle}</div>`;
 
             section.questions.forEach((item) => {
                 // Thay thế đoạn cũ bằng đoạn này
@@ -672,7 +682,7 @@ async function loadQuestions() {
                             ${item.subQuestions.map((sub, subIdx) => `
                                 <div class="tf-row">
                                     <div class="tf-question-text">
-                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> ${sub.text}
+                                        <strong style="color:var(--primary)">${String.fromCharCode(97 + subIdx)}.</strong> <span>${sub.text}</span>
                                     </div>
                                     <div class="tf-options">
                                         <label style="cursor:pointer; display:flex; align-items:center; gap:4px; background: transparent; padding:6px 12px; border-radius:8px; border: 1.5px solid var(--tf-border);">
@@ -695,7 +705,7 @@ async function loadQuestions() {
 
                 quizHtml += `
                     <div class="question-card" id="card-${globalIdx}">
-                        <div class="q-header"><span class="q-badge">Câu ${globalIdx + 1}</span> ${item.question}</div>
+                        <div class="q-header"><span class="q-badge">Câu ${globalIdx + 1}</span> <span>${item.question}</span></div>
                         ${imageHtml}
                         ${answersContent}
                     </div>`;
