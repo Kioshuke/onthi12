@@ -5,12 +5,102 @@
     "questions": [
       {
         "type": "true_false",
-        "question": "<i>“Xây dựng và tổ chức thực hiện ba chương trình về lương thực – thực phẩm, hàng tiêu dùng và hàng xuất khẩu ... <br>Ba chương trình mục tiêu là nội dung chủ yếu của kế hoạch 5 năm 1986 – 1990, phải được tập trung cao độ sức người, sức của để thực hiện .. <br>Đổi mới cơ chế quản lí kinh tế nhằm tạo ra động lực thúc đẩy các đơn vị kinh tế và quần chúng lao động hăng hái phát triển sản xuất, nâng cao năng suất, chất lượng và hiệu quả kinh tế. 	Kiên quyết xoá bỏ cơ chế tập trung quan liêu, bao cấp, thiết lập và hình thành đồng bộ cơ chế kế hoạch hoá theo phương thức hạch toán kinh doanh xã hội chủ nghĩa...”.</i><br> (Đảng Cộng sản Việt Nam, Văn kiện Đảng toàn tập, Tập 47, NXB Chính trị quốc gia, Hà Nội, 2006, tr.898 – 899, 902)",
+        "question": "<i>“Xây dựng và tổ chức thực hiện ba chương trình về lương thực – thực phẩm, hàng tiêu dùng và hàng xuất khẩu ...<br>Ba chương trình mục tiêu là nội dung chủ yếu của kế hoạch 5 năm 1986 – 1990, phải được tập trung cao độ sức người, sức của để thực hiện ..<br>Đổi mới cơ chế quản lí kinh tế nhằm tạo ra động lực thúc đẩy các đơn vị kinh tế và quần chúng lao động hăng hái phát triển sản xuất, nâng cao năng suất, chất lượng và hiệu quả kinh tế. Kiên quyết xoá bỏ cơ chế tập trung quan liêu, bao cấp, thiết lập và hình thành đồng bộ cơ chế kế hoạch hoá theo phương thức hạch toán kinh doanh xã hội chủ nghĩa...”.</i><br>(Đảng Cộng sản Việt Nam, Văn kiện Đảng toàn tập, Tập 47, NXB Chính trị quốc gia, Hà Nội, 2006, tr.898 – 899, 902)",
         "subQuestions": [
           { "text": "Đảng Cộng sản Việt Nam đưa ra chủ trương xoá bỏ cơ chế quan liêu, bao cấp và tin xây dựng cơ chế quản lí kinh tế mới.", "correct": 1 },
           { "text": "Thực hiện ba chương trình kinh tế là nhiệm vụ chủ yếu của toàn bộ hoạt động kinh tế – xã hội, được tiến hành ngay sau năm 1975.", "correct": 0 },
           { "text": "Mục tiêu của ba chương trình kinh tế là giải quyết các vấn đề dân sinh cấp bách và bước đầu hướng đến xuất khẩu.", "correct": 1 },
           { "text": "Các chính sách đổi mới kinh tế của Đảng nhằm xoá bỏ rào cản, tạo động lực cho toàn bộ nền kinh tế vượt qua khủng hoảng.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "<i>“Tháng 6-1991, Đại hội đại biểu toàn quốc lần thứ VII của Đảng Cộng sản Việt Nam đã thông qua Cương lĩnh xây dựng đất nước trong thời kì quá độ lên chủ nghĩa xã hội... Phát triển các quan điểm đổi mới của Đại hội VI, Đại hội VII chủ trương tiếp tục triển khai công cuộc Đổi mới nói chung và cải cách kinh tế nói riêng. Về kinh tế, Đại hội đã có kết luận quan trọng khi cho rằng sản xuất hàng hoá không đối lập với chủ nghĩa xã hội mà là thành tựu của nền văn minh nhân loại, tồn tại khách quan, cần thiết cho công cuộc xây dựng chủ nghĩa xã hội. Trên cơ sở đó, Đại hội xác định xây dựng cơ chế vận hành nền kinh tế nhiều thành phần theo định hướng xã hội chủ nghĩa “cơ chế thị trường có sự quản lí của Nhà nước” bằng pháp luật, kế hoạch, chính sách và các công cụ khác. Với định hướng đó, quyền tự chủ của các đơn vị kinh tế được chú trọng hơn, cùng với sự đổi mới phương thức quản lí của Nhà nước đối với các thành phần kinh tế”.</i> <br>(Lê Mậu Hãn (Chủ biên), Lịch sử Việt Nam, Tập IV, NXB Giáo dục Việt Nam, Hà Nội, 2013, tr.511)",
+        "subQuestions": [
+          { "text": "Sản xuất hàng hoá là sản phẩm của chủ nghĩa tư bản, cần xoá bỏ trên con đường tiến lên chủ nghĩa xã hội.", "correct": 0 },
+          { "text": "Đảng Cộng sản Việt Nam chủ trương xây dựng nền kinh tế thị trường tự vận hành để tháo gỡ mọi khó khăn trong phát triển.", "correct": 0 },
+          { "text": "Nhận thức về kinh tế thị trường và các phương thức quản lí nó là một đổi mới bước ngoặt về tư duy của Đảng.", "correct": 1 },
+          { "text": "Cương lĩnh năm 1991 góp phần quan trọng vào hoạch định đường lối đổi mới và 1 thể làm rõ nhận thức về con đường đi lên chủ nghĩa xã hội.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "<i>“Phát triển con người toàn diện và xây dựng nền văn hoá Việt Nam tiên tiến, đậm đà bản sắc dân tộc để văn hoá thực sự trở thành sức mạnh nội sinh, động lực phát triển đất nước và bảo vệ Tổ quốc. Tăng đầu tư cho phát triển sự nghiệp văn hoá. Xây dựng, phát triển, tạo môi trường và điều kiện xã hội thuận lợi nhất để khơi dậy truyền thống yêu nước, niềm tự hào dân tộc, niềm tin, khát vọng phát triển đất nước phồn vinh, hạnh phúc; tài năng, trí tuệ, phẩm chất của con người Việt Nam là trung tâm, mục tiêu và động lực phát triển quan trọng nhất của đất nước”.</i> <br>(Đảng Cộng sản Việt Nam, Văn kiện Đại hội đại biểu toàn quốc lần thứ XIII, Tập I, NXB Chính trị quốc gia Sự thật, Hà Nội, 2021, tr.115 – 116)",
+        "subQuestions": [
+          { "text": "Trong đổi mới đất nước, Đảng Cộng sản Việt Nam xác định văn hoá là sức mạnh nội sinh để xây dựng và bảo vệ Tổ quốc.", "correct": 1 },
+          { "text": "Để có thể đưa văn hoá thành sức mạnh, cần tập trung bảo tồn, duy trì nền văn hoá truyền thống, đậm đà bản sắc dân tộc, tránh bổ sung các yếu tố văn hoá mới.", "correct": 0 },
+          { "text": "Đảng Cộng sản Việt Nam xác định con người là trung tâm, chủ thể, là nguồn lực chủ yếu, và là mục tiêu của sự phát triển văn hoá và xã hội.", "correct": 1 },
+          { "text": "Chính sách văn hoá đúng định hướng của Đảng góp phần tạo nên sự ổn định và lành mạnh hoá xã hội, thúc đẩy sự phát triển kinh tế.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "<i>“Về quan hệ giữa đổi mới kinh tế và đổi mới chính trị, phải tập trung làm tốt đổi mới kinh tế, đáp ứng những đòi hỏi cấp bách của nhân dân về đời sống, việc làm và các nhu cầu xã hội khác, xây dựng cơ sở vật chất – kĩ thuật của chủ nghĩa xã hội, coi đó là điều kiện quan trọng để tiến hành thuận lợi đổi mới trong lĩnh vực chính trị. Đồng thời với đổi mới kinh tế phải từng bước đổi mới tổ chức và phương thức hoạt động của hệ thống chính trị, phát huy ngày càng tốt quyền làm chủ và năng lực sáng tạo của nhân dân trên các lĩnh vực chính trị, kinh tế, văn hoá, xã hội”.</i> <br>(Đảng Cộng sản Việt Nam, Văn kiện Đại hội đại biểu toàn quốc lần thứ VII, NXB Sự thật, Hà Nội, 1991, tr.54)",
+        "subQuestions": [
+          { "text": "Đảng Cộng sản Việt Nam xác định đổi mới kinh tế là nhiệm vụ trọng tâm, là điều kiện thuận lợi để đổi mới chính trị.", "correct": 1 },
+          { "text": "Cần ưu tiên đổi mới kinh tế vì chỉ có thể đổi mới các lĩnh vực khác sau khi đã xây dựng hoàn thiện điều kiện vật chất kĩ thuật cho chủ nghĩa xã hội.", "correct": 0 },
+          { "text": "Đảng Cộng sản Việt Nam đặc biệt quan tâm phải nhận thức và giải quyết đúng đắn mối quan hệ giữa đổi mới kinh tế và đổi mới chính trị.", "correct": 1 },
+          { "text": "Thực tiễn cho thấy, Đảng Cộng sản Việt Nam có những bước đi phù hợp trong đổi mới chính trị, thận trọng nhưng không bảo thủ, trì trệ.", "correct": 1 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "<i>“”.</i> <br>",
+        "subQuestions": [
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "<i>“”.</i> <br>",
+        "subQuestions": [
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "<i>“”.</i> <br>",
+        "subQuestions": [
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "<i>“”.</i> <br>",
+        "subQuestions": [
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "<i>“”.</i> <br>",
+        "subQuestions": [
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 }
+        ]
+      },
+      {
+        "type": "true_false",
+        "question": "<i>“”.</i> <br>",
+        "subQuestions": [
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 },
+          { "text": "", "correct": 0 }
         ]
       }
     ]
