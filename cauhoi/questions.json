@@ -1,6 +1,7 @@
 [
   {
     "sectionTitle": "Phần Trắc nghiệm",
+    "sectionDesc": "Lệnh: Đọc đoạn tư liệu sau đây, chọn đúng hoặc sai cho các câu a), b), c), d):",
     "questions": [
       {
         "type": "multiple",
