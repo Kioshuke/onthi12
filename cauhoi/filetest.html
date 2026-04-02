@@ -638,16 +638,16 @@ async function loadQuestions() {
 
     questionsData.forEach((section) => {
         // 1. Xử lý tiêu đề phụ (sectionDesc) nếu có
-        const descHtml = section.sectionDesc ? 
-            `<div class="section-desc" style="margin-top: 8px; font-size: 0.95rem; color: var(--text-sub); font-weight: normal; font-style: italic; line-height: 1.5;">${section.sectionDesc}</div>` : '';
+        // Thay thế đoạn render tiêu đề phần bằng đoạn này:
+        const descHtml = (section.sectionDesc && section.sectionDesc.trim() !== "") ? 
+            `<div class="section-desc" style="margin-top: 10px; font-size: 0.95rem; color: var(--text-sub); font-weight: normal; font-style: italic; line-height: 1.5; border-top: 1px solid rgba(26, 115, 232, 0.2); padding-top: 10px;">${section.sectionDesc}</div>` : '';
 
-        // 2. Render tiêu đề phần vào bài làm (Gộp cả chính và phụ)
         quizHtml += `
-            <div class="section-wrapper" style="margin: 40px 0 20px;">
-                <h2 class="section-header" style="margin: 0; padding: 15px; background: var(--primary-light); color: var(--primary); border-radius: 8px; font-size: 1.1rem; border-left: 5px solid var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                    <div style="font-weight: bold; text-transform: uppercase;">${section.sectionTitle}</div>
+            <div class="section-wrapper" style="margin: 40px 0 25px;">
+                <div class="section-header-box" style="padding: 18px; background: var(--primary-light); color: var(--primary); border-radius: 12px; border-left: 6px solid var(--primary); box-shadow: 0 4px 12px rgba(26, 115, 232, 0.08);">
+                    <div style="font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; font-size: 1.15rem;">${section.sectionTitle}</div>
                     ${descHtml}
-                </h2>
+                </div>
             </div>`;
         
         // 3. Render tiêu đề phần vào mục lục
