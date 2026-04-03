@@ -175,6 +175,14 @@
   .message em { font-style: italic; }
   .message code { background: #f0f0f0; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
   .message p { margin: 0; }
+  .chat-warning {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #888;
+  padding: 6px 10px 12px;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+}
 </style>
 </head>
 
@@ -190,6 +198,9 @@
     <input id="input" placeholder="Bạn muốn trao đổi điều gì..." />
     <button onclick="sendMessage()">Gửi</button>
   </div>
+  <div class="chat-warning">
+  Hubie có thể mắc lỗi. Hãy kiểm tra các thông tin quan trọng!
+</div>
 </div>
 
 <script>
