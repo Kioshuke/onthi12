@@ -2635,55 +2635,81 @@ const chatBtn = document.getElementById("chatButton");
 const frame = document.getElementById("chatbotFrame");
 
 let isDragging = false;
-let offsetX, offsetY;
+let startX, startY;
+let currentX = window.innerWidth - 85;
+let currentY = window.innerHeight - 85;
+let offsetX = 0;
+let offsetY = 0;
 
-// 👉 Bắt đầu kéo
-chatBtn.addEventListener("mousedown", startDrag);
-chatBtn.addEventListener("touchstart", startDrag);
+// 👉 set vị trí ban đầu
+updatePosition();
 
+// 👉 dùng transform cho mượt
+function updatePosition(){
+  chatBtn.style.transform = `translate(${currentX}px, ${currentY}px)`;
+}
+
+// 👉 START
 function startDrag(e){
   isDragging = false;
 
-  const rect = chatBtn.getBoundingClientRect();
+  startX = e.touches ? e.touches[0].clientX : e.clientX;
+  startY = e.touches ? e.touches[0].clientY : e.clientY;
 
-  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  offsetX = startX - currentX;
+  offsetY = startY - currentY;
 
-  offsetX = clientX - rect.left;
-  offsetY = clientY - rect.top;
-
-  document.addEventListener("mousemove", drag);
-  document.addEventListener("touchmove", drag);
+  document.addEventListener("mousemove", drag, { passive: true });
+  document.addEventListener("touchmove", drag, { passive: true });
 
   document.addEventListener("mouseup", stopDrag);
   document.addEventListener("touchend", stopDrag);
 }
 
-// 👉 Đang kéo
+// 👉 DRAG (siêu mượt)
 function drag(e){
-  isDragging = true;
+  const x = e.touches ? e.touches[0].clientX : e.clientX;
+  const y = e.touches ? e.touches[0].clientY : e.clientY;
 
-  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  if (Math.abs(x - startX) > 5 || Math.abs(y - startY) > 5) {
+    isDragging = true;
+  }
 
-  let x = clientX - offsetX;
-  let y = clientY - offsetY;
+  currentX = x - offsetX;
+  currentY = y - offsetY;
 
-  // giới hạn trong màn hình
-  x = Math.max(0, Math.min(window.innerWidth - 65, x));
-  y = Math.max(0, Math.min(window.innerHeight - 65, y));
+  // 👉 giới hạn trong màn hình
+  currentX = Math.max(0, Math.min(window.innerWidth - 65, currentX));
+  currentY = Math.max(0, Math.min(window.innerHeight - 65, currentY));
 
-  chatBtn.style.left = x + "px";
-  chatBtn.style.top = y + "px";
-  chatBtn.style.right = "auto";
-  chatBtn.style.bottom = "auto";
+  requestAnimationFrame(updatePosition);
 }
 
-// 👉 Dừng kéo
+// 👉 STOP + snap nhẹ về cạnh
 function stopDrag(){
   document.removeEventListener("mousemove", drag);
   document.removeEventListener("touchmove", drag);
+
+  // 👉 snap về trái hoặc phải cho đẹp
+  const middle = window.innerWidth / 2;
+
+  if(currentX > middle){
+    currentX = window.innerWidth - 75;
+  } else {
+    currentX = 10;
+  }
+
+  chatBtn.style.transition = "transform 0.3s ease";
+  updatePosition();
+
+  setTimeout(()=>{
+    chatBtn.style.transition = "none";
+  }, 300);
 }
+
+// 👉 EVENT
+chatBtn.addEventListener("mousedown", startDrag);
+chatBtn.addEventListener("touchstart", startDrag, { passive: true });
 
 // 👉 Click mở chat
 chatBtn.addEventListener("click", () => {
