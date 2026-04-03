@@ -300,15 +300,19 @@ async function sendMessage() {
   chatBox.scrollTop = chatBox.scrollHeight;
 
   try {
-    const res = await fetch("http://localhost:3000/ask", {
+    const res = await fetch("https://hubie-api.onrender.com/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         question,
-        userName: userName, // ✅ THÊM: Gửi tên để server AI nhận biết
+        userName: userName,
         history: chatHistory
       })
     });
+
+    if (!res.ok) {
+      throw new Error("API error");
+    }
 
     const data = await res.json();
 
