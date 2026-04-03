@@ -2172,16 +2172,7 @@ const allowList = [
 let activeInterval = null;
 onAuthStateChanged(auth, (user)=>{
 if(user){
-  const iframe = document.getElementById('hubie-iframe');
-        
-        // Đợi iframe load xong rồi mới gửi dữ liệu
-        iframe.onload = () => {
-            iframe.contentWindow.postMessage({
-                type: 'USER_INFO',
-                name: user.displayName || "Bạn học",
-                avatar: user.photoURL || "https://i.pravatar.cc/100?img=5"
-            }, '*');
-        };
+
   // ✅ GỬI USER SANG FORUM IFRAME
   function sendUserToForum(user){
     const forumIframe = document.getElementById("forumFrame");
@@ -2600,224 +2591,47 @@ if (typeof db !== 'undefined') {
     });
 }
 </script>
-<div id="hubie-bubble" title="Chat với Hubie AI">
-    <span>H</span>
-    <div id="hubie-online-dot"></div>
-</div>
+<!-- Nút chat -->
+<button onclick="toggleChat()" style="
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:60px;
+  height:60px;
+  border:none;
+  border-radius:50%;
+  background:#4f46e5;
+  color:white;
+  font-size:24px;
+  cursor:pointer;
+  z-index:9999;
+">
+💬
+</button>
 
-<div id="hubie-chat-window">
-    <div id="hubie-chat-header">
-        <span>Hubie AI - Trợ lý LearnHub</span>
-        <span id="hubie-close-chat">&times;</span>
-    </div>
-    <iframe src="chatbot.html" frameborder="0" id="hubie-iframe"></iframe>
-</div>
-
-<style>
-    /* Định dạng bong bóng nổi */
-    #hubie-bubble {
-        position: fixed;
-        bottom: 20px; /* Vị trí mặc định */
-        right: 20px;
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        font-weight: bold;
-        cursor: grab; /* Hiện bàn tay khi hover */
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        z-index: 999998; /* Thấp hơn cửa sổ chat 1 chút */
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        user-select: none; /* Không cho quét chọn chữ bên trong */
-        touch-action: none; /* Cần thiết cho việc kéo thả trên mobile */
-    }
-
-    #hubie-bubble:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 20px rgba(37, 117, 252, 0.5);
-    }
-
-    #hubie-bubble:active {
-        cursor: grabbing; /* Hiện bàn tay nắm lại khi kéo */
-    }
-
-    /* Chấm xanh online trên bong bóng */
-    #hubie-online-dot {
-        position: absolute;
-        bottom: 3px;
-        right: 3px;
-        width: 12px;
-        height: 12px;
-        background-color: #22c55e;
-        border-radius: 50%;
-        border: 2px solid white;
-    }
-
-    /* Định dạng cửa sổ chat (ẩn mặc định) */
-    #hubie-chat-window {
-        display: none;
-        position: fixed;
-        bottom: 90px; /* Cách bong bóng 1 khoảng */
-        right: 20px;
-        width: 380px;
-        height: 550px;
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        z-index: 999999; /* Cao nhất */
-        overflow: hidden;
-        animation: hubieSlideIn 0.3s ease-out;
-    }
-
-    @keyframes hubieSlideIn {
-        from { transform: translateY(20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Header của cửa sổ chat */
-    #hubie-chat-header {
-        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        color: white;
-        padding: 12px 18px;
-        font-weight: bold;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: default;
-    }
-
-    #hubie-close-chat {
-        cursor: pointer;
-        font-size: 24px;
-        line-height: 1;
-    }
-
-    /* Iframe chứa chatbot.html */
-    #hubie-iframe {
-        width: 100%;
-        height: calc(100% - 45px); /* Trừ đi chiều cao header */
-        border: none;
-    }
-
-    /* Responsive cho điện thoại */
-    @media (max-width: 480px) {
-        #hubie-chat-window {
-            width: 90%;
-            height: 80vh;
-            right: 5%;
-            bottom: 80px;
-        }
-    }
-</style>
+<!-- Chatbot -->
+<iframe id="chatbotFrame"
+  src="chatbot.html"
+  style="
+    display:none;
+    position:fixed;
+    bottom:90px;
+    right:20px;
+    width:350px;
+    height:500px;
+    border:none;
+    border-radius:12px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.2);
+    z-index:9999;
+  ">
+</iframe>
 
 <script>
-    const bubble = document.getElementById('hubie-bubble');
-    const chatWindow = document.getElementById('hubie-chat-window');
-    const closeBtn = document.getElementById('hubie-close-chat');
-    
-    let isDragging = false;
-    let dragStarted = false; // Để phân biệt click và drag
-    let startX, startY, initialX, initialY;
-
-    // --- Xử lý Ẩn/Hiện cửa sổ chat ---
-    bubble.addEventListener('click', () => {
-        // Nếu chỉ là click (không phải vừa kéo xong) thì mới toggle chat
-        if (!dragStarted) {
-            if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
-                chatWindow.style.display = 'block';
-            } else {
-                chatWindow.style.display = 'none';
-            }
-        }
-    });
-
-    closeBtn.addEventListener('click', () => {
-        chatWindow.style.display = 'none';
-    });
-
-
-    // --- Xử lý Kéo Thả (Drag) - Hỗ trợ cả Chuột và Cảm ứng ---
-    
-    // Hàm bắt đầu kéo
-    const dragStart = (e) => {
-        dragStarted = false; // Reset trạng thái khi bắt đầu chạm
-        isDragging = true;
-        bubble.style.transition = 'none'; // Tắt animation khi đang kéo
-
-        if (e.type === "touchstart") {
-            startX = e.touches[0].clientX - bubble.offsetLeft;
-            startY = e.touches[0].clientY - bubble.offsetTop;
-        } else {
-            startX = e.clientX - bubble.offsetLeft;
-            startY = e.clientY - bubble.offsetTop;
-        }
-    };
-
-    // Hàm đang kéo
-    const drag = (e) => {
-        if (!isDragging) return;
-        
-        e.preventDefault();
-        dragStarted = true; // Đã thực hiện di chuyển, không phải click thuần túy
-
-        let clientX, clientY;
-        if (e.type === "touchmove") {
-            clientX = e.touches[0].clientX;
-            clientY = e.touches[0].clientY;
-        } else {
-            clientX = e.clientX;
-            clientY = e.clientY;
-        }
-
-        let x = clientX - startX;
-        let y = clientY - startY;
-
-        // Giới hạn bong bóng không bay ra khỏi màn hình
-        const padding = 10;
-        const minX = padding;
-        const maxX = window.innerWidth - bubble.offsetWidth - padding;
-        const minY = padding;
-        const maxY = window.innerHeight - bubble.offsetHeight - padding;
-
-        if (x < minX) x = minX;
-        if (x > maxX) x = maxX;
-        if (y < minY) y = minY;
-        if (y > maxY) y = maxY;
-
-        bubble.style.left = x + 'px';
-        bubble.style.top = y + 'px';
-        bubble.style.bottom = 'auto'; // Tắt auto bottom/right
-        bubble.style.right = 'auto';
-    };
-
-    // Hàm kết thúc kéo
-    const dragEnd = () => {
-        isDragging = false;
-        bubble.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease'; // Bật lại animation hover
-        
-        // Setup để phân biệt click lần sau
-        setTimeout(() => {
-            if(dragStarted) {
-               // Nếu vừa drag xong, ta có thể lưu vị trí vào localStorage ở đây nếu muốn
-            }
-        }, 10);
-    };
-
-    // Sự kiện chuột
-    bubble.addEventListener('mousedown', dragStart);
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('mouseup', dragEnd);
-
-    // Sự kiện cảm ứng (mobile)
-    bubble.addEventListener('touchstart', dragStart);
-    document.addEventListener('touchmove', drag, { passive: false });
-    document.addEventListener('touchend', dragEnd);
-
+function toggleChat(){
+  const frame = document.getElementById("chatbotFrame");
+  frame.style.display =
+    frame.style.display === "none" ? "block" : "none";
+}
 </script>
 </body>
 </html>
