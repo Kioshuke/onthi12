@@ -325,9 +325,17 @@ async function sendMessage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        question: hasUserInfo 
-          ? `Người dùng tên ${userName}. Câu hỏi: ${question}` 
-          : question,
+        question: `
+      Bạn là trợ lý học tập THPT.
+      Hãy trả lời CHÍNH XÁC, nếu không chắc thì nói "mình chưa chắc chắn".
+
+      Câu hỏi: ${question}
+
+      Trả lời theo format:
+      - Đáp án:
+      - Giải thích:
+      - Mức độ chắc chắn (%):
+      `,
         userName,
         history: chatHistory
       })
