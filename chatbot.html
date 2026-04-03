@@ -200,12 +200,29 @@ const input = document.getElementById("input");
 // --- PHẦN THÊM MỚI: NHẬN THÔNG TIN TỪ FIREBASE ---
 let userName = "Bạn học";
 let userAvatar = "https://i.pravatar.cc/100?img=5";
+let hasUserInfo = false;
 
 window.addEventListener('message', (event) => {
-    if (event.data.type === 'USER_INFO') {
-        userName = event.data.name;
-        userAvatar = event.data.avatar;
-        console.log("Hubie đã nhận diện được:", userName);
+    try {
+        if (event.origin && !event.origin.includes("github.io")) return;
+
+        if (event.data && event.data.type === 'USER_INFO') {
+            userName = event.data.name || userName;
+            userAvatar = event.data.avatar || userAvatar;
+            hasUserInfo = true;
+
+            console.log("✅ Đã nhận user:", userName);
+
+            // update tin nhắn chào nếu đã render
+            const firstMsg = chatBox.querySelector(".msg-row.bot .message");
+            if (firstMsg) {
+                firstMsg.innerHTML = marked.parse(
+                  `Xin chào **${userName}**! 👋\nMình là **Hubie** - trợ lý LearnHub.`
+                );
+            }
+        }
+    } catch (err) {
+        console.warn("Lỗi USER_INFO:", err);
     }
 });
 // -----------------------------------------------
@@ -304,8 +321,10 @@ async function sendMessage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        question,
-        userName: userName,
+        question: hasUserInfo 
+          ? `Người dùng tên ${userName}. Câu hỏi: ${question}` 
+          : question,
+        userName,
         history: chatHistory
       })
     });
@@ -341,7 +360,12 @@ input.addEventListener("keypress", function (e) {
 window.onload = function () {
   // Tăng delay lên 1000ms để chờ nhận thông tin từ trang chính truyền qua postMessage
   setTimeout(() => {
-    addMessage(`Xin chào **${userName}**! 👋\nMình là **Hubie** - trợ lý thép của **LearnHub**.\nHôm nay bạn cần trợ giúp về môn học nào cho kỳ thi **2026**?`, "bot");
+    addMessage(
+      hasUserInfo
+        ? `Xin chào **${userName}**! 👋\nMình là **Hubie** - trợ lý LearnHub.`
+        : `Xin chào! 👋\nMình là **Hubie** - trợ lý LearnHub.`,
+      "bot"
+    );
   }, 1000);
 };
 </script>
