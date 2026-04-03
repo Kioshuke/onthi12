@@ -204,27 +204,31 @@ let hasUserInfo = false;
 
 window.addEventListener('message', (event) => {
     try {
-        if (event.origin && !event.origin.includes("github.io")) return;
+        if (!event.data || event.data.type !== 'USER_INFO') return;
 
-        if (event.data && event.data.type === 'USER_INFO') {
-            userName = event.data.name || userName;
-            userAvatar = event.data.avatar || userAvatar;
-            hasUserInfo = true;
+        userName = event.data.name || "Bạn học";
+        userAvatar = event.data.avatar || userAvatar;
+        hasUserInfo = true;
 
-            console.log("✅ Đã nhận user:", userName);
+        console.log("✅ Đã nhận user:", userName);
 
-            // update tin nhắn chào nếu đã render
-            const firstMsg = chatBox.querySelector(".msg-row.bot .message");
-            if (firstMsg) {
-                firstMsg.innerHTML = marked.parse(
-                  `Xin chào **${userName}**! 👋\nMình là **Hubie** - trợ lý LearnHub.`
-                );
-            }
+        const greetingText = 
+`Xin chào **${userName}**! 👋
+Mình là **Hubie** - trợ lý LearnHub.
+Bạn cần mình giúp gì hôm nay? 📘`;
+
+        const firstMsg = chatBox.querySelector(".msg-row.bot .message");
+
+        if (firstMsg) {
+            firstMsg.innerHTML = marked.parse(greetingText);
+        } else {
+            addMessage(greetingText, "bot");
         }
+
     } catch (err) {
         console.warn("Lỗi USER_INFO:", err);
     }
-});
+}); 
 // -----------------------------------------------
 
 const botAvatar = "chatboiavt.png";
@@ -358,14 +362,13 @@ input.addEventListener("keypress", function (e) {
 });
 
 window.onload = function () {
-  // Tăng delay lên 1000ms để chờ nhận thông tin từ trang chính truyền qua postMessage
   setTimeout(() => {
-    addMessage(
-      hasUserInfo
-        ? `Xin chào **${userName}**! 👋\nMình là **Hubie** - trợ lý LearnHub.`
-        : `Xin chào! 👋\nMình là **Hubie** - trợ lý LearnHub.`,
-      "bot"
-    );
+    if (!hasUserInfo) { // 🔥 CHỈ CHÀO KHI CHƯA CÓ USER
+      addMessage(
+        `Xin chào! 👋\nMình là **Hubie** - trợ lý LearnHub.`,
+        "bot"
+      );
+    }
   }, 1000);
 };
 </script>
