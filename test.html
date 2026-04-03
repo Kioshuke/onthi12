@@ -2593,7 +2593,16 @@ if (typeof db !== 'undefined') {
     });
 }
 </script>
-<!-- Nút chat draggable -->
+<div id="chatOverlay" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  z-index:9998;
+"></div>
+
 <div id="chatButton" style="
   position:fixed;
   width:65px;
@@ -2613,7 +2622,6 @@ if (typeof db !== 'undefined') {
   ">
 </div>
 
-<!-- Chatbot -->
 <iframe id="chatbotFrame"
   src="chatbot.html"
   style="
@@ -2633,6 +2641,7 @@ if (typeof db !== 'undefined') {
 <script>
 const chatBtn = document.getElementById("chatButton");
 const frame = document.getElementById("chatbotFrame");
+const overlay = document.getElementById("chatOverlay");
 
 let isDragging = false;
 let startX, startY;
@@ -2641,16 +2650,15 @@ let currentY = window.innerHeight - 85;
 let offsetX = 0;
 let offsetY = 0;
 
-// 👉 set vị trí ban đầu
+// 👉 init position
 updatePosition();
 
-// 👉 dùng transform cho mượt
 function updatePosition(){
   chatBtn.style.left = currentX + "px";
   chatBtn.style.top = currentY + "px";
 }
 
-// 👉 START
+// 👉 START DRAG
 function startDrag(e){
   isDragging = false;
 
@@ -2660,14 +2668,14 @@ function startDrag(e){
   offsetX = startX - currentX;
   offsetY = startY - currentY;
 
-  document.addEventListener("mousemove", drag, { passive: true });
+  document.addEventListener("mousemove", drag);
   document.addEventListener("touchmove", drag, { passive: true });
 
   document.addEventListener("mouseup", stopDrag);
   document.addEventListener("touchend", stopDrag);
 }
 
-// 👉 DRAG (siêu mượt)
+// 👉 DRAG
 function drag(e){
   const x = e.touches ? e.touches[0].clientX : e.clientX;
   const y = e.touches ? e.touches[0].clientY : e.clientY;
@@ -2679,19 +2687,17 @@ function drag(e){
   currentX = x - offsetX;
   currentY = y - offsetY;
 
-  // 👉 giới hạn trong màn hình
   currentX = Math.max(0, Math.min(window.innerWidth - 65, currentX));
   currentY = Math.max(0, Math.min(window.innerHeight - 65, currentY));
 
   requestAnimationFrame(updatePosition);
 }
 
-// 👉 STOP + snap nhẹ về cạnh
+// 👉 STOP + SNAP
 function stopDrag(){
   document.removeEventListener("mousemove", drag);
   document.removeEventListener("touchmove", drag);
 
-  // 👉 snap về trái hoặc phải cho đẹp
   const middle = window.innerWidth / 2;
 
   if(currentX > middle){
@@ -2700,7 +2706,7 @@ function stopDrag(){
     currentX = 10;
   }
 
-  chatBtn.style.transition = "transform 0.3s ease";
+  chatBtn.style.transition = "left 0.3s ease, top 0.3s ease";
   updatePosition();
 
   setTimeout(()=>{
@@ -2708,16 +2714,17 @@ function stopDrag(){
   }, 300);
 }
 
-// 👉 EVENT
+// 👉 DRAG EVENT
 chatBtn.addEventListener("mousedown", startDrag);
 chatBtn.addEventListener("touchstart", startDrag, { passive: true });
 
-// 👉 Click mở chat
+// 👉 CLICK OPEN/CLOSE
 chatBtn.addEventListener("click", () => {
   if (isDragging) return;
 
   if (frame.style.display === "none") {
     frame.style.display = "block";
+    overlay.style.display = "block";
 
     const nameEl = document.getElementById("userName");
     const avatarEl = document.getElementById("userAvatar");
@@ -2725,7 +2732,6 @@ chatBtn.addEventListener("click", () => {
     let name = nameEl ? nameEl.innerText : "Bạn học";
     const avatar = avatarEl ? avatarEl.src : "https://i.imgur.com/6VBx3io.png";
 
-    // 🔥 THÊM NGAY TẠI ĐÂY
     if (!name || name === "undefined") {
       name = "Bạn học";
     }
@@ -2738,7 +2744,14 @@ chatBtn.addEventListener("click", () => {
 
   } else {
     frame.style.display = "none";
+    overlay.style.display = "none";
   }
+});
+
+// 👉 CLICK OUTSIDE TO CLOSE
+overlay.addEventListener("click", () => {
+  frame.style.display = "none";
+  overlay.style.display = "none";
 });
 </script>
 </body>
