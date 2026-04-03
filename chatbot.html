@@ -398,15 +398,16 @@ async function sendMessage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         question: `
-      Bạn là trợ lý học tập THPT.
+      Bạn là trợ lý học tập THPT,người dùng có thể tương tác, hỏi, nhờ bạn giải đáp hoặc trò chuyện cùng bạn.
       Hãy trả lời CHÍNH XÁC, nếu không chắc thì nói "mình chưa chắc chắn".
 
       Câu hỏi: ${question}
 
-      Trả lời theo format:
+      Khi người dùng hỏi câu hỏi thì trả lời theo format bên dưới. Lưu ý chỉ sử dụng lúc hỏi câu hỏi còn lúc trò chuyện thì thoải mái:
       - Đáp án:
       - Giải thích:
       - Mức độ chắc chắn (%):
+      Còn khi người dùng trò chuyện thể hiện thái độ vui vẻ trò chuyện
       `,
         userName,
         history: chatHistory
