@@ -2658,7 +2658,7 @@ function updatePosition(){
   chatBtn.style.top = currentY + "px";
 }
 
-// 👉 POINTER DOWN (GIỮ LÀ KÉO NGAY)
+// 👉 BẮT ĐẦU KHI BẤM GIỮ
 chatBtn.addEventListener("pointerdown", (e) => {
   isDragging = true;
   hasMoved = false;
@@ -2669,7 +2669,7 @@ chatBtn.addEventListener("pointerdown", (e) => {
   chatBtn.setPointerCapture(e.pointerId);
 });
 
-// 👉 POINTER MOVE (KÉO)
+// 👉 CHỈ KÉO KHI ĐANG GIỮ
 chatBtn.addEventListener("pointermove", (e) => {
   if (!isDragging) return;
 
@@ -2686,13 +2686,13 @@ chatBtn.addEventListener("pointermove", (e) => {
   updatePosition();
 });
 
-// 👉 POINTER UP (THẢ RA)
+// 👉 THẢ RA = DỪNG KÉO
 chatBtn.addEventListener("pointerup", () => {
   if (!isDragging) return;
 
   isDragging = false;
 
-  // 👉 snap cạnh
+  // snap cạnh
   const middle = window.innerWidth / 2;
 
   if (currentX > middle) {
@@ -2709,7 +2709,7 @@ chatBtn.addEventListener("pointerup", () => {
   }, 250);
 });
 
-// 👉 CLICK (CHỈ KHI KHÔNG DRAG)
+// 👉 CLICK (chỉ khi KHÔNG drag)
 chatBtn.addEventListener("click", () => {
   if (hasMoved) {
     hasMoved = false;
