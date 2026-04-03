@@ -2596,8 +2596,6 @@ if (typeof db !== 'undefined') {
 <!-- Nút chat draggable -->
 <div id="chatButton" style="
   position:fixed;
-  bottom:20px;
-  right:20px;
   width:65px;
   height:65px;
   border-radius:50%;
@@ -2605,6 +2603,8 @@ if (typeof db !== 'undefined') {
   cursor:pointer;
   z-index:9999;
   box-shadow:0 6px 18px rgba(0,0,0,0.25);
+  left:0;
+  top:0;
 ">
   <img src="chatboiavt.png" style="
     width:100%;
@@ -2646,7 +2646,8 @@ updatePosition();
 
 // 👉 dùng transform cho mượt
 function updatePosition(){
-  chatBtn.style.transform = `translate(${currentX}px, ${currentY}px)`;
+  chatBtn.style.left = currentX + "px";
+  chatBtn.style.top = currentY + "px";
 }
 
 // 👉 START
