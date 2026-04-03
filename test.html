@@ -2658,7 +2658,7 @@ function updatePosition(){
   chatBtn.style.top = currentY + "px";
 }
 
-// 👉 POINTER DOWN (chuột + cảm ứng)
+// 👉 POINTER DOWN (GIỮ LÀ KÉO NGAY)
 chatBtn.addEventListener("pointerdown", (e) => {
   isDragging = true;
   hasMoved = false;
@@ -2669,27 +2669,24 @@ chatBtn.addEventListener("pointerdown", (e) => {
   chatBtn.setPointerCapture(e.pointerId);
 });
 
-// 👉 POINTER MOVE
+// 👉 POINTER MOVE (KÉO)
 chatBtn.addEventListener("pointermove", (e) => {
   if (!isDragging) return;
 
-  const x = e.clientX;
-  const y = e.clientY;
+  const x = e.clientX - offsetX;
+  const y = e.clientY - offsetY;
 
-  if (Math.abs(x - (currentX + offsetX)) > 3 || Math.abs(y - (currentY + offsetY)) > 3) {
+  if (Math.abs(x - currentX) > 3 || Math.abs(y - currentY) > 3) {
     hasMoved = true;
   }
 
-  currentX = x - offsetX;
-  currentY = y - offsetY;
-
-  currentX = Math.max(0, Math.min(window.innerWidth - 65, currentX));
-  currentY = Math.max(0, Math.min(window.innerHeight - 65, currentY));
+  currentX = Math.max(0, Math.min(window.innerWidth - 65, x));
+  currentY = Math.max(0, Math.min(window.innerHeight - 65, y));
 
   updatePosition();
 });
 
-// 👉 POINTER UP
+// 👉 POINTER UP (THẢ RA)
 chatBtn.addEventListener("pointerup", () => {
   if (!isDragging) return;
 
@@ -2712,7 +2709,7 @@ chatBtn.addEventListener("pointerup", () => {
   }, 250);
 });
 
-// 👉 CLICK (chỉ khi KHÔNG drag)
+// 👉 CLICK (CHỈ KHI KHÔNG DRAG)
 chatBtn.addEventListener("click", () => {
   if (hasMoved) {
     hasMoved = false;
