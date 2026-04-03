@@ -2644,13 +2644,13 @@ const frame = document.getElementById("chatbotFrame");
 const overlay = document.getElementById("chatOverlay");
 
 let isDragging = false;
-let startX, startY;
-let currentX = window.innerWidth - 85;
-let currentY = window.innerHeight - 85;
 let offsetX = 0;
 let offsetY = 0;
+let hasMoved = false;
 
-// 👉 init position
+let currentX = window.innerWidth - 85;
+let currentY = window.innerHeight - 85;
+
 updatePosition();
 
 function updatePosition(){
@@ -2658,30 +2658,26 @@ function updatePosition(){
   chatBtn.style.top = currentY + "px";
 }
 
-// 👉 START DRAG
-function startDrag(e){
-  isDragging = false;
+// 👉 POINTER DOWN (chuột + cảm ứng)
+chatBtn.addEventListener("pointerdown", (e) => {
+  isDragging = true;
+  hasMoved = false;
 
-  startX = e.touches ? e.touches[0].clientX : e.clientX;
-  startY = e.touches ? e.touches[0].clientY : e.clientY;
+  offsetX = e.clientX - currentX;
+  offsetY = e.clientY - currentY;
 
-  offsetX = startX - currentX;
-  offsetY = startY - currentY;
+  chatBtn.setPointerCapture(e.pointerId);
+});
 
-  document.addEventListener("mousemove", drag);
-  document.addEventListener("touchmove", drag, { passive: true });
+// 👉 POINTER MOVE
+chatBtn.addEventListener("pointermove", (e) => {
+  if (!isDragging) return;
 
-  document.addEventListener("mouseup", stopDrag);
-  document.addEventListener("touchend", stopDrag);
-}
+  const x = e.clientX;
+  const y = e.clientY;
 
-// 👉 DRAG
-function drag(e){
-  const x = e.touches ? e.touches[0].clientX : e.clientX;
-  const y = e.touches ? e.touches[0].clientY : e.clientY;
-
-  if (Math.abs(x - startX) > 5 || Math.abs(y - startY) > 5) {
-    isDragging = true;
+  if (Math.abs(x - (currentX + offsetX)) > 3 || Math.abs(y - (currentY + offsetY)) > 3) {
+    hasMoved = true;
   }
 
   currentX = x - offsetX;
@@ -2690,37 +2686,38 @@ function drag(e){
   currentX = Math.max(0, Math.min(window.innerWidth - 65, currentX));
   currentY = Math.max(0, Math.min(window.innerHeight - 65, currentY));
 
-  requestAnimationFrame(updatePosition);
-}
+  updatePosition();
+});
 
-// 👉 STOP + SNAP
-function stopDrag(){
-  document.removeEventListener("mousemove", drag);
-  document.removeEventListener("touchmove", drag);
+// 👉 POINTER UP
+chatBtn.addEventListener("pointerup", () => {
+  if (!isDragging) return;
 
+  isDragging = false;
+
+  // 👉 snap cạnh
   const middle = window.innerWidth / 2;
 
-  if(currentX > middle){
+  if (currentX > middle) {
     currentX = window.innerWidth - 75;
   } else {
     currentX = 10;
   }
 
-  chatBtn.style.transition = "left 0.3s ease, top 0.3s ease";
+  chatBtn.style.transition = "left 0.25s ease, top 0.25s ease";
   updatePosition();
 
-  setTimeout(()=>{
+  setTimeout(() => {
     chatBtn.style.transition = "none";
-  }, 300);
-}
+  }, 250);
+});
 
-// 👉 DRAG EVENT
-chatBtn.addEventListener("mousedown", startDrag);
-chatBtn.addEventListener("touchstart", startDrag, { passive: true });
-
-// 👉 CLICK OPEN/CLOSE
+// 👉 CLICK (chỉ khi KHÔNG drag)
 chatBtn.addEventListener("click", () => {
-  if (isDragging) return;
+  if (hasMoved) {
+    hasMoved = false;
+    return;
+  }
 
   if (frame.style.display === "none") {
     frame.style.display = "block";
@@ -2732,9 +2729,7 @@ chatBtn.addEventListener("click", () => {
     let name = nameEl ? nameEl.innerText : "Bạn học";
     const avatar = avatarEl ? avatarEl.src : "https://i.imgur.com/6VBx3io.png";
 
-    if (!name || name === "undefined") {
-      name = "Bạn học";
-    }
+    if (!name || name === "undefined") name = "Bạn học";
 
     frame.contentWindow.postMessage({
       type: "USER_INFO",
@@ -2748,7 +2743,7 @@ chatBtn.addEventListener("click", () => {
   }
 });
 
-// 👉 CLICK OUTSIDE TO CLOSE
+// 👉 click ngoài để đóng
 overlay.addEventListener("click", () => {
   frame.style.display = "none";
   overlay.style.display = "none";
