@@ -2653,13 +2653,18 @@ let currentY = window.innerHeight - 85;
 
 updatePosition();
 
+// 👉 set cursor ban đầu
+chatBtn.style.cursor = "grab";
+
 function updatePosition(){
   chatBtn.style.left = currentX + "px";
   chatBtn.style.top = currentY + "px";
 }
 
-// 👉 BẮT ĐẦU KHI BẤM GIỮ
+// 👉 POINTER DOWN (chỉ chuột trái)
 chatBtn.addEventListener("pointerdown", (e) => {
+  if (e.button !== 0) return; // chỉ drag chuột trái
+
   isDragging = true;
   hasMoved = false;
 
@@ -2667,32 +2672,39 @@ chatBtn.addEventListener("pointerdown", (e) => {
   offsetY = e.clientY - currentY;
 
   chatBtn.setPointerCapture(e.pointerId);
+
+  // đổi cursor khi đang giữ
+  chatBtn.style.cursor = "grabbing";
 });
 
-// 👉 CHỈ KÉO KHI ĐANG GIỮ
-chatBtn.addEventListener("pointermove", (e) => {
+// 👉 POINTER MOVE (gắn trên document cho mượt)
+document.addEventListener("pointermove", (e) => {
   if (!isDragging) return;
 
-  const x = e.clientX - offsetX;
-  const y = e.clientY - offsetY;
+  const x = e.clientX;
+  const y = e.clientY;
 
-  if (Math.abs(x - currentX) > 3 || Math.abs(y - currentY) > 3) {
+  if (Math.abs(x - (currentX + offsetX)) > 3 || Math.abs(y - (currentY + offsetY)) > 3) {
     hasMoved = true;
   }
 
-  currentX = Math.max(0, Math.min(window.innerWidth - 65, x));
-  currentY = Math.max(0, Math.min(window.innerHeight - 65, y));
+  currentX = x - offsetX;
+  currentY = y - offsetY;
+
+  currentX = Math.max(0, Math.min(window.innerWidth - 65, currentX));
+  currentY = Math.max(0, Math.min(window.innerHeight - 65, currentY));
 
   updatePosition();
 });
 
-// 👉 THẢ RA = DỪNG KÉO
-chatBtn.addEventListener("pointerup", () => {
+// 👉 POINTER UP
+document.addEventListener("pointerup", () => {
   if (!isDragging) return;
 
   isDragging = false;
 
-  // snap cạnh
+  chatBtn.style.cursor = "grab"; // trả lại cursor
+
   const middle = window.innerWidth / 2;
 
   if (currentX > middle) {
@@ -2709,7 +2721,7 @@ chatBtn.addEventListener("pointerup", () => {
   }, 250);
 });
 
-// 👉 CLICK (chỉ khi KHÔNG drag)
+// 👉 CLICK (chỉ khi không drag)
 chatBtn.addEventListener("click", () => {
   if (hasMoved) {
     hasMoved = false;
