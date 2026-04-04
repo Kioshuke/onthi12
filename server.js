@@ -2,32 +2,31 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const fetch = require("node-fetch"); // đảm bảo chạy mọi môi trường
+const fetch = require("node-fetch");
+const axios = require("axios");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-/* ===== Route test ===== */
 app.get("/", (req, res) => {
   res.send("Hubie API is running 🚀");
 });
 
-/* ===== Chat AI ===== */
-const axios = require("axios");
-
 app.post("/ask", async (req, res) => {
   try {
     const question = req.body.question;
+    const useSearch = req.body.useSearch;
 
     if (!question) {
       return res.status(400).json({ error: "Missing question" });
     }
 
-      /* ===== 🔍 1. SEARCH GOOGLE ===== */
-      let searchText = "";
+    /* ===== 🔍 1. SEARCH GOOGLE ===== */
+    let searchText = "";
 
+    if (useSearch) {
       try {
         const search = await axios.get("https://serpapi.com/search.json", {
           params: {
@@ -43,11 +42,12 @@ app.post("/ask", async (req, res) => {
           .map(r => `- ${r.snippet || r.title}`)
           .join("\n");
 
-        console.log("🔍 Search OK:", searchText);
+        console.log("🔍 Search OK");
 
       } catch (err) {
         console.warn("⚠️ Search lỗi:", err.message);
       }
+    }
 
     /* ===== 🤖 2. GỌI GROQ ===== */
     const response = await fetch(
@@ -60,37 +60,40 @@ app.post("/ask", async (req, res) => {
         },
         body: JSON.stringify({
           model: "llama-3.1-8b-instant",
-          temperature: 0.2, // 🔥 giảm ngu
+          temperature: 0.2,
           messages: [
             {
               role: "system",
               content: `
-Bạn là Hubie – trợ lý AI của website LearnHub. Xưng hô với người dùng là "bạn"
+Bạn là Hubie – trợ lý AI học tập THPT.
 
-Nhiệm vụ:
-- Giải đáp câu hỏi cho học sinh THPT
+NHIỆM VỤ:
+- Trả lời câu hỏi học tập chính xác
 - Nếu là bài tập → giải từng bước
-
-Phong cách:
-- Ngắn gọn, dễ hiểu
-- Không lan man
+- Nếu là trò chuyện → trả lời tự nhiên, thân thiện
 
 QUAN TRỌNG:
-- Ưu tiên dựa vào thông tin tìm kiếm bên dưới
-- Không được đoán bừa
+- Nếu có dữ liệu Google → ưu tiên dùng
+- Nếu KHÔNG có → không được bịa
 - Nếu không chắc → nói "Mình chưa chắc"
 
-Dữ liệu tham khảo từ Google:
-${searchText}
-Nếu không có dữ liệu Google → hãy cẩn thận khi trả lời.
+PHÂN BIỆT:
+- Nếu là câu hỏi → trả lời dạng:
+  - Đáp án:
+  - Giải thích:
+  - Mức độ chắc chắn (%):
+
+- Nếu là trò chuyện → trả lời tự nhiên (KHÔNG dùng format trên)
+
+Dữ liệu Google:
+${searchText || "Không có"}
 `
             },
             {
               role: "user",
               content: question
             }
-          ],
-          stream: false
+          ]
         })
       }
     );
@@ -117,7 +120,7 @@ Nếu không có dữ liệu Google → hãy cẩn thận khi trả lời.
     res.status(500).json({ error: "Server error" });
   }
 });
-/* ===== PORT (QUAN TRỌNG CHO RENDER) ===== */
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
