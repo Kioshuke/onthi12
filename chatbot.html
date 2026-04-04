@@ -240,6 +240,57 @@ html, body {
   padding: 6px 10px 12px;
   background: white;
 }
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+.switch input { display: none; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 34px;
+  top: 0; left: 0; right: 0; bottom: 0;
+  transition: .3s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: .3s;
+}
+input:checked + .slider {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+}
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+@keyframes popupShow {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+#closeWarning:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(37,117,252,0.4);
+}
+
+#closeWarning:active {
+  transform: scale(0.95);
+}
 </style>
 </head>
 
@@ -251,6 +302,16 @@ html, body {
     <span class="header-version">v1.0.0</span> </div>
   
   <div id="chatBox"></div>
+  <div style="display:flex; align-items:center; gap:8px; padding:8px 16px;">
+  <span style="font-size:13px; color:#6b7280;">
+    🔎 Sử dụng Google Search
+  </span>
+
+  <label class="switch">
+    <input type="checkbox" id="toggleSearch">
+    <span class="slider"></span>
+  </label>
+</div>
   <div class="chat-input">
     <input id="input" placeholder="Bạn muốn trao đổi điều gì..." />
     <button class="send-btn" onclick="sendMessage()">
@@ -363,7 +424,7 @@ async function sendMessage() {
   });
 
   input.value = "";
-
+  const useSearch = document.getElementById("toggleSearch").checked;
   const loadingRow = document.createElement("div");
   loadingRow.className = "msg-row bot";
   loadingRow.id = "current-loading";
@@ -410,7 +471,8 @@ async function sendMessage() {
       Còn khi người dùng trò chuyện thể hiện thái độ vui vẻ trò chuyện
       `,
         userName,
-        history: chatHistory
+        history: chatHistory,
+        useSearch: useSearch
       })
     });
 
@@ -452,6 +514,83 @@ window.onload = function () {
     }
   }, 1000);
 };
+window.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("toggleSearch");
+  const popup = document.getElementById("searchWarning");
+  const closeBtn = document.getElementById("closeWarning");
+
+  toggle.addEventListener("change", () => {
+    if (toggle.checked) {
+      popup.style.display = "flex";
+    }
+  });
+
+  closeBtn.addEventListener("click", () => {
+    popup.style.display = "none";
+  });
+});
 </script>
+<div id="searchWarning" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  z-index:99999;
+
+  align-items:center;
+  justify-content:center;
+">
+
+  <div style="
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    width:280px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+    animation: popupShow 0.25s ease;
+    text-align:center;
+  ">
+
+    <div style="font-size:40px;">⚠️</div>
+
+    <h3 style="
+      margin:10px 0 5px;
+      font-size:20px;
+      font-weight:600;
+    ">
+      Lưu ý
+    </h3>
+
+    <p style="
+      font-size:15px;
+      color:#6b7280;
+      line-height:1.5;
+    ">
+      Tính năng nâng cao <b>Google Search</b> có giới hạn lượt.<br>
+      Chỉ bật khi bạn thật sự cần!
+    </p>
+
+    <button id="closeWarning" style="
+      margin-top:12px;
+      width:100%;
+      padding:10px;
+
+      border:none;
+      border-radius:10px;
+
+      background: linear-gradient(135deg, #2575fc, #6a11cb);
+      color:white;
+      font-weight:600;
+
+      cursor:pointer;
+      transition:0.2s;
+    ">
+      OK, hiểu rồi
+    </button>
+
+  </div>
+</div>
 </body>
 </html>
