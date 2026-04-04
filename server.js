@@ -84,15 +84,17 @@ QUAN TRỌNG:
 
 PHÂN BIỆT:
 - Nếu là câu hỏi:
+  BẮT BUỘC trả lời theo đúng format:
   ✅ Đáp án:
   📘 Giải thích:
   🎯 Mức độ chắc chắn (%):
 
-- Nếu là trò chuyện:
-  → trả lời tự nhiên, có thể thêm emoji
+- Nếu không phải câu hỏi:
+  KHÔNG dùng format trên, trả lời tự nhiên
+- Chỉ dùng format khi người dùng thực sự hỏi bài hoặc hỏi kiến thức
 
 Dữ liệu Google:
-${searchText || "Không có"}
+${searchText ? searchText : "Không có dữ liệu Google. Hãy trả lời cẩn thận."}
 `
             },
             {
