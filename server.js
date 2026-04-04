@@ -15,6 +15,8 @@ app.get("/", (req, res) => {
 });
 
 /* ===== Chat AI ===== */
+const axios = require("axios");
+
 app.post("/ask", async (req, res) => {
   try {
     const question = req.body.question;
@@ -23,6 +25,31 @@ app.post("/ask", async (req, res) => {
       return res.status(400).json({ error: "Missing question" });
     }
 
+      /* ===== 🔍 1. SEARCH GOOGLE ===== */
+      let searchText = "";
+
+      try {
+        const search = await axios.get("https://serpapi.com/search.json", {
+          params: {
+            q: question,
+            api_key: process.env.SERP_API_KEY
+          }
+        });
+
+        const results = search.data?.organic_results || [];
+
+        searchText = results
+          .slice(0, 3)
+          .map(r => `- ${r.snippet || r.title}`)
+          .join("\n");
+
+        console.log("🔍 Search OK:", searchText);
+
+      } catch (err) {
+        console.warn("⚠️ Search lỗi:", err.message);
+      }
+
+    /* ===== 🤖 2. GỌI GROQ ===== */
     const response = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
@@ -33,38 +60,29 @@ app.post("/ask", async (req, res) => {
         },
         body: JSON.stringify({
           model: "llama-3.1-8b-instant",
+          temperature: 0.2, // 🔥 giảm ngu
           messages: [
             {
               role: "system",
               content: `
-Bạn là Hubie – trợ lý AI của website LearnHub.
+Bạn là Hubie – trợ lý AI của website LearnHub. Xưng hô với người dùng là "bạn"
 
 Nhiệm vụ:
 - Giải đáp câu hỏi cho học sinh THPT
-- Hỗ trợ các môn học như Lý, Hóa, Sinh, Sử, Toán, Tin
 - Nếu là bài tập → giải từng bước
 
-Những tính năng của LearnHub:
-- Có forum cho mọi người trao đổi
-- Có lịch thi giữa kỳ, cuối kỳ, THPTQG,...
-- Có các bài tập đủ dạng theo chương trình mới
-- Hệ thống "LearnHub Test" tự build xịn xò
-- Hệ thống LearnHub AI tên là Hubie
-
 Phong cách:
-- Trả lời NGẮN GỌN, dễ hiểu
+- Ngắn gọn, dễ hiểu
 - Không lan man
-- Ưu tiên giải thích đơn giản
-- Có thể dùng ví dụ
 
-Cách xưng hô:
-- Gọi người dùng là bạn, và đôi khi chào tên người dùng nữa
-- Giới thiệu là "Hubie"
+QUAN TRỌNG:
+- Ưu tiên dựa vào thông tin tìm kiếm bên dưới
+- Không được đoán bừa
+- Nếu không chắc → nói "Mình chưa chắc"
 
-Lưu ý:
-- Nếu không chắc → nói "Mình chưa chắc, nhưng mình nghĩ..."
-- Không trả lời bừa
-- Có thể dùng emoji nhẹ 📘⚡🧠
+Dữ liệu tham khảo từ Google:
+${searchText}
+Nếu không có dữ liệu Google → hãy cẩn thận khi trả lời.
 `
             },
             {
@@ -79,7 +97,6 @@ Lưu ý:
 
     const data = await response.json();
 
-    /* ===== Check lỗi API ===== */
     if (!response.ok) {
       console.error("Groq API error:", data);
       return res.status(500).json({ error: "AI API error" });
@@ -100,7 +117,6 @@ Lưu ý:
     res.status(500).json({ error: "Server error" });
   }
 });
-
 /* ===== PORT (QUAN TRỌNG CHO RENDER) ===== */
 const PORT = process.env.PORT || 3000;
 
