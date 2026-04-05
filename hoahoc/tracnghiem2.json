@@ -1,0 +1,376 @@
+[
+  {
+    "sectionTitle": "PHẦN II. TRẮC NGHIỆM",
+    "questions": [
+      {
+        "type": "multiple",
+        "question": "Câu 34. Muối kim loại chuyển tiếp ...(1)... thành ion và tạo phức ...(2)...",
+        "answers": [
+          "điện li, [M(OH₂)n]+",
+          "điện li, [M(OH₂)m]n+",
+          "phân li, [M(OH₂)m]n+",
+          "phân li, [M(OH₂)n]+"
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 35. Phát biểu sai về tinh thể kim loại",
+        "answers": [
+          "Có cation Mn+ và electron tự do.",
+          "Cation chuyển động tự do.",
+          "Phân bố có trật tự.",
+          "Trung hòa điện."
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 36. Cầu chì hoạt động dựa trên tính chất",
+        "image": "link_anh_cau_36",
+        "answers": [
+          "Tính dẻo cao.",
+          "Dẫn điện cao.",
+          "Nhiệt độ nóng chảy thấp.",
+          "Độ cứng thấp."
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 37. Sodium có nhiều trong quặng",
+        "answers": [
+          "Halite.",
+          "Bauxite.",
+          "Dolomite.",
+          "Phosphorite."
+        ],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 38. Phương trình điện phân nóng chảy",
+        "answers": [
+          "Zn + CuSO₄ → ZnSO₄ + Cu",
+          "Fe₂O₃ + 3CO → 2Fe + 3CO₂",
+          "CaCl₂ → Ca + Cl₂",
+          "2KCl + 2H₂O → 2KOH + H₂ + Cl₂"
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 39. Hợp kim làm thân máy bay",
+        "answers": [
+          "Duralumin.",
+          "Đồng thau.",
+          "Đồng thiếc.",
+          "Manganin."
+        ],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 40. Nhóm IA theo chiều tăng Z",
+        "answers": [
+          "Bán kính giảm.",
+          "Nhiệt độ nóng chảy tăng.",
+          "Độ cứng giảm.",
+          "Khối lượng riêng giảm."
+        ],
+        "correct": 2
+      },
+
+      {
+        "type": "multiple",
+        "question": "Câu 41. Cấu hình electron Cu",
+        "answers": [
+          "[Ar] 3d⁹4s²",
+          "[Ar] 3d¹⁰4s¹",
+          "[Ar] 3d⁵4s²4p⁴",
+          "[Ar] 3d³4s²4p⁶"
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 42. Electron hoá trị kim loại chuyển tiếp dãy 1",
+        "answers": [
+          "3d và 4s",
+          "3d",
+          "4s",
+          "3p và 3d"
+        ],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 43. Đồng thau là hợp kim",
+        "answers": [
+          "Cu + Sn",
+          "Cu + Ni",
+          "Cu + Al",
+          "Cu + Zn"
+        ],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 44. Nguyên tố M là",
+        "answers": [
+          "Fe",
+          "Ni",
+          "Mn",
+          "Cu"
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 45. [FeF₆]³⁻ có dạng",
+        "answers": [
+          "Tứ diện",
+          "Bát diện",
+          "Vuông phẳng",
+          "Tứ diện hoặc vuông phẳng"
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 46. Màu phức Cu khác nhau do",
+        "answers": [
+          "Nguyên tử trung tâm",
+          "Phối tử",
+          "Cả hai",
+          "Số phối tử"
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 47. Phức của Ni²⁺ với 6 H₂O",
+        "answers": [
+          "[Ni(H₂O)₆]²⁺",
+          "[Ni(OH)₆]⁴⁻",
+          "[Ni(H₂O)₆]²⁺",
+          "[Ni(OH)₆]³⁻"
+        ],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 48. Phản ứng tạo phức",
+        "answers": [
+          "(1) và (2)",
+          "(1) và (3)",
+          "(2) và (3)",
+          "Cả 3"
+        ],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 49. Liên kết kim loại do",
+        "answers": [
+          "Lực tĩnh điện ion – electron",
+          "Góp chung electron",
+          "Van der Waals",
+          "Liên kết phối trí"
+        ],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 50. Kim loại dẫn điện tốt",
+        "answers": [
+          "Cu và Al",
+          "Cu và W",
+          "Al và Fe",
+          "Zn và Al"
+        ],
+        "correct": 0
+      },
+
+      {
+        "type": "multiple",
+        "question": "Câu 51. Khoáng Mg CaCO₃·MgCO₃",
+        "answers": [
+          "Dolomite",
+          "Calcite",
+          "Phosphorite",
+          "Halite"
+        ],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 52. Điều chế Zn từ ZnS",
+        "answers": [
+          "Thủy luyện",
+          "Nhiệt luyện",
+          "Điện phân",
+          "Kết tinh"
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 53. Zn bị ăn mòn điện hóa với",
+        "answers": [
+          "CuSO₄",
+          "Na₂SO₄",
+          "Al₂(SO₄)₃",
+          "MgSO₄"
+        ],
+        "correct": 0
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 54. Thí nghiệm Zn + H₂SO₄ + CuSO₄",
+        "answers": [
+          "Hai ống như nhau",
+          "Ống 2 nhanh do xúc tác",
+          "Ống 2 nhanh do ăn mòn điện hóa",
+          "Ống 1 nhanh hơn"
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 55. Nhiệt độ nóng chảy nhóm IA",
+        "answers": [
+          "Tăng",
+          "Không đổi",
+          "Không quy luật",
+          "Giảm"
+        ],
+        "correct": 3
+      },
+
+      {
+        "type": "multiple",
+        "question": "Câu 56. Nồng độ Ca²⁺ gần đúng",
+        "answers": [
+          "1.730",
+          "0.940",
+          "0.023",
+          "0.047"
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 57. Không phải đặc điểm kim loại chuyển tiếp",
+        "answers": [
+          "Nhiều số oxi hóa",
+          "Có màu",
+          "Độ cứng thấp",
+          "d chưa bão hòa"
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 58. Dãy chuyển tiếp 1 thuộc chu kì",
+        "answers": [
+          "3",
+          "5",
+          "2",
+          "4"
+        ],
+        "correct": 3
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 59. Số nhận xét đúng",
+        "answers": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 60. Bán kính Sc → Cr",
+        "answers": [
+          "Tăng",
+          "Không đổi",
+          "Giảm",
+          "Không quy luật"
+        ],
+        "correct": 2
+      },
+
+      {
+        "type": "multiple",
+        "question": "Câu 61. Số hiện tượng đúng",
+        "answers": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 62. Số loại phối tử",
+        "image": "link_anh_cau_62",
+        "answers": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 63. Phối tử",
+        "answers": [
+          "Cl và C",
+          "Pt và Fe",
+          "Cl⁻ và CO",
+          "Cl và CO"
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 64. Thế 1 NH₃ vào [Cu(H₂O)₆]²⁺",
+        "answers": [
+          "[Cu(NH₃)₆]²⁺",
+          "[Cu(NH₃)₂(H₂O)₅]",
+          "[Cu(NH₃)(H₂O)₅]²⁺",
+          "[Cu(NH₃)(H₂O)₅]"
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 65. Điền vào chỗ trống",
+        "answers": [
+          "điện li, [M(H₂O)n]+",
+          "điện li, [M(H₂O)m]n+",
+          "điện phân, [M(H₂O)m]n+",
+          "phân li, [M(H₂O)n]+"
+        ],
+        "correct": 1
+      },
+      {
+        "type": "multiple",
+        "question": "Câu 66. Khối lượng vàng thu được",
+        "answers": [
+          "19.7 kg",
+          "6.5 kg",
+          "19.5 kg",
+          "26.0 kg"
+        ],
+        "correct": 0
+      }
+    ]
+  }
+]
