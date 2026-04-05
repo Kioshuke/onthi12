@@ -4,7 +4,7 @@
     "questions": [
       {
         "type": "multiple",
-        "question": "Câu 34. Muối kim loại chuyển tiếp ...(1)... thành ion và tạo phức ...(2)...",
+        "question": "Khi tan trong nước, muối của các kim loại chuyển tiếp …(1)… thành các ion. Sau đó, cation kim loại chuyển tiếp (Mn⁺) thường nhận các cặp electron hoá trị riêng từ các phân tử H₂O để hình thành các liên kết cho - nhận, tạo ra phức chất aqua có dạng tổng quát là ...(2).... Cụm từ cần điền vào (1) và (2) lần lượt là",
         "answers": [
           "điện li, [M(OH₂)n]+",
           "điện li, [M(OH₂)m]n+",
@@ -15,30 +15,30 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 35. Phát biểu sai về tinh thể kim loại",
+        "question": "Phát biểu nào sau đây không đúng khi nói về tinh thể kim loại (M)?",
         "answers": [
-          "Có cation Mn+ và electron tự do.",
-          "Cation chuyển động tự do.",
-          "Phân bố có trật tự.",
-          "Trung hòa điện."
+          "Trong tinh thể kim loại M có các cation Mⁿ⁺ và các electron hoá trị tự do.",
+          "Các cation Mⁿ⁺ chuyển động tự do trong mạng tinh thể kim loại.",
+          "Trong tinh thể kim loại M, các cation Mⁿ⁺ và elctron hóa trị tự do được phân bố theo trật tự nhất định.",
+          "Tinh thể kim loại M trung hòa về điện."
         ],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 36. Cầu chì hoạt động dựa trên tính chất",
-        "image": "link_anh_cau_36",
+        "question": "Cầu chì là một phần tử hay thiết bị bảo vệ mạch điện bằng cách làm đứt mạch điện. Cầu chì được sử dụng nhằm phòng tránh các hiện tượng quá tải trên đường dây. Dây cầu chì thường được làm kim loại chì (Pb), thiếc trắng (Sn) hoặc cadmium (Cd). Ứng dụng này dựa trên tính chất nào của các kim loại trên?",
+        "image": "https://images.tuyensinh247.com/picture/2025/0522/cau-hoi-1747883409155-1.png",
         "answers": [
-          "Tính dẻo cao.",
-          "Dẫn điện cao.",
-          "Nhiệt độ nóng chảy thấp.",
-          "Độ cứng thấp."
+          "Có tính dẻo cao.",
+          "Có độ dẫn điện cao.",
+          "Có nhiệt độ nóng chảy tương đối thấp.",
+          "Có độ cứng tương đối thấp."
         ],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 37. Sodium có nhiều trong quặng",
+        "question": "Trong tự nhiên, sodium có nhiều trong quặng nào sau đây?",
         "answers": [
           "Halite.",
           "Bauxite.",
@@ -49,7 +49,7 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 38. Phương trình điện phân nóng chảy",
+        "question": "Phương trình hóa học nào sau đây biểu diễn quá trình điều chế kim loại bằng phương pháp điện phân nóng chảy?",
         "answers": [
           "Zn + CuSO₄ → ZnSO₄ + Cu",
           "Fe₂O₃ + 3CO → 2Fe + 3CO₂",
@@ -60,30 +60,30 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 39. Hợp kim làm thân máy bay",
+        "question": "Hợp kim nào sau đây được sử dụng để làm cấu trúc thân vỏ máy bay?",
         "answers": [
           "Duralumin.",
-          "Đồng thau.",
-          "Đồng thiếc.",
+          "Đồng thau (Brass).",
+          "Đồng thiếc (Bronze).",
           "Manganin."
         ],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Câu 40. Nhóm IA theo chiều tăng Z",
+        "question": "Theo chiều tăng dần của điện tích hạt nhân nguyên tử, sự biến đổi tính chất của các nguyên tố nhóm IA nào sau đây đúng?",
         "answers": [
-          "Bán kính giảm.",
-          "Nhiệt độ nóng chảy tăng.",
-          "Độ cứng giảm.",
-          "Khối lượng riêng giảm."
+          "Bán kính nguyên tử giảm dần.",
+          "Nhiệt độ nóng chảy tăng dần.",
+          "Độ cứng giảm dần.",
+          "Khối lượng riêng của đơn chất giảm dần."
         ],
         "correct": 2
       },
 
       {
         "type": "multiple",
-        "question": "Câu 41. Cấu hình electron Cu",
+        "question": "Ở trạng thái cơ bản, cấu hình electron của nguyên tử nguyên tố đồng (Z = 29) là",
         "answers": [
           "[Ar] 3d⁹4s²",
           "[Ar] 3d¹⁰4s¹",
@@ -94,40 +94,40 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 42. Electron hoá trị kim loại chuyển tiếp dãy 1",
+        "question": "Các electron hoá trị của nguyên tử nguyên tố kim loại chuyển tiếp dãy thứ nhất phân bố ở",
         "answers": [
-          "3d và 4s",
-          "3d",
-          "4s",
-          "3p và 3d"
+          "phân lớp 3d và phân lớp 4s.",
+          "phân lớp 3d.",
+          "lớp 4s.",
+          "phân lớp 3p và phân lớp 3d."
         ],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Câu 43. Đồng thau là hợp kim",
+        "question": "Đồng thau là một hợp kim của",
         "answers": [
-          "Cu + Sn",
-          "Cu + Ni",
-          "Cu + Al",
-          "Cu + Zn"
+          "đồng và thiếc.",
+          "đồng và nickel.",
+          "đồng và aluminium.",
+          "đồng và kẽm."
         ],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Câu 44. Nguyên tố M là",
+        "question": "M là nguyên tố kim loại chuyển tiếp dãy thứ nhất, có một số đặc điểm sau: <br>- Hợp chất M có tính oxi hóa nên phản ứng được với dung dịch thuốc tím. <br>- Ion M³⁺ có 5 electron độc than <br>- Là nguyên tố kim loại thuộc nhóm nguyên tố hóa học phổ biến trong tự nhiên. <br>M là nguyên tố nào sau đây?",
         "answers": [
-          "Fe",
-          "Ni",
-          "Mn",
-          "Cu"
+          "Fe (Z = 26).",
+          "Ni (Z = 28).",
+          "Mn (Z = 25).",
+          "Cu (Z = 29)."
         ],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 45. [FeF₆]³⁻ có dạng",
+        "question": "Dạng hình học có thể có của phức chất [FeF₆]³⁻ là",
         "answers": [
           "Tứ diện",
           "Bát diện",
@@ -138,18 +138,18 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 46. Màu phức Cu khác nhau do",
+        "question": "Phức chất [Cu(H₂O)₆]²⁺ có màu xanh; phức chất [Cu(NH₃)₄(H₂O)₂] có màu xanh lam và phức chất [CuCl₄]²⁻ có màu vàng. Màu sẳc của ba phức chất khác nhau là do chúng khác nhau về",
         "answers": [
           "Nguyên tử trung tâm",
           "Phối tử",
-          "Cả hai",
-          "Số phối tử"
+          "Cả nguyên tử trung tâm và phối tử.",
+          "Số lượng phối tử"
         ],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 47. Phức của Ni²⁺ với 6 H₂O",
+        "question": "Cho một phức chất trong đó cation Ni²⁺ dùng sáu orbital trống để nhận các cặp electron từ sáu phân tử nước. Phức chất đó có công thức là",
         "answers": [
           "[Ni(H₂O)₆]²⁺",
           "[Ni(OH)₆]⁴⁻",
@@ -160,41 +160,42 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 48. Phản ứng tạo phức",
+        "question": "Cho sơ đồ chuyển hoá bên dưới. Những phản ứng có sự tạo thành phức chất là ",
+        "image": "hoatnc48.png",
         "answers": [
           "(1) và (2)",
           "(1) và (3)",
           "(2) và (3)",
-          "Cả 3"
+          "Cả (1), (2) và (3)."
         ],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Câu 49. Liên kết kim loại do",
+        "question": "Lực liên kết kim loại gây ra bởi",
         "answers": [
-          "Lực tĩnh điện ion – electron",
-          "Góp chung electron",
-          "Van der Waals",
-          "Liên kết phối trí"
+          "tương tác tĩnh điện giữa cation kim loại và electron hóa trị tự do trong tinh thể.",
+          "sự góp chung của các electron hóa trị giữa các nguyên tử kim loại trong tinh thể.",
+          "tương tác van der Waals giữa các nguyên tử kim loại trong tinh thể.",
+          "sự hình thành liên kết cho nhận giữa các nguyên tử kim loại trong tinh thể."
         ],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Câu 50. Kim loại dẫn điện tốt",
+        "question": "Hai kim loại thường được dùng làm dây dẫn điện là",
         "answers": [
-          "Cu và Al",
-          "Cu và W",
-          "Al và Fe",
-          "Zn và Al"
+          "đồng và nhôm.",
+          "đồng và tungsten.",
+          "nhôm và sắt.",
+          "kẽm và nhôm."
         ],
         "correct": 0
       },
 
       {
         "type": "multiple",
-        "question": "Câu 51. Khoáng Mg CaCO₃·MgCO₃",
+        "question": "Một loại khoáng vật phổ biến của nguyên tố magnesium có thành phần chính là CaCO₃·MgCO₃. Tên của khoáng vật này là",
         "answers": [
           "Dolomite",
           "Calcite",
@@ -205,7 +206,7 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 52. Điều chế Zn từ ZnS",
+        "question": "Kim loại kẽm (zinc, Zn) được sản xuất trong công nghiệp từ quặng sphalerite (có thành phần chính là ZnS) theo sơ đồ: ZnS → ZnO → Zn. Phương pháp điều chế kim loại nào đã được sử dụng trong quá trình sản xuất Zn theo sơ đồ trên?",
         "answers": [
           "Thủy luyện",
           "Nhiệt luyện",
@@ -216,7 +217,7 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 53. Zn bị ăn mòn điện hóa với",
+        "question": "Nhúng một thanh Zn vào dung dịch gồm muối X thì có xảy ra sự ăn mòn điện hoá của Zn. Muối nào sau đây phù hợp với X?",
         "answers": [
           "CuSO₄",
           "Na₂SO₄",
@@ -227,30 +228,30 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 54. Thí nghiệm Zn + H₂SO₄ + CuSO₄",
+        "question": "Rót vào ống nghiệm 1 và 2, mỗi ống khoảng 3 mL dung dịch H2SO4 loãng cùng nồng độ, rồi đồng thời cho vào mỗi ống một mẩu kẽm như nhau. Nhỏ thêm 2 – 3 giọt dung dịch CuSO4 vào ống 2. Phát biểu nào sau đây đúng?",
         "answers": [
-          "Hai ống như nhau",
-          "Ống 2 nhanh do xúc tác",
-          "Ống 2 nhanh do ăn mòn điện hóa",
-          "Ống 1 nhanh hơn"
+          "Tốc độ thoát khí của hai ống nghiệm như nhau.",
+          "Ống nghiệm 2 khí thoát ra nhanh hơn do có CuSO4 là chất xúc tác.",
+          "Ống nghiệm 2 khí thoát ra nhanh hơn do xảy ra ăn mòn điện hóa học.",
+          "Ống nghiệm 1 khí thoát ra nhanh hơn do xảy ra ăn mòn hóa học."
         ],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 55. Nhiệt độ nóng chảy nhóm IA",
+        "question": "Nhiệt độ nóng chảy của các kim loại nhóm IA từ Li đến Cs biến đổi như thế nào? ",
         "answers": [
-          "Tăng",
+          "Tăng dần",
           "Không đổi",
-          "Không quy luật",
-          "Giảm"
+          "Khôngcó quy luật",
+          "Giảm dần"
         ],
         "correct": 3
       },
 
       {
         "type": "multiple",
-        "question": "Câu 56. Nồng độ Ca²⁺ gần đúng",
+        "question": "Độ tan của Ca(OH)₂ ở 20°C là 0,173 g/100 g nước. Biết khối lượng riêng của dung dịch Ca(OH)₂ bão hoà ở 20 °C là 1 g/mL. Nồng độ mol của ion Ca²⁺ trong dung dịch bão hoà Ca(OH)₂ ở 20°C có giá trị gần đúng là",
         "answers": [
           "1.730",
           "0.940",
@@ -261,29 +262,29 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 57. Không phải đặc điểm kim loại chuyển tiếp",
+        "question": "Đặc điểm nào sau đây không phải là của nguyên tố chuyển tiếp dãy thứ nhất?",
         "answers": [
-          "Nhiều số oxi hóa",
-          "Có màu",
-          "Độ cứng thấp",
-          "d chưa bão hòa"
+          "Thể hiện nhiều trạng thái oxi hoá trong các hợp chất khác nhau.",
+          "Hợp chất của chúng thường có màu.",
+          "Tạo các đơn chất có độ cứng thấp.",
+          "Trừ nguyên tố đồng (copper), trong cấu hình electron của nguyên tử, có phân lớp d chưa bão hoà."
         ],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Câu 58. Dãy chuyển tiếp 1 thuộc chu kì",
+        "question": "Các kim loại  chuyển tiếp dãy thứ nhất đều thuộc chu kì nào sau đây?",
         "answers": [
-          "3",
-          "5",
-          "2",
-          "4"
+          "Chu kì 3",
+          "Chu kì 5",
+          "Chu kì 2",
+          "Chu kì 4"
         ],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Câu 59. Số nhận xét đúng",
+        "question": "Cho các nhận xét về trạng thái oxi hoá của nguyên tố kim loại được nêu sau đây: <br>(a) Iron (Fe) chỉ có số oxi hoá +2 và +3. <br>(b) Manganese (Mn) không có số oxi hoá +3. <br>(c) Copper (Cu) trong hợp chất có số oxi hóa +1 có khả năng thể hiện tính khử. <br>(d) Hợp chất của chromium (Cr) +6 có khả năng thể hiện tính oxi hoá. <br>Số nhận xét đúng là",
         "answers": [
           "1",
           "2",
@@ -294,19 +295,19 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 60. Bán kính Sc → Cr",
+        "question": "Trong dãy nguyên tử Sc, Ti, V, Cr bán kính nguyên tử thay đổi như thế nào?",
         "answers": [
-          "Tăng",
+          "Tăng dần",
           "Không đổi",
-          "Giảm",
-          "Không quy luật"
+          "Giảm dần",
+          "Không có quy luật"
         ],
         "correct": 2
       },
 
       {
         "type": "multiple",
-        "question": "Câu 61. Số hiện tượng đúng",
+        "question": "Khi sử dụng dung dịch potassium hydroxide để nhận biết các dung dịch riêng biệt copper(ll) sulfate và iron(ll) sulfate, hiện tượng quan sát được như sau: <br>(a) Đều tạo thành kết tủa màu xanh. <br>(b) Có kết tủa bị chuyển dần sang màu nâu đỏ. <br>(c) Các dung dịch loãng của copper(ll) sulfate và iron(ll) sulfate đều có màu xanh dương. <br>(d) Nhỏ đến dư dung dịch potassium hydroxide vào dung dịch copper(ll) sulfate sẽ thu được dung dịch trong suốt có màu xanh. <br>Số hiện tượng đúng là",
         "answers": [
           "1",
           "2",
@@ -317,8 +318,8 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 62. Số loại phối tử",
-        "image": "link_anh_cau_62",
+        "question": "Phân tử phức chất có cấu tạo như hình bên dưới. Có bao nhiêu loại phối tử có trong phân tử phức chất trên?",
+        "image": "https://video.vietjack.com/upload2/quiz_source1/2025/03/11-1742889781.png",
         "answers": [
           "1",
           "2",
@@ -329,7 +330,7 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 63. Phối tử",
+        "question": "Phối tử trong phức chất [PtCl₄]²⁻ và [Fe(CO)₅] lần lượt là:",
         "answers": [
           "Cl và C",
           "Pt và Fe",
@@ -340,7 +341,7 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 64. Thế 1 NH₃ vào [Cu(H₂O)₆]²⁺",
+        "question": "Câu 64. Phối tử H₂O trong phức chất aqua  [Cu(H₂O)₆]²⁺ có thể bị thế bởi 1 phối tử NH3 tạo thành phức chất là",
         "answers": [
           "[Cu(NH₃)₆]²⁺",
           "[Cu(NH₃)₂(H₂O)₅]",
@@ -351,7 +352,7 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 65. Điền vào chỗ trống",
+        "question": "Cho phát biểu sau: <br>“Khi tan trong nước, muối của các kim loại chuyển tiếp …(1)… thành các ion. Sau đó, cation kim loại chuyển tiếp (Mⁿ⁺) thường nhận các cặp electron hoá trị riêng từ các phân tử H2O để hình thành các liên kết cho − nhận, tạo ra phức chất aqua có dạng tổng quát là ...(2)....” <br>Cụm từ cần điền vào (1) và (2) lần lượt là",
         "answers": [
           "điện li, [M(H₂O)n]+",
           "điện li, [M(H₂O)m]n+",
@@ -362,7 +363,7 @@
       },
       {
         "type": "multiple",
-        "question": "Câu 66. Khối lượng vàng thu được",
+        "question": "Vàng (Au) đơn chất tồn tại trong tự nhiên ở trong quặng vàng thường có hàm lượng vàng thấp. Để thu hồi vàng từ quặng vàng, người ta nghiền quặng, hoà tan chúng vào dung dịch KCN và liên tục sục không khí vào. Vàng bị hoà tan tạo thành phức chất: <br>4Au(s) + 8KCN(aq) + O₂(g) + 2H₂O(l) → 4KAu(CN)₂ + 4KOH(aq) (1) <br>và sau đó kết tủa vàng bằng kẽm (Zn): <br>Zn(s) + 2KAu(CN)₂ → K₂Zn(CN)₄ + 2Au(s) (2) <br>Nếu dùng 13 kg KCN thì có thể tách được bao nhiêu kg vàng từ quặng theo chuỗi phản ứng trên? Giả thiết các chất khác trong quặng không phản ứng với KCN.",
         "answers": [
           "19.7 kg",
           "6.5 kg",
