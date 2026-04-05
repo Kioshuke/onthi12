@@ -271,67 +271,103 @@
         "question": "Thực hiện thí nghiệm sau:<br>Buớc 1: Cho dung dịch NaCl 5% vào ống thuỷ tinh hình chữ U như hình bên. <br>Buớc 2:Nhúng một thanh copper và một thanh zinc đã làm sạch vào hai đầu của ống chữ U. <br>Buớc 3: Nối hai thanh kim loại bằng dây dẫn. <br>Sau bước 3, những phát biểu nào sau đây đúng? <br>(1) Hai kim loại zinc và copper đều bị ăn mòn. <br>(2) Zinc bị oxi hoá và đóng vai trò là anode. <br>(3) Cu2+ bị khử thành Cu bám vào thanh copper, làm khối lượng thanh copper tăng dần. <br>(4) Không kim loại nào bị ăn mòn, nếu thay dung dịch NaCl thành dung dịch HCl thì ăn mòn mới diễn ra.<br>Zinc bị ăn mòn, copper không bị ăn mòn.",
         "image": "https://video.vietjack.com/upload2/quiz_source1/2024/08/blobid1-1724942318.png",
         "answers": [
-          "nguyên tử kim loại có điện tích hạt nhân nhỏ hơn và bán kính lớn hơn nên dễ nhường electron hóa trị hơn.",
-          "nguyên tử kim loại có điện tích hạt nhân lớn hơn và bán kính lớn hơn nên dễ nhường electron hóa trị hơn.",
-          "nguyên tử kim loại có điện tích hạt nhân nhỏ hơn và bán kính nhỏ hơn nên dễ nhường electron hóa trị hơn.",
-          "nguyên tử kim loại có điện tích hạt nhân nhỏ hơn và bán kính lớn hơn nên khó nhường electron hóa trị hơn."
+          "(2), (3) và (5).",
+          "(2) và (5).",
+          "(2), (4) và (5).",
+          "(1), (2) và (4)."
         ],
         "correct": 0
       },
       {
         "type": "multiple",
-        "question": "Ứng dụng nào dưới đây là ứng dụng phổ biến của copper (đồng)?",
+        "question": "Trong tự nhiên, nguyên tố sodium tồn tại phổ biến nhất dưới dạng hợp chất nào sau đây?",
         "answers": [
-          "Làm những bộ phận cấy ghép vào cơ thể người.",
-          "Chế tạo thân máy bay siêu nhanh.",
-          "Làm đồ trang sức.",
-          "Làm lõi dây điện."
+          "Sodium oxide.",
+          "Sodium chloride.",
+          "Sodium hydroxide.",
+          "Sodium carbonate."
         ],
         "correct": 3
       },
       {
         "type": "multiple",
-        "question": "Chất nào dưới đây là thành phần chính của quặng hematite?",
+        "question": "Ở trạng thái cơ bản, cấu hình electron của nguyên tử nào sau đây có phân lớp 3d bão hòa?",
         "answers": [
-          "Iron(II) oxide.",
-          "Iron(III) oxide.",
-          "Iron.",
-          "Iron(II) sulfide."
+          "Sc( Z=21)",
+          "Cu(Z=29)",
+          "Ni(Z=28)",
+          "Mn(Z=25)"
         ],
         "correct": 1
       },
       {
         "type": "multiple",
-        "question": "Câu 22. Cho luồng khí CO dư qua hỗn hợp các oxide CuO, Fe₂O₃, Al₂O₃, MgO nung nóng ở nhiệt độ cao. Sau phản ứng, hỗn hợp chất rắn thu được gồm",
+        "question": "Số oxi hoá cao nhất của chromium trong hợp chất là",
         "answers": [
-          "Cu, Fe, Al, Mg.",
-          "Cu, FeO, Al₂O₃, MgO.",
-          "Cu, Fe, Al₂O₃, MgO.",
-          "Cu, Fe, Al, MgO."
+          "+7.",
+          "+6.",
+          "+3.",
+          "+2."
         ],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "“Sự phá huỷ kim loại hoặc hợp kim do tác dụng của các chất trong môi trường” gọi là",
+        "question": "Dung dịch muối của cation nào sau đây có màu hồng?",
         "answers": [
-          "sự khử kim loại.",
-          "sự tác dụng của kim loại với nước.",
-          "sự ăn mòn kim loại.",
-          "sự tác dụng của kim loại với oxygen. "
+          "Co²⁺.",
+          "Ni²⁺.",
+          "Cr³⁺.",
+          "Cu²⁺."
         ],
         "correct": 2
       },
       {
         "type": "multiple",
-        "question": "Khi thực hiện thí nghiệm ăn mòn điện hóa với đinh iron(Fe) trong dung dịch CuSO₄, hiện tượng nào sau đây sẽ quan sát được? ",
+        "question": "Những kim loại chuyển tiếp dãy thứ nhất nào sau đây có thể tạo ra hợp kim với độ bền cơ học tốt nên được dùng trong sản xuất thiết bị quốc phòng, công nghiệp, nông nghiệp, đời sống?",
         "answers": [
-          "Trên đinh iron(Fe) xuất hiện lớp kim loại màu đỏ, dung dịch màu xanh nhạt dần. ",
-          "Đinh iron(Fe) tan ra, dung dịch có màu xanh đậm hơn.",
-          "Đinh iron(Fe) không thay đổi, dung dịch vẫn giữ nguyên màu xanh. ",
-          "Đinh iron(Fe) bị sủi bọt khí, dung dịch không màu."
+          "Fe và Mn.",
+          "Fe và Co.",
+          "Mn và Ni.",
+          "Fe và Cu."
         ],
         "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Thuốc thử Tollens có khả năng tham gia phản ứng tráng bạc với aldehyde. thuốc thử Tollens là một phức chất có công thức như sau: (a), (b), (c) và (d) lần lượt là",
+        "image": "https://images.tuyensinh247.com/picture/2025/0526/cau-hoi-1748242790119-1.png",
+        "answers": [
+          "Cầu ngoại, cầu nội, nguyên tử trung tâm và phối tử. ",
+          "Cầu nội, cầu ngoại, phối tử và nguyên tử trung tâm.",
+          "Cầu nội, cầu ngoại, nguyên tử trung tâm và phối tử.",
+          "Cầu ngoại, cầu nội, phối tử và nguyên tử trung tâm."
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "[Co(NH₃)₆]³⁺ là phức chất bát diện, với dạng hình học như hình bên dưới. Nguyển tử trung tâm là ?",
+        "image": "https://vietjack.com/hoa-hoc-12-cd/images/ly-thuyet-bai-21-so-luoc-ve-phuc-chat-1.PNG",
+        "answers": [
+          "N",
+          "H",
+          "Co³⁺",
+          "NH₃"
+        ],
+        "correct": 2
+      },
+      {
+        "type": "multiple",
+        "question": "Phức chất [Fe(H₂O)₆]³⁺ có cấu tạo như hình bên dưới. Số liên kết cho – nhận mà nguyên tử trung tâm iron tạo được với các phối tử OH2 là",
+        "image": "https://video.vietjack.com/upload2/quiz_source1/2025/01/56-1737513934.png",
+        "answers": [
+          "5",
+          "3",
+          "4",
+          "6"
+        ],
+        "correct": 3
       }
     ]
   }
