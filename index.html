@@ -3,147 +3,246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>LearnHub • Chuyển hướng</title>
+<link rel="icon" href="https://kioshuke.github.io/learnhub/favicon.png" sizes="any">
+<title>LearnHub • Đang chuyển hướng...</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:24px;
-  font-family:'Inter',sans-serif;
-  background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
-  color:white;
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  /* Tone nền sáng tinh tế, kết hợp dải gradient xanh nhạt công nghệ của trang chủ */
+  background: radial-gradient(circle at top right, #eff6ff 0%, #f1f5f9 50%, #e2e8f0 100%);
+  color: #0f172a;
+  overflow: hidden;
+  position: relative;
 }
 
-.card{
-  width:min(100%,650px);
-  background:#0f172a;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:24px;
-  padding:40px;
-  text-align:center;
-  box-shadow:0 15px 40px rgba(0,0,0,.25);
-  animation:fadeUp .5s ease;
+/* Đốm sáng hiệu ứng trang nhã phía sau */
+body::before {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #bfdbfe, #c7d2fe);
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+  top: 10%;
+  left: 15%;
+  z-index: 0;
 }
 
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(15px);
+.card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 580px);
+  /* Hiệu ứng kính mờ phiên bản sáng (Light Glassmorphism) */
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 28px;
+  padding: 45px 40px;
+  text-align: center;
+  /* Bóng đổ mịn cao cấp chống lóa màn hình */
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08),
+              0 0 1px rgba(15, 23, 42, 0.05);
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
   }
-  to{
-    opacity:1;
-    transform:translateY(0);
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
-.logo{
-  width:80px;
-  height:80px;
-  margin:0 auto 20px;
-  border-radius:20px;
-  background:linear-gradient(135deg,#3b82f6,#8b5cf6);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:34px;
-  font-weight:800;
+/* Khung bọc Logo sạch sẽ */
+.logo-wrapper {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 24px;
 }
 
-h1{
-  font-size:38px;
-  margin-bottom:12px;
+.logo-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  border-radius: 24px;
+  z-index: -1;
+  opacity: 0.2;
+  filter: blur(6px);
 }
 
-.desc{
-  color:#94a3b8;
-  line-height:1.7;
-  margin-bottom:28px;
+.logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  background: #ffffff;
+  padding: 4px;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
-.link-box{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:24px;
+h1 {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  /* Chữ màu xanh đen đậm đà sang trọng */
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
 }
 
-.old-link{
-  color:#fca5a5;
-  word-break:break-all;
+.desc {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 32px;
 }
 
-.arrow{
-  font-size:26px;
-  margin:10px 0;
-  color:#60a5fa;
+/* Hộp chứa liên kết phiên bản sáng */
+.link-box {
+  background: rgba(15, 23, 42, 0.02);
+  border: 1px solid rgba(15, 23, 42, 0.04);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
 }
 
-.new-link{
-  color:#86efac;
-  font-weight:600;
-  word-break:break-all;
+.link-item {
+  font-size: 14px;
+  font-family: monospace;
+  padding: 10px 14px;
+  border-radius: 12px;
+  width: 100%;
+  word-break: break-all;
 }
 
-.progress-wrap{
-  width:100%;
-  height:10px;
-  background:rgba(255,255,255,.08);
-  border-radius:999px;
-  overflow:hidden;
-  margin-bottom:16px;
+.old-link {
+  color: #dc2626;
+  background: #fee2e2;
+  text-decoration: line-through;
+  font-weight: 500;
 }
 
-.progress{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#3b82f6,#06b6d4);
-  animation:load 5s linear forwards;
+.arrow-icon {
+  color: #2563eb;
+  font-size: 18px;
+  animation: bounce 1.5s infinite;
 }
 
-@keyframes load{
-  from{width:0%;}
-  to{width:100%;}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
 }
 
-.countdown{
-  color:#cbd5e1;
-  margin-bottom:24px;
+.new-link {
+  color: #047857;
+  background: #d1fae5;
+  font-weight: 600;
 }
 
-.btn{
-  display:inline-block;
-  text-decoration:none;
-  color:white;
-  background:#2563eb;
-  padding:14px 24px;
-  border-radius:14px;
-  font-weight:600;
-  transition:.2s;
+/* Thanh Progress sáng sủa */
+.progress-wrap {
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 16px;
 }
 
-.btn:hover{
-  transform:translateY(-2px);
+.progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #3b82f6, #2563eb, #10b981);
+  border-radius: 999px;
+  animation: load 5s linear forwards;
 }
 
-.footer{
-  margin-top:20px;
-  font-size:13px;
-  color:#64748b;
+@keyframes load {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.countdown {
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 32px;
+}
+
+#timer {
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Nút bấm giữ tone xanh thương hiệu chủ đạo của LearnHub */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: white;
+  background: linear-gradient(135deg, #1a73e8 0%, #2563eb 100%);
+  padding: 14px 34px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(26, 115, 232, 0.25);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(26, 115, 232, 0.4);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.btn i {
+  font-size: 14px;
+  transition: transform 0.2s;
+}
+
+.btn:hover i {
+  transform: translateX(3px);
+}
+
+.footer {
+  margin-top: 36px;
+  font-size: 12px;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 </style>
 </head>
@@ -152,27 +251,27 @@ h1{
 
 <div class="card">
 
-  <div class="logo">L</div>
+  <div class="logo-wrapper">
+    <img class="logo" src="https://kioshuke.github.io/learnhub/logoweb.webp" alt="LearnHub Logo">
+  </div>
 
-  <h1>LearnHub</h1>
+  <h1>LearnHub Platform</h1>
 
   <p class="desc">
-    Website đã được chuyển sang địa chỉ mới.<br>
-    Bạn sẽ được chuyển hướng tự động trong vài giây.
+    Hệ thống đã tối ưu và chuyển sang không gian lưu trữ mới.<br>
+    Vui lòng đợi trong giây lát để hệ thống tự động kết nối...
   </p>
 
   <div class="link-box">
-
-    <div class="old-link">
+    <div class="link-item old-link">
       https://kioshuke.github.io/onthi12/
     </div>
-
-    <div class="arrow">↓</div>
-
-    <div class="new-link">
+    <div class="arrow-icon">
+      <i class="fa-solid fa-angles-down"></i>
+    </div>
+    <div class="link-item new-link">
       https://kioshuke.github.io/learnhub/
     </div>
-
   </div>
 
   <div class="progress-wrap">
@@ -180,15 +279,16 @@ h1{
   </div>
 
   <div class="countdown">
-    Tự động chuyển hướng sau <span id="timer">5</span> giây...
+    Tự động chuyển hướng sau <span id="timer">5</span> giây
   </div>
 
   <a class="btn" href="https://kioshuke.github.io/learnhub/">
-    Truy cập LearnHub ngay
+    <span>Truy cập ngay</span>
+    <i class="fa-solid fa-arrow-right"></i>
   </a>
 
   <div class="footer">
-    LearnHub • THPT Tân Hồng
+    LearnHub Ecosystem • THPT Tân Hồng
   </div>
 
 </div>
@@ -198,24 +298,21 @@ let timeLeft = 5;
 const timer = document.getElementById("timer");
 
 const interval = setInterval(() => {
-
   timeLeft--;
   timer.textContent = timeLeft;
 
   if(timeLeft <= 0){
     clearInterval(interval);
 
-    document.body.style.transition = "opacity .4s ease";
+    // Hiệu ứng FadeOut mượt mà trước khi chuyển hướng trang
+    document.body.style.transition = "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
     document.body.style.opacity = "0";
 
     setTimeout(() => {
-      window.location.replace(
-        "https://kioshuke.github.io/learnhub/"
-      );
+      window.location.replace("https://kioshuke.github.io/learnhub/");
     }, 400);
   }
-
-},1000);
+}, 1000);
 </script>
 
 </body>
